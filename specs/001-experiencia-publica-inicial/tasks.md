@@ -33,11 +33,11 @@ do repositório, conforme `plan.md` § Project Structure.
 
 **Purpose**: Inicialização do projeto Next.js/TypeScript e ferramentas de qualidade
 
-- [ ] T001 Inicializar projeto Next.js 14+ (App Router, TypeScript) na raiz do repositório
-- [ ] T002 Configurar ESLint + Prettier com regras TypeScript/React em `.eslintrc.json` / `.prettierrc`
-- [ ] T003 [P] Configurar Vitest + Testing Library em `vitest.config.ts`
-- [ ] T004 [P] Configurar Playwright + axe-core em `playwright.config.ts`
-- [ ] T005 [P] Adicionar scripts `build`, `dev`, `test`, `test:e2e` em `package.json` conforme quickstart.md
+- [X] T001 Inicializar projeto Next.js 14+ (App Router, TypeScript) na raiz do repositório
+- [X] T002 Configurar ESLint + Prettier com regras TypeScript/React em `.eslintrc.json` / `.prettierrc`
+- [X] T003 [P] Configurar Vitest + Testing Library em `vitest.config.ts`
+- [X] T004 [P] Configurar Playwright + axe-core em `playwright.config.ts`
+- [X] T005 [P] Adicionar scripts `build`, `dev`, `test`, `test:e2e` em `package.json` conforme quickstart.md
 
 **Checkpoint**: `npm run dev` sobe um projeto Next.js vazio; `npm run test` e `npm run test:e2e` executam sem erro de configuração.
 
