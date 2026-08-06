@@ -17,26 +17,26 @@ mensuráveis e com cobertura adequada) — não valida se a implementação func
 
 - [x] CHK004 - O critério para determinar se uma afirmação de competência "possui evidência correspondente" está definido de forma objetiva (ex.: tipos de evidência aceitos)? [Clarity, Spec §FR-024]
 - [ ] CHK005 - Existe um requisito que impeça a publicação de qualquer competência sem ao menos uma evidência associável, cobrindo todas as páginas públicas (não só a inicial)? [Coverage, Spec §FR-024, §SC-007]
-- [ ] CHK006 - Os termos "resultado", "métrica" e "validação de usuário" usados em FR-023 estão definidos o suficiente para distinguir o que é proibido de o que é permitido (ex.: descrição qualitativa de responsabilidade vs. número de usuários atendidos)? [Ambiguity, Spec §FR-023]
+- [x] CHK006 - Os termos "resultado", "métrica" e "validação de usuário" usados em FR-023 estão definidos o suficiente para distinguir o que é proibido de o que é permitido (ex.: descrição qualitativa de responsabilidade vs. número de usuários atendidos)? [Ambiguity, Spec §FR-023]
 
 ## Transparência sobre experiência e projetos
 
 - [ ] CHK007 - A distinção entre projeto autoral, acadêmico, colaborativo e profissional possui definição de cada categoria, ou apenas a exigência de "distinguir claramente" sem critério? [Gap, Spec §FR-010]
 - [ ] CHK008 - Está especificado onde (em quais dos elementos de card/página) a natureza do projeto (autoral/acadêmico/colaborativo/profissional) deve aparecer para ser considerada "visível", conforme exigido em SC-004? [Clarity, Spec §SC-004]
-- [ ] CHK009 - Os requisitos definem o que fazer quando a natureza de um projeto é mista (ex.: iniciado como acadêmico e continuado como autoral)? [Edge Case, Gap]
+- [x] CHK009 - Os requisitos definem o que fazer quando a natureza de um projeto é mista (ex.: iniciado como acadêmico e continuado como autoral)? [Edge Case, Gap]
 
 ## Completude dos estudos de caso
 
 - [x] CHK010 - Todos os campos obrigatórios da página resumida de projeto (FR-012) possuem definição do que constitui conteúdo mínimo aceitável (ex.: "decisões relevantes" — quantas, que profundidade)? [Clarity, Spec §FR-012]
 - [x] CHK011 - Os requisitos definem um limite mínimo/máximo de projetos em destaque na página inicial, ou isso depende inteiramente da Assumption sobre os 4 projetos iniciais? [Gap, Spec §Assumptions]
-- [ ] CHK012 - Está especificado o que acontece quando um dos campos obrigatórios do card de projeto (FR-006) não está disponível no momento da publicação (ex.: imagem de apresentação ainda não produzida)? [Edge Case, Gap]
+- [x] CHK012 - Está especificado o que acontece quando um dos campos obrigatórios do card de projeto (FR-006) não está disponível no momento da publicação (ex.: imagem de apresentação ainda não produzida)? [Edge Case, Gap]
 - [ ] CHK013 - Os requisitos de "próximos passos" e "limitações conhecidas" (FR-012) diferenciam obrigatoriedade de conteúdo de projetos concluídos versus projetos em andamento? [Consistency, Gap]
 
 ## Acessibilidade
 
 - [ ] CHK014 - Os critérios de "estrutura semântica" (FR-022) referenciam um padrão ou nível de conformidade verificável (ex.: WCAG e nível), ou permanecem genéricos? [Measurability, Spec §FR-022]
 - [x] CHK015 - O requisito de navegação por teclado (FR-021, SC-005) define a ordem de foco esperada ou apenas a alcançabilidade dos elementos? [Completeness, Spec §FR-021]
-- [ ] CHK016 - Existe requisito de contraste de cor mínimo mensurável, ou a acessibilidade visual permanece implícita? [Gap]
+- [x] CHK016 - Existe requisito de contraste de cor mínimo mensurável, ou a acessibilidade visual permanece implícita? [Gap]
 - [ ] CHK017 - O requisito de texto alternativo para imagens de projeto está vinculado ao edge case de falha de carregamento de imagem, garantindo que ambos sejam tratados de forma consistente? [Consistency, Spec §Edge Cases]
 
 ## Responsividade
@@ -52,7 +52,7 @@ mensuráveis e com cobertura adequada) — não valida se a implementação func
 
 ## SEO básico
 
-- [ ] CHK023 - Existe algum requisito sobre metadados descritivos (título de página, descrição) por página pública, ou o tema SEO está totalmente ausente da especificação? [Gap]
+- [x] CHK023 - Existe algum requisito sobre metadados descritivos (título de página, descrição) por página pública, ou o tema SEO está totalmente ausente da especificação? [Gap]
 - [x] CHK024 - Está definido se cada página de projeto deve ter identificador/URL único e estável, permitindo referência externa duradoura? [Gap, Spec §FR-013]
 
 ## Navegação

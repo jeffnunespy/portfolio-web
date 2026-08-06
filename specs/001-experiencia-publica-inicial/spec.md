@@ -27,6 +27,11 @@
 - Q: O conteúdo das páginas públicas é carregado de forma síncrona/estática, ou pode haver espera perceptível que exija um estado de carregamento visível? → A: Conteúdo estático/pré-carregado; não há espera perceptível, logo não é necessário estado de loading nesta versão.
 - Q: A ordem de navegação por teclado (tab) nas páginas públicas deve seguir estritamente a ordem visual/de leitura do conteúdo, ou pode haver uma ordem customizada para elementos específicos? → A: Ordem de tabulação segue estritamente a ordem visual/de leitura do conteúdo (topo-base, esquerda-direita), sem customização.
 - Q: Como o critério "10 segundos de leitura" do SC-001 pode ser verificado objetivamente, já que tempo de leitura humano não é testável automaticamente? → A: Substituído por critério estrutural verificável: título, descrição e competências por área visíveis na primeira dobra em 1280px, sem rolagem nem navegação.
+- Q: Quando um dos campos obrigatórios de um projeto ainda não está pronto, o projeto pode ser publicado com esse campo pendente, ou a publicação deve esperar até que todos os campos estejam completos? → A: Projeto só é publicado quando todos os campos obrigatórios estão completos; não existe estado parcial/rascunho.
+- Q: Cada página pública deve ter um título de página e uma descrição meta próprios, ou um único título/descrição genéricos servem para todas as páginas nesta primeira versão? → A: Cada página pública tem título e descrição meta próprios, derivados do seu conteúdo (ex.: título do projeto, "Sobre — Nome").
+- Q: FR-023 proíbe apresentar "métricas, resultados ou validações de usuário" sem evidência — isso bloqueia apenas números/dados quantitativos, ou também impede frases qualitativas de responsabilidade? → A: FR-023 proíbe apenas dados quantitativos (números, percentuais, métricas de impacto) sem evidência; descrições qualitativas de responsabilidade são permitidas livremente.
+- Q: Quando um projeto começou com uma natureza (ex.: acadêmico) e depois continuou de forma diferente (ex.: virou pessoal/autoral), qual natureza deve ser exibida? → A: Exibir a natureza predominante/atual do projeto; a origem pode ser mencionada em texto livre no campo "contexto", sem campo estruturado adicional.
+- Q: As páginas públicas devem atender a um nível de contraste de cor mensurável, ou basta a diretriz genérica de "contraste adequado"? → A: WCAG 2.1 nível AA (contraste mínimo 4.5:1 texto normal, 3:1 texto grande), verificado via axe-core.
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -105,6 +110,7 @@ Um gestor técnico ou colaborador em potencial acessa a página Sobre para enten
 - O que acontece quando uma imagem de apresentação de projeto não carrega? O sistema DEVE exibir um estado alternativo claro (texto alternativo ou espaço reservado), nunca um ícone de erro quebrado sem contexto.
 - O que acontece quando não há projetos suficientes para preencher a seção de destaque? A seção DEVE se adaptar ao número real de projetos disponíveis, sem exibir placeholders vazios ou dados fictícios como se fossem reais.
 - O que acontece quando o visitante acessa a URL de um projeto inexistente ou removido? O sistema DEVE exibir uma página "não encontrado" com mensagem amigável e um link para a listagem de projetos, nunca um erro técnico bruto.
+- O que acontece quando um projeto ainda não possui todos os campos obrigatórios prontos? O sistema NÃO DEVE publicá-lo; não existe estado de rascunho ou publicação parcial visível ao visitante.
 
 ## Requirements *(mandatory)*
 
@@ -126,8 +132,9 @@ Um gestor técnico ou colaborador em potencial acessa a página Sobre para enten
 - **FR-008**: Cada projeto em destaque DEVE exibir link de demonstração quando existente, e link de repositório quando o código for público.
 - **FR-009**: Quando o código de um projeto não estiver disponível publicamente, o sistema DEVE exibir uma indicação explícita dessa indisponibilidade, em vez de omitir a informação silenciosamente ou exibir um link inválido.
 - **FR-009a**: Quando o repositório de um projeto for privado (código existente, porém não público), o sistema DEVE exibir a indicação explícita "código privado — disponível mediante solicitação" acompanhada de um link ou chamada para ação que direcione ao meio de contato.
-- **FR-010**: O sistema DEVE distinguir claramente a natureza de cada projeto entre autoral, acadêmico, colaborativo e profissional.
+- **FR-010**: O sistema DEVE distinguir claramente a natureza de cada projeto entre autoral, acadêmico, colaborativo e profissional. Quando um projeto evoluiu entre naturezas ao longo do tempo, o campo DEVE refletir a natureza predominante/atual; a origem histórica pode ser mencionada em texto livre no campo de contexto (FR-012), sem necessidade de um campo estruturado adicional.
 - **FR-011**: O sistema DEVE permitir que projetos com status incompleto ou em andamento sejam apresentados, desde que o status seja exibido de forma transparente, usando exclusivamente um dos valores do conjunto fechado: "Em andamento", "Concluído", "Pausado" ou "Arquivado".
+- **FR-011a**: O sistema NÃO DEVE publicar um projeto até que todos os seus campos obrigatórios (FR-006, FR-012) estejam completos; não há estado de rascunho ou publicação parcial. O status "Em andamento" (FR-011) descreve o progresso do projeto em si, não a completude dos dados publicados sobre ele.
 
 **Página resumida de projeto**
 
@@ -154,13 +161,14 @@ Um gestor técnico ou colaborador em potencial acessa a página Sobre para enten
 - **FR-019**: O sistema NÃO DEVE exigir cadastro ou login para qualquer conteúdo público descrito nesta especificação.
 - **FR-020**: O sistema DEVE ser utilizável em dispositivos móveis e desktop, sem perda de conteúdo ou funcionalidade.
 - **FR-021**: O sistema DEVE permitir navegação completa por teclado em todos os elementos interativos das páginas públicas, com ordem de tabulação seguindo estritamente a ordem visual/de leitura do conteúdo (topo-base, esquerda-direita), sem customização.
-- **FR-022**: O sistema DEVE usar estrutura semântica de conteúdo (hierarquia de títulos, marcos de navegação, texto alternativo em imagens) nas páginas públicas.
-- **FR-023**: O sistema NÃO DEVE apresentar métricas, resultados ou validações de usuário que não possuam evidência correspondente registrada.
+- **FR-022**: O sistema DEVE usar estrutura semântica de conteúdo (hierarquia de títulos, marcos de navegação, texto alternativo em imagens) nas páginas públicas, e atender ao nível de contraste de cor WCAG 2.1 AA (mínimo 4.5:1 para texto normal, 3:1 para texto grande).
+- **FR-023**: O sistema NÃO DEVE apresentar métricas, resultados quantificados ou validações de usuário (ex.: números, percentuais, contagem de usuários atendidos) que não possuam evidência correspondente registrada. Descrições qualitativas de responsabilidade e contexto (ex.: "implementei o sistema de filas") são permitidas livremente, sustentadas pelo vínculo ao projeto como um todo (FR-024).
 - **FR-024**: O sistema NÃO DEVE apresentar competências no portfólio sem evidência correspondente associável. Conta como evidência válida o vínculo a um projeto do portfólio, ou a código, documentação, testes, diagrama, decisão arquitetural ou aplicação publicada dentro desse projeto.
 - **FR-025**: O sistema DEVE exibir mensagens claras quando conteúdo estiver ausente ou um link estiver indisponível, em vez de falhar silenciosamente ou exibir erros técnicos brutos.
 - **FR-026**: Durante o desenvolvimento, o sistema PODE utilizar conteúdo fictício ou dados iniciais controlados, desde que nunca apresentados como resultados, métricas ou validações reais.
 - **FR-027**: O sistema NÃO DEVE coletar nenhum dado de navegação do visitante (ex.: analytics de audiência, cookies de rastreamento) nesta primeira versão.
 - **FR-028**: O conteúdo das páginas públicas DEVE ser entregue de forma estática/pré-carregada, sem espera perceptível ao visitante; estados de carregamento (loading) não são exigidos nesta primeira versão.
+- **FR-029**: Cada página pública DEVE possuir título de página e descrição meta próprios, derivados do seu conteúdo específico (ex.: título do projeto na página de projeto, "Sobre — [Nome]" na página Sobre), em vez de um título/descrição genéricos compartilhados por todas as páginas.
 
 ### Key Entities *(include if feature involves data)*
 

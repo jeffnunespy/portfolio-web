@@ -52,7 +52,7 @@ do repositório, conforme `plan.md` § Project Structure.
 - [ ] T006 [P] Definir tipos `Projeto`, `PerfilProfissional`, `Competencia` em `lib/types.ts` conforme data-model.md
 - [ ] T007 [P] Criar `content/profile.json` com dados reais do proprietário (título, descrição, competências por área, bio, links, contato) conforme FR-002, FR-003, FR-015–FR-017
 - [ ] T008 [P] Criar os 4 arquivos iniciais em `content/projects/*.json` (plataforma de portfólio, helpdesk, gerenciamento de filas, transcrição/análise de áudio) conforme data-model.md e Assumptions do spec.md
-- [ ] T009 Implementar `lib/content.ts`: leitura de `content/*.json` em build time, com validação que falha o build se algum campo obrigatório estiver ausente ou se alguma competência em `profile.json` não tiver projeto que a referencie em `competenciasDemonstradas` (FR-024, SC-007)
+- [ ] T009 Implementar `lib/content.ts`: leitura de `content/*.json` em build time, com validação que falha o build se algum campo obrigatório estiver ausente (FR-011a — sem estado de rascunho/publicação parcial) ou se alguma competência em `profile.json` não tiver projeto que a referencie em `competenciasDemonstradas` (FR-024, SC-007)
 - [ ] T010 [P] Teste unitário de `lib/content.ts` em `tests/unit/content.test.ts`: cobre caso de sucesso, campo obrigatório ausente e competência sem evidência (depende de T009)
 - [ ] T011 Implementar `components/layout/Header.tsx`: navegação (início, listagem de projetos, Sobre, currículo) sem `tabindex` customizado, conforme FR-005, FR-021
 - [ ] T012 Implementar `components/layout/Footer.tsx`: links de currículo, GitHub, LinkedIn, contato e titularidade, conforme FR-018
@@ -155,7 +155,7 @@ do repositório, conforme `plan.md` § Project Structure.
 **Purpose**: Validações finais que atravessam todas as user stories
 
 - [ ] T038 [P] Teste E2E de responsividade em `tests/e2e/responsive.spec.ts` nas larguras 320px/768px/1280px, sem rolagem horizontal (SC-006)
-- [ ] T039 [P] Adicionar metadados de página (`title`, `description`) por rota usando `generateMetadata` do Next.js (mitiga CHK023, gap de SEO registrado no checklist)
+- [ ] T039 [P] Adicionar metadados de página (`title`, `description`) próprios por rota usando `generateMetadata` do Next.js, derivados do conteúdo de cada página (FR-029)
 - [ ] T040 Rodar `npm run build` e confirmar que a validação de conteúdo de T009 passa sem erros
 - [ ] T041 Executar `quickstart.md` integralmente e confirmar todos os cenários de validação
 
