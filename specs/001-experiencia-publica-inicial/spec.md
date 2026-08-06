@@ -32,6 +32,10 @@
 - Q: FR-023 proíbe apresentar "métricas, resultados ou validações de usuário" sem evidência — isso bloqueia apenas números/dados quantitativos, ou também impede frases qualitativas de responsabilidade? → A: FR-023 proíbe apenas dados quantitativos (números, percentuais, métricas de impacto) sem evidência; descrições qualitativas de responsabilidade são permitidas livremente.
 - Q: Quando um projeto começou com uma natureza (ex.: acadêmico) e depois continuou de forma diferente (ex.: virou pessoal/autoral), qual natureza deve ser exibida? → A: Exibir a natureza predominante/atual do projeto; a origem pode ser mencionada em texto livre no campo "contexto", sem campo estruturado adicional.
 - Q: As páginas públicas devem atender a um nível de contraste de cor mensurável, ou basta a diretriz genérica de "contraste adequado"? → A: WCAG 2.1 nível AA (contraste mínimo 4.5:1 texto normal, 3:1 texto grande), verificado via axe-core.
+- Q: Qual critério objetivo deve marcar a área de profundidade (backend/engenharia de software) como visualmente prioritária sobre as competências complementares (cloud/DevOps)? → A: Ordem de apresentação — área de profundidade é renderizada antes das competências complementares (verificável pela ordem no DOM).
+- Q: Onde exatamente a natureza do projeto (autoral/acadêmico/colaborativo/profissional) deve aparecer para contar como "visível", conforme exige SC-004? → A: Visível no card de projeto (inicial/listagem) E na página de detalhe do projeto.
+- Q: O formulário/link de contato deve armazenar ou registrar de alguma forma os dados que o visitante envia (nome, e-mail, mensagem)? → A: Apenas link `mailto:` direto — nenhum dado é armazenado ou processado pelo portfólio.
+- Q: A indicação de "código privado — mediante solicitação" (FR-009a) deve registrar de alguma forma quem solicitou acesso? → A: Não — usa o mesmo link `mailto:` direto do contato geral, sem qualquer registro pelo portfólio, mantendo consistência com FR-017 e sem exigir backend/persistência.
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -108,9 +112,10 @@ Um gestor técnico ou colaborador em potencial acessa a página Sobre para enten
 - O que acontece quando o visitante acessa a plataforma em um dispositivo móvel? Todo o conteúdo e navegação DEVEM permanecer utilizáveis e legíveis sem rolagem horizontal.
 - O que acontece quando o visitante navega exclusivamente por teclado? Todos os elementos interativos DEVEM ser alcançáveis em ordem lógica, com foco visível.
 - O que acontece quando uma imagem de apresentação de projeto não carrega? O sistema DEVE exibir um estado alternativo claro (texto alternativo ou espaço reservado), nunca um ícone de erro quebrado sem contexto.
-- O que acontece quando não há projetos suficientes para preencher a seção de destaque? A seção DEVE se adaptar ao número real de projetos disponíveis, sem exibir placeholders vazios ou dados fictícios como se fossem reais.
+- O que acontece quando não há projetos suficientes para preencher a seção de destaque? A seção DEVE se adaptar ao número real de projetos disponíveis (exibindo apenas os projetos publicados existentes, em quantidade menor que o teto de 6), sem exibir placeholders vazios, espaços reservados ou dados fictícios como se fossem reais.
 - O que acontece quando o visitante acessa a URL de um projeto inexistente ou removido? O sistema DEVE exibir uma página "não encontrado" com mensagem amigável e um link para a listagem de projetos, nunca um erro técnico bruto.
 - O que acontece quando um projeto ainda não possui todos os campos obrigatórios prontos? O sistema NÃO DEVE publicá-lo; não existe estado de rascunho ou publicação parcial visível ao visitante.
+- O que acontece quando um projeto ainda não tem imagem de apresentação disponível no momento da publicação? Pelo mesmo motivo (FR-011a), esse projeto NÃO DEVE ser publicado até que a imagem esteja disponível — o campo é obrigatório (FR-006), não há espaço reservado publicado sem conteúdo real.
 
 ## Requirements *(mandatory)*
 
@@ -120,25 +125,25 @@ Um gestor técnico ou colaborador em potencial acessa a página Sobre para enten
 
 - **FR-001**: O sistema DEVE exibir uma página inicial pública, acessível sem autenticação, contendo cabeçalho com navegação principal, apresentação profissional resumida, competências por área, projetos em destaque e rodapé.
 - **FR-002**: A página inicial DEVE apresentar o título "Desenvolvedor Full-Stack em Formação" e a descrição "Com foco em backend e engenharia de software, construo aplicações web completas da especificação ao deploy, aplicando cloud e práticas de DevOps."
-- **FR-003**: A página inicial DEVE organizar as competências por área, distinguindo claramente backend/engenharia de software (área de profundidade) de cloud/DevOps (competências complementares).
+- **FR-003**: A página inicial DEVE organizar as competências por área, distinguindo claramente backend/engenharia de software (área de profundidade) de cloud/DevOps (competências complementares). A área de profundidade DEVE ser apresentada/renderizada antes das competências complementares, servindo como critério verificável de prioridade visual.
 - **FR-004**: A página inicial DEVE listar projetos em destaque, cada um com link para sua página resumida, respeitando um teto de até 6 projetos exibidos na página inicial.
 - **FR-004a**: O sistema DEVE fornecer uma listagem de projetos, acessível pela navegação principal, contendo todos os projetos publicados, incluindo os que excedem o teto de destaque da página inicial.
-- **FR-005**: A navegação principal (cabeçalho) DEVE fornecer acesso, a partir de qualquer página pública, a: página inicial, listagem de projetos, página Sobre e currículo. Os links de GitHub, LinkedIn e contato não são obrigatórios no cabeçalho, desde que garantidos no rodapé conforme FR-018.
+- **FR-005**: A navegação principal (cabeçalho) DEVE fornecer acesso, a partir de qualquer página pública, a: página inicial, listagem de projetos, página Sobre e currículo, nesta ordem da esquerda para a direita (ou de cima para baixo em layout mobile). Os links de GitHub, LinkedIn e contato não são obrigatórios no cabeçalho, desde que garantidos no rodapé conforme FR-018.
 
 **Projetos em destaque**
 
-- **FR-006**: Cada projeto em destaque DEVE exibir título, resumo, problema tratado, status, categoria, tecnologias ou áreas técnicas, imagem de apresentação e principais competências demonstradas.
+- **FR-006**: Cada projeto em destaque DEVE exibir título, resumo, problema tratado, status, categoria, natureza (autoral/acadêmico/colaborativo/profissional), tecnologias ou áreas técnicas, imagem de apresentação e principais competências demonstradas. A natureza DEVE estar visível tanto no card de projeto (página inicial/listagem) quanto na página de detalhe do projeto.
 - **FR-007**: Cada projeto em destaque DEVE fornecer um link para sua página resumida de detalhes.
 - **FR-008**: Cada projeto em destaque DEVE exibir link de demonstração quando existente, e link de repositório quando o código for público.
 - **FR-009**: Quando o código de um projeto não estiver disponível publicamente, o sistema DEVE exibir uma indicação explícita dessa indisponibilidade, em vez de omitir a informação silenciosamente ou exibir um link inválido.
-- **FR-009a**: Quando o repositório de um projeto for privado (código existente, porém não público), o sistema DEVE exibir a indicação explícita "código privado — disponível mediante solicitação" acompanhada de um link ou chamada para ação que direcione ao meio de contato.
-- **FR-010**: O sistema DEVE distinguir claramente a natureza de cada projeto entre autoral, acadêmico, colaborativo e profissional. Quando um projeto evoluiu entre naturezas ao longo do tempo, o campo DEVE refletir a natureza predominante/atual; a origem histórica pode ser mencionada em texto livre no campo de contexto (FR-012), sem necessidade de um campo estruturado adicional.
+- **FR-009a**: Quando o repositório de um projeto for privado (código existente, porém não público), o sistema DEVE exibir a indicação explícita "código privado — disponível mediante solicitação" acompanhada de um link ou chamada para ação que direcione ao mesmo meio de contato definido em FR-017 (link `mailto:` direto). O sistema NÃO DEVE registrar ou armazenar dados do solicitante.
+- **FR-010**: O sistema DEVE distinguir claramente a natureza de cada projeto entre autoral (idealizado e desenvolvido pelo proprietário por iniciativa própria), acadêmico (desenvolvido no contexto de curso/instituição de ensino), colaborativo (desenvolvido em conjunto com outras pessoas, sem vínculo empregatício) e profissional (desenvolvido no contexto de emprego/contrato remunerado). Quando um projeto evoluiu entre naturezas ao longo do tempo, o campo DEVE refletir a natureza predominante/atual; a origem histórica pode ser mencionada em texto livre no campo de contexto (FR-012), sem necessidade de um campo estruturado adicional.
 - **FR-011**: O sistema DEVE permitir que projetos com status incompleto ou em andamento sejam apresentados, desde que o status seja exibido de forma transparente, usando exclusivamente um dos valores do conjunto fechado: "Em andamento", "Concluído", "Pausado" ou "Arquivado".
 - **FR-011a**: O sistema NÃO DEVE publicar um projeto até que todos os seus campos obrigatórios (FR-006, FR-012) estejam completos; não há estado de rascunho ou publicação parcial. O status "Em andamento" (FR-011) descreve o progresso do projeto em si, não a completude dos dados publicados sobre ele.
 
 **Página resumida de projeto**
 
-- **FR-012**: O sistema DEVE fornecer uma página dedicada para cada projeto em destaque, contendo contexto, objetivo, principais funcionalidades, responsabilidade do proprietário no projeto, decisões relevantes (no mínimo 2 por projeto), stack em formato informativo, situação atual, limitações conhecidas, próximos passos e links relacionados.
+- **FR-012**: O sistema DEVE fornecer uma página dedicada para cada projeto em destaque, contendo contexto, objetivo, principais funcionalidades, responsabilidade do proprietário no projeto, decisões relevantes (no mínimo 2 por projeto), stack em formato informativo, situação atual, limitações conhecidas, próximos passos e links relacionados. Os campos "limitações conhecidas" e "próximos passos" são obrigatórios independentemente do status do projeto (FR-011): para projetos "Concluído" ou "Arquivado", "próximos passos" pode declarar explicitamente a ausência de evolução planejada (ex.: "Nenhuma evolução planejada"), em vez de ficar ausente.
 - **FR-013**: A página do projeto DEVE ser acessível diretamente por link/URL própria, sem depender de navegação prévia pela página inicial.
 - **FR-013a**: Cada projeto DEVE possuir um identificador de URL definido pelo proprietário no momento da publicação, que permanece estável e não é alterado após a publicação, mesmo que o título do projeto seja editado.
 
@@ -150,7 +155,7 @@ Um gestor técnico ou colaborador em potencial acessa a página Sobre para enten
 
 - **FR-015**: O sistema DEVE fornecer acesso ao currículo do proprietário a partir da navegação principal ou do rodapé, como uma página visualizável no próprio site com opção de download do arquivo (ex.: PDF).
 - **FR-016**: O sistema DEVE fornecer links para os perfis de GitHub e LinkedIn do proprietário, visíveis a partir de qualquer página pública.
-- **FR-017**: O sistema DEVE fornecer ao menos um meio de contato direto (ex.: e-mail) visível a partir de qualquer página pública.
+- **FR-017**: O sistema DEVE fornecer ao menos um meio de contato direto (ex.: e-mail via link `mailto:`) visível a partir de qualquer página pública. O sistema NÃO DEVE armazenar, processar ou registrar nenhum dado pessoal do visitante através desse meio de contato; o envio ocorre inteiramente fora da plataforma (ex.: cliente de e-mail do próprio visitante).
 
 **Rodapé**
 
@@ -161,12 +166,12 @@ Um gestor técnico ou colaborador em potencial acessa a página Sobre para enten
 - **FR-019**: O sistema NÃO DEVE exigir cadastro ou login para qualquer conteúdo público descrito nesta especificação.
 - **FR-020**: O sistema DEVE ser utilizável em dispositivos móveis e desktop, sem perda de conteúdo ou funcionalidade.
 - **FR-021**: O sistema DEVE permitir navegação completa por teclado em todos os elementos interativos das páginas públicas, com ordem de tabulação seguindo estritamente a ordem visual/de leitura do conteúdo (topo-base, esquerda-direita), sem customização.
-- **FR-022**: O sistema DEVE usar estrutura semântica de conteúdo (hierarquia de títulos, marcos de navegação, texto alternativo em imagens) nas páginas públicas, e atender ao nível de contraste de cor WCAG 2.1 AA (mínimo 4.5:1 para texto normal, 3:1 para texto grande).
+- **FR-022**: O sistema DEVE atender ao nível de conformidade WCAG 2.1 AA nas páginas públicas, incluindo estrutura semântica de conteúdo (hierarquia de títulos, marcos de navegação, texto alternativo em imagens — este último vinculado ao mesmo estado alternativo exigido no Edge Case de falha de carregamento de imagem) e contraste de cor (mínimo 4.5:1 para texto normal, 3:1 para texto grande).
 - **FR-023**: O sistema NÃO DEVE apresentar métricas, resultados quantificados ou validações de usuário (ex.: números, percentuais, contagem de usuários atendidos) que não possuam evidência correspondente registrada. Descrições qualitativas de responsabilidade e contexto (ex.: "implementei o sistema de filas") são permitidas livremente, sustentadas pelo vínculo ao projeto como um todo (FR-024).
 - **FR-024**: O sistema NÃO DEVE apresentar competências no portfólio sem evidência correspondente associável. Conta como evidência válida o vínculo a um projeto do portfólio, ou a código, documentação, testes, diagrama, decisão arquitetural ou aplicação publicada dentro desse projeto.
-- **FR-025**: O sistema DEVE exibir mensagens claras quando conteúdo estiver ausente ou um link estiver indisponível, em vez de falhar silenciosamente ou exibir erros técnicos brutos.
+- **FR-025**: O sistema DEVE exibir mensagens claras quando conteúdo estiver ausente ou um link estiver indisponível, em vez de falhar silenciosamente ou exibir erros técnicos brutos. Essas mensagens DEVEM usar linguagem simples e direta (sem jargão técnico), em tom consistente com o restante do portfólio, e sempre oferecer ao visitante uma ação alternativa (ex.: link para a listagem de projetos ou para a página inicial).
 - **FR-026**: Durante o desenvolvimento, o sistema PODE utilizar conteúdo fictício ou dados iniciais controlados, desde que nunca apresentados como resultados, métricas ou validações reais.
-- **FR-027**: O sistema NÃO DEVE coletar nenhum dado de navegação do visitante (ex.: analytics de audiência, cookies de rastreamento) nesta primeira versão.
+- **FR-027**: O sistema NÃO DEVE coletar nenhum dado de navegação do visitante (ex.: analytics de audiência, cookies de rastreamento) nesta primeira versão. Esta restrição cobre tanto ferramentas de analytics próprias quanto qualquer conteúdo incorporado de terceiros (ex.: player de vídeo embutido, botões de compartilhamento social); nenhum desses recursos deve ser incluído nesta versão caso implique carregar cookies ou rastreamento de terceiros.
 - **FR-028**: O conteúdo das páginas públicas DEVE ser entregue de forma estática/pré-carregada, sem espera perceptível ao visitante; estados de carregamento (loading) não são exigidos nesta primeira versão.
 - **FR-029**: Cada página pública DEVE possuir título de página e descrição meta próprios, derivados do seu conteúdo específico (ex.: título do projeto na página de projeto, "Sobre — [Nome]" na página Sobre), em vez de um título/descrição genéricos compartilhados por todas as páginas.
 
@@ -197,3 +202,5 @@ Um gestor técnico ou colaborador em potencial acessa a página Sobre para enten
 - Não há gestão de conteúdo dinâmica nesta especificação (sem área administrativa); o conteúdo de projetos e perfil é tratado como dado inicial fornecido, não como funcionalidade a ser especificada aqui.
 - "Página resumida de projeto" é uma página própria por projeto, não um modal ou seção expansível dentro da página inicial, dado que a especificação pede link direto e acesso independente.
 - Idioma único (português), já que múltiplos idiomas estão explicitamente fora do escopo.
+- Os itens fora de escopo (área administrativa, cadastro/login de visitantes, interações sociais, analytics, múltiplos idiomas, formulário de contato com persistência) são exclusões desta primeira versão, não decisões permanentes; nenhuma versão futura é comprometida ou negada por esta especificação — apenas não fazem parte do escopo atual.
+- Nenhum requisito funcional desta especificação depende de uma funcionalidade fora de escopo para ser cumprido; por exemplo, o teto de 6 projetos em destaque (FR-004) usa seleção manual pelo proprietário sobre dados versionados no repositório, sem exigir um mecanismo de curadoria dinâmica.
