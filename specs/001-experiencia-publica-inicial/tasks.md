@@ -49,15 +49,15 @@ do repositório, conforme `plan.md` § Project Structure.
 
 **⚠️ CRITICAL**: Nenhuma user story pode começar antes desta fase estar completa
 
-- [ ] T006 [P] Definir tipos `Projeto`, `PerfilProfissional`, `Competencia` em `lib/types.ts` conforme data-model.md
-- [ ] T007 [P] Criar `content/profile.json` com dados reais do proprietário (título, descrição, competências por área, bio, links, contato) conforme FR-002, FR-003, FR-015–FR-017
-- [ ] T008 [P] Criar os 4 arquivos iniciais em `content/projects/*.json` (plataforma de portfólio, helpdesk, gerenciamento de filas, transcrição/análise de áudio) conforme data-model.md e Assumptions do spec.md
-- [ ] T009 Implementar `lib/content.ts`: leitura de `content/*.json` em build time, com validação que falha o build se algum campo obrigatório estiver ausente (FR-011a — sem estado de rascunho/publicação parcial) ou se alguma competência em `profile.json` não tiver projeto que a referencie em `competenciasDemonstradas` (FR-024, SC-007)
-- [ ] T010 [P] Teste unitário de `lib/content.ts` em `tests/unit/content.test.ts`: cobre caso de sucesso, campo obrigatório ausente e competência sem evidência (depende de T009)
-- [ ] T011 Implementar `components/layout/Header.tsx`: navegação (início, listagem de projetos, Sobre, currículo) sem `tabindex` customizado, conforme FR-005, FR-021
-- [ ] T012 Implementar `components/layout/Footer.tsx`: links de currículo, GitHub, LinkedIn, contato e titularidade, conforme FR-018
-- [ ] T013 Implementar `app/layout.tsx` compondo Header + Footer + skip-link para navegação por teclado (depende de T011, T012)
-- [ ] T014 Implementar `app/not-found.tsx` (404 genérico com mensagem amigável), conforme FR-025
+- [X] T006 [P] Definir tipos `Projeto`, `PerfilProfissional`, `Competencia` em `lib/types.ts` conforme data-model.md
+- [X] T007 [P] Criar `content/profile.json` com dados reais do proprietário (título, descrição, competências por área, bio, links, contato) conforme FR-002, FR-003, FR-015–FR-017
+- [X] T008 [P] Criar os 4 arquivos iniciais em `content/projects/*.json` (plataforma de portfólio, helpdesk, gerenciamento de filas, transcrição/análise de áudio) conforme data-model.md e Assumptions do spec.md
+- [X] T009 Implementar `lib/content.ts`: leitura de `content/*.json` em build time, com validação que falha o build se algum campo obrigatório estiver ausente (FR-011a — sem estado de rascunho/publicação parcial) ou se alguma competência em `profile.json` não tiver projeto que a referencie em `competenciasDemonstradas` (FR-024, SC-007)
+- [X] T010 [P] Teste unitário de `lib/content.ts` em `tests/unit/content.test.ts`: cobre caso de sucesso, campo obrigatório ausente e competência sem evidência (depende de T009)
+- [X] T011 Implementar `components/layout/Header.tsx`: navegação (início, listagem de projetos, Sobre, currículo) sem `tabindex` customizado, conforme FR-005, FR-021
+- [X] T012 Implementar `components/layout/Footer.tsx`: links de currículo, GitHub, LinkedIn, contato e titularidade, conforme FR-018
+- [X] T013 Implementar `app/layout.tsx` compondo Header + Footer + skip-link para navegação por teclado (depende de T011, T012)
+- [X] T014 Implementar `app/not-found.tsx` (404 genérico com mensagem amigável), conforme FR-025
 
 **Checkpoint**: Layout global funcional, dados de conteúdo validados em build — user stories podem começar.
 

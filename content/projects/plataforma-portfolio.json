@@ -1,0 +1,52 @@
+{
+  "slug": "plataforma-portfolio",
+  "titulo": "Plataforma de Portfólio",
+  "resumo": "Portfólio pessoal construído com Next.js para apresentar projetos e trajetória profissional de forma estruturada.",
+  "problemaTratado": "Falta de um canal único e versionado para apresentar projetos, competências e trajetória a recrutadores e clientes.",
+  "status": "Em andamento",
+  "categoria": "Web",
+  "natureza": "autoral",
+  "tecnologias": [
+    "Next.js",
+    "TypeScript",
+    "React"
+  ],
+  "imagemApresentacao": "/images/projects/plataforma-portfolio.png",
+  "competenciasDemonstradas": [
+    "Node.js",
+    "Versionamento com Git",
+    "Design de sistemas"
+  ],
+  "contexto": "Projeto pessoal iniciado para consolidar em um único lugar os estudos de caso desenvolvidos ao longo da formação.",
+  "objetivo": "Oferecer uma experiência pública clara, rápida e mantida via conteúdo versionado em arquivos JSON.",
+  "funcionalidadesPrincipais": [
+    "Listagem de projetos em destaque na página inicial",
+    "Página resumida individual por projeto",
+    "Página de currículo com opção de download"
+  ],
+  "responsabilidadeProprietario": "Responsável por toda a especificação, arquitetura, implementação e conteúdo do site.",
+  "decisoesRelevantes": [
+    {
+      "titulo": "Conteúdo versionado em JSON",
+      "descricao": "Optou-se por armazenar projetos e perfil como arquivos JSON no repositório em vez de um CMS, simplificando a operação nesta fase inicial."
+    },
+    {
+      "titulo": "Uso do Next.js App Router",
+      "descricao": "Escolhido pela geração estática das páginas de projeto, favorecendo desempenho e simplicidade de deploy."
+    }
+  ],
+  "stack": [
+    "Next.js",
+    "TypeScript",
+    "React",
+    "Tailwind CSS"
+  ],
+  "limitacoesConhecidas": [
+    "Não há área administrativa; qualquer alteração de conteúdo exige editar arquivos e publicar novo deploy."
+  ],
+  "proximosPassos": [
+    "Adicionar testes end-to-end para as páginas públicas"
+  ],
+  "linkRepositorio": "privado",
+  "destaque": true
+}

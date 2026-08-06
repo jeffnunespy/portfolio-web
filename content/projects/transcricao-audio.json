@@ -1,0 +1,52 @@
+{
+  "slug": "transcricao-audio",
+  "titulo": "Plataforma de Transcrição e Análise de Áudio",
+  "resumo": "Plataforma colaborativa para transcrição automática e análise de conteúdo de arquivos de áudio.",
+  "problemaTratado": "Processo manual e demorado de transcrição de reuniões e entrevistas para extração de insights.",
+  "status": "Pausado",
+  "categoria": "Backend",
+  "natureza": "colaborativo",
+  "tecnologias": [
+    "Python",
+    "Node.js",
+    "CI/CD"
+  ],
+  "imagemApresentacao": "/images/projects/transcricao-audio.png",
+  "competenciasDemonstradas": [
+    "CI/CD",
+    "APIs REST",
+    "Node.js"
+  ],
+  "contexto": "Projeto colaborativo desenvolvido em conjunto com outros desenvolvedores para automatizar transcrição de áudios.",
+  "objetivo": "Reduzir o tempo de transcrição e permitir busca textual sobre o conteúdo de gravações de áudio.",
+  "funcionalidadesPrincipais": [
+    "Upload de arquivos de áudio e fila de processamento",
+    "Transcrição automática com marcação de timestamps",
+    "Busca textual sobre o conteúdo transcrito"
+  ],
+  "responsabilidadeProprietario": "Implementação do pipeline de integração contínua e da API de orquestração das transcrições, em colaboração com outros dois desenvolvedores.",
+  "decisoesRelevantes": [
+    {
+      "titulo": "Pipeline de CI/CD para o pipeline de processamento",
+      "descricao": "Configuração de integração e entrega contínua para validar mudanças no pipeline de transcrição automaticamente."
+    },
+    {
+      "titulo": "Separação entre serviço de API e workers de processamento",
+      "descricao": "Arquitetura dividida em API síncrona e workers assíncronos para lidar com o tempo variável de transcrição."
+    }
+  ],
+  "stack": [
+    "Python",
+    "Node.js",
+    "Redis"
+  ],
+  "limitacoesConhecidas": [
+    "Projeto pausado por indisponibilidade da equipe colaboradora; acurácia da transcrição não validada em larga escala."
+  ],
+  "proximosPassos": [
+    "Retomar validação de acurácia da transcrição automática"
+  ],
+  "linkDemonstracao": "https://exemplo-transcricao.vercel.app",
+  "linkRepositorio": "https://github.com/transcricao-audio",
+  "destaque": true
+}
