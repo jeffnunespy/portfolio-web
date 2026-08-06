@@ -69,7 +69,7 @@ mensuráveis e com cobertura adequada) — não valida se a implementação func
 
 ## Critérios de aceite verificáveis
 
-- [ ] CHK031 - SC-001 ("10 segundos de leitura") define como esse tempo seria observado/medido, ou é uma meta sem método de verificação associável? [Measurability, Spec §SC-001]
+- [x] CHK031 - SC-001 ("10 segundos de leitura") define como esse tempo seria observado/medido, ou é uma meta sem método de verificação associável? [Measurability, Spec §SC-001]
 - [ ] CHK032 - Cada Success Criterion possui rastreabilidade para ao menos um Functional Requirement e um Acceptance Scenario correspondente, sem lacunas? [Traceability]
 - [ ] CHK033 - Os Acceptance Scenarios de todas as User Stories cobrem tanto o caminho primário quanto ao menos um caminho alternativo/erro, ou alguns cobrem apenas o caminho feliz? [Coverage, Spec §User Scenarios]
 

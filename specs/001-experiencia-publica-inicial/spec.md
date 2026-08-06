@@ -26,6 +26,7 @@
 - Q: O que a plataforma deve fazer quando um visitante acessa a URL de um projeto que não existe ou foi removido? → A: Página "não encontrado" com mensagem amigável e link para a listagem de projetos.
 - Q: O conteúdo das páginas públicas é carregado de forma síncrona/estática, ou pode haver espera perceptível que exija um estado de carregamento visível? → A: Conteúdo estático/pré-carregado; não há espera perceptível, logo não é necessário estado de loading nesta versão.
 - Q: A ordem de navegação por teclado (tab) nas páginas públicas deve seguir estritamente a ordem visual/de leitura do conteúdo, ou pode haver uma ordem customizada para elementos específicos? → A: Ordem de tabulação segue estritamente a ordem visual/de leitura do conteúdo (topo-base, esquerda-direita), sem customização.
+- Q: Como o critério "10 segundos de leitura" do SC-001 pode ser verificado objetivamente, já que tempo de leitura humano não é testável automaticamente? → A: Substituído por critério estrutural verificável: título, descrição e competências por área visíveis na primeira dobra em 1280px, sem rolagem nem navegação.
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -171,7 +172,7 @@ Um gestor técnico ou colaborador em potencial acessa a página Sobre para enten
 
 ### Measurable Outcomes
 
-- **SC-001**: Um visitante consegue identificar o posicionamento profissional do proprietário (área de profundidade e diferenciais complementares) em até 10 segundos de leitura da página inicial, sem precisar navegar para outra página.
+- **SC-001**: Título, descrição de posicionamento e competências por área (profundidade e complementares) estão visíveis e legíveis na primeira dobra da página inicial em viewport desktop (1280px), sem rolagem e sem necessidade de navegar para outra página — verificável por inspeção visual/snapshot, sem depender de medição de tempo de leitura humano.
 - **SC-002**: Um visitante consegue chegar da página inicial até a página detalhada de um projeto em no máximo 1 clique/toque.
 - **SC-003**: Um visitante consegue localizar o currículo a partir de qualquer página pública em no máximo 1 clique/toque sem rolagem, e o GitHub, o LinkedIn ou o contato a partir de qualquer página pública em no máximo 1 clique/toque a partir do rodapé.
 - **SC-004**: 100% dos projetos exibidos em destaque apresentam status, categoria e natureza (autoral/acadêmico/colaborativo/profissional) de forma visível, sem exceção.
