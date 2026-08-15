@@ -1,4 +1,10 @@
 import Link from "next/link";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Projeto não encontrado",
+  description: "O projeto solicitado não está disponível no portfólio.",
+};
 
 export default function ProjectNotFound() {
   return (
