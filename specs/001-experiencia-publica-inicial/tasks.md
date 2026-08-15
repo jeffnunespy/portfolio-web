@@ -18,6 +18,9 @@ description: "Task list for Experiência Pública Inicial do Portfólio"
 - **[Story]**: Mapeia a tarefa à user story correspondente (`US1`–`US4`).
 - Cada tarefa informa o caminho exato do arquivo a alterar ou validar.
 
+Marcadores de estado: `[ ]` pendente, `[X]` concluída e validada, `[~]` superada por decisão
+posterior — mantida no registro com a justificativa, em vez de removida ou marcada como concluída.
+
 ## Path Conventions
 
 Aplicação Next.js única: `app/`, `components/`, `content/`, `lib/`, `tests/`, `.github/` e `docs/` na raiz do repositório.
@@ -33,7 +36,7 @@ Aplicação Next.js única: `app/`, `components/`, `content/`, `lib/`, `tests/`,
 - [X] T003 [P] Declarar Node.js 24 LTS em `.nvmrc`
 - [X] T004 [P] Declarar engine Node.js 24 e scripts `lint`, `typecheck` e `format:check` em `package.json`
 - [X] T005 [P] Ajustar a exceção para `.env.example` e confirmar as regras de artefatos em `.gitignore`
-- [ ] T006 [P] Mover e nomear o asset-fonte de projeto em `assets/portfolio-source.webp`
+- [~] T006 [P] ~~Mover e nomear o asset-fonte de projeto em `assets/portfolio-source.webp`~~ — **não aplicável**: o asset-fonte (`original-8696facb…webp`) foi removido do versionamento no commit `3926229` por ser intermediário não utilizado no build. Não há arquivo a mover e `assets/` não existe. Reabrir apenas se um asset-fonte voltar a ser necessário para regenerar imagens otimizadas.
 
 **Checkpoint**: Documentação, runtime e higiene do repositório refletem o estado operável pretendido sem descartar mudanças existentes.
 
@@ -244,7 +247,7 @@ Task: "Validar status fechado em components/project/ProjectStatusBadge.tsx"
 - [X] T060 Definir e testar título e descrição próprios para 404 genérico e 404 de projeto em `app/not-found.tsx`, `app/projetos/[slug]/not-found.tsx` e `tests/e2e/metadata.spec.ts` per FR-029
 - [X] T061 Cobrir links globais em todas as rotas públicas e responsividade sem sobreposição ou texto cortado em `tests/e2e/curriculo.spec.ts` e `tests/e2e/responsive.spec.ts` per SC-003 e SC-006
 - [X] T062 Criar testes Testing Library para card, cabeçalho e rodapé em `tests/unit/ProjectCard.test.tsx` e `tests/unit/HeaderFooter.test.tsx` per plan: testes de componentes e Constitution V
-- [ ] T063 Mover o asset-fonte para `assets/portfolio-source.webp` e registrar estado, validações e riscos atuais em `docs/ACTIVE_CONTEXT.md` per plan: assets fonte e Constituição VIII (missing)
+- [~] T063 Mover o asset-fonte para `assets/portfolio-source.webp` e registrar estado, validações e riscos atuais em `docs/ACTIVE_CONTEXT.md` per plan: assets fonte e Constituição VIII (missing) — **parcialmente superada**: a segunda parte (estado, validações e riscos em `docs/ACTIVE_CONTEXT.md`) está cumprida; a movimentação do asset-fonte é não aplicável pelo mesmo motivo de T006.
 
 ---
 
