@@ -181,6 +181,11 @@ describe("lib/content", () => {
         { natureza: "hobby" },
         /campo "natureza" possui valor inválido/,
       ],
+      [
+        "categoria fora do conjunto",
+        { categoria: "Jogos" },
+        /campo "categoria" possui valor inválido/,
+      ],
       ["destaque com tipo inválido", { destaque: "sim" }, /campo "destaque" deve ser booleano/],
       [
         "tecnologias com tipo inválido",

@@ -250,6 +250,6 @@ Task: "Validar status fechado em components/project/ProjectStatusBadge.tsx"
 
 ## Phase 9: Convergence
 
-- [ ] T064 HIGH Adicionar `npm audit --omit=dev --audit-level=high` como gate obrigatório após `npm ci` em `.github/workflows/ci.yml` per plan: P1 / Constituição VI (partial)
-- [ ] T065 HIGH Separar os scripts/etapas de E2E funcional e axe-core e executá-los nessa ordem no CI em `.github/workflows/ci.yml`, `package.json` e `tests/e2e/` per contrato de CI / plan: Etapa 4 (partial)
-- [ ] T066 Definir e aplicar, com testes, o conjunto fechado permitido para `categoria` em `specs/001-experiencia-publica-inicial/data-model.md`, `lib/content.ts` e `tests/unit/content.test.ts` per plan: Etapa 5 / data-model: categoria (partial)
+- [X] T064 HIGH Adicionar `npm audit --omit=dev --audit-level=high` como gate obrigatório após `npm ci` em `.github/workflows/ci.yml` per plan: P1 / Constituição VI (partial)
+- [X] T065 HIGH Separar os scripts/etapas de E2E funcional e axe-core e executá-los nessa ordem no CI em `.github/workflows/ci.yml`, `package.json` e `tests/e2e/` per contrato de CI / plan: Etapa 4 (partial)
+- [X] T066 Definir e aplicar, com testes, o conjunto fechado permitido para `categoria` em `specs/001-experiencia-publica-inicial/data-model.md`, `lib/content.ts` e `tests/unit/content.test.ts` per plan: Etapa 5 / data-model: categoria (partial)

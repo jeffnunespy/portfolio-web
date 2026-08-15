@@ -15,7 +15,7 @@ por projeto.
 | `resumo`                       | string                                  | Sim         | —                                                                                                                                                                                    |
 | `problemaTratado`              | string                                  | Sim         | —                                                                                                                                                                                    |
 | `status`                       | enum                                    | Sim         | Conjunto fechado: `"Em andamento"` \| `"Concluído"` \| `"Pausado"` \| `"Arquivado"` (FR-011).                                                                                        |
-| `categoria`                    | string                                  | Sim         | —                                                                                                                                                                                    |
+| `categoria`                    | enum                                    | Sim         | Conjunto fechado: `"Backend"` \| `"Web"` \| `"Frontend"` \| `"Dados"` \| `"Automação"` \| `"Infraestrutura"` \| `"Mobile"` (FR-006).                                                 |
 | `natureza`                     | enum                                    | Sim         | `"autoral"` \| `"acadêmico"` \| `"colaborativo"` \| `"profissional"` (FR-010).                                                                                                       |
 | `tecnologias`                  | string[]                                | Sim         | Tecnologias/áreas técnicas.                                                                                                                                                          |
 | `imagemApresentacao`           | string (path)                           | Sim         | Se ausente no momento da publicação, projeto não deve ser publicado (evita Edge Case de imagem quebrada por dado ausente; falha de carregamento em runtime é tratada separadamente). |
@@ -131,7 +131,10 @@ Cada linha marcada como "Não -> Sim" recebe um teste unitário cobrindo o caso 
 a regra seja verificável e não apenas declarada.
 
 O conjunto fechado de `status` é "Em andamento", "Concluído", "Pausado", "Arquivado" (FR-011); o de
-`natureza` é autoral, acadêmico, colaborativo, profissional (FR-010).
+`natureza` é autoral, acadêmico, colaborativo, profissional (FR-010); o de `categoria` é "Backend",
+"Web", "Frontend", "Dados", "Automação", "Infraestrutura", "Mobile" (FR-006). A spec não enumerava os
+valores de `categoria`; o conjunto acima cobre os valores já publicados e as áreas previstas, e
+ampliá-lo exige atualizar este documento, `lib/content.ts` e os testes em conjunto.
 
 ### Modelo conceitual preservado
 

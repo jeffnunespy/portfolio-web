@@ -14,8 +14,9 @@ manuais/de preview.
 
 - Runtime Node.js 24, Next.js 16.3.1, React 19, ESLint flat config e CI com Dependabot.
 - Rotas públicas estáticas de home, projetos, detalhe, Sobre, currículo e ambos os estados 404.
-- Validação de conteúdo em build para tipos, campos obrigatórios, enums, slugs, URLs HTTPS, e-mail,
-  imagens publicadas, evidências de competência e limite de seis destaques.
+- Validação de conteúdo em build para tipos, campos obrigatórios, enums (`status`, `natureza`,
+  `categoria`), slugs, URLs HTTPS, e-mail, imagens publicadas, evidências de competência e limite de
+  seis destaques.
 - Cobertura Vitest de validação e componentes; cobertura Playwright de fluxos, links globais,
   metadados, responsividade, teclado e axe-core em todas as rotas públicas.
 - Metadados próprios para os dois estados 404.
@@ -28,9 +29,10 @@ manuais/de preview.
 - `npm exec prettier -- --check .` → concluído
 - `npm run lint` → concluído
 - `npm run typecheck` → concluído
-- `npm test -- --run` → 26 testes aprovados
+- `npm test -- --run` → 27 testes aprovados
 - `npm run build` → Turbopack concluído; rotas estáticas e SSG geradas
-- `npm run test:e2e` → 36 testes Playwright aprovados
+- `npm run test:e2e:functional` → 26 testes Playwright aprovados
+- `npm run test:e2e:a11y` → 10 testes Playwright aprovados
 
 ## Pendências e riscos conhecidos
 

@@ -12,7 +12,7 @@ const publicRoutes = [
 ];
 
 for (const route of publicRoutes) {
-  test(`a11y - ${route} não possui violações WCAG 2.1 A/AA`, async ({ page }) => {
+  test(`@a11y ${route} não possui violações WCAG 2.1 A/AA`, async ({ page }) => {
     await page.goto(route);
 
     const results = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze();
@@ -20,7 +20,7 @@ for (const route of publicRoutes) {
   });
 }
 
-test("a11y - primeiro Tab alcança o skip link e segue a ordem visual da navegação", async ({
+test("@a11y primeiro Tab alcança o skip link e segue a ordem visual da navegação", async ({
   page,
 }) => {
   await page.goto("/");

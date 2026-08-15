@@ -7,6 +7,15 @@ const PUBLIC_DIR = path.join(process.cwd(), "public");
 
 const STATUS_PROJETO = ["Em andamento", "Concluído", "Pausado", "Arquivado"] as const;
 const NATUREZA_PROJETO = ["autoral", "acadêmico", "colaborativo", "profissional"] as const;
+const CATEGORIA_PROJETO = [
+  "Backend",
+  "Web",
+  "Frontend",
+  "Dados",
+  "Automação",
+  "Infraestrutura",
+  "Mobile",
+] as const;
 
 const REQUIRED_PROJETO_FIELDS = [
   "slug",
@@ -155,6 +164,11 @@ function validateProjeto(data: unknown, fileName: string): Projeto {
   }
   if (!NATUREZA_PROJETO.includes(data.natureza as (typeof NATUREZA_PROJETO)[number])) {
     throw validationError(`campo "natureza" possui valor inválido em ${fileName}.`);
+  }
+  if (!CATEGORIA_PROJETO.includes(data.categoria as (typeof CATEGORIA_PROJETO)[number])) {
+    throw validationError(
+      `(FR-006): campo "categoria" possui valor inválido em ${fileName}. Valores permitidos: ${CATEGORIA_PROJETO.join(", ")}.`,
+    );
   }
   if (typeof data.destaque !== "boolean") {
     throw validationError(`campo "destaque" deve ser booleano em ${fileName}.`);
