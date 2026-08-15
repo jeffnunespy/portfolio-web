@@ -13,7 +13,9 @@
     "typecheck": "tsc --noEmit",
     "format:check": "prettier --check .",
     "test": "vitest",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "test:e2e:functional": "playwright test --grep-invert @a11y",
+    "test:e2e:a11y": "playwright test --grep @a11y"
   },
   "dependencies": {
     "next": "^16.3.1",

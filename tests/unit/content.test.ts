@@ -43,7 +43,7 @@ function buildProjeto(overrides: Partial<Projeto> = {}): Projeto {
     categoria: "Web",
     natureza: "autoral",
     tecnologias: ["Next.js"],
-    imagemApresentacao: "/images/test.png",
+    imagemApresentacao: "/images/projects/plataforma-portfolio.svg",
     competenciasDemonstradas: ["Node.js"],
     contexto: "Contexto",
     objetivo: "Objetivo",
@@ -171,6 +171,126 @@ describe("lib/content", () => {
       expect(() => getProjetos()).toThrow(
         /competência\(s\) sem projeto que a\(s\) referencie.*AWS avançado/,
       );
+    });
+
+    it.each([
+      ["slug malformado", { slug: "Projeto Teste" }, /campo "slug" deve usar/],
+      ["status fora do conjunto", { status: "Rascunho" }, /campo "status" possui valor inválido/],
+      [
+        "natureza fora do conjunto",
+        { natureza: "hobby" },
+        /campo "natureza" possui valor inválido/,
+      ],
+      [
+        "categoria fora do conjunto",
+        { categoria: "Jogos" },
+        /campo "categoria" possui valor inválido/,
+      ],
+      ["destaque com tipo inválido", { destaque: "sim" }, /campo "destaque" deve ser booleano/],
+      [
+        "tecnologias com tipo inválido",
+        { tecnologias: "Next.js" },
+        /campo "tecnologias" deve ser um array/,
+      ],
+      [
+        "imagem inexistente",
+        { imagemApresentacao: "/images/projects/ausente.svg" },
+        /imagem referenciada/,
+      ],
+      [
+        "URL de demonstração inválida",
+        { linkDemonstracao: "ftp://example.com" },
+        /linkDemonstracao/,
+      ],
+      ["URL de repositório inválida", { linkRepositorio: "not-a-url" }, /linkRepositorio/],
+    ])("getProjetos rejeita %s", async (_description, overrides, expectedError) => {
+      mockFileSystem(buildPerfil(), {
+        "invalido.json": buildProjeto(overrides as Partial<Projeto>),
+      });
+
+      const { getProjetos } = await import("../../lib/content");
+      expect(() => getProjetos()).toThrow(expectedError);
+    });
+
+    it("getProjetos rejeita slugs duplicados", async () => {
+      const projeto = buildProjeto();
+      mockFileSystem(buildPerfil(), {
+        "primeiro.json": projeto,
+        "segundo.json": { ...projeto, titulo: "Outro projeto" },
+      });
+
+      const { getProjetos } = await import("../../lib/content");
+      expect(() => getProjetos()).toThrow(/slug duplicado/);
+    });
+
+    it("getProjetos rejeita mais de seis destaques", async () => {
+      const projetos = Object.fromEntries(
+        Array.from({ length: 7 }, (_, index) => [
+          `projeto-${index}.json`,
+          buildProjeto({ slug: `projeto-${index}`, destaque: true }),
+        ]),
+      );
+      mockFileSystem(buildPerfil(), projetos);
+
+      const { getProjetos } = await import("../../lib/content");
+      expect(() => getProjetos()).toThrow(/mais de 6 projetos marcados como destaque/);
+    });
+
+    it("getPerfil rejeita URLs e contato inválidos", async () => {
+      mockFileSystem(
+        buildPerfil({
+          linkGithub: "http://github.com",
+          contato: { tipo: "email", valor: "email-inválido" },
+        }),
+        { "valido.json": buildProjeto() },
+      );
+
+      const { getPerfil } = await import("../../lib/content");
+      expect(() => getPerfil()).toThrow(/linkGithub/);
+    });
+
+    it.each([
+      [
+        "caminho de currículo relativo",
+        buildPerfil({ linkCurriculo: "curriculo.pdf" }),
+        /linkCurriculo/,
+      ],
+      [
+        "e-mail malformado",
+        buildPerfil({ contato: { tipo: "email", valor: "email-inválido" } }),
+        /contato\.valor/,
+      ],
+      [
+        "área de competência inválida",
+        buildPerfil({ competenciasPorArea: [{ area: "", competencias: [] }] }),
+        /competenciasPorArea/,
+      ],
+    ])("getPerfil rejeita %s", async (_description, perfil, expectedError) => {
+      mockFileSystem(perfil, { "valido.json": buildProjeto() });
+
+      const { getPerfil } = await import("../../lib/content");
+      expect(() => getPerfil()).toThrow(expectedError);
+    });
+
+    it("getProjetos rejeita decisões sem título ou descrição", async () => {
+      mockFileSystem(buildPerfil(), {
+        "invalido.json": buildProjeto({
+          decisoesRelevantes: [
+            { titulo: "Decisão válida", descricao: "Descrição válida" },
+            { titulo: "", descricao: "Descrição ausente" },
+          ],
+        }),
+      });
+
+      const { getProjetos } = await import("../../lib/content");
+      expect(() => getProjetos()).toThrow(/decisoesRelevantes/);
+    });
+
+    it("getProjetos exige ao menos um projeto publicado", async () => {
+      mockFileSystem(buildPerfil(), {});
+
+      const { getProjetos } = await import("../../lib/content");
+      expect(() => getProjetos()).toThrow(/ao menos um projeto publicado/);
     });
   });
 });

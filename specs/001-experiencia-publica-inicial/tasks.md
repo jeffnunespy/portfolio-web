@@ -28,8 +28,8 @@ Aplicação Next.js única: `app/`, `components/`, `content/`, `lib/`, `tests/`,
 
 **Purpose**: Registrar o estado real e tornar o ambiente Node.js 24 reproduzível antes da convergência.
 
-- [ ] T001 Atualizar fase atual, decisões, riscos, próximos passos e resultados de validação em `docs/ACTIVE_CONTEXT.md`
-- [ ] T002 Atualizar o registro da Fase 8 e das entregas incrementais em `docs/DEVELOPMENT_PLAN.md`
+- [X] T001 Atualizar fase atual, decisões, riscos, próximos passos e resultados de validação em `docs/ACTIVE_CONTEXT.md`
+- [X] T002 Atualizar o registro da Fase 8 e das entregas incrementais em `docs/DEVELOPMENT_PLAN.md`
 - [X] T003 [P] Declarar Node.js 24 LTS em `.nvmrc`
 - [X] T004 [P] Declarar engine Node.js 24 e scripts `lint`, `typecheck` e `format:check` em `package.json`
 - [X] T005 [P] Ajustar a exceção para `.env.example` e confirmar as regras de artefatos em `.gitignore`
@@ -55,7 +55,7 @@ Aplicação Next.js única: `app/`, `components/`, `content/`, `lib/`, `tests/`,
 - [X] T014 Verificar e preservar o comportamento de rolagem nas transições de rota em `app/layout.tsx`
 - [X] T015 Criar workflow de CI com `npm ci`, lint/typecheck/unitários, build, E2E e acessibilidade em `.github/workflows/ci.yml`
 - [X] T016 [P] Configurar atualizações automáticas de dependências em `.github/dependabot.yml`
-- [ ] T017 Registrar runtime, gates, diagnóstico Webpack e rollback em `specs/001-experiencia-publica-inicial/quickstart.md`
+- [X] T017 Registrar runtime, gates, diagnóstico Webpack e rollback em `specs/001-experiencia-publica-inicial/quickstart.md`
 
 **Checkpoint**: A aplicação compila com Turbopack em Node.js 24, e o CI reproduz os gates obrigatórios sem `continue-on-error`.
 
@@ -69,16 +69,16 @@ Aplicação Next.js única: `app/`, `components/`, `content/`, `lib/`, `tests/`,
 
 ### Tests for User Story 1
 
-- [ ] T018 [US1] Cobrir primeira dobra, ordem de competências e limite de destaques em `tests/e2e/home.spec.ts`
-- [ ] T019 [US1] Cobrir todos os controles interativos, foco visível e ativação por teclado em `tests/e2e/home.spec.ts`
-- [ ] T020 [P] [US1] Executar axe-core e corrigir violações da rota inicial em `tests/e2e/home.a11y.spec.ts`
-- [ ] T021 [P] [US1] Cobrir overflow, sobreposição e corte de texto em 320px, 768px e 1280px em `tests/e2e/responsive.spec.ts`
+- [X] T018 [US1] Cobrir primeira dobra, ordem de competências e limite de destaques em `tests/e2e/home.spec.ts`
+- [X] T019 [US1] Cobrir todos os controles interativos, foco visível e ativação por teclado em `tests/e2e/home.spec.ts`
+- [X] T020 [P] [US1] Executar axe-core e corrigir violações da rota inicial em `tests/e2e/home.a11y.spec.ts`
+- [X] T021 [P] [US1] Cobrir overflow, sobreposição e corte de texto em 320px, 768px e 1280px em `tests/e2e/responsive.spec.ts`
 
 ### Implementation for User Story 1
 
-- [ ] T022 [US1] Preservar a renderização estática e a ordem DOM de profundidade antes das competências complementares em `app/page.tsx`
-- [ ] T023 [US1] Exibir todos os campos obrigatórios do card e estados de imagem sem erro técnico em `components/project/ProjectCard.tsx`
-- [ ] T024 [US1] Preservar contraste, foco visível e layout responsivo da página inicial em `app/globals.css`
+- [X] T022 [US1] Preservar a renderização estática e a ordem DOM de profundidade antes das competências complementares em `app/page.tsx`
+- [X] T023 [US1] Exibir todos os campos obrigatórios do card e estados de imagem sem erro técnico em `components/project/ProjectCard.tsx`
+- [X] T024 [US1] Preservar contraste, foco visível e layout responsivo da página inicial em `app/globals.css`
 
 **Checkpoint**: US1 continua funcional e testável apenas pela rota `/` depois da convergência.
 
@@ -92,19 +92,19 @@ Aplicação Next.js única: `app/`, `components/`, `content/`, `lib/`, `tests/`,
 
 ### Tests for User Story 2
 
-- [ ] T025 [US2] Cobrir acesso direto, link a partir da home e seções obrigatórias do estudo de caso em `tests/e2e/project-detail.spec.ts`
-- [ ] T026 [US2] Cobrir repositório público, ausência de demonstração e CTA `mailto:` para código privado em `tests/e2e/project-detail.spec.ts`
-- [ ] T027 [P] [US2] Cobrir rota de projeto inexistente e ação alternativa na listagem em `tests/e2e/project-not-found.spec.ts`
-- [ ] T028 [P] [US2] Executar axe-core nas rotas de detalhe e corrigir violações em `tests/e2e/project-detail.a11y.spec.ts`
-- [ ] T029 [P] [US2] Cobrir título e descrição próprios do detalhe e dos estados 404 em `tests/e2e/metadata.spec.ts`
+- [X] T025 [US2] Cobrir acesso direto, link a partir da home e seções obrigatórias do estudo de caso em `tests/e2e/project-detail.spec.ts`
+- [X] T026 [US2] Cobrir repositório público, ausência de demonstração e CTA `mailto:` para código privado em `tests/e2e/project-detail.spec.ts`
+- [X] T027 [P] [US2] Cobrir rota de projeto inexistente e ação alternativa na listagem em `tests/e2e/project-not-found.spec.ts`
+- [X] T028 [P] [US2] Executar axe-core nas rotas de detalhe e corrigir violações em `tests/e2e/project-detail.a11y.spec.ts`
+- [X] T029 [P] [US2] Cobrir título e descrição próprios do detalhe e dos estados 404 em `tests/e2e/metadata.spec.ts`
 
 ### Implementation for User Story 2
 
-- [ ] T030 [US2] Gerar parâmetros estáticos, páginas e metadados por slug no formato assíncrono do Next.js 16 em `app/projetos/[slug]/page.tsx`
-- [ ] T031 [US2] Oferecer mensagem simples e link alternativo para projeto não encontrado em `app/projetos/[slug]/not-found.tsx`
-- [ ] T032 [US2] Garantir listagem de todos os projetos publicados em `app/projetos/page.tsx`
-- [ ] T033 [US2] Unificar links de demonstração, repositório público e código privado com CTA de contato em `components/project/EvidenceLink.tsx`
-- [ ] T034 [US2] Validar status fechado e sua apresentação consistente em `components/project/ProjectStatusBadge.tsx`
+- [X] T030 [US2] Gerar parâmetros estáticos, páginas e metadados por slug no formato assíncrono do Next.js 16 em `app/projetos/[slug]/page.tsx`
+- [X] T031 [US2] Oferecer mensagem simples e link alternativo para projeto não encontrado em `app/projetos/[slug]/not-found.tsx`
+- [X] T032 [US2] Garantir listagem de todos os projetos publicados em `app/projetos/page.tsx`
+- [X] T033 [US2] Unificar links de demonstração, repositório público e código privado com CTA de contato em `components/project/EvidenceLink.tsx`
+- [X] T034 [US2] Validar status fechado e sua apresentação consistente em `components/project/ProjectStatusBadge.tsx`
 
 **Checkpoint**: US2 é navegável diretamente, não expõe links inválidos e não falha com erro técnico para slug inexistente.
 
@@ -118,15 +118,15 @@ Aplicação Next.js única: `app/`, `components/`, `content/`, `lib/`, `tests/`,
 
 ### Tests for User Story 3
 
-- [ ] T035 [US3] Cobrir links globais de currículo, GitHub, LinkedIn e `mailto:` em todas as rotas públicas em `tests/e2e/curriculo.spec.ts`
-- [ ] T036 [US3] Cobrir visualização e download do currículo em `tests/e2e/curriculo.spec.ts`
-- [ ] T037 [P] [US3] Cobrir metadados exclusivos da página de currículo em `tests/e2e/metadata.spec.ts`
+- [X] T035 [US3] Cobrir links globais de currículo, GitHub, LinkedIn e `mailto:` em todas as rotas públicas em `tests/e2e/curriculo.spec.ts`
+- [X] T036 [US3] Cobrir visualização e download do currículo em `tests/e2e/curriculo.spec.ts`
+- [X] T037 [P] [US3] Cobrir metadados exclusivos da página de currículo em `tests/e2e/metadata.spec.ts`
 
 ### Implementation for User Story 3
 
-- [ ] T038 [US3] Preservar currículo visualizável, download e metadados próprios em `app/curriculo/page.tsx`
-- [ ] T039 [US3] Garantir navegação para currículo na ordem definida em `components/layout/Header.tsx`
-- [ ] T040 [US3] Garantir currículo, redes, contato `mailto:` e titularidade no rodapé em `components/layout/Footer.tsx`
+- [X] T038 [US3] Preservar currículo visualizável, download e metadados próprios em `app/curriculo/page.tsx`
+- [X] T039 [US3] Garantir navegação para currículo na ordem definida em `components/layout/Header.tsx`
+- [X] T040 [US3] Garantir currículo, redes, contato `mailto:` e titularidade no rodapé em `components/layout/Footer.tsx`
 - [ ] T041 [US3] Substituir o arquivo de currículo por versão confirmada e consistente em `public/curriculo.pdf`
 
 **Checkpoint**: US3 é verificável sem backend, formulário, cookies de rastreamento ou armazenamento de dados de visitantes.
@@ -141,12 +141,12 @@ Aplicação Next.js única: `app/`, `components/`, `content/`, `lib/`, `tests/`,
 
 ### Tests for User Story 4
 
-- [ ] T042 [US4] Cobrir conteúdo, navegação e consistência com o posicionamento da home em `tests/e2e/sobre.spec.ts`
-- [ ] T043 [P] [US4] Cobrir metadados próprios da página Sobre em `tests/e2e/metadata.spec.ts`
+- [X] T042 [US4] Cobrir conteúdo, navegação e consistência com o posicionamento da home em `tests/e2e/sobre.spec.ts`
+- [X] T043 [P] [US4] Cobrir metadados próprios da página Sobre em `tests/e2e/metadata.spec.ts`
 
 ### Implementation for User Story 4
 
-- [ ] T044 [US4] Preservar apresentação consistente e metadados derivados do perfil em `app/sobre/page.tsx`
+- [X] T044 [US4] Preservar apresentação consistente e metadados derivados do perfil em `app/sobre/page.tsx`
 - [ ] T045 [US4] Substituir somente conteúdo profissional confirmado e com evidência associável em `content/profile.json`
 
 **Checkpoint**: US4 não contradiz a home nem introduz experiência, métricas ou competências sem evidência.
@@ -157,14 +157,14 @@ Aplicação Next.js única: `app/`, `components/`, `content/`, `lib/`, `tests/`,
 
 **Purpose**: Reforçar a integridade de conteúdo, concluir cobertura de componentes, validar publicação e registrar o resultado.
 
-- [ ] T046 Fortalecer tipos, strings/arrays, URLs, `mailto:`, slugs únicos, enums, imagens, links opcionais e teto de destaques em `lib/content.ts`
-- [ ] T047 Cobrir cada regra inválida da validação de conteúdo em `tests/unit/content.test.ts`
+- [X] T046 Fortalecer tipos, strings/arrays, URLs, `mailto:`, slugs únicos, enums, imagens, links opcionais e teto de destaques em `lib/content.ts`
+- [X] T047 Cobrir cada regra inválida da validação de conteúdo em `tests/unit/content.test.ts`
 - [X] T048 Atualizar Vitest para 4.x depois de a migração do framework estar estável em `package.json`
 - [X] T049 Atualizar a resolução do Vitest 4 e dependências de teste em `package-lock.json`
-- [ ] T050 [P] Cobrir comportamentos condicionais e links dos cards em `tests/unit/ProjectCard.test.tsx`
-- [ ] T051 [P] Cobrir navegação e links globais em `tests/unit/HeaderFooter.test.tsx`
+- [X] T050 [P] Cobrir comportamentos condicionais e links dos cards em `tests/unit/ProjectCard.test.tsx`
+- [X] T051 [P] Cobrir navegação e links globais em `tests/unit/HeaderFooter.test.tsx`
 - [ ] T052 Revisar cada estudo de caso com contexto, decisões, limitações, próximos passos, links e evidências confirmadas em `content/projects/*.json`
-- [ ] T053 Verificar a existência das imagens publicadas referenciadas pelo conteúdo em `public/projects/`
+- [X] T053 Verificar a existência das imagens publicadas referenciadas pelo conteúdo em `public/images/projects/`
 - [X] T054 Executar formatação, lint, tipos, unitários, build Turbopack, E2E e auditoria de produção conforme `specs/001-experiencia-publica-inicial/quickstart.md`
 - [ ] T055 Registrar a inspeção manual de teclado, foco, headings, zoom, leitor de tela, links e preview/canário em `docs/ACTIVE_CONTEXT.md`
 
@@ -238,10 +238,18 @@ Task: "Validar status fechado em components/project/ProjectStatusBadge.tsx"
 ## Phase 8: Convergence
 
 - [ ] T056 CRITICAL Substituir placeholders, URLs de exemplo e currículo por conteúdo profissional confirmado com evidência verificável em `content/profile.json` e `public/curriculo.pdf` per Constituição I/X e plan: P3 (contradicts)
-- [ ] T057 Fortalecer a validação de tipos, URLs, `mailto:`, enums, slugs, imagens, links e teto de destaques em `lib/content.ts` per FR-011a, FR-024 e contrato de conteúdo (partial)
-- [ ] T058 Cobrir todas as regras inválidas da validação de conteúdo em `tests/unit/content.test.ts` per FR-011a, FR-024 e Constitution V (missing)
-- [ ] T059 Expandir teclado, foco e axe-core para listagem, Sobre, currículo e ambos os estados 404 em `tests/e2e/accessibility.spec.ts` per FR-021, FR-022 e SC-005 (partial)
-- [ ] T060 Definir e testar título e descrição próprios para 404 genérico e 404 de projeto em `app/not-found.tsx`, `app/projetos/[slug]/not-found.tsx` e `tests/e2e/metadata.spec.ts` per FR-029 (partial)
-- [ ] T061 Cobrir links globais em todas as rotas públicas e responsividade sem sobreposição ou texto cortado em `tests/e2e/curriculo.spec.ts` e `tests/e2e/responsive.spec.ts` per SC-003 e SC-006 (partial)
-- [ ] T062 Criar testes Testing Library para card, cabeçalho e rodapé em `tests/unit/ProjectCard.test.tsx` e `tests/unit/HeaderFooter.test.tsx` per plan: testes de componentes e Constitution V (missing)
+- [X] T057 Fortalecer a validação de tipos, URLs, `mailto:`, enums, slugs, imagens, links e teto de destaques em `lib/content.ts` per FR-011a, FR-024 e contrato de conteúdo
+- [X] T058 Cobrir todas as regras inválidas da validação de conteúdo em `tests/unit/content.test.ts` per FR-011a, FR-024 e Constitution V
+- [X] T059 Expandir teclado, foco e axe-core para listagem, Sobre, currículo e ambos os estados 404 em `tests/e2e/accessibility.spec.ts` per FR-021, FR-022 e SC-005
+- [X] T060 Definir e testar título e descrição próprios para 404 genérico e 404 de projeto em `app/not-found.tsx`, `app/projetos/[slug]/not-found.tsx` e `tests/e2e/metadata.spec.ts` per FR-029
+- [X] T061 Cobrir links globais em todas as rotas públicas e responsividade sem sobreposição ou texto cortado em `tests/e2e/curriculo.spec.ts` e `tests/e2e/responsive.spec.ts` per SC-003 e SC-006
+- [X] T062 Criar testes Testing Library para card, cabeçalho e rodapé em `tests/unit/ProjectCard.test.tsx` e `tests/unit/HeaderFooter.test.tsx` per plan: testes de componentes e Constitution V
 - [ ] T063 Mover o asset-fonte para `assets/portfolio-source.webp` e registrar estado, validações e riscos atuais em `docs/ACTIVE_CONTEXT.md` per plan: assets fonte e Constituição VIII (missing)
+
+---
+
+## Phase 9: Convergence
+
+- [X] T064 HIGH Adicionar `npm audit --omit=dev --audit-level=high` como gate obrigatório após `npm ci` em `.github/workflows/ci.yml` per plan: P1 / Constituição VI (partial)
+- [X] T065 HIGH Separar os scripts/etapas de E2E funcional e axe-core e executá-los nessa ordem no CI em `.github/workflows/ci.yml`, `package.json` e `tests/e2e/` per contrato de CI / plan: Etapa 4 (partial)
+- [X] T066 Definir e aplicar, com testes, o conjunto fechado permitido para `categoria` em `specs/001-experiencia-publica-inicial/data-model.md`, `lib/content.ts` e `tests/unit/content.test.ts` per plan: Etapa 5 / data-model: categoria (partial)

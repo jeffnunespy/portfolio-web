@@ -39,3 +39,23 @@ test("US2 - rota direta funciona e repositório privado oferece contato", async 
     /^mailto:/,
   );
 });
+
+test("US2 - links públicos e ausências explícitas não geram destinos inválidos", async ({
+  page,
+}) => {
+  await page.goto("/projetos/transcricao-audio");
+
+  await expect(page.getByRole("link", { name: "Abrir demonstração" })).toHaveAttribute(
+    "href",
+    "https://exemplo-transcricao.vercel.app",
+  );
+  await expect(page.getByRole("link", { name: "Acessar repositório" })).toHaveAttribute(
+    "href",
+    "https://github.com/transcricao-audio",
+  );
+
+  await page.goto("/projetos/gerenciamento-filas");
+  await expect(page.getByText("Demonstração pública não disponível.")).toBeVisible();
+  await expect(page.getByText("Código não disponível publicamente.")).toBeVisible();
+  await expect(page.getByRole("link", { name: "Acessar repositório" })).toHaveCount(0);
+});

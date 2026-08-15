@@ -26,6 +26,16 @@ const pages = [
     title: /Currículo/,
     description: /competências/i,
   },
+  {
+    route: "/rota-inexistente",
+    title: /Página não encontrada/,
+    description: /página solicitada não está disponível/i,
+  },
+  {
+    route: "/projetos/slug-inexistente",
+    title: /Projeto não encontrado/,
+    description: /projeto solicitado não está disponível/i,
+  },
 ];
 
 for (const expected of pages) {

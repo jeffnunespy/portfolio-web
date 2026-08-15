@@ -1,6 +1,14 @@
 import { test, expect } from "@playwright/test";
 
-for (const route of ["/", "/projetos/plataforma-portfolio"]) {
+for (const route of [
+  "/",
+  "/projetos",
+  "/projetos/plataforma-portfolio",
+  "/sobre",
+  "/curriculo",
+  "/rota-inexistente",
+  "/projetos/slug-inexistente",
+]) {
   test(`US3 - currículo, redes e contato acessíveis em ${route}`, async ({ page }) => {
     await page.goto(route);
 
