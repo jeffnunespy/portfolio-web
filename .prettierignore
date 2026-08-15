@@ -4,5 +4,12 @@ out
 build
 coverage
 public
+.agents/
+.claude/
+.clinerules/
+.specify/
+specs/
+AGENDS.md
+recomendacoes-stack-portfolio.md
 *.min.js
 *.min.css

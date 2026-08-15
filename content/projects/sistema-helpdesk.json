@@ -6,12 +6,8 @@
   "status": "Concluído",
   "categoria": "Backend",
   "natureza": "profissional",
-  "tecnologias": [
-    "Node.js",
-    "PostgreSQL",
-    "Docker"
-  ],
-  "imagemApresentacao": "/images/projects/sistema-helpdesk.png",
+  "tecnologias": ["Node.js", "PostgreSQL", "Docker"],
+  "imagemApresentacao": "/images/projects/sistema-helpdesk.svg",
   "competenciasDemonstradas": [
     "APIs REST",
     "Bancos de dados relacionais",
@@ -36,18 +32,9 @@
       "descricao": "Uso de Docker para padronizar o ambiente de desenvolvimento e simplificar o deploy em produção."
     }
   ],
-  "stack": [
-    "Node.js",
-    "Express",
-    "PostgreSQL",
-    "Docker"
-  ],
-  "limitacoesConhecidas": [
-    "Não possui suporte a anexos de arquivos nos chamados."
-  ],
-  "proximosPassos": [
-    "Nenhuma evolução planejada"
-  ],
+  "stack": ["Node.js", "Express", "PostgreSQL", "Docker"],
+  "limitacoesConhecidas": ["Não possui suporte a anexos de arquivos nos chamados."],
+  "proximosPassos": ["Nenhuma evolução planejada"],
   "linkRepositorio": "privado",
   "destaque": true
 }

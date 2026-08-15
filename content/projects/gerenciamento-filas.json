@@ -6,17 +6,9 @@
   "status": "Arquivado",
   "categoria": "Backend",
   "natureza": "acadêmico",
-  "tecnologias": [
-    "Java",
-    "Spring Boot",
-    "AWS básico"
-  ],
-  "imagemApresentacao": "/images/projects/gerenciamento-filas.png",
-  "competenciasDemonstradas": [
-    "Design de sistemas",
-    "AWS básico",
-    "Deploy em nuvem"
-  ],
+  "tecnologias": ["Java", "Spring Boot", "AWS básico"],
+  "imagemApresentacao": "/images/projects/gerenciamento-filas.svg",
+  "competenciasDemonstradas": ["Design de sistemas", "AWS básico", "Deploy em nuvem"],
   "contexto": "Trabalho acadêmico desenvolvido em disciplina de estruturas de dados e sistemas distribuídos.",
   "objetivo": "Simular e comparar estratégias de priorização de filas de atendimento com métricas de tempo de espera.",
   "funcionalidadesPrincipais": [
@@ -35,16 +27,8 @@
       "descricao": "Publicação de uma instância de demonstração em serviço de nuvem gratuito para avaliação da disciplina."
     }
   ],
-  "stack": [
-    "Java",
-    "Spring Boot",
-    "AWS"
-  ],
-  "limitacoesConhecidas": [
-    "Projeto acadêmico não mantido após a conclusão da disciplina."
-  ],
-  "proximosPassos": [
-    "Nenhuma evolução planejada"
-  ],
+  "stack": ["Java", "Spring Boot", "AWS"],
+  "limitacoesConhecidas": ["Projeto acadêmico não mantido após a conclusão da disciplina."],
+  "proximosPassos": ["Nenhuma evolução planejada"],
   "destaque": true
 }

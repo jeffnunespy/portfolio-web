@@ -75,13 +75,8 @@ function validatePerfil(data: Partial<PerfilProfissional>): PerfilProfissional {
   return data as PerfilProfissional;
 }
 
-function validateCompetenciasComEvidencia(
-  perfil: PerfilProfissional,
-  projetos: Projeto[],
-): void {
-  const competenciasComEvidencia = new Set(
-    projetos.flatMap((p) => p.competenciasDemonstradas),
-  );
+function validateCompetenciasComEvidencia(perfil: PerfilProfissional, projetos: Projeto[]): void {
+  const competenciasComEvidencia = new Set(projetos.flatMap((p) => p.competenciasDemonstradas));
   const semEvidencia = perfil.competenciasPorArea
     .flatMap((area) => area.competencias)
     .filter((competencia) => !competenciasComEvidencia.has(competencia));

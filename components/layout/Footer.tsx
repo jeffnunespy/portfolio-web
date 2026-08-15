@@ -1,7 +1,6 @@
-import Link from 'next/link';
+import Link from "next/link";
 
 export interface FooterProps {
-  linkCurriculo: string;
   linkGithub: string;
   linkLinkedin: string;
   contatoEmail: string;
@@ -16,32 +15,27 @@ export interface FooterProps {
  * FR-021: não customiza ordem de tabulação (sem tabIndex positivo).
  * FR-022: usa marcos de navegação semânticos (<footer>/<nav aria-label>).
  */
-export default function Footer({
-  linkCurriculo,
-  linkGithub,
-  linkLinkedin,
-  contatoEmail,
-}: FooterProps): JSX.Element {
+export default function Footer({ linkGithub, linkLinkedin, contatoEmail }: FooterProps) {
   const anoAtual = new Date().getFullYear();
 
   return (
-    <footer>
-      <nav aria-label="Links secundários">
-        <Link href="/">Início</Link>
-        <Link href="/projetos">Projetos</Link>
-        <Link href="/sobre">Sobre</Link>
-        <Link href={linkCurriculo}>Currículo</Link>
-        <a href={linkGithub} target="_blank" rel="noopener noreferrer">
-          GitHub
-        </a>
-        <a href={linkLinkedin} target="_blank" rel="noopener noreferrer">
-          LinkedIn
-        </a>
-        <a href={`mailto:${contatoEmail}`}>Contato</a>
-      </nav>
-      <p>
-        &copy; {anoAtual} [Nome do Titular]. Todos os direitos reservados.
-      </p>
+    <footer className="site-footer">
+      <div className="site-footer__inner">
+        <nav className="footer-nav" aria-label="Links secundários">
+          <Link href="/">Início</Link>
+          <Link href="/projetos">Projetos</Link>
+          <Link href="/sobre">Sobre</Link>
+          <Link href="/curriculo">Currículo</Link>
+          <a href={linkGithub} target="_blank" rel="noopener noreferrer">
+            GitHub
+          </a>
+          <a href={linkLinkedin} target="_blank" rel="noopener noreferrer">
+            LinkedIn
+          </a>
+          <a href={`mailto:${contatoEmail}`}>Contato</a>
+        </nav>
+        <p>&copy; {anoAtual} Conteúdo deste portfólio. Todos os direitos reservados.</p>
+      </div>
     </footer>
   );
 }
