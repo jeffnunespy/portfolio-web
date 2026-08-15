@@ -1,15 +1,10 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from "@playwright/test";
+import AxeBuilder from "@axe-core/playwright";
 
-const BASE_URL = 'http://localhost:3000';
+test("US1 - home sem violações automáticas WCAG 2.1 A/AA", async ({ page }) => {
+  await page.goto("/");
 
-test('US1 - acessibilidade básica da home', async ({ page }) => {
-  await page.goto(BASE_URL);
+  const results = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze();
 
-  const accessibilityScanResults = await page.evaluate(async () => {
-    // axe-core would be injected here in a real setup; for now, assert basic semantics
-    const landmarks = document.querySelectorAll('header, nav, main, footer');
-    return { landmarkCount: landmarks.length };
-  });
-
-  expect(accessibilityScanResults.landmarkCount).toBeGreaterThanOrEqual(3);
+  expect(results.violations).toEqual([]);
 });

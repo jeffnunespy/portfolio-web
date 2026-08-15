@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">Forma de onda de uma plataforma de transcrição de áudio</title>
+  <desc id="desc">Forma de onda e linhas de texto sobre fundo violeta escuro.</desc>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#312e81"/><stop offset="1" stop-color="#86198f"/></linearGradient></defs>
+  <rect width="1200" height="720" rx="40" fill="url(#bg)"/>
+  <g stroke="#f5d0fe" stroke-width="18" stroke-linecap="round">
+    <path d="M125 350h45m30-80v160m45-230v300m45-190v80m45-155v230m45-310v410m45-250v90m45-190v290m45-110v-70m45-220v510m45-300v90m45-190v290m45-120v-50m45-200v450m45-270v90m45-160v230m45-90v-50m45-120v290m45-180v70m45-105v140m45-70h45"/>
+  </g>
+  <rect x="245" y="575" width="710" height="24" rx="12" fill="#f5d0fe" opacity=".55"/>
+  <rect x="365" y="625" width="470" height="18" rx="9" fill="#f5d0fe" opacity=".35"/>
+</svg>

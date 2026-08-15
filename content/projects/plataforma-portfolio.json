@@ -6,17 +6,9 @@
   "status": "Em andamento",
   "categoria": "Web",
   "natureza": "autoral",
-  "tecnologias": [
-    "Next.js",
-    "TypeScript",
-    "React"
-  ],
-  "imagemApresentacao": "/images/projects/plataforma-portfolio.png",
-  "competenciasDemonstradas": [
-    "Node.js",
-    "Versionamento com Git",
-    "Design de sistemas"
-  ],
+  "tecnologias": ["Next.js", "TypeScript", "React"],
+  "imagemApresentacao": "/images/projects/plataforma-portfolio.svg",
+  "competenciasDemonstradas": ["Node.js", "Versionamento com Git", "Design de sistemas"],
   "contexto": "Projeto pessoal iniciado para consolidar em um único lugar os estudos de caso desenvolvidos ao longo da formação.",
   "objetivo": "Oferecer uma experiência pública clara, rápida e mantida via conteúdo versionado em arquivos JSON.",
   "funcionalidadesPrincipais": [
@@ -35,18 +27,11 @@
       "descricao": "Escolhido pela geração estática das páginas de projeto, favorecendo desempenho e simplicidade de deploy."
     }
   ],
-  "stack": [
-    "Next.js",
-    "TypeScript",
-    "React",
-    "Tailwind CSS"
-  ],
+  "stack": ["Next.js", "TypeScript", "React", "Tailwind CSS"],
   "limitacoesConhecidas": [
     "Não há área administrativa; qualquer alteração de conteúdo exige editar arquivos e publicar novo deploy."
   ],
-  "proximosPassos": [
-    "Adicionar testes end-to-end para as páginas públicas"
-  ],
+  "proximosPassos": ["Adicionar testes end-to-end para as páginas públicas"],
   "linkRepositorio": "privado",
   "destaque": true
 }

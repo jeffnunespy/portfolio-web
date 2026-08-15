@@ -6,17 +6,9 @@
   "status": "Pausado",
   "categoria": "Backend",
   "natureza": "colaborativo",
-  "tecnologias": [
-    "Python",
-    "Node.js",
-    "CI/CD"
-  ],
-  "imagemApresentacao": "/images/projects/transcricao-audio.png",
-  "competenciasDemonstradas": [
-    "CI/CD",
-    "APIs REST",
-    "Node.js"
-  ],
+  "tecnologias": ["Python", "Node.js", "CI/CD"],
+  "imagemApresentacao": "/images/projects/transcricao-audio.svg",
+  "competenciasDemonstradas": ["CI/CD", "APIs REST", "Node.js"],
   "contexto": "Projeto colaborativo desenvolvido em conjunto com outros desenvolvedores para automatizar transcrição de áudios.",
   "objetivo": "Reduzir o tempo de transcrição e permitir busca textual sobre o conteúdo de gravações de áudio.",
   "funcionalidadesPrincipais": [
@@ -35,17 +27,11 @@
       "descricao": "Arquitetura dividida em API síncrona e workers assíncronos para lidar com o tempo variável de transcrição."
     }
   ],
-  "stack": [
-    "Python",
-    "Node.js",
-    "Redis"
-  ],
+  "stack": ["Python", "Node.js", "Redis"],
   "limitacoesConhecidas": [
     "Projeto pausado por indisponibilidade da equipe colaboradora; acurácia da transcrição não validada em larga escala."
   ],
-  "proximosPassos": [
-    "Retomar validação de acurácia da transcrição automática"
-  ],
+  "proximosPassos": ["Retomar validação de acurácia da transcrição automática"],
   "linkDemonstracao": "https://exemplo-transcricao.vercel.app",
   "linkRepositorio": "https://github.com/transcricao-audio",
   "destaque": true

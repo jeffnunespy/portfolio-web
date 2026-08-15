@@ -1,163 +1,174 @@
 ---
-
 description: "Task list for Experiência Pública Inicial do Portfólio"
 ---
 
-# Tasks: Experiência Pública Inicial do Portfólio
+# Tasks: Experiência Pública Inicial do Portfólio — Convergência e Publicação
 
-**Input**: Design documents from `/specs/001-experiencia-publica-inicial/`
+**Input**: Artefatos de design em `/specs/001-experiencia-publica-inicial/`
 
-**Prerequisites**: plan.md, spec.md, research.md, data-model.md, quickstart.md
+**Prerequisites**: `plan.md`, `spec.md`, `research.md`, `data-model.md`, `contracts/next16-compatibility.md` e `quickstart.md`
 
-**Tests**: Incluídos — Princípio V da constituição ("Qualidade verificável") exige testes
-automatizados para regras de negócio e fluxos críticos, e o plan.md já define o stack de testes
-(Vitest, Testing Library, Playwright, axe-core).
+**Tests**: Incluídos. A constituição exige cobertura automatizada das regras de conteúdo e dos fluxos críticos; o plano define Vitest, Testing Library, Playwright e axe-core.
 
-**Organization**: Tarefas agrupadas por user story (spec.md) para permitir implementação e teste
-independentes de cada uma.
+**Organization**: As tarefas preservam a aplicação existente e são agrupadas por user story. Setup e Foundation tratam a migração que bloqueia toda a experiência pública.
 
 ## Format: `[ID] [P?] [Story] Description`
 
-- **[P]**: Pode rodar em paralelo (arquivos diferentes, sem dependência)
-- **[Story]**: US1–US4, conforme spec.md
-- Caminhos de arquivo exatos, conforme estrutura definida em plan.md
+- **[P]**: Pode ser feita em paralelo, pois usa arquivo distinto e não depende de tarefa incompleta.
+- **[Story]**: Mapeia a tarefa à user story correspondente (`US1`–`US4`).
+- Cada tarefa informa o caminho exato do arquivo a alterar ou validar.
 
 ## Path Conventions
 
-Projeto único Next.js (App Router) — `app/`, `components/`, `content/`, `lib/`, `tests/` na raiz
-do repositório, conforme `plan.md` § Project Structure.
+Aplicação Next.js única: `app/`, `components/`, `content/`, `lib/`, `tests/`, `.github/` e `docs/` na raiz do repositório.
 
 ---
 
-## Phase 1: Setup (Shared Infrastructure)
+## Phase 1: Setup (Contexto e ambiente compartilhado)
 
-**Purpose**: Inicialização do projeto Next.js/TypeScript e ferramentas de qualidade
+**Purpose**: Registrar o estado real e tornar o ambiente Node.js 24 reproduzível antes da convergência.
 
-- [X] T001 Inicializar projeto Next.js 14+ (App Router, TypeScript) na raiz do repositório
-- [X] T002 Configurar ESLint + Prettier com regras TypeScript/React em `.eslintrc.json` / `.prettierrc`
-- [X] T003 [P] Configurar Vitest + Testing Library em `vitest.config.ts`
-- [X] T004 [P] Configurar Playwright + axe-core em `playwright.config.ts`
-- [X] T005 [P] Adicionar scripts `build`, `dev`, `test`, `test:e2e` em `package.json` conforme quickstart.md
+- [ ] T001 Atualizar fase atual, decisões, riscos, próximos passos e resultados de validação em `docs/ACTIVE_CONTEXT.md`
+- [ ] T002 Atualizar o registro da Fase 8 e das entregas incrementais em `docs/DEVELOPMENT_PLAN.md`
+- [X] T003 [P] Declarar Node.js 24 LTS em `.nvmrc`
+- [X] T004 [P] Declarar engine Node.js 24 e scripts `lint`, `typecheck` e `format:check` em `package.json`
+- [X] T005 [P] Ajustar a exceção para `.env.example` e confirmar as regras de artefatos em `.gitignore`
+- [ ] T006 [P] Mover e nomear o asset-fonte de projeto em `assets/portfolio-source.webp`
 
-**Checkpoint**: `npm run dev` sobe um projeto Next.js vazio; `npm run test` e `npm run test:e2e` executam sem erro de configuração.
-
----
-
-## Phase 2: Foundational (Blocking Prerequisites)
-
-**Purpose**: Modelo de dados, validação de conteúdo e layout global — bloqueia todas as user stories
-
-**⚠️ CRITICAL**: Nenhuma user story pode começar antes desta fase estar completa
-
-- [X] T006 [P] Definir tipos `Projeto`, `PerfilProfissional`, `Competencia` em `lib/types.ts` conforme data-model.md
-- [X] T007 [P] Criar `content/profile.json` com dados reais do proprietário (título, descrição, competências por área, bio, links, contato) conforme FR-002, FR-003, FR-015–FR-017
-- [X] T008 [P] Criar os 4 arquivos iniciais em `content/projects/*.json` (plataforma de portfólio, helpdesk, gerenciamento de filas, transcrição/análise de áudio) conforme data-model.md e Assumptions do spec.md
-- [X] T009 Implementar `lib/content.ts`: leitura de `content/*.json` em build time, com validação que falha o build se algum campo obrigatório estiver ausente (FR-011a — sem estado de rascunho/publicação parcial) ou se alguma competência em `profile.json` não tiver projeto que a referencie em `competenciasDemonstradas` (FR-024, SC-007)
-- [X] T010 [P] Teste unitário de `lib/content.ts` em `tests/unit/content.test.ts`: cobre caso de sucesso, campo obrigatório ausente e competência sem evidência (depende de T009)
-- [X] T011 Implementar `components/layout/Header.tsx`: navegação (início, listagem de projetos, Sobre, currículo) sem `tabindex` customizado, conforme FR-005, FR-021
-- [X] T012 Implementar `components/layout/Footer.tsx`: links de currículo, GitHub, LinkedIn, contato e titularidade, conforme FR-018
-- [X] T013 Implementar `app/layout.tsx` compondo Header + Footer + skip-link para navegação por teclado (depende de T011, T012)
-- [X] T014 Implementar `app/not-found.tsx` (404 genérico com mensagem amigável), conforme FR-025
-
-**Checkpoint**: Layout global funcional, dados de conteúdo validados em build — user stories podem começar.
+**Checkpoint**: Documentação, runtime e higiene do repositório refletem o estado operável pretendido sem descartar mudanças existentes.
 
 ---
 
-## Phase 3: User Story 1 - Avaliar o posicionamento profissional na página inicial (Priority: P1) 🎯 MVP
+## Phase 2: Foundational (Migração e gates bloqueantes)
 
-**Goal**: Visitante identifica, só na página inicial, quem é o proprietário, área de profundidade, competências complementares e projetos em destaque.
+**Purpose**: Remover a cadeia vulnerável, adaptar incompatibilidades do Next.js 16/React 19 e configurar gates que bloqueiam todas as user stories.
 
-**Independent Test**: Carregar `/` e verificar título, descrição, competências por área e projetos em destaque, sem depender de outra página.
+**⚠️ CRITICAL**: Nenhuma validação de story deve ser aceita antes de esta fase concluir.
+
+- [X] T007 Atualizar Next.js, React, ReactDOM, tipos React, ESLint e `eslint-config-next` para as versões definidas em `package.json`
+- [X] T008 Regenerar a resolução auditável compatível com T007 em `package-lock.json`
+- [X] T009 Substituir configurações legadas por flat config com Core Web Vitals, TypeScript, Prettier e ignores existentes em `eslint.config.mjs`
+- [X] T010 Remover a configuração ESLint legada substituída em `.eslintrc.json`
+- [X] T011 Adaptar parâmetros assíncronos de página e metadados para Next.js 16 em `app/projetos/[slug]/page.tsx`
+- [X] T012 Adaptar os tipos de retorno incompatíveis com React 19 em `components/layout/Header.tsx`
+- [X] T013 Adaptar os tipos de retorno incompatíveis com React 19 em `components/layout/Footer.tsx`
+- [X] T014 Verificar e preservar o comportamento de rolagem nas transições de rota em `app/layout.tsx`
+- [X] T015 Criar workflow de CI com `npm ci`, lint/typecheck/unitários, build, E2E e acessibilidade em `.github/workflows/ci.yml`
+- [X] T016 [P] Configurar atualizações automáticas de dependências em `.github/dependabot.yml`
+- [ ] T017 Registrar runtime, gates, diagnóstico Webpack e rollback em `specs/001-experiencia-publica-inicial/quickstart.md`
+
+**Checkpoint**: A aplicação compila com Turbopack em Node.js 24, e o CI reproduz os gates obrigatórios sem `continue-on-error`.
+
+---
+
+## Phase 3: User Story 1 — Avaliar o posicionamento profissional na página inicial (Priority: P1) 🎯 MVP
+
+**Goal**: Manter a página inicial estática, acessível e responsiva após a atualização de stack, com posicionamento, competências e projetos em destaque verificáveis.
+
+**Independent Test**: Em `/`, a 1280px, título, descrição e competências aparecem na primeira dobra; em 320px/768px/1280px não há overflow, sobreposição nem texto cortado, e a navegação por teclado alcança todos os controles na ordem visual.
 
 ### Tests for User Story 1
 
-- [ ] T015 [P] [US1] Teste E2E em `tests/e2e/home.spec.ts`: título, descrição de posicionamento e competências por área visíveis (Acceptance Scenarios 1–2, SC-001)
-- [ ] T016 [P] [US1] Teste E2E em `tests/e2e/home.spec.ts`: navegação completa por Tab segue ordem visual, sem `tabindex` positivo (Acceptance Scenario 4, FR-021, SC-005)
-- [ ] T017 [P] [US1] Teste axe-core em `tests/e2e/home.a11y.spec.ts` para a rota `/` (FR-022)
+- [ ] T018 [US1] Cobrir primeira dobra, ordem de competências e limite de destaques em `tests/e2e/home.spec.ts`
+- [ ] T019 [US1] Cobrir todos os controles interativos, foco visível e ativação por teclado em `tests/e2e/home.spec.ts`
+- [ ] T020 [P] [US1] Executar axe-core e corrigir violações da rota inicial em `tests/e2e/home.a11y.spec.ts`
+- [ ] T021 [P] [US1] Cobrir overflow, sobreposição e corte de texto em 320px, 768px e 1280px em `tests/e2e/responsive.spec.ts`
 
 ### Implementation for User Story 1
 
-- [ ] T018 [P] [US1] Implementar `components/project/ProjectCard.tsx`: título, resumo, status, categoria, natureza, link para página do projeto (FR-006, FR-007, FR-010)
-- [ ] T019 [P] [US1] Implementar `components/project/ProjectStatusBadge.tsx` com os 4 valores fechados de status (FR-011)
-- [ ] T020 [US1] Implementar `app/page.tsx`: apresentação profissional (FR-002), competências por área com distinção visual (FR-003) e seção de projetos em destaque respeitando teto de 6 (FR-004), usando ProjectCard (depende de T018, T019)
-- [ ] T021 [US1] Tratar ausência de imagem de apresentação/link de demonstração no ProjectCard sem quebrar layout (Edge Cases)
-- [ ] T022 [US1] Adaptar seção de projetos quando há menos projetos que o teto, sem placeholders vazios (Edge Cases)
+- [ ] T022 [US1] Preservar a renderização estática e a ordem DOM de profundidade antes das competências complementares em `app/page.tsx`
+- [ ] T023 [US1] Exibir todos os campos obrigatórios do card e estados de imagem sem erro técnico em `components/project/ProjectCard.tsx`
+- [ ] T024 [US1] Preservar contraste, foco visível e layout responsivo da página inicial em `app/globals.css`
 
-**Checkpoint**: User Story 1 completa e testável de forma independente.
+**Checkpoint**: US1 continua funcional e testável apenas pela rota `/` depois da convergência.
 
 ---
 
-## Phase 4: User Story 2 - Consultar detalhes de um projeto específico (Priority: P1)
+## Phase 4: User Story 2 — Consultar detalhes de um projeto específico (Priority: P1)
 
-**Goal**: Visitante acessa a página de um projeto e encontra contexto, decisões, situação atual e links relacionados.
+**Goal**: Garantir que estudos de caso, listagem, estados de link e 404 permaneçam estáticos, acessíveis e corretos no Next.js 16.
 
-**Independent Test**: Acessar `/projetos/<slug>` diretamente por URL e verificar todas as seções obrigatórias.
+**Independent Test**: Acesso direto a `/projetos/<slug>` mostra todas as seções do caso e links corretos; `/projetos/slug-inexistente` apresenta alternativa amigável; a listagem contém todos os projetos publicados.
 
 ### Tests for User Story 2
 
-- [ ] T023 [P] [US2] Teste E2E em `tests/e2e/project-detail.spec.ts`: acesso via link da home e via URL direta, todas as seções obrigatórias presentes (Acceptance Scenarios 1–2, FR-012, FR-013)
-- [ ] T024 [P] [US2] Teste E2E em `tests/e2e/project-detail.spec.ts`: projeto com `linkRepositorio: "privado"` exibe CTA de contato em vez de link (Acceptance Scenario 4, FR-009a)
-- [ ] T025 [P] [US2] Teste E2E em `tests/e2e/project-not-found.spec.ts`: URL de projeto inexistente exibe página "não encontrado" com link para listagem (Edge Case)
-- [ ] T026 [P] [US2] Teste axe-core em `tests/e2e/project-detail.a11y.spec.ts` para uma rota de projeto (FR-022)
+- [ ] T025 [US2] Cobrir acesso direto, link a partir da home e seções obrigatórias do estudo de caso em `tests/e2e/project-detail.spec.ts`
+- [ ] T026 [US2] Cobrir repositório público, ausência de demonstração e CTA `mailto:` para código privado em `tests/e2e/project-detail.spec.ts`
+- [ ] T027 [P] [US2] Cobrir rota de projeto inexistente e ação alternativa na listagem em `tests/e2e/project-not-found.spec.ts`
+- [ ] T028 [P] [US2] Executar axe-core nas rotas de detalhe e corrigir violações em `tests/e2e/project-detail.a11y.spec.ts`
+- [ ] T029 [P] [US2] Cobrir título e descrição próprios do detalhe e dos estados 404 em `tests/e2e/metadata.spec.ts`
 
 ### Implementation for User Story 2
 
-- [ ] T027 [P] [US2] Implementar `components/project/EvidenceLink.tsx` para repositório público, privado (CTA contato) e demonstração (FR-008, FR-009, FR-009a)
-- [ ] T028 [US2] Implementar `app/projetos/[slug]/page.tsx`: contexto, objetivo, funcionalidades, responsabilidade do proprietário, decisões relevantes (mín. 2), stack, situação atual, limitações, próximos passos (FR-012) (depende de T027)
-- [ ] T029 [US2] Implementar `app/projetos/[slug]/not-found.tsx`: mensagem amigável + link para listagem de projetos (Edge Case)
-- [ ] T030 [US2] Implementar `app/projetos/page.tsx`: listagem de todos os projetos publicados, incluindo os que excedem o teto de destaque (FR-004a)
-- [ ] T031 [US2] Gerar rotas estáticas para todos os slugs de projeto via `generateStaticParams` em `app/projetos/[slug]/page.tsx` (depende de T028)
+- [ ] T030 [US2] Gerar parâmetros estáticos, páginas e metadados por slug no formato assíncrono do Next.js 16 em `app/projetos/[slug]/page.tsx`
+- [ ] T031 [US2] Oferecer mensagem simples e link alternativo para projeto não encontrado em `app/projetos/[slug]/not-found.tsx`
+- [ ] T032 [US2] Garantir listagem de todos os projetos publicados em `app/projetos/page.tsx`
+- [ ] T033 [US2] Unificar links de demonstração, repositório público e código privado com CTA de contato em `components/project/EvidenceLink.tsx`
+- [ ] T034 [US2] Validar status fechado e sua apresentação consistente em `components/project/ProjectStatusBadge.tsx`
 
-**Checkpoint**: User Stories 1 e 2 funcionam de forma independente e integrada.
+**Checkpoint**: US2 é navegável diretamente, não expõe links inválidos e não falha com erro técnico para slug inexistente.
 
 ---
 
-## Phase 5: User Story 3 - Encontrar currículo, código-fonte e contato (Priority: P2)
+## Phase 5: User Story 3 — Encontrar currículo, código-fonte e contato (Priority: P2)
 
-**Goal**: A partir de qualquer página, visitante encontra currículo, GitHub, LinkedIn e contato.
+**Goal**: Manter currículo, redes e contato acessíveis em toda página pública, sem coleta de dados e com metadados próprios.
 
-**Independent Test**: A partir de qualquer página pública, verificar cabeçalho (currículo) e rodapé (currículo, GitHub, LinkedIn, contato) funcionais.
+**Independent Test**: Em home, listagem, detalhe, Sobre, currículo e 404, cabeçalho/rodapé expõem os links exigidos; `/curriculo` permite visualizar e baixar o PDF.
 
 ### Tests for User Story 3
 
-- [ ] T032 [P] [US3] Teste E2E em `tests/e2e/curriculo.spec.ts`: link de currículo no cabeçalho em qualquer página; GitHub/LinkedIn/contato no rodapé (Acceptance Scenarios 1–2, SC-003)
-- [ ] T033 [P] [US3] Teste E2E em `tests/e2e/curriculo.spec.ts`: página `/curriculo` exibe currículo visualizável com opção de download (FR-015)
+- [ ] T035 [US3] Cobrir links globais de currículo, GitHub, LinkedIn e `mailto:` em todas as rotas públicas em `tests/e2e/curriculo.spec.ts`
+- [ ] T036 [US3] Cobrir visualização e download do currículo em `tests/e2e/curriculo.spec.ts`
+- [ ] T037 [P] [US3] Cobrir metadados exclusivos da página de currículo em `tests/e2e/metadata.spec.ts`
 
 ### Implementation for User Story 3
 
-- [ ] T034 [US3] Implementar `app/curriculo/page.tsx`: currículo visualizável na página + link de download do arquivo (FR-015)
-- [ ] T035 [US3] Adicionar arquivo de currículo (PDF) em `public/curriculo.pdf` e referenciar em `content/profile.json` (depende de T007)
+- [ ] T038 [US3] Preservar currículo visualizável, download e metadados próprios em `app/curriculo/page.tsx`
+- [ ] T039 [US3] Garantir navegação para currículo na ordem definida em `components/layout/Header.tsx`
+- [ ] T040 [US3] Garantir currículo, redes, contato `mailto:` e titularidade no rodapé em `components/layout/Footer.tsx`
+- [ ] T041 [US3] Substituir o arquivo de currículo por versão confirmada e consistente em `public/curriculo.pdf`
 
-**Checkpoint**: User Stories 1, 2 e 3 funcionam de forma independente.
+**Checkpoint**: US3 é verificável sem backend, formulário, cookies de rastreamento ou armazenamento de dados de visitantes.
 
 ---
 
-## Phase 6: User Story 4 - Conhecer o proprietário na página Sobre (Priority: P2)
+## Phase 6: User Story 4 — Conhecer o proprietário na página Sobre (Priority: P2)
 
-**Goal**: Visitante aprofunda o entendimento da trajetória e posicionamento do proprietário.
+**Goal**: Manter uma apresentação profissional consistente e acessível após a atualização, sem afirmações não comprovadas.
 
-**Independent Test**: Acessar `/sobre` diretamente e verificar conteúdo consistente com a página inicial.
+**Independent Test**: A rota `/sobre` amplia o posicionamento da home, preserva navegação global e publica metadados específicos.
 
 ### Tests for User Story 4
 
-- [ ] T036 [P] [US4] Teste E2E em `tests/e2e/sobre.spec.ts`: navegação até "Sobre" e conteúdo consistente com posicionamento da home (Acceptance Scenarios 1–2, FR-014)
+- [ ] T042 [US4] Cobrir conteúdo, navegação e consistência com o posicionamento da home em `tests/e2e/sobre.spec.ts`
+- [ ] T043 [P] [US4] Cobrir metadados próprios da página Sobre em `tests/e2e/metadata.spec.ts`
 
 ### Implementation for User Story 4
 
-- [ ] T037 [US4] Implementar `app/sobre/page.tsx`: biografia e posicionamento consistente com a home, usando `content/profile.json` (FR-014)
+- [ ] T044 [US4] Preservar apresentação consistente e metadados derivados do perfil em `app/sobre/page.tsx`
+- [ ] T045 [US4] Substituir somente conteúdo profissional confirmado e com evidência associável em `content/profile.json`
 
-**Checkpoint**: Todas as 4 user stories funcionam de forma independente.
+**Checkpoint**: US4 não contradiz a home nem introduz experiência, métricas ou competências sem evidência.
 
 ---
 
 ## Phase 7: Polish & Cross-Cutting Concerns
 
-**Purpose**: Validações finais que atravessam todas as user stories
+**Purpose**: Reforçar a integridade de conteúdo, concluir cobertura de componentes, validar publicação e registrar o resultado.
 
-- [ ] T038 [P] Teste E2E de responsividade em `tests/e2e/responsive.spec.ts` nas larguras 320px/768px/1280px, sem rolagem horizontal (SC-006)
-- [ ] T039 [P] Adicionar metadados de página (`title`, `description`) próprios por rota usando `generateMetadata` do Next.js, derivados do conteúdo de cada página (FR-029)
-- [ ] T040 Rodar `npm run build` e confirmar que a validação de conteúdo de T009 passa sem erros
-- [ ] T041 Executar `quickstart.md` integralmente e confirmar todos os cenários de validação
+- [ ] T046 Fortalecer tipos, strings/arrays, URLs, `mailto:`, slugs únicos, enums, imagens, links opcionais e teto de destaques em `lib/content.ts`
+- [ ] T047 Cobrir cada regra inválida da validação de conteúdo em `tests/unit/content.test.ts`
+- [X] T048 Atualizar Vitest para 4.x depois de a migração do framework estar estável em `package.json`
+- [X] T049 Atualizar a resolução do Vitest 4 e dependências de teste em `package-lock.json`
+- [ ] T050 [P] Cobrir comportamentos condicionais e links dos cards em `tests/unit/ProjectCard.test.tsx`
+- [ ] T051 [P] Cobrir navegação e links globais em `tests/unit/HeaderFooter.test.tsx`
+- [ ] T052 Revisar cada estudo de caso com contexto, decisões, limitações, próximos passos, links e evidências confirmadas em `content/projects/*.json`
+- [ ] T053 Verificar a existência das imagens publicadas referenciadas pelo conteúdo em `public/projects/`
+- [X] T054 Executar formatação, lint, tipos, unitários, build Turbopack, E2E e auditoria de produção conforme `specs/001-experiencia-publica-inicial/quickstart.md`
+- [ ] T055 Registrar a inspeção manual de teclado, foco, headings, zoom, leitor de tela, links e preview/canário em `docs/ACTIVE_CONTEXT.md`
+
+**Checkpoint**: O commit candidato atende ao contrato de compatibilidade, não possui vulnerabilidades críticas/altas de produção e está pronto para validação em preview antes de promoção.
 
 ---
 
@@ -165,64 +176,72 @@ do repositório, conforme `plan.md` § Project Structure.
 
 ### Phase Dependencies
 
-- **Setup (Phase 1)**: sem dependências
-- **Foundational (Phase 2)**: depende do Setup — bloqueia todas as user stories
-- **User Stories (Phase 3–6)**: todas dependem do Foundational; podem prosseguir em paralelo ou em ordem de prioridade (US1/US2 P1 → US3/US4 P2)
-- **Polish (Phase 7)**: depende de todas as user stories desejadas estarem completas
+- **Setup (Phase 1)**: sem dependências; T001–T002 devem preceder alterações relevantes.
+- **Foundational (Phase 2)**: depende de Setup; T007–T015 bloqueiam a aceitação de todas as stories.
+- **US1 e US2 (P1)**: começam após Foundation; são o MVP e podem avançar em paralelo se a alteração compartilhada de `app/globals.css` for coordenada.
+- **US3 e US4 (P2)**: começam após Foundation; dependem de `content/profile.json` válido e podem avançar em paralelo.
+- **Polish (Phase 7)**: T046–T047 antecedem a validação final T054; T048–T049 antecedem os testes unitários finais; T052 e T041 dependem de conteúdo e currículo confirmados pelo proprietário.
 
 ### User Story Dependencies
 
-- **US1 (P1)**: sem dependência de outra story
-- **US2 (P1)**: independente de US1, mas US1 já cria `ProjectCard`/`ProjectStatusBadge` reaproveitados pela listagem (T018, T019 antecedem T030 na prática, embora não bloqueiem tecnicamente)
-- **US3 (P2)**: independente; consome `content/profile.json` (Phase 2)
-- **US4 (P2)**: independente; consome `content/profile.json` (Phase 2)
+- **US1 (P1)**: independente após Foundation.
+- **US2 (P1)**: independente após Foundation; reutiliza dados validados por `lib/content.ts` e deve manter os links da US3 como comportamento global.
+- **US3 (P2)**: independente após Foundation; requer valores reais e confirmados em `content/profile.json` e `public/curriculo.pdf`.
+- **US4 (P2)**: independente após Foundation; requer `content/profile.json` validado e não depende de US1.
 
 ### Parallel Opportunities
 
-- T003, T004, T005 em paralelo após T001/T002
-- T006, T007, T008 em paralelo (arquivos distintos)
-- Testes de uma mesma user story marcados [P] em paralelo
-- US3 e US4 podem ser implementadas em paralelo por desenvolvedores diferentes após Phase 2
+- T003–T006 podem ser distribuídas em paralelo.
+- T012, T013, T016 e T017 podem avançar em paralelo depois de T007–T008.
+- Após Foundation, os grupos de teste por story marcados `[P]` podem ocorrer em paralelo quando não alterarem o mesmo arquivo.
+- T021, T028, T029, T037, T043, T050 e T051 usam arquivos distintos e podem ser paralelizadas conforme seus pré-requisitos.
 
 ---
 
-## Parallel Example: User Story 1
+## Parallel Example: User Story 2
 
-```bash
-Task: "Teste E2E home.spec.ts (título/descrição/competências)"
-Task: "Teste E2E home.spec.ts (ordem de tabulação)"
-Task: "Teste axe-core home.a11y.spec.ts"
-Task: "Implementar ProjectCard.tsx"
-Task: "Implementar ProjectStatusBadge.tsx"
+```text
+Task: "Cobrir rota de projeto inexistente e ação alternativa em tests/e2e/project-not-found.spec.ts"
+Task: "Executar axe-core nas rotas de detalhe em tests/e2e/project-detail.a11y.spec.ts"
+Task: "Cobrir metadados de detalhe e 404 em tests/e2e/metadata.spec.ts"
+Task: "Unificar links e CTA de código privado em components/project/EvidenceLink.tsx"
+Task: "Validar status fechado em components/project/ProjectStatusBadge.tsx"
 ```
 
 ---
 
 ## Implementation Strategy
 
-### MVP First (User Story 1 + 2, ambas P1)
+### MVP First (US1 + US2)
 
-1. Completar Phase 1: Setup
-2. Completar Phase 2: Foundational (bloqueia tudo)
-3. Completar Phase 3: US1 (home)
-4. Completar Phase 4: US2 (página de projeto) — página inicial sem página de projeto não entrega valor completo, ambas P1
-5. **PARAR e VALIDAR**: rodar `quickstart.md` cenários 1 e 2
-6. Deploy/demo do MVP
+1. Concluir Setup e Foundation, incluindo a atualização de runtime e os gates de CI.
+2. Concluir US1 e US2, preservando home, listagem, detalhes e 404 no Next.js 16.
+3. Executar os testes de cada story e `npm run build`.
+4. Validar o MVP em preview antes de acrescentar conteúdo final, currículo e stories P2.
 
 ### Incremental Delivery
 
-1. Setup + Foundational → base pronta
-2. US1 + US2 → MVP funcional (P1) → deploy
-3. US3 (currículo/redes/contato) → deploy
-4. US4 (Sobre) → deploy
-5. Polish → deploy final desta feature
-
----
+1. Setup + Foundation → ambiente seguro e reproduzível.
+2. US1 + US2 → avaliação profissional e estudos de caso (MVP).
+3. US3 → conversão para currículo, redes e contato.
+4. US4 → contexto profissional aprofundado.
+5. Polish → validação de conteúdo, modernização de testes e promoção após preview/canário.
 
 ## Notes
 
-- [P] = arquivos diferentes, sem dependência
-- [Story] mapeia a tarefa à user story correspondente em spec.md
-- Testes devem falhar antes da implementação correspondente
-- Validação de build (T009) é o mecanismo automatizado que impõe FR-024/SC-007 (evidência obrigatória)
-- Parar em qualquer checkpoint para validar a story isoladamente
+- Não inventar conteúdo, evidências, métricas, links ou currículo: T041, T045 e T052 exigem dados confirmados pelo proprietário.
+- O build deve falhar para conteúdo inválido; não introduzir estado de rascunho, banco de dados, analytics, autenticação ou backend nesta feature.
+- Antes de promoção, T054 e T055 devem registrar tanto os gates automatizados quanto as inspeções manuais exigidas pelo contrato.
+
+---
+
+## Phase 8: Convergence
+
+- [ ] T056 CRITICAL Substituir placeholders, URLs de exemplo e currículo por conteúdo profissional confirmado com evidência verificável em `content/profile.json` e `public/curriculo.pdf` per Constituição I/X e plan: P3 (contradicts)
+- [ ] T057 Fortalecer a validação de tipos, URLs, `mailto:`, enums, slugs, imagens, links e teto de destaques em `lib/content.ts` per FR-011a, FR-024 e contrato de conteúdo (partial)
+- [ ] T058 Cobrir todas as regras inválidas da validação de conteúdo em `tests/unit/content.test.ts` per FR-011a, FR-024 e Constitution V (missing)
+- [ ] T059 Expandir teclado, foco e axe-core para listagem, Sobre, currículo e ambos os estados 404 em `tests/e2e/accessibility.spec.ts` per FR-021, FR-022 e SC-005 (partial)
+- [ ] T060 Definir e testar título e descrição próprios para 404 genérico e 404 de projeto em `app/not-found.tsx`, `app/projetos/[slug]/not-found.tsx` e `tests/e2e/metadata.spec.ts` per FR-029 (partial)
+- [ ] T061 Cobrir links globais em todas as rotas públicas e responsividade sem sobreposição ou texto cortado em `tests/e2e/curriculo.spec.ts` e `tests/e2e/responsive.spec.ts` per SC-003 e SC-006 (partial)
+- [ ] T062 Criar testes Testing Library para card, cabeçalho e rodapé em `tests/unit/ProjectCard.test.tsx` e `tests/unit/HeaderFooter.test.tsx` per plan: testes de componentes e Constitution V (missing)
+- [ ] T063 Mover o asset-fonte para `assets/portfolio-source.webp` e registrar estado, validações e riscos atuais em `docs/ACTIVE_CONTEXT.md` per plan: assets fonte e Constituição VIII (missing)

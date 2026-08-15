@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import Link from "next/link";
 
 /**
  * Cabeçalho com navegação principal do portfólio.
@@ -8,17 +8,22 @@ import Link from 'next/link';
  * FR-021: não customiza ordem de tabulação (sem tabIndex positivo).
  * FR-022: usa marcos de navegação semânticos (<header>/<nav aria-label>).
  */
-export default function Header(): JSX.Element {
+export default function Header() {
   return (
-    <header>
-      <nav aria-label="Navegação principal">
-        <Link href="/">Início</Link>
-        <Link href="/projetos">Projetos</Link>
-        <Link href="/sobre">Sobre</Link>
-        <Link href="/curriculo" className="nav-curriculo-destaque">
-          Currículo
-        </Link>
-      </nav>
+    <header className="site-header">
+      <div className="site-header__inner">
+        <span className="site-brand" aria-hidden="true">
+          portfólio<span>.</span>
+        </span>
+        <nav className="site-nav" aria-label="Navegação principal">
+          <Link href="/">Início</Link>
+          <Link href="/projetos">Projetos</Link>
+          <Link href="/sobre">Sobre</Link>
+          <Link href="/curriculo" className="nav-curriculo-destaque">
+            Currículo
+          </Link>
+        </nav>
+      </div>
     </header>
   );
 }
