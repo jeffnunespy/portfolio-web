@@ -8,7 +8,10 @@ const config = [
   prettier,
   {
     ignores: [
+      "node_modules/**",
       ".next/**",
+      "dist/**",
+      "build/**",
       "coverage/**",
       "playwright-report/**",
       "test-results/**",
