@@ -1,0 +1,53 @@
+{
+  "slug": "sistema-helpdesk",
+  "titulo": "Sistema de Suporte/Helpdesk",
+  "resumo": "Sistema para abertura, triagem e acompanhamento de chamados de suporte técnico.",
+  "problemaTratado": "Comunicação dispersa entre clientes e equipe de suporte, sem histórico centralizado de chamados.",
+  "status": "Concluído",
+  "categoria": "Backend",
+  "natureza": "profissional",
+  "tecnologias": [
+    "Node.js",
+    "PostgreSQL",
+    "Docker"
+  ],
+  "imagemApresentacao": "/images/projects/sistema-helpdesk.png",
+  "competenciasDemonstradas": [
+    "APIs REST",
+    "Bancos de dados relacionais",
+    "Docker",
+    "Testes automatizados"
+  ],
+  "contexto": "Desenvolvido em contexto profissional para substituir o atendimento por e-mail de uma equipe de suporte.",
+  "objetivo": "Centralizar o ciclo de vida dos chamados, do registro à resolução, com métricas básicas de atendimento.",
+  "funcionalidadesPrincipais": [
+    "Abertura e categorização de chamados",
+    "Atribuição de chamados a atendentes",
+    "Painel com status e histórico de cada chamado"
+  ],
+  "responsabilidadeProprietario": "Desenvolvimento do backend, modelagem do banco de dados e integração com a API de notificações.",
+  "decisoesRelevantes": [
+    {
+      "titulo": "Banco relacional para integridade de dados",
+      "descricao": "Escolhido PostgreSQL pela necessidade de relacionamentos fortes entre chamados, usuários e equipes."
+    },
+    {
+      "titulo": "Containerização do ambiente",
+      "descricao": "Uso de Docker para padronizar o ambiente de desenvolvimento e simplificar o deploy em produção."
+    }
+  ],
+  "stack": [
+    "Node.js",
+    "Express",
+    "PostgreSQL",
+    "Docker"
+  ],
+  "limitacoesConhecidas": [
+    "Não possui suporte a anexos de arquivos nos chamados."
+  ],
+  "proximosPassos": [
+    "Nenhuma evolução planejada"
+  ],
+  "linkRepositorio": "privado",
+  "destaque": true
+}

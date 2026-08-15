@@ -1,0 +1,50 @@
+{
+  "slug": "gerenciamento-filas",
+  "titulo": "Sistema de Gerenciamento de Filas",
+  "resumo": "Sistema acadêmico para organização e priorização de filas de atendimento em ambiente simulado.",
+  "problemaTratado": "Dificuldade em organizar e priorizar atendimentos concorrentes em cenários com múltiplos guichês.",
+  "status": "Arquivado",
+  "categoria": "Backend",
+  "natureza": "acadêmico",
+  "tecnologias": [
+    "Java",
+    "Spring Boot",
+    "AWS básico"
+  ],
+  "imagemApresentacao": "/images/projects/gerenciamento-filas.png",
+  "competenciasDemonstradas": [
+    "Design de sistemas",
+    "AWS básico",
+    "Deploy em nuvem"
+  ],
+  "contexto": "Trabalho acadêmico desenvolvido em disciplina de estruturas de dados e sistemas distribuídos.",
+  "objetivo": "Simular e comparar estratégias de priorização de filas de atendimento com métricas de tempo de espera.",
+  "funcionalidadesPrincipais": [
+    "Cadastro de guichês e tipos de atendimento",
+    "Algoritmo de priorização configurável",
+    "Relatório de tempo médio de espera por fila"
+  ],
+  "responsabilidadeProprietario": "Implementação individual do sistema como parte de avaliação acadêmica, incluindo deploy de demonstração em nuvem.",
+  "decisoesRelevantes": [
+    {
+      "titulo": "Estrutura de dados de fila de prioridade",
+      "descricao": "Uso de heap para garantir eficiência na seleção do próximo atendimento conforme prioridade."
+    },
+    {
+      "titulo": "Deploy de demonstração em nuvem",
+      "descricao": "Publicação de uma instância de demonstração em serviço de nuvem gratuito para avaliação da disciplina."
+    }
+  ],
+  "stack": [
+    "Java",
+    "Spring Boot",
+    "AWS"
+  ],
+  "limitacoesConhecidas": [
+    "Projeto acadêmico não mantido após a conclusão da disciplina."
+  ],
+  "proximosPassos": [
+    "Nenhuma evolução planejada"
+  ],
+  "destaque": true
+}
