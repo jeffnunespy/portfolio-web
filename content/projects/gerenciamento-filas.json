@@ -6,9 +6,9 @@
   "status": "Arquivado",
   "categoria": "Backend",
   "natureza": "acadêmico",
-  "tecnologias": ["Java", "Spring Boot", "AWS básico"],
+  "tecnologias": ["Python", "Django", "PostgreSQL", "Docker"],
   "imagemApresentacao": "/images/projects/gerenciamento-filas.svg",
-  "competenciasDemonstradas": ["Design de sistemas", "AWS básico", "Deploy em nuvem"],
+  "competenciasDemonstradas": ["Python", "Django", "PostgreSQL", "Docker", "Testes automatizados"],
   "contexto": "Trabalho acadêmico desenvolvido em disciplina de estruturas de dados e sistemas distribuídos.",
   "objetivo": "Simular e comparar estratégias de priorização de filas de atendimento com métricas de tempo de espera.",
   "funcionalidadesPrincipais": [
@@ -16,18 +16,18 @@
     "Algoritmo de priorização configurável",
     "Relatório de tempo médio de espera por fila"
   ],
-  "responsabilidadeProprietario": "Implementação individual do sistema como parte de avaliação acadêmica, incluindo deploy de demonstração em nuvem.",
+  "responsabilidadeProprietario": "Implementação individual do sistema com Python e Django como parte de avaliação acadêmica, incluindo regras de priorização, persistência e testes automatizados.",
   "decisoesRelevantes": [
     {
-      "titulo": "Estrutura de dados de fila de prioridade",
-      "descricao": "Uso de heap para garantir eficiência na seleção do próximo atendimento conforme prioridade."
+      "titulo": "Fila de prioridade em Python",
+      "descricao": "Uso de heap para garantir eficiência na seleção do próximo atendimento conforme prioridade, encapsulando a regra de negócio na aplicação Django."
     },
     {
-      "titulo": "Deploy de demonstração em nuvem",
-      "descricao": "Publicação de uma instância de demonstração em serviço de nuvem gratuito para avaliação da disciplina."
+      "titulo": "Persistência relacional e ambiente reproduzível",
+      "descricao": "Uso de PostgreSQL para registrar atendimentos e Docker para padronizar o ambiente de desenvolvimento e avaliação."
     }
   ],
-  "stack": ["Java", "Spring Boot", "AWS"],
+  "stack": ["Python", "Django", "PostgreSQL", "Docker"],
   "limitacoesConhecidas": ["Projeto acadêmico não mantido após a conclusão da disciplina."],
   "proximosPassos": ["Nenhuma evolução planejada"],
   "destaque": true

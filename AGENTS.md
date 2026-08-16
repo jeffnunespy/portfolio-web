@@ -37,3 +37,43 @@ Uma tarefa somente está concluída quando:
 - erros são tratados;
 - documentação afetada foi atualizada;
 - nenhuma regressão conhecida foi introduzida.
+
+## Automação opencode
+
+Skills e agents em `.opencode/` aplicam a constituição de forma sistemática
+e devem ser acionados quando a descrição no frontmatter casar com a tarefa.
+
+### Agents (decisão e veredito)
+
+| Agent | Quando acionar |
+|---|---|
+| `pr-reviewer` (`.opencode/agents/pr-reviewer.md`) | Cada PR, finalização de feature, "review do PR" |
+| `spec-reviewer` (`.opencode/agents/spec-reviewer.md`) | Final de spec/plan/tasks, antes de implement, "revisão da spec" |
+| `test-strategist` (`.opencode/agents/test-strategist.md`) | Adicionar componente novo, final de feature, "estratégia de testes" |
+| `a11y-auditor` (`.claude/agents/a11y-auditor.md`) | Auditoria semântica de acessibilidade além do axe |
+| `constitution-auditor` (`.claude/agents/constitution-auditor.md`) | Antes de commit, antes de PR, ao concluir tarefa do `tasks.md` |
+| `content-integrity` (`.claude/agents/content-integrity.md`) | Após editar conteúdo, antes de publicar |
+
+### Skills (execução e checklist)
+
+| Skill | Quando acionar |
+|---|---|
+| `pre-commit-guard` (`.opencode/skills/pre-commit-guard/SKILL.md`) | Cada commit, antes de abrir PR, final de tarefa |
+| `refactor-component` (`.opencode/skills/refactor-component/SKILL.md`) | Extrair, mover ou renomear componente |
+| `new-route` (`.opencode/skills/new-route/SKILL.md`) | Criar página em `app/**/page.tsx` |
+| `content-copy` (`.opencode/skills/content-copy/SKILL.md`) | Revisar/redigir textos do portfólio |
+| `dependency-audit` (`.opencode/skills/dependency-audit/SKILL.md`) | Modificar `package.json`, adicionar dependência, "auditoria de segurança" |
+| `verify-changed` (`.claude/skills/verify-changed/SKILL.md`) | Validar antes de commit, "rodar os testes" |
+| `a11y-check` (`.claude/skills/a11y-check/SKILL.md`) | Criar página/componente, teste a11y falhou |
+| `novo-projeto-conteudo` (`.claude/skills/novo-projeto-conteudo/SKILL.md`) | Adicionar/atualizar projeto em `content/projects/` |
+| `seo-metadata` (`.claude/skills/seo-metadata/SKILL.md`) | Criar página nova, melhorar SEO/OG |
+| `speckit-*` (`.claude/skills/speckit-*/`) | Fluxo de especificação Speckit |
+
+### Convenção de uso
+
+- O proprietário **solicita** o agente/skill pela intenção ("review do PR",
+  "criar página de contato", etc.); o opencode escolhe pelo frontmatter.
+- Para automatizar como hook de pré-commit, copie a lógica de
+  `pre-commit-guard` para `.husky/pre-commit` (se houver Husky configurado).
+- Em caso de conflito entre agentes, a **constituição prevalece**
+  (ver seção "Fonte de verdade" acima).

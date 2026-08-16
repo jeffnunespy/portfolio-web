@@ -124,7 +124,7 @@ Um gestor técnico ou colaborador em potencial acessa a página Sobre para enten
 **Página inicial**
 
 - **FR-001**: O sistema DEVE exibir uma página inicial pública, acessível sem autenticação, contendo cabeçalho com navegação principal, apresentação profissional resumida, competências por área, projetos em destaque e rodapé.
-- **FR-002**: A página inicial DEVE apresentar o título "Desenvolvedor Full-Stack em Formação" e a descrição "Com foco em backend e engenharia de software, construo aplicações web completas da especificação ao deploy, aplicando cloud e práticas de DevOps."
+- **FR-002**: A página inicial DEVE apresentar o título "Desenvolvedor Full-Stack em Formação" e a descrição "Em formação, com foco em desenvolvimento backend com Python e Django, construo aplicações web de ponta a ponta, da arquitetura ao deploy, com PostgreSQL e Google Cloud Platform."
 - **FR-003**: A página inicial DEVE organizar as competências por área, distinguindo claramente backend/engenharia de software (área de profundidade) de cloud/DevOps (competências complementares). A área de profundidade DEVE ser apresentada/renderizada antes das competências complementares, servindo como critério verificável de prioridade visual.
 - **FR-004**: A página inicial DEVE listar projetos em destaque, cada um com link para sua página resumida, respeitando um teto de até 6 projetos exibidos na página inicial.
 - **FR-004a**: O sistema DEVE fornecer uma listagem de projetos, acessível pela navegação principal, contendo todos os projetos publicados, incluindo os que excedem o teto de destaque da página inicial.
