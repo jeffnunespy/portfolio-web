@@ -1,10 +1,10 @@
 # Portfólio
 
-Experiência pública inicial do portfólio, entregue como site estático com Next.js 14 (App Router) e TypeScript.
+Experiência pública inicial do portfólio, entregue como site estático com Next.js 16 (App Router), React 19 e TypeScript.
 
 ## Requisitos
 
-- Node.js 20 LTS
+- Node.js 24 (ver `.nvmrc`)
 - npm
 
 ## Setup
@@ -14,11 +14,21 @@ npm install
 npm run dev
 ```
 
+## Verificações
+
+```bash
+npm run format:check   # prettier
+npm run lint           # eslint
+npm run typecheck      # tsc --noEmit
+```
+
 ## Testes
 
 ```bash
-npm run test
-npm run test:e2e
+npm run test -- --run          # Vitest (single-run)
+npm run test:e2e               # Playwright completo
+npm run test:e2e:functional    # E2E exceto os marcados @a11y
+npm run test:e2e:a11y          # somente acessibilidade (axe-core)
 ```
 
 ## Build

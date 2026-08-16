@@ -22,6 +22,6 @@
 ## Estado atual
 
 Os gates automatizados foram executados em Node.js 24.19.0 em 2026-08-15: instalação limpa,
-auditoria de produção, formatação, lint, tipos, 21 testes Vitest, build Turbopack e 35 testes
-Playwright passaram. O artefato não está pronto para promoção enquanto houver placeholders ou
-conteúdo/currículo não confirmados.
+auditoria de produção, formatação, lint, tipos, 27 testes Vitest, build Turbopack e 35 testes
+Playwright (25 funcionais + 10 de acessibilidade) passaram. O artefato não está pronto para
+promoção enquanto houver placeholders ou conteúdo/currículo não confirmados.

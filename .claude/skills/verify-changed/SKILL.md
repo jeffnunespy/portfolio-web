@@ -23,7 +23,7 @@ Aplique todas as regras que casarem. Não rode nada fora delas.
 
 | Caminho alterado | Verificações obrigatórias |
 |---|---|
-| Qualquer `.ts`/`.tsx` | `npx tsc --noEmit` e `npx next lint --file <arquivos>` |
+| Qualquer `.ts`/`.tsx` | `npm run typecheck` e `npx eslint <arquivos>` |
 | `lib/content.ts`, `lib/types.ts` | `npx vitest run tests/unit/content.test.ts` **e** todo o E2E (o conteúdo alimenta todas as rotas) |
 | `content/**/*.json` | `npx vitest run tests/unit/content.test.ts` + E2E das rotas que exibem o conteúdo (`home`, `project-detail`, `sobre`, `curriculo`) |
 | `app/page.tsx` | `tests/e2e/home.spec.ts`, `home.a11y.spec.ts`, `metadata.spec.ts` |
@@ -36,7 +36,7 @@ Aplique todas as regras que casarem. Não rode nada fora delas.
 | `components/project/**` | `home.spec.ts`, `project-detail.spec.ts` e os `.a11y.spec.ts` correspondentes |
 | `public/images/**` | `project-detail.spec.ts` (verifica renderização de imagem) |
 | Somente `specs/**`, `*.md`, `docs/**` | Nenhuma verificação de código. Reporte isso e pare. |
-| `package.json`, `next.config.js`, `tsconfig.json` | `npx tsc --noEmit` + `npm run build` + todo o E2E |
+| `package.json`, `next.config.js`, `tsconfig.json`, `eslint.config.mjs` | `npm run typecheck` + `npm run lint` + `npm run build` + todo o E2E |
 
 Se o diff tocar mais de ~60% das rotas, rode a suíte completa em vez de arquivos
 individuais — é mais rápido que orquestrar seleções parciais.
@@ -47,8 +47,8 @@ Ordem: typecheck → lint → unit → e2e. Pare no primeiro erro, corrija e ret
 do passo que falhou (não recomece do zero).
 
 ```bash
-npx tsc --noEmit
-npx next lint --file app/page.tsx --file components/project/ProjectCard.tsx
+npm run typecheck
+npx eslint app/page.tsx components/project/ProjectCard.tsx
 npx vitest run tests/unit/content.test.ts
 npx playwright test tests/e2e/home.spec.ts tests/e2e/home.a11y.spec.ts
 ```
@@ -58,7 +58,8 @@ Notas de execução:
 - Playwright sobe `npm run build && PORT=3001 npm run start` automaticamente
   (`playwright.config.ts`). O primeiro E2E da sessão leva ~1 min por causa do build.
 - Use `npx vitest run` (nunca `npm test`, que fica em modo watch).
-- `next lint --file` aceita múltiplos `--file`; passe só os arquivos alterados.
+- `next lint` foi removido no Next.js 16; use `npx eslint` com a flat config de
+  `eslint.config.mjs`, passando só os arquivos alterados como argumentos.
 
 ## 4. Reportar
 

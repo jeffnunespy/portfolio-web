@@ -20,6 +20,14 @@ manuais/de preview.
 - Cobertura Vitest de validação e componentes; cobertura Playwright de fluxos, links globais,
   metadados, responsividade, teclado e axe-core em todas as rotas públicas.
 - Metadados próprios para os dois estados 404.
+- Auditoria de documentação (2026-08-15): `CLAUDE.md`, `README.md`, `docs/PROJECT.md` e
+  `docs/DEVELOPMENT_PLAN.md` alinhados à stack real (Next.js 16, React 19, Node 24) e aos scripts
+  existentes (`typecheck`, `format:check`, `test:e2e:functional`, `test:e2e:a11y`); as skills
+  `verify-changed` e `a11y-check` corrigidas — `next lint` não existe mais no Next.js 16 (trocado
+  por `npx eslint <arquivos>`) e a verificação de a11y passou a usar `npm run test:e2e:a11y`, que
+  inclui `accessibility.a11y.spec.ts` (única cobertura de `/projetos`, `/sobre` e `/curriculo`).
+- Removido `tests/e2e/placeholder.spec.ts`, resíduo de scaffold sem asserção real.
+- `linkGithub` e `linkLinkedin` de `content/profile.json` substituídos pelos valores reais.
 
 ## Validação executada em 2026-08-15
 
@@ -31,13 +39,16 @@ manuais/de preview.
 - `npm run typecheck` → concluído
 - `npm test -- --run` → 27 testes aprovados
 - `npm run build` → Turbopack concluído; rotas estáticas e SSG geradas
-- `npm run test:e2e:functional` → 26 testes Playwright aprovados
+- `npm run test:e2e:functional` → 25 testes Playwright aprovados
 - `npm run test:e2e:a11y` → 10 testes Playwright aprovados
 
 ## Pendências e riscos conhecidos
 
-- `content/profile.json` ainda contém biografia, GitHub, LinkedIn e e-mail placeholder. Não publicar
-  enquanto os dados reais não forem fornecidos e revisados.
+- `content/profile.json` ainda contém `biografiaSobre` (prefixada com `[SUBSTITUIR]`) e
+  `contato.valor` (`SEU-EMAIL@exemplo.com`) como placeholder. Os links de GitHub e LinkedIn já
+  foram substituídos pelos reais. Não publicar enquanto biografia e e-mail não forem fornecidos e
+  revisados — nenhum dos dois quebra o build, porque a validação só exige string não vazia e
+  formato de e-mail válido, então o placeholder passa silenciosamente.
 - Os estudos de caso e `public/curriculo.pdf` exigem confirmação do proprietário antes de serem
   declarados conteúdo profissional publicado.
 - O asset-fonte `original-8696facb39b0641248efdeb31bc641db.webp` não está no workspace; portanto
@@ -49,7 +60,7 @@ manuais/de preview.
 
 ## Próximos passos
 
-1. Fornecer e revisar perfil, links, e-mail, currículo, conteúdo/evidências reais dos projetos e o
-   asset-fonte ausente.
+1. Fornecer e revisar biografia, e-mail, currículo, conteúdo/evidências reais dos projetos e o
+   asset-fonte ausente. Os links de redes já estão definidos.
 2. Atualizar os arquivos de conteúdo sem introduzir métricas ou experiências não verificadas.
 3. Executar e registrar as inspeções manuais de acessibilidade e o preview/canário antes da promoção.

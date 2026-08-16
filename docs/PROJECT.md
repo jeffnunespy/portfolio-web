@@ -6,11 +6,14 @@ Entregar a primeira experiência pública do portfólio como site estático, sem
 
 ## Stack
 
-- Next.js 14+ (App Router)
+- Node.js 24
+- Next.js 16 (App Router, build com Turbopack)
 - TypeScript 5.x
-- React 18
+- React 19
+- ESLint 10 (flat config) + Prettier
 - Vitest + Testing Library
 - Playwright + axe-core
+- CI no GitHub Actions + Dependabot
 - Deploy alvo: Vercel
 
 ## Estrutura principal

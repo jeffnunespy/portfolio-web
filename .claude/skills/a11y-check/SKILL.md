@@ -12,8 +12,14 @@ alternativos e estados claros.
 ## 1. Rodar a verificação automática
 
 ```bash
-npx playwright test tests/e2e/home.a11y.spec.ts tests/e2e/project-detail.a11y.spec.ts
+npm run test:e2e:a11y
 ```
+
+Isso roda todos os testes marcados `@a11y` — hoje `home.a11y.spec.ts`,
+`project-detail.a11y.spec.ts` e `accessibility.a11y.spec.ts`, este último
+cobrindo **todas** as rotas públicas mais a ordem de tabulação do skip link.
+Não liste os arquivos manualmente: rotas como `/projetos`, `/sobre` e
+`/curriculo` só são verificadas por `accessibility.a11y.spec.ts`.
 
 Os specs usam `AxeBuilder` com `withTags(["wcag2a", "wcag2aa"])` e esperam
 `violations` vazio. O primeiro run sobe o servidor via build (~1 min).
