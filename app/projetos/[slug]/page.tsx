@@ -24,12 +24,20 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
     return {
       title: "Projeto não encontrado",
       description: "O projeto solicitado não está disponível.",
+      robots: { index: false, follow: true },
     };
   }
 
   return {
     title: projeto.titulo,
     description: projeto.resumo,
+    alternates: { canonical: `/projetos/${projeto.slug}` },
+    openGraph: {
+      type: "article",
+      title: projeto.titulo,
+      description: projeto.resumo,
+      url: `/projetos/${projeto.slug}`,
+    },
   };
 }
 

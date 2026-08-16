@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Projeto não encontrado",
   description: "O projeto solicitado não está disponível no portfólio.",
+  robots: { index: false, follow: true },
 };
 
 export default function ProjectNotFound() {

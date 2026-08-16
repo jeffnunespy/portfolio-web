@@ -7,8 +7,11 @@ export function generateMetadata(): Metadata {
   const perfil = getPerfil();
 
   return {
-    title: perfil.tituloPosicionamento,
+    // A home usa o título absoluto: o template "%s | Portfólio" do layout
+    // duplicaria o posicionamento que já é o title padrão do site.
+    title: { absolute: perfil.tituloPosicionamento },
     description: perfil.descricaoPosicionamento,
+    alternates: { canonical: "/" },
   };
 }
 

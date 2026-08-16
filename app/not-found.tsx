@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Página não encontrada",
   description: "A página solicitada não está disponível no portfólio.",
+  robots: { index: false, follow: true },
 };
 
 export default function NotFound() {

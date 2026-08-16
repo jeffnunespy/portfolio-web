@@ -3,14 +3,34 @@ import "./globals.css";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import { getPerfil } from "../lib/content";
+import { SITE_LOCALE, SITE_NAME, SITE_URL } from "../lib/site";
 
-export const metadata: Metadata = {
-  title: {
-    default: "Portfólio",
-    template: "%s | Portfólio",
-  },
-  description: "Experiência pública inicial do portfólio",
-};
+export function generateMetadata(): Metadata {
+  const perfil = getPerfil();
+
+  return {
+    metadataBase: new URL(SITE_URL),
+    title: {
+      default: perfil.tituloPosicionamento,
+      template: `%s | ${SITE_NAME}`,
+    },
+    description: perfil.descricaoPosicionamento,
+    alternates: { canonical: "/" },
+    openGraph: {
+      type: "website",
+      locale: SITE_LOCALE,
+      siteName: SITE_NAME,
+      url: "/",
+      title: perfil.tituloPosicionamento,
+      description: perfil.descricaoPosicionamento,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: perfil.tituloPosicionamento,
+      description: perfil.descricaoPosicionamento,
+    },
+  };
+}
 
 export default function RootLayout({
   children,

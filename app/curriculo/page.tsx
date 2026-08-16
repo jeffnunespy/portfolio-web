@@ -4,9 +4,17 @@ import { getPerfil } from "../../lib/content";
 export function generateMetadata(): Metadata {
   const perfil = getPerfil();
 
+  const descricao = `Currículo, competências e perfis profissionais — ${perfil.tituloPosicionamento}.`;
+
   return {
     title: "Currículo",
-    description: `Currículo, competências e perfis profissionais — ${perfil.tituloPosicionamento}.`,
+    description: descricao,
+    alternates: { canonical: "/curriculo" },
+    openGraph: {
+      title: "Currículo",
+      description: descricao,
+      url: "/curriculo",
+    },
   };
 }
 

@@ -5,9 +5,17 @@ import { getPerfil } from "../../lib/content";
 export function generateMetadata(): Metadata {
   const perfil = getPerfil();
 
+  const descricao = `Conheça a trajetória, o método de trabalho e o posicionamento de ${perfil.tituloPosicionamento}.`;
+
   return {
     title: "Sobre",
-    description: `Conheça a trajetória, o método de trabalho e o posicionamento de ${perfil.tituloPosicionamento}.`,
+    description: descricao,
+    alternates: { canonical: "/sobre" },
+    openGraph: {
+      title: "Sobre",
+      description: descricao,
+      url: "/sobre",
+    },
   };
 }
 

@@ -2,9 +2,18 @@ import type { Metadata } from "next";
 import ProjectCard from "../../components/project/ProjectCard";
 import { getProjetos } from "../../lib/content";
 
+const descricao =
+  "Estudos de caso com contexto, decisões técnicas, responsabilidades e limitações.";
+
 export const metadata: Metadata = {
   title: "Projetos",
-  description: "Estudos de caso com contexto, decisões técnicas, responsabilidades e limitações.",
+  description: descricao,
+  alternates: { canonical: "/projetos" },
+  openGraph: {
+    title: "Projetos",
+    description: descricao,
+    url: "/projetos",
+  },
 };
 
 export default function ProjectsPage() {
