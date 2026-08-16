@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { NATUREZA_LABEL, estadoRepositorio } from "../../lib/labels";
 import type { Projeto } from "../../lib/types";
 import ProjectImage from "./ProjectImage";
 import ProjectStatusBadge from "./ProjectStatusBadge";
@@ -8,15 +9,9 @@ export interface ProjectCardProps {
   headingLevel?: 2 | 3;
 }
 
-const NATUREZA_LABEL: Record<Projeto["natureza"], string> = {
-  autoral: "Autoral",
-  acadêmico: "Acadêmico",
-  colaborativo: "Colaborativo",
-  profissional: "Profissional",
-};
-
 export default function ProjectCard({ projeto, headingLevel = 2 }: ProjectCardProps) {
   const Heading = headingLevel === 2 ? "h2" : "h3";
+  const repositorio = estadoRepositorio(projeto.linkRepositorio);
 
   return (
     <article className="project-card" data-testid="project-card">
@@ -58,7 +53,7 @@ export default function ProjectCard({ projeto, headingLevel = 2 }: ProjectCardPr
               Ver demonstração
             </a>
           ) : null}
-          {projeto.linkRepositorio && projeto.linkRepositorio !== "privado" ? (
+          {repositorio === "publico" ? (
             <a
               className="text-link"
               href={projeto.linkRepositorio}
@@ -67,7 +62,7 @@ export default function ProjectCard({ projeto, headingLevel = 2 }: ProjectCardPr
             >
               Ver código
             </a>
-          ) : projeto.linkRepositorio === "privado" ? (
+          ) : repositorio === "privado" ? (
             <span className="muted-label">Código privado</span>
           ) : (
             <span className="muted-label">Código não disponível publicamente</span>

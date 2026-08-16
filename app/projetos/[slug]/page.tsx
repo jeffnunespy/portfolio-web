@@ -4,20 +4,13 @@ import EvidenceLink from "../../../components/project/EvidenceLink";
 import ProjectImage from "../../../components/project/ProjectImage";
 import ProjectStatusBadge from "../../../components/project/ProjectStatusBadge";
 import { getPerfil, getProjetoBySlug, getProjetos } from "../../../lib/content";
-import type { Projeto } from "../../../lib/types";
+import { NATUREZA_LABEL } from "../../../lib/labels";
 
 interface ProjectPageProps {
   params: Promise<{
     slug: string;
   }>;
 }
-
-const NATUREZA_LABEL: Record<Projeto["natureza"], string> = {
-  autoral: "Autoral",
-  acadêmico: "Acadêmico",
-  colaborativo: "Colaborativo",
-  profissional: "Profissional",
-};
 
 export function generateStaticParams() {
   return getProjetos().map((projeto) => ({ slug: projeto.slug }));

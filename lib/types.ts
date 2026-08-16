@@ -52,9 +52,3 @@ export interface PerfilProfissional {
   linkLinkedin: string;
   contato: ContatoPerfil;
 }
-
-export interface Competencia {
-  nome: string;
-  area: string;
-  evidencias: Projeto[];
-}

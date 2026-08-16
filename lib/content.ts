@@ -120,7 +120,7 @@ function validatePublicAsset(value: unknown, field: string, fileName: string): v
   const assetPath = path.resolve(PUBLIC_DIR, `.${value}`);
   if (!assetPath.startsWith(`${PUBLIC_DIR}${path.sep}`) || !fs.existsSync(assetPath)) {
     throw validationError(
-      `imagem referenciada por "${field}" não existe em ${fileName}: ${value}.`,
+      `arquivo referenciado por "${field}" não existe em ${fileName}: ${value}.`,
     );
   }
 }
@@ -215,11 +215,7 @@ function validatePerfil(data: unknown): PerfilProfissional {
     validateStringField(data, field, fileName);
   }
 
-  if (!isNonEmptyString(data.linkCurriculo) || !data.linkCurriculo.startsWith("/")) {
-    throw validationError(
-      `campo "linkCurriculo" deve ser um caminho público absoluto em ${fileName}.`,
-    );
-  }
+  validatePublicAsset(data.linkCurriculo, "linkCurriculo", fileName);
   validateHttpsUrl(data.linkGithub, "linkGithub", fileName);
   validateHttpsUrl(data.linkLinkedin, "linkLinkedin", fileName);
 
@@ -285,12 +281,27 @@ function validateCompetenciasComEvidencia(perfil: PerfilProfissional, projetos: 
   }
 }
 
+// O conteúdo vem de arquivos versionados, lidos em tempo de build e imutáveis
+// durante o processo: memoizar evita releituras de disco sem alterar semântica.
+let perfilCache: PerfilProfissional | undefined;
+let projetosCache: Projeto[] | undefined;
+let projetosPorSlugCache: Map<string, Projeto> | undefined;
+
 export function getPerfil(): PerfilProfissional {
+  if (perfilCache) {
+    return perfilCache;
+  }
+
   const raw = fs.readFileSync(path.join(CONTENT_DIR, "profile.json"), "utf-8");
-  return validatePerfil(JSON.parse(raw) as unknown);
+  perfilCache = validatePerfil(JSON.parse(raw) as unknown);
+  return perfilCache;
 }
 
 export function getProjetos(): Projeto[] {
+  if (projetosCache) {
+    return projetosCache;
+  }
+
   const projectsDir = path.join(CONTENT_DIR, "projects");
   const fileNames = fs.readdirSync(projectsDir).filter((fileName) => fileName.endsWith(".json"));
   const projetos = fileNames.map((fileName) => {
@@ -300,9 +311,13 @@ export function getProjetos(): Projeto[] {
 
   validateProjetosCollection(projetos);
   validateCompetenciasComEvidencia(getPerfil(), projetos);
-  return projetos;
+
+  projetosCache = projetos;
+  projetosPorSlugCache = new Map(projetos.map((projeto) => [projeto.slug, projeto]));
+  return projetosCache;
 }
 
 export function getProjetoBySlug(slug: string): Projeto | undefined {
-  return getProjetos().find((projeto) => projeto.slug === slug);
+  getProjetos();
+  return projetosPorSlugCache?.get(slug);
 }

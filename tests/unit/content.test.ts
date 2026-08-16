@@ -195,7 +195,7 @@ describe("lib/content", () => {
       [
         "imagem inexistente",
         { imagemApresentacao: "/images/projects/ausente.svg" },
-        /imagem referenciada/,
+        /arquivo referenciado/,
       ],
       [
         "URL de demonstração inválida",
