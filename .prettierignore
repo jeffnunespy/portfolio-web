@@ -7,9 +7,16 @@ public
 .agents/
 .claude/
 .clinerules/
+.opencode/
 .specify/
 specs/
-AGENDS.md
+AGENTS.md
 recomendacoes-stack-portfolio.md
 *.min.js
 *.min.css
+.playwright-mcp
+.codex/
+.github/agents/
+.github/hooks/
+.github/skills/
+.impeccable/

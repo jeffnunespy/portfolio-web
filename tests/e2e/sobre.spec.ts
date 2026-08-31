@@ -11,7 +11,7 @@ test("US4 - navegação leva à página Sobre com posicionamento consistente", a
   await expect(page.getByRole("heading", { level: 1, name: "Sobre" })).toBeVisible();
   await expect(
     page.getByText(
-      "Com foco em backend e engenharia de software, construo aplicações web completas da especificação ao deploy, aplicando cloud e práticas de DevOps.",
+      "Em formação, com foco em desenvolvimento backend com Python e Django, construo aplicações web de ponta a ponta, da arquitetura ao deploy, com PostgreSQL e Google Cloud Platform.",
       { exact: true },
     ),
   ).toBeVisible();

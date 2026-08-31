@@ -6,14 +6,9 @@
   "status": "Concluído",
   "categoria": "Backend",
   "natureza": "profissional",
-  "tecnologias": ["Node.js", "PostgreSQL", "Docker"],
+  "tecnologias": ["Python", "Django", "PostgreSQL", "Docker"],
   "imagemApresentacao": "/images/projects/sistema-helpdesk.svg",
-  "competenciasDemonstradas": [
-    "APIs REST",
-    "Bancos de dados relacionais",
-    "Docker",
-    "Testes automatizados"
-  ],
+  "competenciasDemonstradas": ["Python", "Django", "PostgreSQL", "Docker", "Testes automatizados"],
   "contexto": "Desenvolvido em contexto profissional para substituir o atendimento por e-mail de uma equipe de suporte.",
   "objetivo": "Centralizar o ciclo de vida dos chamados, do registro à resolução, com métricas básicas de atendimento.",
   "funcionalidadesPrincipais": [
@@ -21,10 +16,10 @@
     "Atribuição de chamados a atendentes",
     "Painel com status e histórico de cada chamado"
   ],
-  "responsabilidadeProprietario": "Desenvolvimento do backend, modelagem do banco de dados e integração com a API de notificações.",
+  "responsabilidadeProprietario": "Desenvolvimento do backend com Django, modelagem do banco de dados PostgreSQL e implementação das regras de negócio do fluxo de chamados.",
   "decisoesRelevantes": [
     {
-      "titulo": "Banco relacional para integridade de dados",
+      "titulo": "Django e PostgreSQL para regras e integridade de dados",
       "descricao": "Escolhido PostgreSQL pela necessidade de relacionamentos fortes entre chamados, usuários e equipes."
     },
     {
@@ -32,9 +27,10 @@
       "descricao": "Uso de Docker para padronizar o ambiente de desenvolvimento e simplificar o deploy em produção."
     }
   ],
-  "stack": ["Node.js", "Express", "PostgreSQL", "Docker"],
+  "stack": ["Python", "Django", "PostgreSQL", "Docker"],
   "limitacoesConhecidas": ["Não possui suporte a anexos de arquivos nos chamados."],
   "proximosPassos": ["Nenhuma evolução planejada"],
   "linkRepositorio": "privado",
-  "destaque": true
+  "destaque": true,
+  "real": false
 }

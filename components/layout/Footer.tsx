@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { emailConfigurado } from "../../lib/labels";
 
 export interface FooterProps {
   linkGithub: string;
@@ -17,6 +18,7 @@ export interface FooterProps {
  */
 export default function Footer({ linkGithub, linkLinkedin, contatoEmail }: FooterProps) {
   const anoAtual = new Date().getFullYear();
+  const podeContatar = emailConfigurado(contatoEmail);
 
   return (
     <footer className="site-footer">
@@ -32,7 +34,11 @@ export default function Footer({ linkGithub, linkLinkedin, contatoEmail }: Foote
           <a href={linkLinkedin} target="_blank" rel="noopener noreferrer">
             LinkedIn
           </a>
-          <a href={`mailto:${contatoEmail}`}>Contato</a>
+          {podeContatar ? (
+            <a href={`mailto:${contatoEmail}`}>Contato</a>
+          ) : (
+            <span className="muted-label">Contato em configuração</span>
+          )}
         </nav>
         <p>&copy; {anoAtual} Conteúdo deste portfólio. Todos os direitos reservados.</p>
       </div>

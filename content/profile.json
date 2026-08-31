@@ -1,25 +1,39 @@
 {
   "tituloPosicionamento": "Desenvolvedor Full-Stack em Formação",
-  "descricaoPosicionamento": "Com foco em backend e engenharia de software, construo aplicações web completas da especificação ao deploy, aplicando cloud e práticas de DevOps.",
+  "descricaoPosicionamento": "Em formação, com foco em desenvolvimento backend com Python e Django, construo aplicações web de ponta a ponta, da arquitetura ao deploy, com PostgreSQL e Google Cloud Platform.",
   "competenciasPorArea": [
     {
       "area": "Backend",
-      "competencias": ["Node.js", "APIs REST", "Bancos de dados relacionais"]
+      "competencias": ["Python", "Django", "PostgreSQL"]
     },
     {
       "area": "Engenharia de Software",
-      "competencias": ["Testes automatizados", "Versionamento com Git", "Design de sistemas"]
+      "competencias": ["Arquitetura modular", "Segurança e privacidade", "Testes automatizados"]
     },
     {
       "area": "Cloud",
-      "competencias": ["AWS básico", "Deploy em nuvem"]
+      "competencias": [
+        "Google Cloud Platform",
+        "Cloud Run",
+        "Cloud SQL",
+        "Cloud Storage",
+        "Secret Manager"
+      ]
     },
     {
       "area": "DevOps",
-      "competencias": ["Docker", "CI/CD"]
+      "competencias": [
+        "Docker",
+        "CI/CD",
+        "Cloud Logging",
+        "Cloud Monitoring",
+        "Cloud Tasks",
+        "Cloud Scheduler",
+        "Cloud Run Jobs"
+      ]
     }
   ],
-  "biografiaSobre": "[SUBSTITUIR] Sou desenvolvedor full-stack em formação, com foco em backend e engenharia de software. Trabalho da especificação ao deploy: modelo dados, construo APIs, escrevo testes automatizados e aplico práticas de cloud e DevOps para levar aplicações a produção de forma confiável. Este parágrafo é um placeholder — substitua por sua trajetória real antes de publicar.",
+  "biografiaSobre": "Sou desenvolvedor em formação, com foco em backend com Python e Django. No HAYYANU, aplico engenharia de software de ponta a ponta: da arquitetura modular e modelagem de dados à segurança, observabilidade, infraestrutura e operação em Google Cloud Platform.",
   "linkCurriculo": "/curriculo.pdf",
   "linkGithub": "https://github.com/jeffnunespy",
   "linkLinkedin": "https://www.linkedin.com/in/jefferson-nunes-7bb309122/",

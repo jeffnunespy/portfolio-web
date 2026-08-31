@@ -32,7 +32,6 @@
     "Projeto pausado por indisponibilidade da equipe colaboradora; acurácia da transcrição não validada em larga escala."
   ],
   "proximosPassos": ["Retomar validação de acurácia da transcrição automática"],
-  "linkDemonstracao": "https://exemplo-transcricao.vercel.app",
-  "linkRepositorio": "https://github.com/transcricao-audio",
-  "destaque": true
+  "destaque": true,
+  "real": false
 }

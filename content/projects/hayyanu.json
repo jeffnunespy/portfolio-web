@@ -1,0 +1,95 @@
+{
+  "slug": "hayyanu",
+  "titulo": "HAYYANU",
+  "resumo": "Plataforma web para centralizar a gestão operacional, financeira e digital de estúdios de tatuagem.",
+  "problemaTratado": "Processos administrativos, atendimento, agenda, clientes, financeiro, portfólio e presença digital dispersos em ferramentas diferentes.",
+  "status": "Em andamento",
+  "categoria": "Backend",
+  "natureza": "autoral",
+  "tecnologias": [
+    "Python",
+    "Django",
+    "PostgreSQL",
+    "HTMX",
+    "Alpine.js",
+    "Astro",
+    "Bootstrap",
+    "Docker",
+    "Google Cloud Platform"
+  ],
+  "imagemApresentacao": "/images/projects/hayyanu.svg",
+  "competenciasDemonstradas": [
+    "Python",
+    "Django",
+    "PostgreSQL",
+    "Arquitetura modular",
+    "Segurança e privacidade",
+    "Testes automatizados",
+    "Google Cloud Platform",
+    "Cloud Run",
+    "Cloud SQL",
+    "Cloud Storage",
+    "Secret Manager",
+    "Docker",
+    "CI/CD",
+    "Cloud Logging",
+    "Cloud Monitoring",
+    "Cloud Tasks",
+    "Cloud Scheduler",
+    "Cloud Run Jobs"
+  ],
+  "contexto": "Projeto concebido como uma aplicação de produção para digitalizar e centralizar a operação de estúdios de tatuagem. A solução mantém uma base de código única com instalações isoladas por empresa, incluindo configurações, segredos, backups e domínio próprios.",
+  "objetivo": "Oferecer uma plataforma confiável para a operação diária dos estúdios, combinando gestão de negócio, atendimento, presença digital e infraestrutura preparada para evolução contínua.",
+  "funcionalidadesPrincipais": [
+    "Gestão de clientes, profissionais, unidades e serviços",
+    "Agenda e fluxo operacional do estúdio",
+    "Controle financeiro e integração com meios de pagamento",
+    "Portfólio, conteúdo público e gerenciamento de mídia",
+    "Autenticação, autorização, auditoria e controle de acesso"
+  ],
+  "responsabilidadeProprietario": "Responsável pelo levantamento de requisitos, decisões arquiteturais, desenvolvimento da aplicação, segurança, testes, infraestrutura, deploy e evolução contínua do produto.",
+  "decisoesRelevantes": [
+    {
+      "titulo": "Monólito modular com instalações isoladas",
+      "descricao": "Uma única base de código organiza os domínios do produto sem acoplá-los a uma implantação específica, permitindo banco, configurações, segredos, backups e domínio próprios para cada empresa."
+    },
+    {
+      "titulo": "Django para o núcleo operacional e Astro para o site público",
+      "descricao": "Django concentra regras de negócio e a interface operacional com Templates, HTMX e Alpine.js; Astro dá liberdade visual ao site público sem aumentar a complexidade do sistema interno."
+    },
+    {
+      "titulo": "Operação planejada em Google Cloud Platform",
+      "descricao": "A infraestrutura usa Cloud Run, Cloud SQL, Cloud Storage e Secret Manager, com Cloud Logging, Cloud Monitoring e serviços de jobs para observabilidade e processamento assíncrono."
+    }
+  ],
+  "stack": [
+    "Python 3.13",
+    "Django 5.2 LTS",
+    "PostgreSQL 18",
+    "Django Templates",
+    "HTMX",
+    "Alpine.js",
+    "Bootstrap",
+    "Astro",
+    "Docker",
+    "Google Cloud Platform",
+    "Cloud Run",
+    "Cloud SQL",
+    "Cloud Storage",
+    "Secret Manager",
+    "Cloud Logging",
+    "Cloud Monitoring",
+    "Cloud Tasks",
+    "Cloud Scheduler",
+    "Cloud Run Jobs"
+  ],
+  "limitacoesConhecidas": [
+    "Plataforma em desenvolvimento contínuo; módulos, integrações e fluxos operacionais seguem em evolução."
+  ],
+  "proximosPassos": [
+    "Evoluir os módulos operacionais, integrações externas e a operação em nuvem conforme o roadmap do produto."
+  ],
+  "linkRepositorio": "privado",
+  "destaque": true,
+  "real": true
+}

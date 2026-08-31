@@ -9,7 +9,7 @@ test("US1 - posicionamento profissional e competências na home", async ({ page 
     name: "Desenvolvedor Full-Stack em Formação",
   });
   const description = page.getByText(
-    "Com foco em backend e engenharia de software, construo aplicações web completas da especificação ao deploy, aplicando cloud e práticas de DevOps.",
+    "Em formação, com foco em desenvolvimento backend com Python e Django, construo aplicações web de ponta a ponta, da arquitetura ao deploy, com PostgreSQL e Google Cloud Platform.",
   );
 
   await expect(title).toBeVisible();
@@ -28,7 +28,7 @@ test("US1 - posicionamento profissional e competências na home", async ({ page 
 
   const projectCards = page.locator('[data-testid="project-card"]');
   const count = await projectCards.count();
-  expect(count).toBe(4);
+  expect(count).toBe(5);
 
   for (const card of await projectCards.all()) {
     await expect(card.getByText(/Autoral|Acadêmico|Colaborativo|Profissional/)).toBeVisible();

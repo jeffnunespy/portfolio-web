@@ -150,7 +150,7 @@ Aplicação Next.js única: `app/`, `components/`, `content/`, `lib/`, `tests/`,
 ### Implementation for User Story 4
 
 - [X] T044 [US4] Preservar apresentação consistente e metadados derivados do perfil em `app/sobre/page.tsx`
-- [ ] T045 [US4] Substituir somente conteúdo profissional confirmado e com evidência associável em `content/profile.json`
+- [X] T045 [US4] Substituir somente conteúdo profissional confirmado e com evidência associável em `content/profile.json`
 
 **Checkpoint**: US4 não contradiz a home nem introduz experiência, métricas ou competências sem evidência.
 

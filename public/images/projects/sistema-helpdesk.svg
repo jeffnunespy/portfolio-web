@@ -1,10 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
-  <title id="title">Painel abstrato de sistema de helpdesk</title>
-  <desc id="desc">Chamados organizados em colunas sobre um fundo azul escuro.</desc>
-  <defs><linearGradient id="bg" x1="0" y1="1" x2="1" y2="0"><stop stop-color="#082f49"/><stop offset="1" stop-color="#0369a1"/></linearGradient></defs>
-  <rect width="1200" height="720" rx="40" fill="url(#bg)"/>
-  <rect x="115" y="90" width="970" height="540" rx="28" fill="#f8fafc"/>
-  <rect x="175" y="145" width="270" height="32" rx="16" fill="#0ea5e9"/>
-  <g fill="#e0f2fe"><rect x="175" y="220" width="245" height="315" rx="18"/><rect x="478" y="220" width="245" height="315" rx="18"/><rect x="780" y="220" width="245" height="315" rx="18"/></g>
-  <g fill="#fff"><rect x="200" y="260" width="195" height="72" rx="12"/><rect x="200" y="352" width="195" height="118" rx="12"/><rect x="503" y="260" width="195" height="104" rx="12"/><rect x="805" y="260" width="195" height="145" rx="12"/></g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="t-sistema-helpdesk d-sistema-helpdesk">
+  <title id="t-sistema-helpdesk">Ficha de índice do projeto HELPDESK</title>
+  <desc id="d-sistema-helpdesk">Ficha catalográfica desenhada: Triagem e acompanhamento de chamados. Não é uma captura de tela da aplicação.</desc>
+  <rect width="1200" height="720" fill="#f4f1e8"/>
+  <rect x="40" y="40" width="1120" height="640" fill="none" stroke="#1a1a17" stroke-width="3"/>
+  <line x1="80" y1="150" x2="1120" y2="150" stroke="#1a1a17" stroke-width="2"/>
+  <text x="80" y="120" font-family="Archivo Narrow, Arial Narrow, sans-serif" font-size="30" font-weight="700" letter-spacing="7" fill="#6f6a5f">FICHA · SISTEMA-HELPDESK</text>
+  <text x="1120" y="120" text-anchor="end" font-family="Archivo Narrow, Arial Narrow, sans-serif" font-size="30" font-weight="700" letter-spacing="7" fill="#6f6a5f">PROFISSIONAL</text>
+  <text x="80" y="290" font-family="Zilla Slab, Georgia, serif" font-size="112" font-weight="700" fill="#1a1a17">HELPDESK</text>
+  <text x="80" y="350" font-family="Archivo, Arial, sans-serif" font-size="34" fill="#6f6a5f">Triagem e acompanhamento de chamados</text>
+  <line x1="80" y1="400" x2="1120" y2="400" stroke="#c8c2b0" stroke-width="1.5"/><line x1="80" y1="444" x2="1120" y2="444" stroke="#c8c2b0" stroke-width="1.5"/><line x1="80" y1="488" x2="1120" y2="488" stroke="#c8c2b0" stroke-width="1.5"/><line x1="80" y1="532" x2="1120" y2="532" stroke="#c8c2b0" stroke-width="1.5"/><line x1="80" y1="576" x2="1120" y2="576" stroke="#c8c2b0" stroke-width="1.5"/><line x1="80" y1="620" x2="1120" y2="620" stroke="#c8c2b0" stroke-width="1.5"/>
+  <circle cx="160" cy="690" r="7" fill="none" stroke="#c8c2b0" stroke-width="1.5"/><circle cx="278" cy="690" r="7" fill="none" stroke="#c8c2b0" stroke-width="1.5"/><circle cx="396" cy="690" r="7" fill="none" stroke="#c8c2b0" stroke-width="1.5"/><circle cx="514" cy="690" r="7" fill="none" stroke="#c8c2b0" stroke-width="1.5"/><circle cx="632" cy="690" r="7" fill="none" stroke="#c8c2b0" stroke-width="1.5"/><circle cx="750" cy="690" r="7" fill="none" stroke="#c8c2b0" stroke-width="1.5"/><circle cx="868" cy="690" r="7" fill="none" stroke="#c8c2b0" stroke-width="1.5"/><circle cx="986" cy="690" r="7" fill="none" stroke="#c8c2b0" stroke-width="1.5"/>
 </svg>

@@ -1,15 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
-  <title id="title">Interface abstrata de uma plataforma de portfólio</title>
-  <desc id="desc">Painéis e blocos de conteúdo sobre um fundo violeta.</desc>
-  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#20104d"/><stop offset="1" stop-color="#7c3aed"/></linearGradient></defs>
-  <rect width="1200" height="720" rx="40" fill="url(#bg)"/>
-  <circle cx="1000" cy="80" r="250" fill="#c4b5fd" opacity=".18"/>
-  <rect x="150" y="105" width="900" height="510" rx="30" fill="#f8fafc"/>
-  <rect x="210" y="170" width="360" height="34" rx="17" fill="#7c3aed"/>
-  <rect x="210" y="232" width="515" height="18" rx="9" fill="#cbd5e1"/>
-  <rect x="210" y="275" width="240" height="88" rx="16" fill="#ede9fe"/>
-  <rect x="470" y="275" width="240" height="88" rx="16" fill="#ede9fe"/>
-  <rect x="730" y="275" width="240" height="88" rx="16" fill="#ede9fe"/>
-  <rect x="210" y="405" width="760" height="145" rx="20" fill="#111827"/>
-  <path d="M275 475h110m45 0h110m45 0h110" stroke="#a78bfa" stroke-width="18" stroke-linecap="round"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="t-plataforma-portfolio d-plataforma-portfolio">
+  <title id="t-plataforma-portfolio">Ficha de índice do projeto PORTFÓLIO</title>
+  <desc id="d-plataforma-portfolio">Ficha catalográfica desenhada: Plataforma de apresentação profissional. Não é uma captura de tela da aplicação.</desc>
+  <rect width="1200" height="720" fill="#f4f1e8"/>
+  <rect x="40" y="40" width="1120" height="640" fill="none" stroke="#1a1a17" stroke-width="3"/>
+  <line x1="80" y1="150" x2="1120" y2="150" stroke="#1a1a17" stroke-width="2"/>
+  <text x="80" y="120" font-family="Archivo Narrow, Arial Narrow, sans-serif" font-size="30" font-weight="700" letter-spacing="7" fill="#6f6a5f">FICHA · PLATAFORMA-PORTFOLIO</text>
+  <text x="1120" y="120" text-anchor="end" font-family="Archivo Narrow, Arial Narrow, sans-serif" font-size="30" font-weight="700" letter-spacing="7" fill="#6f6a5f">AUTORAL</text>
+  <text x="80" y="290" font-family="Zilla Slab, Georgia, serif" font-size="112" font-weight="700" fill="#1a1a17">PORTFÓLIO</text>
+  <text x="80" y="350" font-family="Archivo, Arial, sans-serif" font-size="34" fill="#6f6a5f">Plataforma de apresentação profissional</text>
+  <line x1="80" y1="400" x2="1120" y2="400" stroke="#c8c2b0" stroke-width="1.5"/><line x1="80" y1="444" x2="1120" y2="444" stroke="#c8c2b0" stroke-width="1.5"/><line x1="80" y1="488" x2="1120" y2="488" stroke="#c8c2b0" stroke-width="1.5"/><line x1="80" y1="532" x2="1120" y2="532" stroke="#c8c2b0" stroke-width="1.5"/><line x1="80" y1="576" x2="1120" y2="576" stroke="#c8c2b0" stroke-width="1.5"/><line x1="80" y1="620" x2="1120" y2="620" stroke="#c8c2b0" stroke-width="1.5"/>
+  <circle cx="160" cy="690" r="7" fill="none" stroke="#c8c2b0" stroke-width="1.5"/><circle cx="278" cy="690" r="7" fill="none" stroke="#c8c2b0" stroke-width="1.5"/><circle cx="396" cy="690" r="7" fill="none" stroke="#c8c2b0" stroke-width="1.5"/><circle cx="514" cy="690" r="7" fill="none" stroke="#c8c2b0" stroke-width="1.5"/><circle cx="632" cy="690" r="7" fill="none" stroke="#c8c2b0" stroke-width="1.5"/><circle cx="750" cy="690" r="7" fill="none" stroke="#c8c2b0" stroke-width="1.5"/><circle cx="868" cy="690" r="7" fill="none" stroke="#c8c2b0" stroke-width="1.5"/><circle cx="986" cy="690" r="7" fill="none" stroke="#c8c2b0" stroke-width="1.5"/>
 </svg>

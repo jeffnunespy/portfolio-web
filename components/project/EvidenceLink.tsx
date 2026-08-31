@@ -1,3 +1,4 @@
+import { emailConfigurado, estadoRepositorio } from "../../lib/labels";
 import type { Projeto } from "../../lib/types";
 
 export interface EvidenceLinkProps {
@@ -11,6 +12,9 @@ export default function EvidenceLink({
   linkDemonstracao,
   linkRepositorio,
 }: EvidenceLinkProps) {
+  const repositorio = estadoRepositorio(linkRepositorio);
+  const podeContatar = emailConfigurado(contatoEmail);
+
   return (
     <div className="evidence-links">
       {linkDemonstracao ? (
@@ -26,17 +30,21 @@ export default function EvidenceLink({
         <p className="availability-note">Demonstração pública não disponível.</p>
       )}
 
-      {linkRepositorio === "privado" ? (
+      {repositorio === "privado" ? (
         <div className="private-code-note">
           <p>código privado — disponível mediante solicitação</p>
-          <a
-            className="text-link"
-            href={`mailto:${contatoEmail}?subject=Acesso ao código do projeto`}
-          >
-            Solicitar acesso ao código
-          </a>
+          {podeContatar ? (
+            <a
+              className="text-link"
+              href={`mailto:${contatoEmail}?subject=Acesso ao código do projeto`}
+            >
+              Solicitar acesso ao código
+            </a>
+          ) : (
+            <span className="muted-label">Contato para solicitação em configuração</span>
+          )}
         </div>
-      ) : linkRepositorio ? (
+      ) : repositorio === "publico" ? (
         <a
           className="button button--secondary"
           href={linkRepositorio}

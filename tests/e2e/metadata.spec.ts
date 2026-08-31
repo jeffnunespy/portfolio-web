@@ -4,7 +4,7 @@ const pages = [
   {
     route: "/",
     title: /Desenvolvedor Full-Stack em Formação/,
-    description: /foco em backend e engenharia de software/i,
+    description: /desenvolvimento backend com Python e Django/i,
   },
   {
     route: "/projetos",
