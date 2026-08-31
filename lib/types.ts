@@ -30,6 +30,10 @@ export interface Projeto {
   // "privado" substitui o link quando o repositório não é público (FR-009a).
   linkRepositorio?: string | "privado";
   destaque: boolean;
+  // false identifica rascunho de estrutura de conteúdo: o software descrito
+  // ainda não existe. Evita apresentar placeholder como entrega real
+  // (princípio "evidências acima de afirmações").
+  real: boolean;
 }
 
 export interface CompetenciaPorArea {

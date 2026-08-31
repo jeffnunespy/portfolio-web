@@ -23,7 +23,7 @@ export default async function Image({ params }: OgImageProps) {
   }
 
   return renderOgImage({
-    eyebrow: `${projeto.categoria} · ${projeto.status}`,
+    indice: `Ficha · ${projeto.slug}`,
     titulo: projeto.titulo,
     descricao: truncar(projeto.resumo, 160),
   });

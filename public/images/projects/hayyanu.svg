@@ -1,27 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
-  <title id="title">Painel abstrato da plataforma HAYYANU</title>
-  <desc id="desc">Interface de gestão para um estúdio de tatuagem, com agenda, clientes e indicadores.</desc>
-  <defs>
-    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
-      <stop stop-color="#231942"/>
-      <stop offset="1" stop-color="#5e548e"/>
-    </linearGradient>
-  </defs>
-  <rect width="1200" height="720" rx="40" fill="url(#background)"/>
-  <rect x="100" y="80" width="1000" height="560" rx="28" fill="#f8fafc"/>
-  <rect x="150" y="130" width="220" height="40" rx="20" fill="#7c3aed"/>
-  <rect x="150" y="210" width="260" height="360" rx="20" fill="#ede9fe"/>
-  <rect x="440" y="210" width="610" height="150" rx="20" fill="#f3e8ff"/>
-  <rect x="440" y="390" width="290" height="180" rx="20" fill="#e0e7ff"/>
-  <rect x="760" y="390" width="290" height="180" rx="20" fill="#fae8ff"/>
-  <g fill="#ffffff">
-    <rect x="180" y="250" width="200" height="52" rx="12"/>
-    <rect x="180" y="322" width="160" height="52" rx="12"/>
-    <rect x="180" y="394" width="180" height="52" rx="12"/>
-    <rect x="470" y="245" width="170" height="82" rx="14"/>
-    <rect x="665" y="245" width="170" height="82" rx="14"/>
-    <rect x="860" y="245" width="160" height="82" rx="14"/>
-    <rect x="470" y="425" width="230" height="40" rx="12"/>
-    <rect x="790" y="425" width="230" height="40" rx="12"/>
-  </g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="t-hayyanu d-hayyanu">
+  <title id="t-hayyanu">Ficha de índice do projeto HAYYANU</title>
+  <desc id="d-hayyanu">Ficha catalográfica desenhada: Gestão de estúdios de tatuagem. Não é uma captura de tela da aplicação.</desc>
+  <rect width="1200" height="720" fill="#f4f1e8"/>
+  <rect x="40" y="40" width="1120" height="640" fill="none" stroke="#1a1a17" stroke-width="3"/>
+  <line x1="80" y1="150" x2="1120" y2="150" stroke="#1a1a17" stroke-width="2"/>
+  <text x="80" y="120" font-family="Archivo Narrow, Arial Narrow, sans-serif" font-size="30" font-weight="700" letter-spacing="7" fill="#6f6a5f">FICHA · HAYYANU</text>
+  <text x="1120" y="120" text-anchor="end" font-family="Archivo Narrow, Arial Narrow, sans-serif" font-size="30" font-weight="700" letter-spacing="7" fill="#6f6a5f">AUTORAL</text>
+  <text x="80" y="290" font-family="Zilla Slab, Georgia, serif" font-size="112" font-weight="700" fill="#1a1a17">HAYYANU</text>
+  <text x="80" y="350" font-family="Archivo, Arial, sans-serif" font-size="34" fill="#6f6a5f">Gestão de estúdios de tatuagem</text>
+  <line x1="80" y1="400" x2="1120" y2="400" stroke="#c8c2b0" stroke-width="1.5"/><line x1="80" y1="444" x2="1120" y2="444" stroke="#c8c2b0" stroke-width="1.5"/><line x1="80" y1="488" x2="1120" y2="488" stroke="#c8c2b0" stroke-width="1.5"/><line x1="80" y1="532" x2="1120" y2="532" stroke="#c8c2b0" stroke-width="1.5"/><line x1="80" y1="576" x2="1120" y2="576" stroke="#c8c2b0" stroke-width="1.5"/><line x1="80" y1="620" x2="1120" y2="620" stroke="#c8c2b0" stroke-width="1.5"/>
+  <circle cx="160" cy="690" r="7" fill="none" stroke="#c8c2b0" stroke-width="1.5"/><circle cx="278" cy="690" r="7" fill="none" stroke="#c8c2b0" stroke-width="1.5"/><circle cx="396" cy="690" r="7" fill="none" stroke="#c8c2b0" stroke-width="1.5"/><circle cx="514" cy="690" r="7" fill="none" stroke="#c8c2b0" stroke-width="1.5"/><circle cx="632" cy="690" r="7" fill="none" stroke="#c8c2b0" stroke-width="1.5"/><circle cx="750" cy="690" r="7" fill="none" stroke="#c8c2b0" stroke-width="1.5"/><circle cx="868" cy="690" r="7" fill="none" stroke="#c8c2b0" stroke-width="1.5"/><circle cx="986" cy="690" r="7" fill="none" stroke="#c8c2b0" stroke-width="1.5"/>
 </svg>

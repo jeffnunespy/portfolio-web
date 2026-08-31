@@ -1,5 +1,13 @@
 import type { NaturezaProjeto, Projeto } from "./types";
 
+// Valor de template em content/profile.json ainda não substituído por um
+// e-mail real; usado para suprimir CTAs de mailto que falhariam silenciosamente.
+export const EMAIL_PLACEHOLDER = "SEU-EMAIL@exemplo.com";
+
+export function emailConfigurado(email: string): boolean {
+  return email !== EMAIL_PLACEHOLDER;
+}
+
 export const NATUREZA_LABEL: Record<NaturezaProjeto, string> = {
   autoral: "Autoral",
   acadêmico: "Acadêmico",

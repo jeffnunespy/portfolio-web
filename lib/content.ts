@@ -37,6 +37,7 @@ const REQUIRED_PROJETO_FIELDS = [
   "limitacoesConhecidas",
   "proximosPassos",
   "destaque",
+  "real",
 ] as const satisfies readonly (keyof Projeto)[];
 
 const REQUIRED_PERFIL_FIELDS = [
@@ -172,6 +173,9 @@ function validateProjeto(data: unknown, fileName: string): Projeto {
   }
   if (typeof data.destaque !== "boolean") {
     throw validationError(`campo "destaque" deve ser booleano em ${fileName}.`);
+  }
+  if (typeof data.real !== "boolean") {
+    throw validationError(`campo "real" deve ser booleano em ${fileName}.`);
   }
 
   validatePublicAsset(data.imagemApresentacao, "imagemApresentacao", fileName);

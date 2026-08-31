@@ -57,6 +57,7 @@ function buildProjeto(overrides: Partial<Projeto> = {}): Projeto {
     limitacoesConhecidas: ["Limite"],
     proximosPassos: ["Passo"],
     destaque: false,
+    real: true,
     ...overrides,
   };
 }
@@ -187,6 +188,7 @@ describe("lib/content", () => {
         /campo "categoria" possui valor inválido/,
       ],
       ["destaque com tipo inválido", { destaque: "sim" }, /campo "destaque" deve ser booleano/],
+      ["real com tipo inválido", { real: "sim" }, /campo "real" deve ser booleano/],
       [
         "tecnologias com tipo inválido",
         { tecnologias: "Next.js" },

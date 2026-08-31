@@ -30,5 +30,6 @@
   "stack": ["Python", "Django", "PostgreSQL", "Docker"],
   "limitacoesConhecidas": ["Projeto acadêmico não mantido após a conclusão da disciplina."],
   "proximosPassos": ["Nenhuma evolução planejada"],
-  "destaque": true
+  "destaque": true,
+  "real": false
 }

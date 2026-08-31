@@ -1,12 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
-  <title id="title">Visual abstrato de gerenciamento de filas</title>
-  <desc id="desc">Cartões numerados conectados em uma sequência sobre fundo esmeralda.</desc>
-  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#052e2b"/><stop offset="1" stop-color="#0f766e"/></linearGradient></defs>
-  <rect width="1200" height="720" rx="40" fill="url(#bg)"/>
-  <path d="M190 360h820" stroke="#5eead4" stroke-width="18" stroke-linecap="round" opacity=".45"/>
-  <g font-family="Arial,sans-serif" font-size="88" font-weight="700" text-anchor="middle">
-    <g><rect x="120" y="235" width="230" height="250" rx="38" fill="#f0fdfa"/><text x="235" y="397" fill="#115e59">01</text></g>
-    <g><rect x="485" y="185" width="230" height="350" rx="38" fill="#ccfbf1"/><text x="600" y="397" fill="#115e59">02</text></g>
-    <g><rect x="850" y="235" width="230" height="250" rx="38" fill="#f0fdfa"/><text x="965" y="397" fill="#115e59">03</text></g>
-  </g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="t-gerenciamento-filas d-gerenciamento-filas">
+  <title id="t-gerenciamento-filas">Ficha de índice do projeto FILAS</title>
+  <desc id="d-gerenciamento-filas">Ficha catalográfica desenhada: Organização e priorização de atendimento. Não é uma captura de tela da aplicação.</desc>
+  <rect width="1200" height="720" fill="#f4f1e8"/>
+  <rect x="40" y="40" width="1120" height="640" fill="none" stroke="#1a1a17" stroke-width="3"/>
+  <line x1="80" y1="150" x2="1120" y2="150" stroke="#1a1a17" stroke-width="2"/>
+  <text x="80" y="120" font-family="Archivo Narrow, Arial Narrow, sans-serif" font-size="30" font-weight="700" letter-spacing="7" fill="#6f6a5f">FICHA · GERENCIAMENTO-FILAS</text>
+  <text x="1120" y="120" text-anchor="end" font-family="Archivo Narrow, Arial Narrow, sans-serif" font-size="30" font-weight="700" letter-spacing="7" fill="#6f6a5f">ACADÊMICO</text>
+  <text x="80" y="290" font-family="Zilla Slab, Georgia, serif" font-size="112" font-weight="700" fill="#1a1a17">FILAS</text>
+  <text x="80" y="350" font-family="Archivo, Arial, sans-serif" font-size="34" fill="#6f6a5f">Organização e priorização de atendimento</text>
+  <line x1="80" y1="400" x2="1120" y2="400" stroke="#c8c2b0" stroke-width="1.5"/><line x1="80" y1="444" x2="1120" y2="444" stroke="#c8c2b0" stroke-width="1.5"/><line x1="80" y1="488" x2="1120" y2="488" stroke="#c8c2b0" stroke-width="1.5"/><line x1="80" y1="532" x2="1120" y2="532" stroke="#c8c2b0" stroke-width="1.5"/><line x1="80" y1="576" x2="1120" y2="576" stroke="#c8c2b0" stroke-width="1.5"/><line x1="80" y1="620" x2="1120" y2="620" stroke="#c8c2b0" stroke-width="1.5"/>
+  <circle cx="160" cy="690" r="7" fill="none" stroke="#c8c2b0" stroke-width="1.5"/><circle cx="278" cy="690" r="7" fill="none" stroke="#c8c2b0" stroke-width="1.5"/><circle cx="396" cy="690" r="7" fill="none" stroke="#c8c2b0" stroke-width="1.5"/><circle cx="514" cy="690" r="7" fill="none" stroke="#c8c2b0" stroke-width="1.5"/><circle cx="632" cy="690" r="7" fill="none" stroke="#c8c2b0" stroke-width="1.5"/><circle cx="750" cy="690" r="7" fill="none" stroke="#c8c2b0" stroke-width="1.5"/><circle cx="868" cy="690" r="7" fill="none" stroke="#c8c2b0" stroke-width="1.5"/><circle cx="986" cy="690" r="7" fill="none" stroke="#c8c2b0" stroke-width="1.5"/>
 </svg>

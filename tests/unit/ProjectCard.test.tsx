@@ -26,6 +26,7 @@ const projeto: Projeto = {
   limitacoesConhecidas: ["Limitação."],
   proximosPassos: ["Próximo passo."],
   destaque: true,
+  real: true,
 };
 
 describe("ProjectCard", () => {

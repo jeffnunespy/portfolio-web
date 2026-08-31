@@ -1,11 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
-  <title id="title">Forma de onda de uma plataforma de transcrição de áudio</title>
-  <desc id="desc">Forma de onda e linhas de texto sobre fundo violeta escuro.</desc>
-  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#312e81"/><stop offset="1" stop-color="#86198f"/></linearGradient></defs>
-  <rect width="1200" height="720" rx="40" fill="url(#bg)"/>
-  <g stroke="#f5d0fe" stroke-width="18" stroke-linecap="round">
-    <path d="M125 350h45m30-80v160m45-230v300m45-190v80m45-155v230m45-310v410m45-250v90m45-190v290m45-110v-70m45-220v510m45-300v90m45-190v290m45-120v-50m45-200v450m45-270v90m45-160v230m45-90v-50m45-120v290m45-180v70m45-105v140m45-70h45"/>
-  </g>
-  <rect x="245" y="575" width="710" height="24" rx="12" fill="#f5d0fe" opacity=".55"/>
-  <rect x="365" y="625" width="470" height="18" rx="9" fill="#f5d0fe" opacity=".35"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="t-transcricao-audio d-transcricao-audio">
+  <title id="t-transcricao-audio">Ficha de índice do projeto TRANSCRIÇÃO</title>
+  <desc id="d-transcricao-audio">Ficha catalográfica desenhada: Transcrição e análise de áudio. Não é uma captura de tela da aplicação.</desc>
+  <rect width="1200" height="720" fill="#f4f1e8"/>
+  <rect x="40" y="40" width="1120" height="640" fill="none" stroke="#1a1a17" stroke-width="3"/>
+  <line x1="80" y1="150" x2="1120" y2="150" stroke="#1a1a17" stroke-width="2"/>
+  <text x="80" y="120" font-family="Archivo Narrow, Arial Narrow, sans-serif" font-size="30" font-weight="700" letter-spacing="7" fill="#6f6a5f">FICHA · TRANSCRICAO-AUDIO</text>
+  <text x="1120" y="120" text-anchor="end" font-family="Archivo Narrow, Arial Narrow, sans-serif" font-size="30" font-weight="700" letter-spacing="7" fill="#6f6a5f">COLABORATIVO</text>
+  <text x="80" y="290" font-family="Zilla Slab, Georgia, serif" font-size="112" font-weight="700" fill="#1a1a17">TRANSCRIÇÃO</text>
+  <text x="80" y="350" font-family="Archivo, Arial, sans-serif" font-size="34" fill="#6f6a5f">Transcrição e análise de áudio</text>
+  <line x1="80" y1="400" x2="1120" y2="400" stroke="#c8c2b0" stroke-width="1.5"/><line x1="80" y1="444" x2="1120" y2="444" stroke="#c8c2b0" stroke-width="1.5"/><line x1="80" y1="488" x2="1120" y2="488" stroke="#c8c2b0" stroke-width="1.5"/><line x1="80" y1="532" x2="1120" y2="532" stroke="#c8c2b0" stroke-width="1.5"/><line x1="80" y1="576" x2="1120" y2="576" stroke="#c8c2b0" stroke-width="1.5"/><line x1="80" y1="620" x2="1120" y2="620" stroke="#c8c2b0" stroke-width="1.5"/>
+  <circle cx="160" cy="690" r="7" fill="none" stroke="#c8c2b0" stroke-width="1.5"/><circle cx="278" cy="690" r="7" fill="none" stroke="#c8c2b0" stroke-width="1.5"/><circle cx="396" cy="690" r="7" fill="none" stroke="#c8c2b0" stroke-width="1.5"/><circle cx="514" cy="690" r="7" fill="none" stroke="#c8c2b0" stroke-width="1.5"/><circle cx="632" cy="690" r="7" fill="none" stroke="#c8c2b0" stroke-width="1.5"/><circle cx="750" cy="690" r="7" fill="none" stroke="#c8c2b0" stroke-width="1.5"/><circle cx="868" cy="690" r="7" fill="none" stroke="#c8c2b0" stroke-width="1.5"/><circle cx="986" cy="690" r="7" fill="none" stroke="#c8c2b0" stroke-width="1.5"/>
 </svg>

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { getPerfil } from "../../lib/content";
+import { emailConfigurado } from "../../lib/labels";
 
 export function generateMetadata(): Metadata {
   const perfil = getPerfil();
@@ -20,12 +21,15 @@ export function generateMetadata(): Metadata {
 
 export default function ResumePage() {
   const perfil = getPerfil();
+  const podeContatar = emailConfigurado(perfil.contato.valor);
 
   return (
     <article className="resume-page">
       <header className="resume-page__header">
         <div>
-          <p className="eyebrow">Perfil profissional</p>
+          <div className="hero__index">
+            <span>Registro 004 · Currículo</span>
+          </div>
           <h1>Currículo</h1>
           <p className="resume-page__role">{perfil.tituloPosicionamento}</p>
         </div>
@@ -60,7 +64,11 @@ export default function ResumePage() {
         <h2 id="resume-links">Contato e perfis</h2>
         <ul className="resume-contact">
           <li>
-            <a href={`mailto:${perfil.contato.valor}`}>{perfil.contato.valor}</a>
+            {podeContatar ? (
+              <a href={`mailto:${perfil.contato.valor}`}>{perfil.contato.valor}</a>
+            ) : (
+              <span className="muted-label">Contato em configuração</span>
+            )}
           </li>
           <li>
             <a href={perfil.linkGithub}>GitHub</a>

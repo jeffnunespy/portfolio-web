@@ -10,7 +10,9 @@ export const metadata: Metadata = {
 export default function NotFound() {
   return (
     <section className="message-page">
-      <p className="eyebrow">Erro 404</p>
+      <div className="hero__index">
+        <span>HTTP 404 · Registro inexistente</span>
+      </div>
       <h1>Página não encontrada</h1>
       <p>A página que você procura não existe ou foi removida.</p>
       <Link className="button button--primary" href="/">

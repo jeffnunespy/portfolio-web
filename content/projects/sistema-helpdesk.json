@@ -31,5 +31,6 @@
   "limitacoesConhecidas": ["Não possui suporte a anexos de arquivos nos chamados."],
   "proximosPassos": ["Nenhuma evolução planejada"],
   "linkRepositorio": "privado",
-  "destaque": true
+  "destaque": true,
+  "real": false
 }

@@ -33,5 +33,6 @@
   ],
   "proximosPassos": ["Adicionar testes end-to-end para as páginas públicas"],
   "linkRepositorio": "privado",
-  "destaque": true
+  "destaque": true,
+  "real": false
 }

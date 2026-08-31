@@ -9,7 +9,7 @@ export default function Image() {
   const perfil = getPerfil();
 
   return renderOgImage({
-    eyebrow: "Perfil profissional",
+    indice: "Registro 003 · Currículo",
     titulo: "Currículo",
     descricao: truncar(perfil.tituloPosicionamento, 160),
   });

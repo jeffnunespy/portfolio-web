@@ -9,9 +9,7 @@ export default function Image() {
   const perfil = getPerfil();
 
   return renderOgImage({
-    // Mesmo eyebrow exibido na home, em vez de repetir "Portfólio" que já
-    // aparece no rodapé do cartão.
-    eyebrow: "Backend · Engenharia de Software · Cloud · DevOps",
+    indice: "Registro 001 · Portfólio profissional",
     titulo: perfil.tituloPosicionamento,
     descricao: truncar(perfil.descricaoPosicionamento, 160),
   });

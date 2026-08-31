@@ -9,7 +9,7 @@ export default function Image() {
   const perfil = getPerfil();
 
   return renderOgImage({
-    eyebrow: "Trajetória e método",
+    indice: "Registro 002 · Trajetória",
     titulo: "Sobre",
     descricao: truncar(perfil.tituloPosicionamento, 160),
   });

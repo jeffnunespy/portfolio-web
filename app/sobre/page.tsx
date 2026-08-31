@@ -25,14 +25,16 @@ export default function AboutPage() {
   return (
     <article className="about-page">
       <header>
-        <p className="eyebrow">Trajetória e método</p>
+        <div className="hero__index">
+          <span>Registro 003 · Perfil</span>
+          <span>pt-BR</span>
+        </div>
         <h1>Sobre</h1>
         <p className="about-page__lead">{perfil.tituloPosicionamento}</p>
       </header>
 
       <section aria-labelledby="about-positioning">
         <h2 id="about-positioning">Da especificação ao deploy</h2>
-        <p>{perfil.descricaoPosicionamento}</p>
         <p>{perfil.biografiaSobre}</p>
       </section>
 
@@ -40,17 +42,14 @@ export default function AboutPage() {
         <h2 id="about-method">Como organizo meu trabalho</h2>
         <div className="about-principles">
           <article>
-            <span>01</span>
             <h3>Backend como profundidade</h3>
             <p>Modelagem, regras de negócio e integridade orientam as decisões técnicas.</p>
           </article>
           <article>
-            <span>02</span>
             <h3>Engenharia como método</h3>
             <p>Especificação, testes e documentação tornam cada entrega verificável.</p>
           </article>
           <article>
-            <span>03</span>
             <h3>Cloud e DevOps como diferenciais</h3>
             <p>Automação e operação responsável conectam o código ao ambiente real.</p>
           </article>

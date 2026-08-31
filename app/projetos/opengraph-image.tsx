@@ -6,7 +6,7 @@ export const alt = "Projetos do portfólio";
 
 export default function Image() {
   return renderOgImage({
-    eyebrow: "Estudos de caso",
+    indice: "Índice · Fichas de projeto",
     titulo: "Projetos",
     descricao: "Decisões, responsabilidades e limitações apresentadas com contexto.",
   });

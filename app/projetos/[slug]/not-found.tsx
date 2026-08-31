@@ -10,7 +10,9 @@ export const metadata: Metadata = {
 export default function ProjectNotFound() {
   return (
     <section className="message-page">
-      <p className="eyebrow">Erro 404</p>
+      <div className="hero__index">
+        <span>HTTP 404 · Ficha inexistente</span>
+      </div>
       <h1>Projeto não encontrado</h1>
       <p>Este projeto não existe ou não está mais disponível.</p>
       <Link className="button button--primary" href="/projetos">
