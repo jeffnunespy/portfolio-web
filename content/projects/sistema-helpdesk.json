@@ -1,35 +1,37 @@
 {
   "slug": "sistema-helpdesk",
   "titulo": "Sistema de Suporte/Helpdesk",
-  "resumo": "Sistema para abertura, triagem e acompanhamento de chamados de suporte técnico.",
+  "resumo": "Estrutura planejada de um sistema para abertura, triagem e acompanhamento de chamados de suporte técnico.",
   "problemaTratado": "Comunicação dispersa entre clientes e equipe de suporte, sem histórico centralizado de chamados.",
-  "status": "Concluído",
+  "status": "Em andamento",
   "categoria": "Backend",
-  "natureza": "profissional",
+  "natureza": "autoral",
   "tecnologias": ["Python", "Django", "PostgreSQL", "Docker"],
   "imagemApresentacao": "/images/projects/sistema-helpdesk.svg",
   "competenciasDemonstradas": ["Python", "Django", "PostgreSQL", "Docker", "Testes automatizados"],
-  "contexto": "Desenvolvido em contexto profissional para substituir o atendimento por e-mail de uma equipe de suporte.",
+  "contexto": "Ficha planejada. Descreve um sistema de chamados que substituiria o atendimento por e-mail de uma equipe de suporte. Nenhuma parte foi implementada.",
   "objetivo": "Centralizar o ciclo de vida dos chamados, do registro à resolução, com métricas básicas de atendimento.",
   "funcionalidadesPrincipais": [
-    "Abertura e categorização de chamados",
-    "Atribuição de chamados a atendentes",
-    "Painel com status e histórico de cada chamado"
+    "Abertura e categorização de chamados (planejado)",
+    "Atribuição de chamados a atendentes (planejado)",
+    "Painel com status e histórico de cada chamado (planejado)"
   ],
-  "responsabilidadeProprietario": "Desenvolvimento do backend com Django, modelagem do banco de dados PostgreSQL e implementação das regras de negócio do fluxo de chamados.",
+  "responsabilidadeProprietario": "Escopo planejado: backend em Django, modelagem do banco PostgreSQL e regras de negócio do fluxo de chamados. Nenhuma dessas partes foi executada.",
   "decisoesRelevantes": [
     {
       "titulo": "Django e PostgreSQL para regras e integridade de dados",
-      "descricao": "Escolhido PostgreSQL pela necessidade de relacionamentos fortes entre chamados, usuários e equipes."
+      "descricao": "Decisão de projeto ainda não implementada: PostgreSQL pela necessidade de relacionamentos fortes entre chamados, usuários e equipes."
     },
     {
       "titulo": "Containerização do ambiente",
-      "descricao": "Uso de Docker para padronizar o ambiente de desenvolvimento e simplificar o deploy em produção."
+      "descricao": "Decisão de projeto ainda não implementada: Docker para padronizar o ambiente de desenvolvimento e simplificar o deploy."
     }
   ],
   "stack": ["Python", "Django", "PostgreSQL", "Docker"],
-  "limitacoesConhecidas": ["Não possui suporte a anexos de arquivos nos chamados."],
-  "proximosPassos": ["Nenhuma evolução planejada"],
+  "limitacoesConhecidas": [
+    "Ficha planejada: não há implementação, testes nem deploy. Suporte a anexos de arquivos está fora do escopo previsto."
+  ],
+  "proximosPassos": ["Implementar a estrutura descrita ou retirar a ficha do portfólio."],
   "linkRepositorio": "privado",
   "destaque": true,
   "real": false

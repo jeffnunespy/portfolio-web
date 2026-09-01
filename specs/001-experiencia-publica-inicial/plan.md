@@ -9,6 +9,10 @@ Escopo ampliado em 2026-08-15 pelas recomendações de convergência de stack
 higiene de repositório, CI, fortalecimento da validação de conteúdo, atualização do Vitest e
 fechamento de conteúdo/currículo antes da publicação.
 
+Emenda aprovada em 2026-09-01: o contrato público agora registra explicitamente a separação entre
+projetos implementados (`/projetos`) e escopo planejado (`/roadmap`), além das remediações P1–P3 da
+auditoria Impeccable. Os bloqueios P0 de conteúdo confirmado e currículo definitivo permanecem.
+
 **Note**: This template is filled in by the `/speckit-plan` command; its definition describes the execution workflow.
 
 ## Summary
@@ -16,8 +20,8 @@ fechamento de conteúdo/currículo antes da publicação.
 Levar a experiência pública já implementada da stack atual (Next.js 14.2.18, React 18.3, Node 20,
 ESLint 8, Vitest 2) até um estado publicável, sem redesenhar a arquitetura. O núcleo da entrega é a
 migração para Next.js 16.3.1 + React 19.2 + Node.js 24 LTS + ESLint 10 em flat config, eliminando a
-cadeia vulnerável `next@14.2.18 -> postcss@8.4.31 -> nanoid@3.3.17` sem alterar o contrato público
-das páginas. Em torno dela, a convergência adiciona os mecanismos de qualidade ainda ausentes:
+cadeia vulnerável `next@14.2.18 -> postcss@8.4.31 -> nanoid@3.3.17`, preservando a experiência
+pública e formalizando a separação aprovada entre fichas implementadas e roadmap. Em torno dela, a convergência adiciona os mecanismos de qualidade ainda ausentes:
 pipeline de CI com gates executáveis, validação de conteúdo mais robusta, atualização do Vitest,
 cobertura de acessibilidade/responsividade/metadados e substituição do conteúdo placeholder pelo
 conteúdo real, incluindo o currículo definitivo. O critério de segurança é zero vulnerabilidades de
@@ -56,13 +60,15 @@ carregamento perceptível; o build Turbopack não pode alterar o comportamento p
 **Deployment Model**: Next.js hospedado normalmente na Vercel com páginas pré-renderizadas em build
 time (SSG). **Não** é usado `output: "export"` — decisão registrada em [research.md](./research.md).
 
-**Constraints**: Nenhuma mudança de rota ou de contrato da experiência pública; a substituição de
-conteúdo placeholder por conteúdo real é permitida e exigida (P3), desde que os campos obrigatórios
+**Constraints**: Nenhuma mudança de rota ou contrato sem registro na especificação; `/roadmap` é a
+separação aprovada para escopo planejado, que nunca conta como evidência. A substituição de conteúdo
+placeholder por conteúdo real continua permitida e exigida (P0 pendente), desde que os campos obrigatórios
 e as evidências de competência continuem válidos; não usar `npm audit fix --force`; revisar a saída
 de codemods; preservar alterações existentes do usuário; sem novas dependências de runtime além das
 exigidas pelo framework; nenhuma tecnologia adicionada sem problema real que a justifique
 
-**Scale/Scope**: Um aplicativo Next.js, 4 rotas públicas base e 4 páginas estáticas de projeto;
+**Scale/Scope**: Um aplicativo Next.js, 5 rotas públicas navegáveis (`/`, `/projetos`, `/roadmap`,
+`/sobre`, `/curriculo`), uma página estática de projeto implementado e estados 404 genérico/de projeto;
 uma rota dinâmica (`/projetos/[slug]`) exige adaptação de `params`
 
 ## Constitution Check
@@ -71,7 +77,7 @@ _GATE: Must pass before Phase 0 research. Re-check after Phase 1 design._
 
 | Princípio                                     | Avaliação                                                                                                                                                                         | Status            |
 | --------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| I. Evidências acima de afirmações             | A migração não altera o vínculo competência-projeto; P3 substitui placeholders por conteúdo real, nunca por dados fictícios                                                       | PASS              |
+| I. Evidências acima de afirmações             | Competências só podem apontar para projetos implementados; itens de roadmap nunca contam como evidência; conteúdo P0 segue bloqueado até confirmação                              | PASS              |
 | II. Entregas verticais e incrementais         | Cada prioridade (P0–P3) é uma fatia completa com código, testes, documentação e validação; PRs 1–8 evitam um lote único                                                           | PASS              |
 | III. Simplicidade proporcional                | Atualiza apenas a cadeia necessária; nenhum banco, CMS, backend ou infraestrutura é adicionado; schema runtime fica condicionado a critério explícito                             | PASS              |
 | IV. Backend como área de profundidade         | Sem mudança de domínio; o foco técnico é a segurança e a qualidade verificável da camada de aplicação web                                                                         | PASS (com nota)   |
@@ -116,16 +122,18 @@ eslint.config.mjs                    # Flat config do ESLint para Next.js 16 (su
 └── dependabot.yml                   # Atualizações automáticas de dependências (novo)
 app/
 ├── layout.tsx                       # Decisão explícita sobre scroll em navegação SPA
+├── roadmap/page.tsx                 # Escopo planejado, separado das fichas implementadas
 └── projetos/[slug]/page.tsx         # params assíncrono em página e metadados
 components/layout/
 ├── Header.tsx                       # Tipos JSX compatíveis com React 19
 └── Footer.tsx                       # Tipos JSX compatíveis com React 19
-lib/content.ts                       # Validação fortalecida (tipos, URLs, slug único, enums)
+lib/content.ts                       # Validação fortalecida e discriminação real/planejado
 content/
 ├── profile.json                     # Conteúdo real substituindo placeholders (P3)
 └── projects/*.json                  # Contexto, status, decisões, limitações e links reais (P3)
 assets/                              # Assets fonte versionados (origem das versões otimizadas)
 public/curriculo.pdf                 # Currículo definitivo (P3)
+public/images/projects/*.svg         # Fichas 5:3 com paleta responsiva ao tema
 tests/                               # Regressão unitária, componentes, E2E, axe e responsividade
 docs/
 ├── ACTIVE_CONTEXT.md                # Estado real das fases antes de novo trabalho assistido por IA
@@ -147,6 +155,16 @@ biblioteca de schema runtime só entra se o arquivo passar a acumular regras a p
 mini-framework de validação — critério registrado em [research.md](./research.md).
 
 ## Convergence Design
+
+### Emenda de auditoria Impeccable — 2026-09-01
+
+A remediação P1–P3 formaliza `/projetos` como catálogo exclusivo de implementações reais e
+`/roadmap` como superfície prospectiva; alinha posicionamento, competências e navegação a essa
+distinção. O layout mobile empilha as ações dos cards em largura integral, as fichas SVG preservam
+a proporção nativa 5:3 e acompanham o tema do sistema, e a regressão cobre a sequência completa de
+teclado, zoom de texto a 200%, responsividade e cores dos SVGs. O lint ignora apenas cópias locais
+de bundles de skills, que não são código da aplicação. Nenhuma dessas mudanças resolve ou reduz os
+bloqueios P0 de identidade, contato, currículo e conteúdo profissional ainda não confirmados.
 
 A convergência é organizada em quatro prioridades. Cada uma é entregue como um PR próprio, evitando
 misturar runtime, qualidade e conteúdo em um único diff — o que preserva diagnóstico e rollback

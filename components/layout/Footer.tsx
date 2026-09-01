@@ -2,6 +2,7 @@ import Link from "next/link";
 import { emailConfigurado } from "../../lib/labels";
 
 export interface FooterProps {
+  nome: string;
   linkGithub: string;
   linkLinkedin: string;
   contatoEmail: string;
@@ -16,7 +17,7 @@ export interface FooterProps {
  * FR-021: não customiza ordem de tabulação (sem tabIndex positivo).
  * FR-022: usa marcos de navegação semânticos (<footer>/<nav aria-label>).
  */
-export default function Footer({ linkGithub, linkLinkedin, contatoEmail }: FooterProps) {
+export default function Footer({ nome, linkGithub, linkLinkedin, contatoEmail }: FooterProps) {
   const anoAtual = new Date().getFullYear();
   const podeContatar = emailConfigurado(contatoEmail);
 
@@ -26,6 +27,7 @@ export default function Footer({ linkGithub, linkLinkedin, contatoEmail }: Foote
         <nav className="footer-nav" aria-label="Links secundários">
           <Link href="/">Início</Link>
           <Link href="/projetos">Projetos</Link>
+          <Link href="/roadmap">Roadmap</Link>
           <Link href="/sobre">Sobre</Link>
           <Link href="/curriculo">Currículo</Link>
           <a href={linkGithub} target="_blank" rel="noopener noreferrer">
@@ -37,10 +39,14 @@ export default function Footer({ linkGithub, linkLinkedin, contatoEmail }: Foote
           {podeContatar ? (
             <a href={`mailto:${contatoEmail}`}>Contato</a>
           ) : (
-            <span className="muted-label">Contato em configuração</span>
+            <a href={linkLinkedin} target="_blank" rel="noopener noreferrer">
+              Contato pelo LinkedIn
+            </a>
           )}
         </nav>
-        <p>&copy; {anoAtual} Conteúdo deste portfólio. Todos os direitos reservados.</p>
+        <p>
+          &copy; {anoAtual} {nome}. Todos os direitos reservados.
+        </p>
       </div>
     </footer>
   );

@@ -36,6 +36,14 @@ export interface Projeto {
   real: boolean;
 }
 
+/**
+ * Projeto que já existe como software. `/projetos` e a home só publicam fichas
+ * deste tipo; o compilador passa a recusar um `Projeto` de origem indefinida
+ * onde uma ficha é esperada, em vez de a distinção depender de um `if` em
+ * tempo de execução (DESIGN.md, "Fichas e roadmap: duas superfícies, nunca uma").
+ */
+export type ProjetoImplementado = Projeto & { real: true };
+
 export interface CompetenciaPorArea {
   area: string;
   competencias: string[];
@@ -47,11 +55,15 @@ export interface ContatoPerfil {
 }
 
 export interface PerfilProfissional {
+  nome: string;
   tituloPosicionamento: string;
   descricaoPosicionamento: string;
   competenciasPorArea: CompetenciaPorArea[];
   biografiaSobre: string;
-  linkCurriculo: string;
+  // Ausente enquanto não houver um PDF definitivo. A página /curriculo é
+  // autossuficiente em HTML; o download é conveniência, não conteúdo, e
+  // oferecer um arquivo desatualizado contradiz o conteúdo validado.
+  linkCurriculo?: string;
   linkGithub: string;
   linkLinkedin: string;
   contato: ContatoPerfil;

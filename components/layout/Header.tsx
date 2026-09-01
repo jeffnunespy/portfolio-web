@@ -1,14 +1,29 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+
+const ITENS_NAVEGACAO = [
+  { href: "/", rotulo: "Início" },
+  { href: "/projetos", rotulo: "Projetos" },
+  { href: "/roadmap", rotulo: "Roadmap" },
+  { href: "/sobre", rotulo: "Sobre" },
+  { href: "/curriculo", rotulo: "Currículo" },
+] as const;
 
 /**
  * Cabeçalho com navegação principal do portfólio.
  *
  * FR-005: fornece acesso, a partir de qualquer página pública, a página inicial,
- * listagem de projetos, página Sobre e currículo, nesta ordem da esquerda para a direita.
+ * listagem de projetos, roadmap, página Sobre e currículo, nesta ordem.
  * FR-021: não customiza ordem de tabulação (sem tabIndex positivo).
  * FR-022: usa marcos de navegação semânticos (<header>/<nav aria-label>).
  */
 export default function Header() {
+  // usePathname devolve null fora de um contexto de rotas; sem rota conhecida,
+  // nenhum item é marcado como atual e o destaque do currículo permanece.
+  const pathname = usePathname() ?? "";
+
   return (
     <header className="site-header">
       <div className="site-header__inner">
@@ -16,12 +31,25 @@ export default function Header() {
           portfólio<span>.</span>
         </span>
         <nav className="site-nav" aria-label="Navegação principal">
-          <Link href="/">Início</Link>
-          <Link href="/projetos">Projetos</Link>
-          <Link href="/sobre">Sobre</Link>
-          <Link href="/curriculo" className="nav-curriculo-destaque">
-            Currículo
-          </Link>
+          {ITENS_NAVEGACAO.map(({ href, rotulo }) => {
+            // "/" só casa exato; as demais também cobrem suas subrotas,
+            // para /projetos/<slug> continuar marcando "Projetos".
+            const ativo = href === "/" ? pathname === "/" : pathname.startsWith(href);
+
+            return (
+              <Link
+                key={href}
+                href={href}
+                aria-current={ativo ? "page" : undefined}
+                // O destaque do currículo é a saída principal do fichário e só
+                // aparece quando ele não é a página atual — assim o realce de
+                // "aba ativa" nunca compete com o do item em que se está.
+                className={href === "/curriculo" && !ativo ? "nav-curriculo-destaque" : undefined}
+              >
+                {rotulo}
+              </Link>
+            );
+          })}
         </nav>
       </div>
     </header>

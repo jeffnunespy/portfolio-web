@@ -46,3 +46,15 @@ Thumbs.db
 
 # Artefatos de inspeção visual (Playwright MCP)
 /.playwright-mcp/
+
+# Estado local do Impeccable: configuração da máquina, cache do hook, PIDs,
+# portas, logs e sessões de pergunta. Os artefatos duráveis (PRODUCT.md,
+# DESIGN.md, .impeccable/config.json, .impeccable/design.json e as críticas
+# registradas em .impeccable/critique/) continuam versionáveis.
+/.impeccable/config.local.json
+/.impeccable/hook.cache.json
+/.impeccable/questions/
+/.impeccable/live/
+/.impeccable/*.pid
+/.impeccable/*.port
+/.impeccable/*.log

@@ -1,4 +1,31 @@
+import { readdirSync, readFileSync } from "node:fs";
+import path from "node:path";
 import { test, expect } from "@playwright/test";
+
+// O hero publica o posicionamento do perfil. Ler o JSON evita fixar uma cópia
+// da string que diverge do conteúdo real a cada edição de content/profile.json.
+const perfil = JSON.parse(
+  readFileSync(path.join(process.cwd(), "content", "profile.json"), "utf8"),
+) as {
+  tituloPosicionamento: string;
+  descricaoPosicionamento: string;
+  competenciasPorArea: { area: string }[];
+};
+
+// A home destaca apenas projetos implementados: escopo planejado vive em
+// /roadmap. Contar a partir do conteúdo evita fixar um número que muda a cada
+// projeto entregue.
+const projectsDir = path.join(process.cwd(), "content", "projects");
+const destaquesImplementados = readdirSync(projectsDir)
+  .filter((fileName) => fileName.endsWith(".json"))
+  .map(
+    (fileName) =>
+      JSON.parse(readFileSync(path.join(projectsDir, fileName), "utf8")) as {
+        destaque: boolean;
+        real: boolean;
+      },
+  )
+  .filter((projeto) => projeto.real && projeto.destaque).length;
 
 test("US1 - posicionamento profissional e competências na home", async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 720 });
@@ -6,20 +33,16 @@ test("US1 - posicionamento profissional e competências na home", async ({ page 
 
   const title = page.getByRole("heading", {
     level: 1,
-    name: "Desenvolvedor Full-Stack em Formação",
+    name: perfil.tituloPosicionamento,
   });
-  const description = page.getByText(
-    "Em formação, com foco em desenvolvimento backend com Python e Django, construo aplicações web de ponta a ponta, da arquitetura ao deploy, com PostgreSQL e Google Cloud Platform.",
-  );
+  const description = page.getByText(perfil.descricaoPosicionamento);
 
   await expect(title).toBeVisible();
   await expect(description).toBeVisible();
-  await expect(page.getByRole("heading", { level: 3, name: "Backend" })).toBeVisible();
-  await expect(
-    page.getByRole("heading", { level: 3, name: "Engenharia de Software" }),
-  ).toBeVisible();
-  await expect(page.getByRole("heading", { level: 3, name: "Cloud" })).toBeVisible();
-  await expect(page.getByRole("heading", { level: 3, name: "DevOps" })).toBeVisible();
+  // Toda área declarada no perfil precisa aparecer como cabeçalho de competência.
+  for (const { area } of perfil.competenciasPorArea) {
+    await expect(page.getByRole("heading", { level: 3, name: area })).toBeVisible();
+  }
 
   const titleBox = await title.boundingBox();
   const descriptionBox = await description.boundingBox();
@@ -28,11 +51,16 @@ test("US1 - posicionamento profissional e competências na home", async ({ page 
 
   const projectCards = page.locator('[data-testid="project-card"]');
   const count = await projectCards.count();
-  expect(count).toBe(5);
+  expect(count).toBe(destaquesImplementados);
 
   for (const card of await projectCards.all()) {
     await expect(card.getByText(/Autoral|Acadêmico|Colaborativo|Profissional/)).toBeVisible();
-    await expect(card.getByRole("img")).toBeVisible();
+    // A ficha de índice é decorativa (alt=""): fica visível, mas fora da árvore
+    // de acessibilidade, para não repetir o título que o cartão já anuncia.
+    const fichaDeIndice = card.locator("img.project-image");
+    await expect(fichaDeIndice).toBeVisible();
+    await expect(fichaDeIndice).toHaveAttribute("alt", "");
+    await expect(card.getByRole("img")).toHaveCount(0);
     await expect(card.getByRole("link", { name: /Ver detalhes de/ })).toBeVisible();
   }
 });
@@ -46,6 +74,7 @@ test("US1 - navegação por tabulação sem tabindex positivo", async ({ page })
     "Pular para o conteúdo principal",
     "Início",
     "Projetos",
+    "Roadmap",
     "Sobre",
     "Currículo",
   ];

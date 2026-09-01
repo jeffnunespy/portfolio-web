@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { getPerfil, getProjetos } from "../lib/content";
+import { getPerfil, getProjetosImplementados, getRoadmap } from "../lib/content";
 import ProjectCard from "../components/project/ProjectCard";
 import Link from "next/link";
 
@@ -17,10 +17,9 @@ export function generateMetadata(): Metadata {
 
 export default function Home() {
   const perfil = getPerfil();
-  const todosProjetos = getProjetos();
-  const destaques = todosProjetos.filter((p) => p.destaque).slice(0, 6);
-  const projetosReais = destaques.filter((p) => p.real);
-  const projetosEstrutura = destaques.filter((p) => !p.real);
+  const implementados = getProjetosImplementados();
+  const planejados = getRoadmap();
+  const destaques = implementados.filter((p) => p.destaque).slice(0, 6);
 
   const areasProfundidade = perfil.competenciasPorArea.slice(0, 2).map((a) => a.area);
   const totalCompetencias = perfil.competenciasPorArea.reduce(
@@ -63,8 +62,14 @@ export default function Home() {
             <dd>{totalCompetencias}</dd>
           </div>
           <div>
-            <dt>Fichas de projeto</dt>
-            <dd>{todosProjetos.length}</dd>
+            <dt>Projetos implementados</dt>
+            {/*
+              Sem denominador, "1" não diz se é o acervo todo ou um recorte.
+              O total inclui o escopo planejado, que tem rota própria.
+            */}
+            <dd>
+              {implementados.length} de {implementados.length + planejados.length}
+            </dd>
           </div>
           <div>
             <dt>Código-fonte</dt>
@@ -94,7 +99,8 @@ export default function Home() {
               key={area.area}
             >
               <h3>{area.area}</h3>
-              <ul>
+              {/* role="list" preserva a semântica que o Safari/VoiceOver descarta quando list-style é none. */}
+              <ul role="list">
                 {area.competencias.map((competencia) => (
                   <li key={competencia}>{competencia}</li>
                 ))}
@@ -117,29 +123,22 @@ export default function Home() {
             <Link href="/projetos">Consultar todos os projetos</Link>
           </div>
         ) : (
-          <>
-            {projetosReais.length > 0 ? (
-              <div className="project-grid">
-                {projetosReais.map((projeto) => (
-                  <ProjectCard key={projeto.slug} projeto={projeto} headingLevel={3} />
-                ))}
-              </div>
-            ) : null}
-
-            {projetosEstrutura.length > 0 ? (
-              <div className="project-group project-group--estrutura">
-                <p className="project-group__label">
-                  Estrutura de conteúdo em validação — projetos ainda não implementados
-                </p>
-                <div className="project-grid">
-                  {projetosEstrutura.map((projeto) => (
-                    <ProjectCard key={projeto.slug} projeto={projeto} headingLevel={3} />
-                  ))}
-                </div>
-              </div>
-            ) : null}
-          </>
+          <div className="project-grid">
+            {destaques.map((projeto) => (
+              <ProjectCard key={projeto.slug} projeto={projeto} headingLevel={3} />
+            ))}
+          </div>
         )}
+
+        {planejados.length > 0 ? (
+          <p className="page-intro__aside">
+            Outros {planejados.length} projetos estão registrados como escopo planejado, sem
+            software implementado.{" "}
+            <Link className="text-link" href="/roadmap">
+              Consultar o roadmap
+            </Link>
+          </p>
+        ) : null}
       </section>
     </>
   );

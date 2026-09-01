@@ -8,13 +8,27 @@
   "natureza": "autoral",
   "tecnologias": ["Next.js", "TypeScript", "React"],
   "imagemApresentacao": "/images/projects/plataforma-portfolio.svg",
-  "competenciasDemonstradas": ["Node.js", "Versionamento com Git", "Design de sistemas"],
-  "contexto": "Projeto pessoal iniciado para consolidar em um único lugar os estudos de caso desenvolvidos ao longo da formação.",
+  "competenciasDemonstradas": [
+    "TypeScript",
+    "React",
+    "Next.js",
+    "CSS sem framework",
+    "Arquitetura modular",
+    "Validação de dados em build",
+    "Design de sistemas",
+    "Versionamento com Git",
+    "Testes automatizados",
+    "Testes end-to-end",
+    "Acessibilidade WCAG 2.1 AA",
+    "Node.js",
+    "CI/CD"
+  ],
+  "contexto": "Projeto pessoal criado para reunir a apresentação profissional e fichas de projeto em um site versionado, distinguindo trabalho implementado de estruturas de conteúdo planejadas.",
   "objetivo": "Oferecer uma experiência pública clara, rápida e mantida via conteúdo versionado em arquivos JSON.",
   "funcionalidadesPrincipais": [
     "Listagem de projetos em destaque na página inicial",
     "Página resumida individual por projeto",
-    "Página de currículo com opção de download"
+    "Página de currículo consultável em HTML"
   ],
   "responsabilidadeProprietario": "Responsável por toda a especificação, arquitetura, implementação e conteúdo do site.",
   "decisoesRelevantes": [
@@ -27,12 +41,14 @@
       "descricao": "Escolhido pela geração estática das páginas de projeto, favorecendo desempenho e simplicidade de deploy."
     }
   ],
-  "stack": ["Next.js", "TypeScript", "React", "Tailwind CSS"],
+  "stack": ["Next.js", "TypeScript", "React", "CSS puro"],
   "limitacoesConhecidas": [
     "Não há área administrativa; qualquer alteração de conteúdo exige editar arquivos e publicar novo deploy."
   ],
-  "proximosPassos": ["Adicionar testes end-to-end para as páginas públicas"],
+  "proximosPassos": [
+    "Executar e registrar as verificações manuais de acessibilidade e o preview antes da publicação"
+  ],
   "linkRepositorio": "privado",
   "destaque": true,
-  "real": false
+  "real": true
 }

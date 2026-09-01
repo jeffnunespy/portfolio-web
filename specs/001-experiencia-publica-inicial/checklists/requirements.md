@@ -34,3 +34,7 @@
 - Nenhum item pendente. A descrição fornecida pelo usuário foi suficientemente detalhada
   para eliminar a necessidade de marcadores [NEEDS CLARIFICATION]; decisões de escopo
   ambíguas foram documentadas na seção Assumptions do spec.md.
+- Alinhamento revisado em 2026-09-01: `/projetos` contém somente implementações reais e
+  `/roadmap` contém escopo planejado. Os requisitos P0 de identidade, contato, currículo e
+  conteúdo confirmado permanecem exigidos; este checklist avalia qualidade da especificação,
+  não conclusão da implementação.

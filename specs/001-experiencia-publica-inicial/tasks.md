@@ -91,7 +91,7 @@ Aplicação Next.js única: `app/`, `components/`, `content/`, `lib/`, `tests/`,
 
 **Goal**: Garantir que estudos de caso, listagem, estados de link e 404 permaneçam estáticos, acessíveis e corretos no Next.js 16.
 
-**Independent Test**: Acesso direto a `/projetos/<slug>` mostra todas as seções do caso e links corretos; `/projetos/slug-inexistente` apresenta alternativa amigável; a listagem contém todos os projetos publicados.
+**Independent Test**: Acesso direto a `/projetos/<slug>` mostra todas as seções do caso implementado e links corretos; `/projetos/slug-inexistente` apresenta alternativa amigável; a listagem contém todos os projetos implementados e `/roadmap` mantém o escopo planejado sem ficha própria.
 
 ### Tests for User Story 2
 
@@ -105,7 +105,7 @@ Aplicação Next.js única: `app/`, `components/`, `content/`, `lib/`, `tests/`,
 
 - [X] T030 [US2] Gerar parâmetros estáticos, páginas e metadados por slug no formato assíncrono do Next.js 16 em `app/projetos/[slug]/page.tsx`
 - [X] T031 [US2] Oferecer mensagem simples e link alternativo para projeto não encontrado em `app/projetos/[slug]/not-found.tsx`
-- [X] T032 [US2] Garantir listagem de todos os projetos publicados em `app/projetos/page.tsx`
+- [X] T032 [US2] Garantir listagem de todos os projetos implementados em `app/projetos/page.tsx`
 - [X] T033 [US2] Unificar links de demonstração, repositório público e código privado com CTA de contato em `components/project/EvidenceLink.tsx`
 - [X] T034 [US2] Validar status fechado e sua apresentação consistente em `components/project/ProjectStatusBadge.tsx`
 
@@ -184,6 +184,8 @@ Aplicação Next.js única: `app/`, `components/`, `content/`, `lib/`, `tests/`,
 - **US1 e US2 (P1)**: começam após Foundation; são o MVP e podem avançar em paralelo se a alteração compartilhada de `app/globals.css` for coordenada.
 - **US3 e US4 (P2)**: começam após Foundation; dependem de `content/profile.json` válido e podem avançar em paralelo.
 - **Polish (Phase 7)**: T046–T047 antecedem a validação final T054; T048–T049 antecedem os testes unitários finais; T052 e T041 dependem de conteúdo e currículo confirmados pelo proprietário.
+- **Convergence (Phases 8–10)**: registra o hardening já entregue; T056 permanece bloqueante para publicação e independente da remediação visual.
+- **Remediação Impeccable (Phase 11)**: T081 registra o contrato; T082–T085 podem avançar em paralelo depois dele; T086 depende da conclusão e validação de T081–T085.
 
 ### User Story Dependencies
 
@@ -243,7 +245,7 @@ Task: "Validar status fechado em components/project/ProjectStatusBadge.tsx"
 - [ ] T056 CRITICAL Substituir placeholders, URLs de exemplo e currículo por conteúdo profissional confirmado com evidência verificável em `content/profile.json` e `public/curriculo.pdf` per Constituição I/X e plan: P3 (contradicts)
 - [X] T057 Fortalecer a validação de tipos, URLs, `mailto:`, enums, slugs, imagens, links e teto de destaques em `lib/content.ts` per FR-011a, FR-024 e contrato de conteúdo
 - [X] T058 Cobrir todas as regras inválidas da validação de conteúdo em `tests/unit/content.test.ts` per FR-011a, FR-024 e Constitution V
-- [X] T059 Expandir teclado, foco e axe-core para listagem, Sobre, currículo e ambos os estados 404 em `tests/e2e/accessibility.spec.ts` per FR-021, FR-022 e SC-005
+- [X] T059 Expandir teclado, foco e axe-core para listagem, Sobre, currículo e ambos os estados 404 em `tests/e2e/accessibility.a11y.spec.ts` per FR-021, FR-022 e SC-005
 - [X] T060 Definir e testar título e descrição próprios para 404 genérico e 404 de projeto em `app/not-found.tsx`, `app/projetos/[slug]/not-found.tsx` e `tests/e2e/metadata.spec.ts` per FR-029
 - [X] T061 Cobrir links globais em todas as rotas públicas e responsividade sem sobreposição ou texto cortado em `tests/e2e/curriculo.spec.ts` e `tests/e2e/responsive.spec.ts` per SC-003 e SC-006
 - [X] T062 Criar testes Testing Library para card, cabeçalho e rodapé em `tests/unit/ProjectCard.test.tsx` e `tests/unit/HeaderFooter.test.tsx` per plan: testes de componentes e Constitution V
@@ -256,3 +258,40 @@ Task: "Validar status fechado em components/project/ProjectStatusBadge.tsx"
 - [X] T064 HIGH Adicionar `npm audit --omit=dev --audit-level=high` como gate obrigatório após `npm ci` em `.github/workflows/ci.yml` per plan: P1 / Constituição VI (partial)
 - [X] T065 HIGH Separar os scripts/etapas de E2E funcional e axe-core e executá-los nessa ordem no CI em `.github/workflows/ci.yml`, `package.json` e `tests/e2e/` per contrato de CI / plan: Etapa 4 (partial)
 - [X] T066 Definir e aplicar, com testes, o conjunto fechado permitido para `categoria` em `specs/001-experiencia-publica-inicial/data-model.md`, `lib/content.ts` e `tests/unit/content.test.ts` per plan: Etapa 5 / data-model: categoria (partial)
+- [X] T067 [US2] Fechar o fim de `/projetos/[slug]` com rodapé de ficha, acesso à listagem, navegação anterior/próxima determinística, CTA para currículo e cobertura unitária/E2E/a11y/responsiva per FR-013b
+- [X] T068 [US1] [US2] [US3] [US4] Reforçar cores forçadas e alto contraste com tokens de sistema, foco, links e estados não dependentes de cor em `app/globals.css`, `tests/e2e/forced-colors.a11y.spec.ts` e `DESIGN.md` per FR-021, FR-022 e Constituição VII
+
+---
+
+## Phase 10: Hardening de acessibilidade e integridade factual
+
+Entregue e verificado nesta rodada (typecheck, eslint dos arquivos alterados,
+`vitest run tests/unit/` e `npm run build` executados; ver `docs/ACTIVE_CONTEXT.md`
+para os resultados exatos e para o que permanece falhando).
+
+- [X] T069 [US1] [US2] [US3] [US4] Preservar a semântica de lista onde `list-style: none` a remove no Safari/VoiceOver, com `role="list"` explícito em `app/page.tsx`, `app/curriculo/page.tsx`, `app/projetos/[slug]/page.tsx` e `components/project/ProjectCard.tsx` per FR-022 e Constituição VII
+- [X] T070 [US1] [US2] Publicar a ficha de índice do projeto como imagem decorativa (`alt=""`) em `components/project/ProjectImage.tsx`, com cobertura em `tests/unit/ProjectImage.test.tsx` e `tests/unit/ProjectCard.test.tsx`, em vez de repetir o título já anunciado pelo cartão per FR-022 e Constituição VII
+- [X] T071 [US1] [US2] Manter os glifos decorativos de badge, `.tag` e listas de campo fora do nome acessível com `content: "X" / ""` em `app/globals.css`, verificado em `tests/e2e/forced-colors.a11y.spec.ts` per FR-021, FR-022 e Constituição VII
+- [X] T072 [US3] [US4] Desacoplar os testes E2E das cópias literais de `content/profile.json`, lendo o perfil real em `tests/e2e/curriculo.spec.ts`, `tests/e2e/sobre.spec.ts`, `tests/e2e/home.spec.ts` e `tests/e2e/metadata.spec.ts` per Constituição V
+- [X] T073 Redigir as quatro fichas não implementadas (`hayyanu`, `sistema-helpdesk`, `gerenciamento-filas`, `transcricao-audio`) em linguagem de escopo planejado, retirando afirmações de experiência concluída em `status`, `natureza`, `contexto` e `responsabilidadeProprietario` per Constituição I/X
+- [X] T074 Alinhar `PRODUCT.md` e `DESIGN.md` ao estado real do conteúdo: `plataforma-portfolio` registrada como implementação verificável, as outras quatro como estrutura planejada, e as decisões de a11y desta fase documentadas per Constituição VIII
+- [X] T075 Manter o estado local do Impeccable (`config.local.json`, cache do hook, PIDs, portas, logs e sessões de pergunta) fora do escopo versionável em `.gitignore`, sem remover arquivo algum per Constituição VI
+- [X] T076 Remover do perfil a competência "Django", declarada sem projeto que a referencie em `competenciasDemonstradas` e ainda classificada na área "Front-end". Decisão do proprietário nesta sessão: remover em vez de fabricar evidência. `npm run build` volta a passar o gate FR-024 per FR-024, SC-007 e Constituição I/X
+- [X] T077 Consolidar a arquitetura de `/roadmap` em `app/roadmap/page.tsx`, navegação global e filtros de conteúdo; alinhar `tests/e2e/project-detail.spec.ts` e `tests/e2e/project-detail.a11y.spec.ts` para navegar a `plataforma-portfolio`, verificar 404 dos slugs planejados e cobrir o roadmap sem link de detalhe, demonstração ou repositório per FR-004b, FR-013b e Constituição V
+- [X] T078 [US2] Limitar a ficha de índice em `/projetos/<slug>` à medida em que foi desenhada (`width: min(100%, 34rem)` em `app/globals.css`): sem teto ela esticava pelos 1280px do container e sua linha de índice interna superava o `<h1>` da página per Constituição VIII
+- [X] T079 [US3] Eliminar a redundância do "Resumo" do currículo, onde `descricaoPosicionamento` e `biografiaSobre` eram paráfrases um do outro: a biografia passou a descrever o método de trabalho, verificável neste repositório, que a síntese não cobre per FR-016 e Constituição I
+- [X] T080 [US4] Alinhar os três princípios de `app/sobre/page.tsx` ao que o perfil sustenta: "Backend como profundidade" e "Cloud e DevOps como diferenciais" anunciavam como diferencial o que segue registrado como escopo planejado em `/roadmap`. `tests/e2e/sobre.spec.ts` passou a verificar a estrutura da seção, não as frases per Constituição I/X
+
+---
+
+## Phase 11: Remediação Impeccable P1–P3
+
+Escopo aprovado em 2026-09-01: resolver os achados P1, P2 e P3 da auditoria visual
+sem alterar os bloqueios factuais P0.
+
+- [X] T081 Alinhar `spec.md`, `plan.md`, `tasks.md`, checklist, `DESIGN.md` e `docs/ACTIVE_CONTEXT.md` à separação entre projeto implementado e roadmap per Constituição I/VIII/X
+- [X] T082 [US1] [US2] Empilhar as ações dos cards em 320px e preservar a proporção nativa 5:3 das fichas SVG sem recorte em `app/globals.css` e `tests/e2e/responsive.spec.ts` per FR-020, SC-006 e craft floor
+- [X] T083 [US1] [US2] Adaptar as cinco fichas SVG ao tema escuro no próprio recurso e cobrir a paleta renderizada em `tests/e2e/responsive.spec.ts` per FR-022 e `DESIGN.md`
+- [X] T084 [US1] [US2] [US3] [US4] Cobrir ordem completa de tabulação, foco visível e zoom de texto a 200% em todas as rotas públicas, mantendo leitor de tela e preview/canário como inspeções manuais pendentes per FR-021, FR-022, SC-005 e SC-006
+- [X] T085 Restringir o lint ao código do produto, ignorando bundles locais copiados de skills em `eslint.config.mjs`, sem suprimir regras ou arquivos da aplicação per Constituição V/VI
+- [X] T086 Executar detector Impeccable, diff check, formato, lint, tipos, unitários, build, E2E funcional/a11y e revisão visual; registrar resultados e pareceres especializados antes de concluir a fase

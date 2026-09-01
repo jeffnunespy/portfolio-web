@@ -4,20 +4,28 @@ import { useState } from "react";
 
 export interface ProjectImageProps {
   src: string;
-  title: string;
 }
 
-export default function ProjectImage({ src, title }: ProjectImageProps) {
-  const [failed, setFailed] = useState(false);
+/**
+ * Ficha de índice desenhada do projeto (`public/images/projects/*.svg`).
+ *
+ * A imagem é decorativa por decisão de design: conforme DESIGN.md, ela não é
+ * captura de aplicação nem carrega informação ausente do texto — repete a
+ * identificação que o título e os metadados adjacentes já dão. Por isso vai com
+ * `alt=""` e sai da árvore de acessibilidade, em vez de duplicar o nome da ficha
+ * no leitor de tela. Se algum dia essas imagens passarem a transmitir dado
+ * próprio (uma captura real, um diagrama), o alternativo precisa descrever esse
+ * dado — não voltar a repetir o título.
+ */
+export default function ProjectImage({ src }: ProjectImageProps) {
+  const [failedSrc, setFailedSrc] = useState<string | null>(null);
 
-  if (!src || failed) {
+  if (!src || failedSrc === src) {
+    // O estado de falha também é decorativo: nada se perde para quem não vê a
+    // moldura, porque a ficha inteira permanece legível em texto.
     return (
-      <div
-        className="project-image project-image--fallback"
-        role="img"
-        aria-label={`Imagem indisponível para ${title}`}
-      >
-        <span aria-hidden="true">&lt;/&gt;</span>
+      <div className="project-image project-image--fallback" aria-hidden="true">
+        <span>&lt;/&gt;</span>
         <small>Imagem indisponível</small>
       </div>
     );
@@ -29,9 +37,9 @@ export default function ProjectImage({ src, title }: ProjectImageProps) {
     <img
       className="project-image"
       src={src}
-      alt={`Imagem de apresentação do projeto ${title}`}
+      alt=""
       loading="lazy"
-      onError={() => setFailed(true)}
+      onError={() => setFailedSrc(src)}
     />
   );
 }

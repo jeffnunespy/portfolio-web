@@ -26,7 +26,7 @@ export default function AboutPage() {
     <article className="about-page">
       <header>
         <div className="hero__index">
-          <span>Registro 003 · Perfil</span>
+          <span>Registro 004 · Perfil</span>
           <span>pt-BR</span>
         </div>
         <h1>Sobre</h1>
@@ -41,17 +41,23 @@ export default function AboutPage() {
       <section aria-labelledby="about-method">
         <h2 id="about-method">Como organizo meu trabalho</h2>
         <div className="about-principles">
+          {/*
+            Os três blocos descrevem o método aplicado nesta plataforma — o que é
+            verificável no repositório. Não declaram senioridade nem área de
+            atuação consolidada: backend segue registrado como escopo planejado
+            em /roadmap, e anunciá-lo aqui como profundidade contradiria a ficha.
+          */}
           <article>
-            <h3>Backend como profundidade</h3>
-            <p>Modelagem, regras de negócio e integridade orientam as decisões técnicas.</p>
+            <h3>Especificação antes do código</h3>
+            <p>Requisito aprovado vira tarefa registrada antes de virar implementação.</p>
           </article>
           <article>
-            <h3>Engenharia como método</h3>
-            <p>Especificação, testes e documentação tornam cada entrega verificável.</p>
+            <h3>Verificação como parte da entrega</h3>
+            <p>Testes, checagem de acessibilidade e integração contínua rodam a cada mudança.</p>
           </article>
           <article>
-            <h3>Cloud e DevOps como diferenciais</h3>
-            <p>Automação e operação responsável conectam o código ao ambiente real.</p>
+            <h3>Evidência acima de afirmação</h3>
+            <p>O que ainda é intenção fica separado do que já está implementado e publicado.</p>
           </article>
         </div>
       </section>

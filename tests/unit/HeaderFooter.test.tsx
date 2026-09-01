@@ -12,7 +12,7 @@ describe("Header", () => {
       within(navigation)
         .getAllByRole("link")
         .map((link) => link.textContent),
-    ).toEqual(["Início", "Projetos", "Sobre", "Currículo"]);
+    ).toEqual(["Início", "Projetos", "Roadmap", "Sobre", "Currículo"]);
   });
 });
 
@@ -20,6 +20,7 @@ describe("Footer", () => {
   it("oferece currículo, perfis e contato direto", () => {
     render(
       <Footer
+        nome="Pessoa Exemplo"
         contatoEmail="contato@portfolio.dev"
         linkGithub="https://github.com/portfolio"
         linkLinkedin="https://linkedin.com/in/portfolio"

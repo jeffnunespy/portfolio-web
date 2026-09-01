@@ -21,11 +21,11 @@ const mockedReaddirSync = vi.mocked(fs.readdirSync);
 
 function buildPerfil(overrides: Partial<PerfilProfissional> = {}): PerfilProfissional {
   return {
-    tituloPosicionamento: "Desenvolvedor Full-Stack em Formação",
+    nome: "Pessoa Exemplo",
+    tituloPosicionamento: "Desenvolvedor Web em Formação",
     descricaoPosicionamento: "Descrição de posicionamento.",
     competenciasPorArea: [{ area: "Backend", competencias: ["Node.js"] }],
     biografiaSobre: "Bio.",
-    linkCurriculo: "/curriculo.pdf",
     linkGithub: "https://github.com",
     linkLinkedin: "https://linkedin.com",
     contato: { tipo: "email", valor: "contato@portfolio.local" },
@@ -249,6 +249,13 @@ describe("lib/content", () => {
 
       const { getPerfil } = await import("../../lib/content");
       expect(() => getPerfil()).toThrow(/linkGithub/);
+    });
+
+    it("aceita perfil sem linkCurriculo: o PDF é opcional", async () => {
+      mockFileSystem(buildPerfil(), { "valido.json": buildProjeto() });
+
+      const { getPerfil } = await import("../../lib/content");
+      expect(getPerfil().linkCurriculo).toBeUndefined();
     });
 
     it.each([

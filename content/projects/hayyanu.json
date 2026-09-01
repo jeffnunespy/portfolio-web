@@ -1,7 +1,7 @@
 {
   "slug": "hayyanu",
   "titulo": "HAYYANU",
-  "resumo": "Plataforma web para centralizar a gestão operacional, financeira e digital de estúdios de tatuagem.",
+  "resumo": "Estrutura planejada de uma plataforma web para centralizar a gestão operacional, financeira e digital de estúdios de tatuagem.",
   "problemaTratado": "Processos administrativos, atendimento, agenda, clientes, financeiro, portfólio e presença digital dispersos em ferramentas diferentes.",
   "status": "Em andamento",
   "categoria": "Backend",
@@ -38,7 +38,7 @@
     "Cloud Scheduler",
     "Cloud Run Jobs"
   ],
-  "contexto": "Projeto concebido como uma aplicação de produção para digitalizar e centralizar a operação de estúdios de tatuagem. A solução mantém uma base de código única com instalações isoladas por empresa, incluindo configurações, segredos, backups e domínio próprios.",
+  "contexto": "Ficha planejada. Descreve uma aplicação de produção para digitalizar e centralizar a operação de estúdios de tatuagem, com base de código única e instalações isoladas por empresa — configurações, segredos, backups e domínio próprios. Nenhuma parte foi implementada.",
   "objetivo": "Oferecer uma plataforma confiável para a operação diária dos estúdios, combinando gestão de negócio, atendimento, presença digital e infraestrutura preparada para evolução contínua.",
   "funcionalidadesPrincipais": [
     "Gestão de clientes, profissionais, unidades e serviços",
@@ -47,7 +47,7 @@
     "Portfólio, conteúdo público e gerenciamento de mídia",
     "Autenticação, autorização, auditoria e controle de acesso"
   ],
-  "responsabilidadeProprietario": "Responsável pelo levantamento de requisitos, decisões arquiteturais, desenvolvimento da aplicação, segurança, testes, infraestrutura, deploy e evolução contínua do produto.",
+  "responsabilidadeProprietario": "Escopo planejado: levantamento de requisitos, decisões arquiteturais, desenvolvimento da aplicação, segurança, testes, infraestrutura, deploy e evolução do produto. Nenhuma dessas partes foi executada.",
   "decisoesRelevantes": [
     {
       "titulo": "Monólito modular com instalações isoladas",
@@ -83,13 +83,9 @@
     "Cloud Scheduler",
     "Cloud Run Jobs"
   ],
-  "limitacoesConhecidas": [
-    "Plataforma em desenvolvimento contínuo; módulos, integrações e fluxos operacionais seguem em evolução."
-  ],
-  "proximosPassos": [
-    "Evoluir os módulos operacionais, integrações externas e a operação em nuvem conforme o roadmap do produto."
-  ],
+  "limitacoesConhecidas": ["Ficha planejada: não há implementação, deploy nem operação."],
+  "proximosPassos": ["Implementar a estrutura descrita ou retirar a ficha do portfólio."],
   "linkRepositorio": "privado",
   "destaque": true,
-  "real": true
+  "real": false
 }
