@@ -10,7 +10,7 @@
     Altura total do cabeçalho fixo, incluindo o filete de 2px de .site-header
     que fica fora de .site-header__inner. Serve de desconto para as alturas de
     viewport do hero; é sobrescrito nos breakpoints onde o cabeçalho empilha.
-    Valores conferidos no navegador: 62px desktop, 93,8px em 820, 142,6px móvel.
+    O valor móvel inclui a assinatura visível acima da navegação.
   */
   --header-height: 3.875rem;
 
@@ -47,6 +47,18 @@
 
   --content-width: 1240px;
   --field-gap: 1.5rem;
+
+  /*
+    O eixo de campo: a margem de consulta da ficha. Numa ficha catalográfica a
+    coluna de campos tem uma largura só — é o que permite folhear o acervo e
+    reencontrar o mesmo dado sempre na mesma posição. Antes cada rota inventava
+    a sua (320px no hero, 304px no 404, 477px na ficha, 620px no detalhe), e o
+    eixo direito oscilava mais de 300px entre rotas do mesmo fichário.
+    A goteira acompanha o container em vez de ser fixa, para o corpo de leitura
+    não estrangular entre 1024px e a medida plena.
+  */
+  --field-column: 19rem;
+  --field-gutter: clamp(2.5rem, 5.5vw, 5rem);
 }
 
 /*
@@ -293,16 +305,18 @@ h3 {
 
 .site-brand {
   display: flex;
+  min-height: 2.75rem;
   align-items: center;
   color: var(--ink);
   font-family: var(--font-field), Arial, sans-serif;
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.2em;
+  text-decoration: none;
   text-transform: uppercase;
 }
 
-.site-brand span {
+.site-brand:hover {
   color: var(--stamp);
 }
 
@@ -328,10 +342,15 @@ h3 {
   text-decoration: none;
   text-transform: uppercase;
   transition: color 140ms ease;
+  white-space: nowrap;
 }
 
 .site-nav a:last-child {
   border-right: 1px solid var(--rule);
+}
+
+.site-nav__label--compact {
+  display: none;
 }
 
 .site-nav a:hover {
@@ -387,6 +406,25 @@ h3 {
   padding-block: clamp(2rem, 5vw, 4rem) clamp(2rem, 4vw, 3rem);
 }
 
+/*
+  No desktop, o conteúdo principal ocupa a ficha e os campos catalográficos
+  formam uma margem de consulta à direita. A medida de leitura permanece no
+  corpo; o container continua alinhado ao eixo global do site.
+*/
+.hero__layout {
+  display: grid;
+  min-width: 0;
+  flex: 1;
+  align-items: center;
+  padding-block: clamp(2.5rem, 5vw, 4.5rem);
+  grid-template-columns: minmax(0, 1fr) var(--field-column);
+  gap: var(--field-gutter);
+}
+
+.hero__body {
+  min-width: 0;
+}
+
 /* Linha de índice: número de registro e data, como no topo de uma ficha real. */
 .hero__index {
   display: flex;
@@ -404,7 +442,6 @@ h3 {
 }
 
 .hero__name {
-  padding-top: clamp(1.5rem, 4vw, 2.75rem);
   margin-bottom: 0;
   font-size: clamp(2.7rem, 11vw, 7rem);
   line-height: 0.92;
@@ -446,26 +483,51 @@ h3 {
   gap: 0.75rem;
 }
 
-.hero__actions {
+.hero__evidence {
   padding-top: 2rem;
 }
 
-/* Tabela de campos catalográficos: fecha o primeiro viewport. */
+/*
+  A medida é dada em px, não em ch: `ch` mede o avanço do glifo "0" e ignora
+  tanto o tracking quanto a caixa alta, então 58ch resolvia para 348px — cerca
+  de 40 caracteres reais, o que quebrava a nota em três linhas e deixava "CI."
+  órfão na última. `balance` distribui as duas linhas restantes.
+*/
+.hero__evidence-note {
+  max-width: 34rem;
+  margin: 0.7rem 0 0;
+  color: var(--ink-soft);
+  font-family: var(--font-field), Arial, sans-serif;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1.45;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+.hero__actions--secondary {
+  padding-top: 1rem;
+}
+
+/* Tabela de campos catalográficos: margem direita da ficha no desktop. */
 .hero__record {
   display: grid;
-  margin-top: auto;
-  padding-top: clamp(2rem, 5vw, 3.5rem);
+  width: 100%;
+  margin: 0;
+  align-self: center;
   border-top: 2px solid var(--rule-strong);
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: 1fr;
 }
 
 .hero__record > div {
-  padding: 1.1rem 1.25rem 0.25rem 0;
-  border-right: 1px solid var(--rule);
+  min-width: 0;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--rule);
 }
 
 .hero__record > div:last-child {
-  border-right: 0;
+  border-bottom: 0;
 }
 
 .hero__record dt {
@@ -586,6 +648,15 @@ h3 {
   border-bottom: 0;
 }
 
+/* O inventário desta seção só reúne o que a plataforma implementada comprova.
+   Estudos de backend e cloud ficam explicitamente fora dele, no roadmap. */
+.competency-roadmap-note {
+  max-width: 64ch;
+  margin: 1.5rem 0 0;
+  color: var(--ink-soft);
+  font-size: 0.92rem;
+}
+
 /* ───────── Seções ───────── */
 
 .page-section {
@@ -655,21 +726,38 @@ h3 {
 }
 
 /*
-  Ficha única mantém a medida de uma coluna. Esticá-la para 1 / -1 fazia a
-  imagem de apresentação — 16/9 em largura total — dominar a página inteira e
-  empurrar a evidência real (problema, competências, ação) para baixo da dobra.
-  Como não há segunda célula, o cartão abre mão do filete de divisão à direita
-  e da borda inferior: filete que não separa nada anuncia um cartão ausente. A
-  régua do topo permanece, porque ancora a grade abaixo do lead.
+  Uma ficha única não finge uma grade por preencher: vira o registro principal
+  do acervo. O índice visual recua para a margem — é referência, não conteúdo —
+  e o registro ocupa a coluna de tinta, alinhado ao h1 e ao lead acima dele.
+  Quando houver uma segunda ficha, a grade regular de duas colunas volta a
+  representar itens equivalentes.
 */
 .project-grid:has(.project-card:only-child) {
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-columns: 1fr;
 }
 
 .project-grid:has(.project-card:only-child) .project-card {
-  padding-left: 0;
+  display: grid;
+  padding: 1.75rem 0;
   border-right: 0;
   border-bottom: 0;
+  /*
+    Aqui o eixo de campo vale invertido. O corpo da ficha é leitura corrida
+    (resumo, problema, competências), não uma tabela de campos: espremê-lo em
+    --field-column quebraria a medida. Quem ocupa a margem é o índice visual,
+    que é justamente o dado consultável de largura fixa. O registro fica na
+    coluna de tinta, alinhado ao h1 e ao lead acima dele.
+
+    A margem ganha um passo a mais que --field-column porque carrega uma
+    imagem 5:3 com título interno, não uma tabela de rótulos: em 19rem o
+    índice deixa de ser legível como ficha.
+  */
+  grid-template-columns: calc(var(--field-column) + 6rem) minmax(0, 1fr);
+  gap: var(--field-gutter);
+}
+
+.project-grid:has(.project-card:only-child) .project-image {
+  margin-bottom: 0;
 }
 
 .project-image {
@@ -940,8 +1028,69 @@ h3 {
   color: var(--ink-soft);
 }
 
-.roadmap-entry .chip-list {
+.roadmap-stack {
+  max-width: 68ch;
+  padding-top: 1rem;
   margin-top: 1.25rem;
+  border-top: 1px dashed var(--rule-edge);
+}
+
+.roadmap-stack h3 {
+  margin: 0 0 0.75rem;
+  color: var(--ink-soft);
+  font-family: var(--font-field), Arial, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.roadmap-stack__groups {
+  display: grid;
+  margin: 0;
+  gap: 0.55rem;
+}
+
+.roadmap-stack__group {
+  display: grid;
+  align-items: baseline;
+  grid-template-columns: minmax(7.5rem, 9.5rem) minmax(0, 1fr);
+  gap: 0.75rem;
+}
+
+.roadmap-stack__group dt {
+  color: var(--ink-soft);
+  font-family: var(--font-field), Arial, sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.roadmap-stack__group dd {
+  min-width: 0;
+  margin: 0;
+}
+
+.roadmap-stack__group ul {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0;
+  margin: 0;
+  gap: 0 0.4rem;
+  list-style: none;
+}
+
+.roadmap-stack__group li {
+  color: var(--ink-soft);
+  font-size: 0.84rem;
+  overflow-wrap: anywhere;
+}
+
+.roadmap-stack__group li:not(:last-child)::after {
+  margin-left: 0.4rem;
+  color: var(--rule-edge);
+  content: "·" / "";
 }
 
 /* ───────── Páginas internas ───────── */
@@ -982,10 +1131,70 @@ h3 {
   competir com o título que deveria acompanhar. O teto a mantém na medida em que
   foi desenhada; abaixo dele ela acompanha a largura disponível.
 */
-.project-detail > .project-image {
-  width: min(100%, 34rem);
+/*
+  O índice visual ocupava 34rem e deixava metade da ficha vazia à direita. A
+  imagem fica na coluna de tinta e a procedência sobe para a margem de consulta,
+  no mesmo eixo de campo do hero: quem verifica a fonte lê no lugar onde os
+  campos sempre estão, em vez de descer até o pé da imagem.
+*/
+.project-detail__visual-index {
+  display: grid;
+  align-items: start;
   margin-bottom: 3rem;
+  /*
+    A margem de consulta só existe enquanto houver largura para as duas colunas
+    sem espremer a imagem. auto-fit + minmax colapsa para uma coluna sozinho
+    quando o cartão estreita, sem breakpoint e sem grid-row fixo — que era o
+    que fazia a imagem desaparecer no celular.
+  */
+  grid-template-columns: minmax(0, 1fr) var(--field-column);
+  gap: 1.5rem var(--field-gutter);
+}
+
+.project-detail__visual-index > h2 {
+  grid-column: 1 / -1;
+  margin-bottom: 0;
+}
+
+/* A ilustração registra a organização da ficha, não uma interface em uso.
+   O rótulo e as fontes verificáveis ficam no mesmo bloco para que a imagem
+   não seja interpretada como demonstração do software. */
+.project-detail__visual-index > h2,
+.project-detail__visual-index-sources > .muted-label {
+  display: block;
+  margin-bottom: 0.75rem;
+  color: var(--ink-soft);
+  font-family: var(--font-field), Arial, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.project-detail__visual-index > .project-image {
+  margin-bottom: 0;
   aspect-ratio: 5 / 3;
+}
+
+/*
+  Lado a lado, o filete que separa procedência de imagem é o de topo da margem
+  de campo — o mesmo filete forte de .hero__record —, não uma régua horizontal
+  sob a imagem.
+*/
+/*
+  A margem de consulta acompanha a altura do registro em vez de parar logo
+  abaixo do botão, que deixava 421px de filete terminando no ar ao lado da
+  imagem. Numa ficha de catálogo a coluna de campos corre ao lado do registro
+  inteiro; `align-self: stretch` faz isso sem alterar o alinhamento do topo.
+*/
+.project-detail__visual-index-sources {
+  align-self: stretch;
+  padding-top: 1rem;
+  border-top: 2px solid var(--rule-strong);
+}
+
+.project-detail__visual-index-sources > .muted-label {
+  margin-top: 0;
 }
 
 .project-detail__content {
@@ -1001,10 +1210,24 @@ h3 {
   border-right: 1px solid var(--rule);
 }
 
-.project-detail__content > section:nth-of-type(2n) {
+/*
+  A paridade das colunas não pode sair de nth-of-type: a seção larga
+  (Decisões relevantes) ocupa a linha inteira e inverte a contagem de tudo o
+  que vem depois — era por isso que o filete vertical aparecia à direita de
+  "Limitações" em vez de "Stack". A contagem reinicia a partir da seção larga,
+  que é o divisor real da grade.
+*/
+.project-detail__content > section:nth-of-type(2n),
+.project-detail__wide ~ section:nth-of-type(2n + 1) {
   padding-right: 0;
   padding-left: 1.75rem;
   border-right: 0;
+}
+
+.project-detail__wide ~ section:nth-of-type(2n) {
+  padding-right: 1.75rem;
+  padding-left: 0;
+  border-right: 1px solid var(--rule);
 }
 
 .project-detail__content h2 {
@@ -1053,6 +1276,20 @@ h3 {
   grid-column: 1 / -1;
   padding-right: 0 !important;
   border-right: 0 !important;
+}
+
+/*
+  Escassez assumida, não disfarçada. Quando o último campo cai sozinho na
+  coluna da esquerda, o filete vertical passava a dividir uma célula vazia —
+  pauta separando nada. O filete some e o campo ocupa a ficha inteira: uma
+  linha curta é a leitura correta de um acervo curto, não um buraco a tapar.
+  A paridade é contada a partir da seção larga, como nas regras acima.
+*/
+.project-detail__content > section:last-of-type:nth-of-type(odd),
+.project-detail__wide ~ section:last-of-type:nth-of-type(2n) {
+  grid-column: 1 / -1;
+  padding-right: 0;
+  border-right: 0;
 }
 
 /* ───────── Rodapé da ficha: orientação, continuidade e conversão ───────── */
@@ -1222,6 +1459,71 @@ h3 {
   padding-block: clamp(4rem, 9vw, 7rem);
 }
 
+/*
+  O 404 pertence ao mesmo fichário das rotas válidas: mesmo eixo de tinta à
+  esquerda e mesmo eixo de campo à direita que o hero. Um registro inexistente
+  é lido na mesma ficha dos que existem — os poucos dados reais do acervo ficam
+  na margem de consulta, sem placeholders para preencher a página.
+*/
+.message-page--not-found {
+  width: min(calc(100% - 3rem), var(--content-width));
+}
+
+.message-page__layout {
+  display: grid;
+  align-items: start;
+  padding-top: clamp(2.5rem, 6vw, 5rem);
+  grid-template-columns: minmax(0, 1fr) var(--field-column);
+  gap: var(--field-gutter);
+}
+
+.message-page__body {
+  min-width: 0;
+  max-width: 68ch;
+}
+
+.message-page__body p {
+  max-width: 58ch;
+  margin-bottom: 1.75rem;
+  color: var(--ink-soft);
+  font-size: clamp(1.05rem, 1.6vw, 1.25rem);
+}
+
+.message-page__record {
+  display: grid;
+  min-width: 0;
+  margin: 0;
+  border-top: 2px solid var(--rule-strong);
+}
+
+.message-page__record > div {
+  min-width: 0;
+  padding-block: 1rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.message-page__record > div:last-child {
+  border-bottom: 0;
+}
+
+.message-page__record dt {
+  color: var(--ink-faint);
+  font-family: var(--font-field), Arial, sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.message-page__record dd {
+  margin: 0.4rem 0 0;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 1.05rem;
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+  line-height: 1.35;
+}
+
 .message-page__actions {
   display: flex;
   flex-wrap: wrap;
@@ -1284,6 +1586,45 @@ h3 {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1.5rem;
+}
+
+.resume-timeline {
+  max-width: 76ch;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.resume-timeline li {
+  display: grid;
+  padding-block: 1.25rem;
+  border-top: 1px solid var(--rule);
+  grid-template-columns: minmax(9rem, 12rem) minmax(0, 1fr);
+  gap: 1.5rem;
+}
+
+.resume-timeline li:last-child {
+  padding-bottom: 0;
+}
+
+.resume-timeline__period {
+  margin: 0;
+  color: var(--ink-soft);
+  font-family: var(--font-field), Arial, sans-serif;
+  font-size: 0.76rem;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.resume-timeline h3 {
+  margin: 0 0 0.35rem;
+}
+
+.resume-timeline div > p {
+  margin: 0;
+  color: var(--ink-soft);
 }
 
 .resume-skills > div,
@@ -1374,6 +1715,34 @@ h3 {
   align-items: center;
 }
 
+.footer-contact {
+  min-width: min(100%, 22rem);
+}
+
+.footer-contact h2 {
+  margin: 0 0 0.35rem;
+  font-family: var(--font-field), Arial, sans-serif;
+  font-size: 0.74rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.footer-contact p {
+  max-width: 42ch;
+  margin: 0 0 0.5rem;
+  color: var(--ink-soft);
+  font-family: var(--font-body), Arial, sans-serif;
+  font-size: 0.88rem;
+  letter-spacing: normal;
+}
+
+.footer-contact__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 1.5rem;
+  align-items: center;
+}
+
 /*
   Alvo de toque de 44px (WCAG 2.5.5/2.5.8) sem alterar a métrica tipográfica:
   a altura vem do min-height, não de padding, para os rótulos permanecerem na
@@ -1382,7 +1751,8 @@ h3 {
   pelo texto; centralizar mantém o filete de campo alinhado ao rótulo.
 */
 .footer-nav a,
-.footer-nav .muted-label {
+.footer-contact__actions a,
+.footer-contact__actions .muted-label {
   display: inline-flex;
   min-width: 2.75rem;
   min-height: 2.75rem;
@@ -1390,7 +1760,8 @@ h3 {
   justify-content: center;
 }
 
-.footer-nav a {
+.footer-nav a,
+.footer-contact__actions a {
   color: var(--ink-soft);
   font-family: var(--font-field), Arial, sans-serif;
   font-size: 0.74rem;
@@ -1400,7 +1771,8 @@ h3 {
   text-transform: uppercase;
 }
 
-.footer-nav a:hover {
+.footer-nav a:hover,
+.footer-contact__actions a:hover {
   color: var(--stamp);
   text-decoration: underline;
   text-underline-offset: 0.3em;
@@ -1417,15 +1789,70 @@ h3 {
 /* ───────── Adaptação ───────── */
 
 @media (max-width: 900px) {
+  .hero__layout,
+  .message-page__layout,
+  .project-detail__visual-index {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  /*
+    Empilhado, a procedência volta a ser um rodapé de imagem e recupera a
+    régua fina; o filete forte pertence à margem de consulta, que aqui não
+    existe mais.
+  */
+  .project-detail__visual-index-sources {
+    border-top-width: 1px;
+    border-top-color: var(--rule);
+  }
+
   .hero__record,
   .competency-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .hero__record {
+    align-self: stretch;
+  }
+
+  .hero__record > div {
+    padding-right: 1.25rem;
+    border-right: 1px solid var(--rule);
   }
 
   .hero__record > div:nth-child(2n),
   .competency-card:nth-child(2n) {
     padding-right: 0;
     border-right: 0;
+  }
+
+  .message-page__record {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .message-page__record > div {
+    padding-right: 1rem;
+    border-right: 1px solid var(--rule);
+    border-bottom: 0;
+  }
+
+  .message-page__record > div + div {
+    padding-left: 1rem;
+  }
+
+  .message-page__record > div:last-child {
+    padding-right: 0;
+    border-right: 0;
+  }
+
+  .project-grid:has(.project-card:only-child) .project-card {
+    display: flex;
+    padding: 1.75rem 0;
+    gap: 0;
+  }
+
+  .project-grid:has(.project-card:only-child) .project-image {
+    margin-bottom: 1.25rem;
   }
 
   .competency-card:nth-child(n + 3) {
@@ -1487,13 +1914,56 @@ h3 {
 }
 
 @media (max-width: 640px) {
-  /*
-    A marca "portfólio." é aria-hidden — puramente decorativa — e custava uma
-    linha inteira do cabeçalho fixo, empurrando o conteúdo para fora da dobra
-    no celular. Some onde a altura é escassa; nada de semântica se perde.
-  */
+  :root {
+    /* Assinatura compacta acima de uma única faixa de navegação. */
+    --header-height: 5.875rem;
+  }
+
+  .site-header__inner {
+    width: 100%;
+  }
+
   .site-brand {
+    justify-content: center;
+    padding-block: 0.25rem;
+    font-size: 0.68rem;
+  }
+
+  .site-nav {
+    display: grid;
+    width: 100%;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr) auto auto auto;
+  }
+
+  .site-nav a {
+    min-height: 3rem;
+    padding-block: 0;
+    padding-inline: 0.35rem;
+  }
+
+  .site-nav__item--primary {
+    min-width: 0;
+  }
+
+  .site-nav__item--secondary {
+    min-width: 0;
+    color: var(--ink-faint);
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+  }
+
+  .site-nav .site-nav__item--secondary.nav-curriculo-destaque,
+  .site-nav .site-nav__item--secondary.nav-curriculo-destaque:hover {
+    color: var(--ink-faint);
+    background: transparent;
+  }
+
+  .site-nav__label--full {
     display: none;
+  }
+
+  .site-nav__label--compact {
+    display: inline;
   }
 
   .project-grid,
@@ -1505,6 +1975,32 @@ h3 {
   .hero__record,
   .competency-grid {
     grid-template-columns: 1fr;
+  }
+
+  .message-page__record {
+    grid-template-columns: 1fr;
+  }
+
+  .message-page__record > div,
+  .message-page__record > div + div {
+    padding-inline: 0;
+    border-right: 0;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .message-page__record > div:last-child {
+    border-bottom: 0;
+  }
+
+  .resume-timeline li {
+    grid-template-columns: 1fr;
+    gap: 0.35rem;
+  }
+
+  .roadmap-stack__group {
+    align-items: start;
+    grid-template-columns: 1fr;
+    gap: 0.15rem;
   }
 
   .project-card,
@@ -1571,9 +2067,17 @@ h3 {
     gap: 0.5rem 1.25rem;
   }
 
+  .footer-contact__actions {
+    gap: 0.5rem 1.25rem;
+  }
+
   .hero__actions {
     align-items: stretch;
     flex-direction: column;
+  }
+
+  .hero__evidence .button {
+    width: 100%;
   }
 
   .hero__actions .button {
@@ -1596,31 +2100,6 @@ h3 {
   .project-card__actions .text-link,
   .project-card__actions .muted-label {
     align-self: flex-start;
-  }
-}
-
-@media (max-width: 400px) {
-  .site-nav {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .site-nav a {
-    border-bottom: 1px solid var(--rule);
-  }
-
-  .site-nav a:nth-child(2n) {
-    border-right: 0;
-  }
-
-  /* Item ímpar final ocupa a linha inteira; sem isso sobra meia célula vazia. */
-  .site-nav a:last-child:nth-child(2n + 1) {
-    border-right: 0;
-    grid-column: 1 / -1;
-  }
-
-  .site-nav a:last-child {
-    border-bottom: 0;
   }
 }
 
@@ -1679,6 +2158,7 @@ h3 {
 
   .text-link,
   .footer-nav a,
+  .footer-contact__actions a,
   .project-record-footer__orientation a,
   .project-record-footer__project-link {
     color: LinkText;

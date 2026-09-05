@@ -71,7 +71,19 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         </div>
       </header>
 
-      <ProjectImage src={projeto.imagemApresentacao} />
+      <section className="project-detail__visual-index" aria-labelledby="visual-index-title">
+        <h2 id="visual-index-title">Índice visual do registro</h2>
+        <ProjectImage src={projeto.imagemApresentacao} />
+        <div className="project-detail__visual-index-sources">
+          <p className="muted-label">Fonte e verificação</p>
+          <EvidenceLink
+            contatoEmail={perfil.contato.valor}
+            linkDemonstracao={projeto.linkDemonstracao}
+            linkRepositorio={projeto.linkRepositorio}
+            linkGithub={perfil.linkGithub}
+          />
+        </div>
+      </section>
 
       <div className="project-detail__content">
         <section>
@@ -138,16 +150,6 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
               <li key={passo}>{passo}</li>
             ))}
           </ul>
-        </section>
-
-        <section className="project-detail__wide">
-          <h2>Links relacionados</h2>
-          <EvidenceLink
-            contatoEmail={perfil.contato.valor}
-            linkDemonstracao={projeto.linkDemonstracao}
-            linkRepositorio={projeto.linkRepositorio}
-            linkGithub={perfil.linkGithub}
-          />
         </section>
       </div>
 

@@ -6,6 +6,50 @@ import { NATUREZA_LABEL } from "../../lib/labels";
 const descricao =
   "Escopo planejado: projetos com problema e objetivo definidos, ainda sem software implementado.";
 
+const PLATAFORMA_GCP = "Google Cloud Platform";
+
+function StackPlanejada({
+  slug,
+  titulo,
+  tecnologias,
+}: {
+  slug: string;
+  titulo: string;
+  tecnologias: string[];
+}) {
+  const indiceGcp = tecnologias.indexOf(PLATAFORMA_GCP);
+  const baseTecnica = indiceGcp >= 0 ? tecnologias.slice(0, indiceGcp) : tecnologias;
+  const servicosGcp = indiceGcp >= 0 ? tecnologias.slice(indiceGcp + 1) : [];
+  const grupos = [
+    {
+      rotulo: servicosGcp.length > 0 ? "Aplicação" : "Base técnica",
+      tecnologias: baseTecnica,
+    },
+    ...(servicosGcp.length > 0 ? [{ rotulo: PLATAFORMA_GCP, tecnologias: servicosGcp }] : []),
+  ];
+  const tituloId = `${slug}-stack-prevista`;
+
+  return (
+    <section className="roadmap-stack" aria-labelledby={tituloId}>
+      <h3 id={tituloId}>Stack prevista</h3>
+      <dl className="roadmap-stack__groups">
+        {grupos.map((grupo) => (
+          <div key={grupo.rotulo} className="roadmap-stack__group">
+            <dt>{grupo.rotulo}</dt>
+            <dd>
+              <ul role="list" aria-label={`${grupo.rotulo} prevista de ${titulo}`}>
+                {grupo.tecnologias.map((tecnologia) => (
+                  <li key={tecnologia}>{tecnologia}</li>
+                ))}
+              </ul>
+            </dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+  );
+}
+
 export const metadata: Metadata = {
   title: "Roadmap",
   description: descricao,
@@ -50,15 +94,11 @@ export default function RoadmapPage() {
               <p className="roadmap-entry__goal">
                 <strong>Objetivo:</strong> {projeto.objetivo}
               </p>
-              <ul
-                role="list"
-                className="chip-list"
-                aria-label={`Stack prevista de ${projeto.titulo}`}
-              >
-                {projeto.stack.map((tecnologia) => (
-                  <li key={tecnologia}>{tecnologia}</li>
-                ))}
-              </ul>
+              <StackPlanejada
+                slug={projeto.slug}
+                titulo={projeto.titulo}
+                tecnologias={projeto.stack}
+              />
             </li>
           ))}
         </ol>

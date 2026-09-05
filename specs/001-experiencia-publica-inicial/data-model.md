@@ -50,10 +50,13 @@ Arquivo único `content/profile.json`.
 
 | Campo                     | Tipo                                       | Obrigatório | Regras                                                                                                    |
 | ------------------------- | ------------------------------------------ | ----------- | --------------------------------------------------------------------------------------------------------- |
+| `nome`                    | string                                     | Sim         | Título principal de `/curriculo` e assinatura global do cabeçalho (FR-005a, FR-015a).                    |
 | `tituloPosicionamento`    | string                                     | Sim         | Valor definido por FR-002: "Desenvolvedor Web em Formação".                                             |
 | `descricaoPosicionamento` | string                                     | Sim         | Distingue implementação verificável de interesse/escopo planejado (FR-002).                              |
 | `competenciasPorArea`     | { area: string; competencias: string[] }[] | Sim         | Front-end e Engenharia de Software antes de Qualidade e Operação; somente competências evidenciadas (FR-003, FR-024). |
 | `biografiaSobre`          | string                                     | Sim         | Página Sobre; deve ser consistente (não contraditória) com posicionamento da home (FR-014).               |
+| `formacao`                | { periodo: string; titulo: string; descricao: string }[] | Sim | Formação datada, limitada a fatos confirmados (FR-015a). |
+| `trajetoria`              | { periodo: string; titulo: string; descricao: string }[] | Sim | Marcos técnicos datados e comprováveis, sem vínculos inventados (FR-015a). |
 | `linkCurriculo`           | string (path do arquivo para download)     | Sim         | Página de currículo também usa este conteúdo (FR-015).                                                    |
 | `linkGithub`              | string (URL)                               | Sim         | —                                                                                                         |
 | `linkLinkedin`            | string (URL)                               | Sim         | —                                                                                                         |

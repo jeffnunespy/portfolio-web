@@ -152,6 +152,35 @@ verificação registrada abaixo:
   baixas de integridade documental corrigidas; auditoria constitucional aprovada após
   SC-008 passar a derivar todos os slugs do roadmap
 
+## Currículo P0 — 2026-09-04
+
+- `/curriculo` usa `Jefferson Nunes` como `<h1>` e organiza perfil profissional,
+  formação, trajetória técnica, competências e contato em uma hierarquia própria de
+  currículo.
+- `content/profile.json` ganhou `formacao` e `trajetoria`, ambas obrigatórias e
+  validadas como listas de marcos com `periodo`, `titulo` e `descricao`. Os períodos
+  publicados cobrem apenas a evolução comprovável desta plataforma desde agosto de
+  2026; nenhuma instituição de ensino ou experiência profissional foi inferida.
+- O cabeçalho global substituiu a marca decorativa pela assinatura `Jefferson Nunes`,
+  vinculada ao início e visível acima da dobra em todas as rotas. Em 320px, ela ocupa
+  uma faixa de 44px e a navegação usa toda a largura sem quebrar rótulos.
+- A mensagem obsoleta de que o e-mail estaria em configuração foi removida da home;
+  `/curriculo` descreve os destinos reais de contato conforme o estado do perfil.
+
+### Validação executada em 2026-09-04
+
+- `node .agents/skills/impeccable/scripts/detect.mjs app/curriculo/page.tsx app/globals.css components/layout/Header.tsx` → sem achados
+- `npm run format:check` → conforme
+- `npm run lint` → 0 erros e 0 avisos
+- `npm run typecheck` → sem erros
+- `npx vitest run tests/unit/` → 6 arquivos, 41 testes aprovados
+- `npm run build` → Turbopack concluído; `/curriculo` pré-renderizada
+- `npm run test:e2e:functional` → 39 testes Playwright aprovados
+- `npm run test:e2e:a11y` → 19 testes Playwright aprovados
+- Revisão visual → `/curriculo` em 1280px e 320px; cabeçalho confirmado em 320px após
+  corrigir a quebra do rótulo “Projetos”
+- `git diff --check` → limpo
+
 ## Pendências e riscos conhecidos
 
 - `content/profile.json` ainda tem `contato.valor` como placeholder
@@ -159,10 +188,10 @@ verificação registrada abaixo:
   válido, então o placeholder passa silenciosamente. Não publicar antes de substituir.
 - `content/profile.json` traz `"nome": "Jefferson Nunes"`, **inferido** do handle do GitHub e
   do LinkedIn. Precisa de confirmação do proprietário — aparece no rodapé de todas as páginas.
-- `plataforma-portfolio` é hoje o único projeto implementado: não tem `linkDemonstracao` e
-  `linkRepositorio` é `"privado"` (repositório verificado como inacessível). Enquanto assim,
-  a única evidência do portfólio não é auditável por terceiros. Publicar a URL de produção e
-  tornar o repositório público é o passo de maior efeito no valor da peça.
+- `plataforma-portfolio` é hoje o único projeto implementado e não tem `linkDemonstracao`. O
+  repositório está público em `https://github.com/jeffnunespy/portfolio-web`, verificado sem
+  autenticação em 2026-09-04; a ficha agora oferece acesso direto ao código. Publicar a URL de
+  produção permanece como a próxima evidência externa de maior efeito no valor da peça.
 - Os estudos de caso e `public/curriculo.pdf` exigem confirmação do proprietário antes de serem
   declarados conteúdo profissional publicado.
 - O asset-fonte `original-8696facb39b0641248efdeb31bc641db.webp` não está no workspace; portanto

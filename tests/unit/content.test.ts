@@ -26,6 +26,12 @@ function buildPerfil(overrides: Partial<PerfilProfissional> = {}): PerfilProfiss
     descricaoPosicionamento: "Descrição de posicionamento.",
     competenciasPorArea: [{ area: "Backend", competencias: ["Node.js"] }],
     biografiaSobre: "Bio.",
+    formacao: [
+      { periodo: "2026 — presente", titulo: "Formação", descricao: "Descrição da formação." },
+    ],
+    trajetoria: [
+      { periodo: "2026 — presente", titulo: "Trajetória", descricao: "Descrição da trajetória." },
+    ],
     linkGithub: "https://github.com",
     linkLinkedin: "https://linkedin.com",
     contato: { tipo: "email", valor: "contato@portfolio.local" },
@@ -98,6 +104,8 @@ describe("lib/content", () => {
       expect(perfil.tituloPosicionamento).toBeTruthy();
       expect(perfil.descricaoPosicionamento).toBeTruthy();
       expect(perfil.competenciasPorArea.length).toBeGreaterThan(0);
+      expect(perfil.formacao.length).toBeGreaterThan(0);
+      expect(perfil.trajetoria.length).toBeGreaterThan(0);
       expect(perfil.contato.tipo).toBe("email");
       expect(perfil.contato.valor).toBeTruthy();
     });
@@ -259,6 +267,7 @@ describe("lib/content", () => {
     });
 
     it.each([
+      ["nome com tipo inválido", buildPerfil({ nome: 42 as unknown as string }), /campo "nome"/],
       [
         "caminho de currículo relativo",
         buildPerfil({ linkCurriculo: "curriculo.pdf" }),
@@ -274,6 +283,14 @@ describe("lib/content", () => {
         buildPerfil({ competenciasPorArea: [{ area: "", competencias: [] }] }),
         /competenciasPorArea/,
       ],
+      [
+        "formação sem período",
+        buildPerfil({
+          formacao: [{ periodo: "", titulo: "Formação", descricao: "Descrição" }],
+        }),
+        /campo "formacao"/,
+      ],
+      ["trajetória vazia", buildPerfil({ trajetoria: [] }), /campo "trajetoria"/],
     ])("getPerfil rejeita %s", async (_description, perfil, expectedError) => {
       mockFileSystem(perfil, { "valido.json": buildProjeto() });
 

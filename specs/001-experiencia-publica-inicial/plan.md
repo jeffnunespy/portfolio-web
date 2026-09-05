@@ -293,7 +293,8 @@ decisão registrada — não como reflexo.
 
 #### Etapa 9 — Conteúdo real
 
-1. Substituir placeholders em `content/profile.json` por conteúdo real.
+1. Substituir placeholders em `content/profile.json` por conteúdo real, incluindo nome,
+   formação datada e trajetória técnica exibidos no currículo HTML.
 2. Revisar cada projeto garantindo contexto, status, decisões, limitações, próximos passos e links
    reais. Nenhum projeto incompleto pode ser apresentado como concluído, nenhum repositório privado
    como acessível, nenhuma tecnologia não utilizada como competência comprovada e nenhum dado

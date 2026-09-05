@@ -295,3 +295,10 @@ sem alterar os bloqueios factuais P0.
 - [X] T084 [US1] [US2] [US3] [US4] Cobrir ordem completa de tabulação, foco visível e zoom de texto a 200% em todas as rotas públicas, mantendo leitor de tela e preview/canário como inspeções manuais pendentes per FR-021, FR-022, SC-005 e SC-006
 - [X] T085 Restringir o lint ao código do produto, ignorando bundles locais copiados de skills em `eslint.config.mjs`, sem suprimir regras ou arquivos da aplicação per Constituição V/VI
 - [X] T086 Executar detector Impeccable, diff check, formato, lint, tipos, unitários, build, E2E funcional/a11y e revisão visual; registrar resultados e pareceres especializados antes de concluir a fase
+- [X] T087 [US2] Substituir os chips de stack do roadmap por uma pauta editorial de tecnologias previstas e agrupar a HAYYANU em aplicação e nove serviços GCP, preservando os 19 itens sem reutilizar o vocabulário visual de entrega, com regressão E2E e responsiva per FR-004b, Constituição I/VII/X e `DESIGN.md`
+
+---
+
+## Phase 12: Currículo P0
+
+- [X] T088 [US3] Usar o nome como `<h1>` de `/curriculo`, publicar formação e trajetória técnica datadas a partir de fatos verificáveis e exibir a assinatura do proprietário acima da dobra em todas as rotas e larguras suportadas per FR-005a, FR-015a e Constituição I/VII/X

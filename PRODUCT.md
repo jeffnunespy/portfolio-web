@@ -104,15 +104,14 @@ declarado pelo proprietário nesta sessão:
 
 **Real e funcional hoje:**
 
-- **GitHub** — `https://github.com/jeffnunespy`. É o **único link externo real e funcional** do
-  portfólio.
+- **GitHub** — `https://github.com/jeffnunespy`, perfil público e funcional.
 - **LinkedIn** — `https://www.linkedin.com/in/jefferson-nunes-7bb309122/` (registrado em
   `profile.json` como link real).
 - **A própria plataforma** — este repositório: Next.js 16, validação de conteúdo em build, testes
   Vitest, E2E funcionais e de acessibilidade (axe-core, WCAG 2.1 A/AA), CI completo, Dependabot.
-  É código auditável e existente. A ficha `plataforma-portfolio` descreve **este** repositório e é
-  por isso a única marcada `real: true` em `content/projects/`: o que ela afirma pode ser conferido
-  lendo o código que a serve.
+  O código está público em `https://github.com/jeffnunespy/portfolio-web`. A ficha
+  `plataforma-portfolio` descreve **este** repositório e é por isso a única marcada `real: true` em
+  `content/projects/`: o que ela afirma pode ser conferido lendo o código que a serve.
 
 **Não reais — as outras quatro fichas descrevem estrutura planejada:**
 

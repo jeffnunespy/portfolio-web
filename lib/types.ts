@@ -54,12 +54,20 @@ export interface ContatoPerfil {
   valor: string;
 }
 
+export interface MarcoCurriculo {
+  periodo: string;
+  titulo: string;
+  descricao: string;
+}
+
 export interface PerfilProfissional {
   nome: string;
   tituloPosicionamento: string;
   descricaoPosicionamento: string;
   competenciasPorArea: CompetenciaPorArea[];
   biografiaSobre: string;
+  formacao: MarcoCurriculo[];
+  trajetoria: MarcoCurriculo[];
   // Ausente enquanto não houver um PDF definitivo. A página /curriculo é
   // autossuficiente em HTML; o download é conveniência, não conteúdo, e
   // oferecer um arquivo desatualizado contradiz o conteúdo validado.

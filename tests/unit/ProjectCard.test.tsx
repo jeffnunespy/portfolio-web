@@ -55,7 +55,7 @@ describe("ProjectCard", () => {
       "href",
       "https://demo.example.com",
     );
-    expect(screen.getByRole("link", { name: "Ver código" })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: "Ver código-fonte" })).toHaveAttribute(
       "href",
       "https://github.com/example/projeto",
     );
@@ -67,7 +67,7 @@ describe("ProjectCard", () => {
     );
 
     expect(screen.getByText("Código privado")).toBeInTheDocument();
-    expect(screen.queryByRole("link", { name: "Ver código" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "Ver código-fonte" })).not.toBeInTheDocument();
 
     rerender(<ProjectCard projeto={projeto} />);
     expect(screen.getByText("Código não disponível publicamente")).toBeInTheDocument();

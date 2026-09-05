@@ -58,3 +58,13 @@ Thumbs.db
 /.impeccable/*.pid
 /.impeccable/*.port
 /.impeccable/*.log
+
+# Ferramental local de agentes de IA (skills, hooks e configuração por ferramenta)
+.agents/
+.claude/skills/impeccable/
+.codex/
+.github/agents/
+.github/hooks/
+.github/skills/
+.impeccable/
+.opencode/

@@ -30,20 +30,24 @@ export default function Footer({ nome, linkGithub, linkLinkedin, contatoEmail }:
           <Link href="/roadmap">Roadmap</Link>
           <Link href="/sobre">Sobre</Link>
           <Link href="/curriculo">Currículo</Link>
-          <a href={linkGithub} target="_blank" rel="noopener noreferrer">
-            GitHub
-          </a>
-          <a href={linkLinkedin} target="_blank" rel="noopener noreferrer">
-            LinkedIn
-          </a>
-          {podeContatar ? (
-            <a href={`mailto:${contatoEmail}`}>Contato</a>
-          ) : (
-            <a href={linkLinkedin} target="_blank" rel="noopener noreferrer">
-              Contato pelo LinkedIn
-            </a>
-          )}
         </nav>
+        <section className="footer-contact" aria-labelledby="footer-contact-title">
+          <h2 id="footer-contact-title">Contato e perfis</h2>
+          <p>Para conversar sobre oportunidades, use um dos perfis abaixo.</p>
+          <div className="footer-contact__actions">
+            <a href={linkGithub} target="_blank" rel="noopener noreferrer">
+              Ver GitHub
+            </a>
+            <a href={linkLinkedin} target="_blank" rel="noopener noreferrer">
+              Falar pelo LinkedIn
+            </a>
+            {podeContatar ? (
+              <a href={`mailto:${contatoEmail}`}>Contato</a>
+            ) : (
+              <span className="muted-label">E-mail em configuração</span>
+            )}
+          </div>
+        </section>
         <p>
           &copy; {anoAtual} {nome}. Todos os direitos reservados.
         </p>

@@ -64,7 +64,7 @@ export default function ProjectCard({ projeto, headingLevel = 2 }: ProjectCardPr
               target="_blank"
               rel="noopener noreferrer"
             >
-              Ver código
+              Ver código-fonte
             </a>
           ) : repositorio === "privado" ? (
             <span className="muted-label">Código privado</span>

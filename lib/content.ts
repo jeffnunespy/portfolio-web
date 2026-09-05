@@ -46,6 +46,8 @@ const REQUIRED_PERFIL_FIELDS = [
   "descricaoPosicionamento",
   "competenciasPorArea",
   "biografiaSobre",
+  "formacao",
+  "trajetoria",
   "linkGithub",
   "linkLinkedin",
   "contato",
@@ -93,6 +95,29 @@ function validateStringArray(data: Record<string, unknown>, field: string, fileN
   ) {
     throw validationError(
       `campo "${field}" deve ser um array não vazio de strings em ${fileName}.`,
+    );
+  }
+}
+
+function validateMarcosCurriculo(
+  data: Record<string, unknown>,
+  field: "formacao" | "trajetoria",
+  fileName: string,
+): void {
+  const value = data[field];
+  if (
+    !Array.isArray(value) ||
+    value.length === 0 ||
+    value.some(
+      (marco) =>
+        !isRecord(marco) ||
+        !isNonEmptyString(marco.periodo) ||
+        !isNonEmptyString(marco.titulo) ||
+        !isNonEmptyString(marco.descricao),
+    )
+  ) {
+    throw validationError(
+      `campo "${field}" deve conter período, título e descrição não vazios em ${fileName}.`,
     );
   }
 }
@@ -215,9 +240,16 @@ function validatePerfil(data: unknown): PerfilProfissional {
   }
 
   validateRequiredFields(data, REQUIRED_PERFIL_FIELDS, fileName);
-  for (const field of ["tituloPosicionamento", "descricaoPosicionamento", "biografiaSobre"]) {
+  for (const field of [
+    "nome",
+    "tituloPosicionamento",
+    "descricaoPosicionamento",
+    "biografiaSobre",
+  ]) {
     validateStringField(data, field, fileName);
   }
+  validateMarcosCurriculo(data, "formacao", fileName);
+  validateMarcosCurriculo(data, "trajetoria", fileName);
 
   /*
     O PDF é opcional, mas quando declarado precisa existir de fato em public/:

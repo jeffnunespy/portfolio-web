@@ -34,7 +34,9 @@ test("@a11y primeiro Tab alcança o skip link e segue a ordem visual da navegaç
   await page.goto("/");
   await page.keyboard.press("Tab");
   await page.keyboard.press("Tab");
-  await expect(page.getByRole("link", { name: "Início" }).first()).toBeFocused();
+  await expect(page.getByRole("link", { name: /— Início$/ })).toBeFocused();
+  await page.keyboard.press("Tab");
+  await expect(page.getByRole("link", { name: "Início", exact: true }).first()).toBeFocused();
   await page.keyboard.press("Tab");
   await expect(page.getByRole("link", { name: "Projetos" }).first()).toBeFocused();
 });
@@ -53,6 +55,11 @@ test("@a11y todas as rotas permitem percorrer os controles por teclado sem armad
 
   for (const route of publicRoutes) {
     await page.goto(route);
+    // O portal de ferramentas do Next.js é injetado fora da aplicação e entra
+    // na tabulação sem oferecer um controle do produto para o visitante.
+    await page
+      .locator("nextjs-portal")
+      .evaluateAll((portals) => portals.forEach((portal) => portal.remove()));
 
     const interativos = page.locator(seletorInterativo);
     const total = await interativos.count();

@@ -26,6 +26,25 @@
     }
   ],
   "biografiaSobre": "Trabalho da especificação ao deploy: cada requisito vira tarefa registrada, cada entrega passa por testes automatizados, verificação de acessibilidade e integração contínua antes de ser publicada. Esta plataforma é o exemplo auditável desse método — o conteúdo é validado em tempo de build e o que ainda é intenção fica separado do que já está implementado.",
+  "formacao": [
+    {
+      "periodo": "Ago. 2026 — presente",
+      "titulo": "Desenvolvimento web em formação",
+      "descricao": "Aprendizado aplicado à construção deste portfólio com Next.js, React, TypeScript, CSS, testes automatizados, acessibilidade e integração contínua."
+    }
+  ],
+  "trajetoria": [
+    {
+      "periodo": "Ago. 2026",
+      "titulo": "Especificação e primeira entrega",
+      "descricao": "Definição da experiência pública, modelagem do conteúdo e implementação inicial do portfólio como aplicação estática."
+    },
+    {
+      "periodo": "Set. 2026 — presente",
+      "titulo": "Qualidade e evidência verificável",
+      "descricao": "Evolução da plataforma com validação de conteúdo em tempo de build, testes end-to-end, acessibilidade WCAG 2.1 AA e integração contínua."
+    }
+  ],
   "linkGithub": "https://github.com/jeffnunespy",
   "linkLinkedin": "https://www.linkedin.com/in/jefferson-nunes-7bb309122/",
   "contato": {

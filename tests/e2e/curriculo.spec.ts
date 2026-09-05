@@ -12,9 +12,12 @@ const EMAIL_PLACEHOLDER = "SEU-EMAIL@exemplo.com";
 const perfil = JSON.parse(
   readFileSync(path.join(process.cwd(), "content", "profile.json"), "utf8"),
 ) as {
+  nome: string;
   contato: { valor: string };
+  formacao: { periodo: string; titulo: string; descricao: string }[];
   linkLinkedin: string;
   tituloPosicionamento: string;
+  trajetoria: { periodo: string; titulo: string; descricao: string }[];
   linkCurriculo?: string;
 };
 
@@ -30,6 +33,7 @@ for (const route of [
   "/",
   "/projetos",
   "/projetos/plataforma-portfolio",
+  "/roadmap",
   "/sobre",
   "/curriculo",
   "/rota-inexistente",
@@ -39,33 +43,37 @@ for (const route of [
     await page.goto(route);
 
     const header = page.getByRole("banner");
+    const signature = header.getByRole("link", { name: `${perfil.nome} — Início` });
+    await expect(signature).toBeVisible();
+    await expect(signature).toHaveAttribute("href", "/");
+
+    const signatureBox = await signature.boundingBox();
+    expect(signatureBox).not.toBeNull();
+    expect(signatureBox!.y + signatureBox!.height).toBeLessThanOrEqual(page.viewportSize()!.height);
+
     await expect(header.getByRole("link", { name: "Currículo" })).toHaveAttribute(
       "href",
       "/curriculo",
     );
 
     const footer = page.getByRole("contentinfo");
-    await expect(footer.getByRole("link", { name: "GitHub" })).toHaveAttribute(
+    const contact = footer.getByRole("region", { name: "Contato e perfis" });
+    await expect(contact.getByRole("link", { name: "Ver GitHub" })).toHaveAttribute(
       "href",
       /^https:\/\//,
     );
-    await expect(footer.getByRole("link", { name: "LinkedIn", exact: true })).toHaveAttribute(
+    await expect(contact.getByRole("link", { name: "Falar pelo LinkedIn" })).toHaveAttribute(
       "href",
       /^https:\/\//,
     );
 
     if (emailConfigurado) {
-      await expect(footer.getByRole("link", { name: "Contato", exact: true })).toHaveAttribute(
+      await expect(contact.getByRole("link", { name: "Contato", exact: true })).toHaveAttribute(
         "href",
         /^mailto:/,
       );
     } else {
-      // Sem e-mail real, o contato do rodapé aponta para o LinkedIn: destino
-      // verificável, nada inventado, e o requisito de contato segue atendido.
-      await expect(footer.getByRole("link", { name: "Contato pelo LinkedIn" })).toHaveAttribute(
-        "href",
-        perfil.linkLinkedin,
-      );
+      await expect(contact.getByText("E-mail em configuração")).toBeVisible();
       await expect(footer.locator('a[href^="mailto:"]')).toHaveCount(0);
     }
   });
@@ -74,8 +82,16 @@ for (const route of [
 test("US3 - página de currículo é visualizável e oferece PDF para download", async ({ page }) => {
   await page.goto("/curriculo");
 
-  await expect(page.getByRole("heading", { level: 1, name: "Currículo" })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 1, name: perfil.nome })).toBeVisible();
   await expect(page.getByText(perfil.tituloPosicionamento, { exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 2, name: "Formação" })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 2, name: "Trajetória técnica" })).toBeVisible();
+
+  for (const item of [...perfil.formacao, ...perfil.trajetoria]) {
+    await expect(page.getByText(item.periodo, { exact: true })).toBeVisible();
+    await expect(page.getByRole("heading", { level: 3, name: item.titulo })).toBeVisible();
+    await expect(page.getByText(item.descricao, { exact: true })).toBeVisible();
+  }
 
   const downloadLink = page.getByRole("link", { name: "Baixar currículo em PDF" });
 
@@ -85,7 +101,9 @@ test("US3 - página de currículo é visualizável e oferece PDF para download",
     // fora do alcance da validação de build.
     await expect(downloadLink).toHaveCount(0);
     await expect(
-      page.getByText("Currículo completo nesta página. Versão em PDF em preparação."),
+      page.getByText(
+        "PDF final ainda não disponível. O currículo completo pode ser consultado nesta página.",
+      ),
     ).toBeVisible();
     return;
   }
@@ -115,7 +133,7 @@ test("US3 - o meio de contato do currículo acompanha o estado do perfil", async
       `mailto:${perfil.contato.valor}`,
     );
   } else {
-    await expect(contatos.getByText("Contato por e-mail em configuração")).toBeVisible();
+    await expect(contatos.getByText("E-mail em configuração")).toBeVisible();
     await expect(contatos.locator('a[href^="mailto:"]')).toHaveCount(0);
   }
 });

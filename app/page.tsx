@@ -35,61 +35,77 @@ export default function Home() {
           <span>pt-BR</span>
         </div>
 
-        <h1 id="hero-title" className="hero__name">
-          {perfil.tituloPosicionamento}
-        </h1>
+        <div className="hero__layout">
+          <div className="hero__body">
+            <h1 id="hero-title" className="hero__name">
+              {perfil.tituloPosicionamento}
+            </h1>
 
-        <p className="hero__description">{perfil.descricaoPosicionamento}</p>
+            <p className="hero__description">{perfil.descricaoPosicionamento}</p>
 
-        <p className="hero__stamp">Em formação</p>
+            <p className="hero__stamp">Em formação</p>
 
-        <div className="hero__actions">
-          <Link className="button button--primary" href="/projetos">
-            Consultar fichas
-          </Link>
-          <Link className="button button--secondary" href="/curriculo">
-            Ver currículo
-          </Link>
-        </div>
+            <div className="hero__evidence">
+              <Link className="button button--primary" href="/projetos/plataforma-portfolio">
+                Ver implementação e verificações
+              </Link>
+              <p id="hero-evidence-note" className="hero__evidence-note">
+                Fluxos E2E com Playwright e WCAG 2.1 A/AA com axe-core, executados como gates
+                separados no CI.
+              </p>
+            </div>
 
-        <dl className="hero__record">
-          <div>
-            <dt>Áreas de profundidade</dt>
-            <dd>{areasProfundidade.join(" · ")}</dd>
-          </div>
-          <div>
-            <dt>Competências catalogadas</dt>
-            <dd>{totalCompetencias}</dd>
-          </div>
-          <div>
-            <dt>Projetos implementados</dt>
-            {/*
-              Sem denominador, "1" não diz se é o acervo todo ou um recorte.
-              O total inclui o escopo planejado, que tem rota própria.
-            */}
-            <dd>
-              {implementados.length} de {implementados.length + planejados.length}
-            </dd>
-          </div>
-          <div>
-            <dt>Código-fonte</dt>
-            <dd>
+            <div className="hero__actions hero__actions--secondary">
+              <Link className="button button--secondary" href="/projetos">
+                Consultar fichas
+              </Link>
+              <Link className="button button--secondary" href="/curriculo">
+                Ver currículo
+              </Link>
               <a
-                className="text-link"
-                href={perfil.linkGithub}
+                className="button button--secondary"
+                href={perfil.linkLinkedin}
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                GitHub
+                Falar pelo LinkedIn
               </a>
-            </dd>
+            </div>
           </div>
-        </dl>
+
+          <dl className="hero__record">
+            <div>
+              <dt>Áreas de profundidade</dt>
+              <dd>{areasProfundidade.join(" · ")}</dd>
+            </div>
+            <div>
+              <dt>Competências comprovadas</dt>
+              <dd>{totalCompetencias}</dd>
+            </div>
+            <div>
+              <dt>Projetos implementados</dt>
+              <dd>{implementados.length}</dd>
+            </div>
+            <div>
+              <dt>Código-fonte</dt>
+              <dd>
+                <a
+                  className="text-link"
+                  href={perfil.linkGithub}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  GitHub
+                </a>
+              </dd>
+            </div>
+          </dl>
+        </div>
       </section>
 
       <section className="page-section" aria-labelledby="competencies-title">
         <div className="section-heading">
-          <h2 id="competencies-title">Competências por área</h2>
+          <h2 id="competencies-title">Competências comprovadas nesta plataforma</h2>
         </div>
 
         <div className="competency-grid">
@@ -108,6 +124,15 @@ export default function Home() {
             </section>
           ))}
         </div>
+
+        <p className="competency-roadmap-note">
+          Tecnologias de backend e cloud, como Python, Django, Docker e Google Cloud Platform,
+          aparecem apenas como estudo no{" "}
+          <Link className="text-link" href="/roadmap">
+            roadmap de estudos
+          </Link>
+          {"; não são competências declaradas nesta ficha."}
+        </p>
       </section>
 
       <section className="page-section" aria-labelledby="featured-projects-title">

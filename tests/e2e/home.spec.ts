@@ -7,6 +7,7 @@ import { test, expect } from "@playwright/test";
 const perfil = JSON.parse(
   readFileSync(path.join(process.cwd(), "content", "profile.json"), "utf8"),
 ) as {
+  nome: string;
   tituloPosicionamento: string;
   descricaoPosicionamento: string;
   competenciasPorArea: { area: string }[];
@@ -16,7 +17,7 @@ const perfil = JSON.parse(
 // /roadmap. Contar a partir do conteúdo evita fixar um número que muda a cada
 // projeto entregue.
 const projectsDir = path.join(process.cwd(), "content", "projects");
-const destaquesImplementados = readdirSync(projectsDir)
+const projetos = readdirSync(projectsDir)
   .filter((fileName) => fileName.endsWith(".json"))
   .map(
     (fileName) =>
@@ -24,8 +25,11 @@ const destaquesImplementados = readdirSync(projectsDir)
         destaque: boolean;
         real: boolean;
       },
-  )
-  .filter((projeto) => projeto.real && projeto.destaque).length;
+  );
+const totalImplementados = projetos.filter((projeto) => projeto.real).length;
+const destaquesImplementados = projetos.filter(
+  (projeto) => projeto.real && projeto.destaque,
+).length;
 
 test("US1 - posicionamento profissional e competências na home", async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 720 });
@@ -39,6 +43,30 @@ test("US1 - posicionamento profissional e competências na home", async ({ page 
 
   await expect(title).toBeVisible();
   await expect(description).toBeVisible();
+
+  const evidenceLink = page.getByRole("link", { name: "Ver implementação e verificações" });
+  await expect(evidenceLink).toBeVisible();
+  await expect(evidenceLink).toHaveAttribute("href", "/projetos/plataforma-portfolio");
+  await expect(
+    page.getByText(
+      "Fluxos E2E com Playwright e WCAG 2.1 A/AA com axe-core, executados como gates separados no CI.",
+    ),
+  ).toBeVisible();
+
+  const registroImplementados = page.getByText("Projetos implementados").locator("..");
+  await expect(registroImplementados.locator("dd")).toHaveText(String(totalImplementados));
+
+  await expect(
+    page.getByRole("heading", { level: 2, name: "Competências comprovadas nesta plataforma" }),
+  ).toBeVisible();
+  const roadmapDeEstudos = page.getByRole("link", { name: "roadmap de estudos" });
+  await expect(roadmapDeEstudos).toHaveAttribute("href", "/roadmap");
+  await expect(
+    page.getByText(
+      "Tecnologias de backend e cloud, como Python, Django, Docker e Google Cloud Platform, aparecem apenas como estudo no",
+    ),
+  ).toBeVisible();
+
   // Toda área declarada no perfil precisa aparecer como cabeçalho de competência.
   for (const { area } of perfil.competenciasPorArea) {
     await expect(page.getByRole("heading", { level: 3, name: area })).toBeVisible();
@@ -72,6 +100,7 @@ test("US1 - navegação por tabulação sem tabindex positivo", async ({ page })
 
   const expectedLabels = [
     "Pular para o conteúdo principal",
+    `${perfil.nome} — Início`,
     "Início",
     "Projetos",
     "Roadmap",
@@ -81,7 +110,11 @@ test("US1 - navegação por tabulação sem tabindex positivo", async ({ page })
 
   for (const expectedLabel of expectedLabels) {
     await page.keyboard.press("Tab");
-    const focusedLabel = await page.evaluate(() => document.activeElement?.textContent?.trim());
+    const focusedLabel = await page.evaluate(
+      () =>
+        document.activeElement?.getAttribute("aria-label") ??
+        document.activeElement?.textContent?.trim(),
+    );
     expect(focusedLabel).toBe(expectedLabel);
   }
 });

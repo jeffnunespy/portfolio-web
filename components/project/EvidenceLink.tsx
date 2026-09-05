@@ -43,7 +43,7 @@ export default function EvidenceLink({
           target="_blank"
           rel="noopener noreferrer"
         >
-          Acessar repositório
+          Ver código-fonte
         </a>
       ) : null}
 

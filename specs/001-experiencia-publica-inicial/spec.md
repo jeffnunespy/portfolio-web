@@ -43,6 +43,10 @@
 - Q: Qual posicionamento profissional pode ser publicado enquanto a única implementação verificável é esta plataforma? → A: "Desenvolvedor Web em Formação", com Front-end e Engenharia de Software antes de Qualidade e Operação. Backend com Python e Django permanece declarado como interesse e escopo planejado, não como profundidade já demonstrada.
 - Q: Como a nova superfície de planejamento entra na navegação? → A: O cabeçalho apresenta, nesta ordem: Início, Projetos, Roadmap, Sobre e Currículo.
 
+### Session 2026-09-04
+
+- Q: Como corrigir a falta de identidade e de conteúdo curricular no destino final da avaliação? → A: Exibir "Jefferson Nunes" como `<h1>` em `/curriculo`, incluir formação datada e trajetória técnica e manter o nome visível acima da dobra em todas as rotas públicas.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Avaliar o posicionamento profissional na página inicial (Priority: P1)
@@ -140,6 +144,7 @@ Um gestor técnico ou colaborador em potencial acessa a página Sobre para enten
 - **FR-004a**: O sistema DEVE fornecer uma listagem de projetos, acessível pela navegação principal, contendo todos os projetos implementados e publicados, incluindo os que excedam o teto de destaque da página inicial.
 - **FR-004b**: O sistema DEVE fornecer `/roadmap` para itens ainda não implementados. Esses itens DEVEM usar linguagem de intenção e NÃO DEVEM exibir imagem de projeto, status de entrega, competências demonstradas, demonstração, repositório ou link para `/projetos/<slug>`.
 - **FR-005**: A navegação principal (cabeçalho) DEVE fornecer acesso, a partir de qualquer página pública, a: página inicial, listagem de projetos, roadmap, página Sobre e currículo, nesta ordem da esquerda para a direita (ou de cima para baixo em layout mobile). Os links de GitHub, LinkedIn e contato não são obrigatórios no cabeçalho, desde que garantidos no rodapé conforme FR-018.
+- **FR-005a**: O cabeçalho DEVE exibir o nome do proprietário acima da dobra em todas as rotas públicas, em desktop e mobile, com acesso à página inicial.
 
 **Projetos em destaque**
 
@@ -166,6 +171,7 @@ Um gestor técnico ou colaborador em potencial acessa a página Sobre para enten
 **Acesso a currículo e redes**
 
 - **FR-015**: O sistema DEVE fornecer acesso ao currículo do proprietário a partir da navegação principal ou do rodapé, como uma página visualizável no próprio site com opção de download do arquivo (ex.: PDF).
+- **FR-015a**: A página `/curriculo` DEVE usar o nome do proprietário como título principal e apresentar formação e trajetória técnica com períodos explícitos, sem inventar instituição, vínculo profissional ou experiência não confirmada.
 - **FR-016**: O sistema DEVE fornecer links para os perfis de GitHub e LinkedIn do proprietário, visíveis a partir de qualquer página pública.
 - **FR-017**: O sistema DEVE fornecer ao menos um meio de contato direto (ex.: e-mail via link `mailto:`) visível a partir de qualquer página pública. O sistema NÃO DEVE armazenar, processar ou registrar nenhum dado pessoal do visitante através desse meio de contato; o envio ocorre inteiramente fora da plataforma (ex.: cliente de e-mail do próprio visitante).
 
@@ -191,7 +197,7 @@ Um gestor técnico ou colaborador em potencial acessa a página Sobre para enten
 
 - **Projeto implementado**: Representa um estudo de caso entregue e apresentado no portfólio. Atributos: título, identificador de URL (estável, definido na publicação), marcador de implementação real, resumo, problema tratado, status (valores possíveis: "Em andamento", "Concluído", "Pausado", "Arquivado"), categoria, natureza (autoral, acadêmico, colaborativo, profissional), tecnologias/áreas técnicas, imagem de apresentação, competências demonstradas, contexto, objetivo, funcionalidades principais, responsabilidade do proprietário, decisões relevantes, stack informativa, limitações conhecidas, próximos passos, link de demonstração (opcional), link de repositório (opcional).
 - **Escopo planejado**: Representa uma intenção futura exibida no roadmap. Possui título, identificador estável, resumo, problema e descrição prospectiva, mas não publica ficha, imagem, status de entrega, competências demonstradas nem links de evidência.
-- **Perfil profissional**: Representa a apresentação do proprietário. Atributos: título de posicionamento, descrição de posicionamento, competências agrupadas por área, biografia da página Sobre, link de currículo, link de GitHub, link de LinkedIn, meio(s) de contato.
+- **Perfil profissional**: Representa a apresentação do proprietário. Atributos: nome, título de posicionamento, descrição de posicionamento, competências agrupadas por área, biografia da página Sobre, formação datada, trajetória técnica datada, link de currículo, link de GitHub, link de LinkedIn, meio(s) de contato.
 - **Competência**: Representa uma habilidade ou área técnica exibida no portfólio. Atributos: nome, área (Front-end, Engenharia de Software, Qualidade ou Operação) e evidência(s) associada(s) — vínculo a projeto implementado e/ou a código, documentação, testes, diagrama, decisão arquitetural ou aplicação publicada dentro dele.
 
 ## Success Criteria *(mandatory)*
