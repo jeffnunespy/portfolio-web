@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import type { PerfilProfissional, Projeto } from "./types";
+import type { PerfilProfissional, Projeto, ProjetoImplementado } from "./types";
 
 const CONTENT_DIR = path.join(process.cwd(), "content");
 const PUBLIC_DIR = path.join(process.cwd(), "public");
@@ -41,11 +41,13 @@ const REQUIRED_PROJETO_FIELDS = [
 ] as const satisfies readonly (keyof Projeto)[];
 
 const REQUIRED_PERFIL_FIELDS = [
+  "nome",
   "tituloPosicionamento",
   "descricaoPosicionamento",
   "competenciasPorArea",
   "biografiaSobre",
-  "linkCurriculo",
+  "formacao",
+  "trajetoria",
   "linkGithub",
   "linkLinkedin",
   "contato",
@@ -93,6 +95,29 @@ function validateStringArray(data: Record<string, unknown>, field: string, fileN
   ) {
     throw validationError(
       `campo "${field}" deve ser um array não vazio de strings em ${fileName}.`,
+    );
+  }
+}
+
+function validateMarcosCurriculo(
+  data: Record<string, unknown>,
+  field: "formacao" | "trajetoria",
+  fileName: string,
+): void {
+  const value = data[field];
+  if (
+    !Array.isArray(value) ||
+    value.length === 0 ||
+    value.some(
+      (marco) =>
+        !isRecord(marco) ||
+        !isNonEmptyString(marco.periodo) ||
+        !isNonEmptyString(marco.titulo) ||
+        !isNonEmptyString(marco.descricao),
+    )
+  ) {
+    throw validationError(
+      `campo "${field}" deve conter período, título e descrição não vazios em ${fileName}.`,
     );
   }
 }
@@ -215,11 +240,25 @@ function validatePerfil(data: unknown): PerfilProfissional {
   }
 
   validateRequiredFields(data, REQUIRED_PERFIL_FIELDS, fileName);
-  for (const field of ["tituloPosicionamento", "descricaoPosicionamento", "biografiaSobre"]) {
+  for (const field of [
+    "nome",
+    "tituloPosicionamento",
+    "descricaoPosicionamento",
+    "biografiaSobre",
+  ]) {
     validateStringField(data, field, fileName);
   }
+  validateMarcosCurriculo(data, "formacao", fileName);
+  validateMarcosCurriculo(data, "trajetoria", fileName);
 
-  validatePublicAsset(data.linkCurriculo, "linkCurriculo", fileName);
+  /*
+    O PDF é opcional, mas quando declarado precisa existir de fato em public/:
+    um link de download quebrado é pior que a ausência do botão. A página
+    /curriculo degrada sozinha quando o campo não vem.
+  */
+  if (data.linkCurriculo !== undefined) {
+    validatePublicAsset(data.linkCurriculo, "linkCurriculo", fileName);
+  }
   validateHttpsUrl(data.linkGithub, "linkGithub", fileName);
   validateHttpsUrl(data.linkLinkedin, "linkLinkedin", fileName);
 
@@ -273,7 +312,13 @@ function validateProjetosCollection(projetos: Projeto[]): void {
 }
 
 function validateCompetenciasComEvidencia(perfil: PerfilProfissional, projetos: Projeto[]): void {
-  const competenciasComEvidencia = new Set(projetos.flatMap((p) => p.competenciasDemonstradas));
+  // Só projeto implementado conta como evidência: uma ficha de escopo planejado
+  // descreve software que ainda não existe e não comprova competência alguma
+  // (FR-024/SC-007, princípio "evidências acima de afirmações"). Sem o filtro,
+  // o gate aceita conteúdo ficcional como prova e deixa de cumprir sua função.
+  const competenciasComEvidencia = new Set(
+    projetos.filter((projeto) => projeto.real).flatMap((p) => p.competenciasDemonstradas),
+  );
   const semEvidencia = perfil.competenciasPorArea
     .flatMap((area) => area.competencias)
     .filter((competencia) => !competenciasComEvidencia.has(competencia));
@@ -307,7 +352,10 @@ export function getProjetos(): Projeto[] {
   }
 
   const projectsDir = path.join(CONTENT_DIR, "projects");
-  const fileNames = fs.readdirSync(projectsDir).filter((fileName) => fileName.endsWith(".json"));
+  const fileNames = fs
+    .readdirSync(projectsDir)
+    .filter((fileName) => fileName.endsWith(".json"))
+    .sort();
   const projetos = fileNames.map((fileName) => {
     const raw = fs.readFileSync(path.join(projectsDir, fileName), "utf-8");
     return validateProjeto(JSON.parse(raw) as unknown, fileName);
@@ -324,4 +372,21 @@ export function getProjetos(): Projeto[] {
 export function getProjetoBySlug(slug: string): Projeto | undefined {
   getProjetos();
   return projetosPorSlugCache?.get(slug);
+}
+
+/**
+ * Fichas de projeto implementado: o acervo de /projetos.
+ *
+ * Um estudo de caso afirma trabalho entregue, então só software que existe
+ * entra nessa rota. O escopo planejado tem superfície própria (getRoadmap) com
+ * vocabulário e peso visual distintos, para que a distinção não dependa de o
+ * leitor notar um selo.
+ */
+export function getProjetosImplementados(): ProjetoImplementado[] {
+  return getProjetos().filter((projeto): projeto is ProjetoImplementado => projeto.real);
+}
+
+/** Escopo planejado: descreve intenção, não entrega. Nunca vira estudo de caso. */
+export function getRoadmap(): Projeto[] {
+  return getProjetos().filter((projeto) => !projeto.real);
 }

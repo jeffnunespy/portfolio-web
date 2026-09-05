@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { getPerfil, getProjetos } from "../lib/content";
+import { getPerfil, getProjetosImplementados, getRoadmap } from "../lib/content";
 import ProjectCard from "../components/project/ProjectCard";
 import Link from "next/link";
 
@@ -17,10 +17,9 @@ export function generateMetadata(): Metadata {
 
 export default function Home() {
   const perfil = getPerfil();
-  const todosProjetos = getProjetos();
-  const destaques = todosProjetos.filter((p) => p.destaque).slice(0, 6);
-  const projetosReais = destaques.filter((p) => p.real);
-  const projetosEstrutura = destaques.filter((p) => !p.real);
+  const implementados = getProjetosImplementados();
+  const planejados = getRoadmap();
+  const destaques = implementados.filter((p) => p.destaque).slice(0, 6);
 
   const areasProfundidade = perfil.competenciasPorArea.slice(0, 2).map((a) => a.area);
   const totalCompetencias = perfil.competenciasPorArea.reduce(
@@ -36,55 +35,77 @@ export default function Home() {
           <span>pt-BR</span>
         </div>
 
-        <h1 id="hero-title" className="hero__name">
-          {perfil.tituloPosicionamento}
-        </h1>
+        <div className="hero__layout">
+          <div className="hero__body">
+            <h1 id="hero-title" className="hero__name">
+              {perfil.tituloPosicionamento}
+            </h1>
 
-        <p className="hero__description">{perfil.descricaoPosicionamento}</p>
+            <p className="hero__description">{perfil.descricaoPosicionamento}</p>
 
-        <p className="hero__stamp">Em formação</p>
+            <p className="hero__stamp">Em formação</p>
 
-        <div className="hero__actions">
-          <Link className="button button--primary" href="/projetos">
-            Consultar fichas
-          </Link>
-          <Link className="button button--secondary" href="/curriculo">
-            Ver currículo
-          </Link>
-        </div>
+            <div className="hero__evidence">
+              <Link className="button button--primary" href="/projetos/plataforma-portfolio">
+                Ver implementação e verificações
+              </Link>
+              <p id="hero-evidence-note" className="hero__evidence-note">
+                Fluxos E2E com Playwright e WCAG 2.1 A/AA com axe-core, executados como gates
+                separados no CI.
+              </p>
+            </div>
 
-        <dl className="hero__record">
-          <div>
-            <dt>Áreas de profundidade</dt>
-            <dd>{areasProfundidade.join(" · ")}</dd>
-          </div>
-          <div>
-            <dt>Competências catalogadas</dt>
-            <dd>{totalCompetencias}</dd>
-          </div>
-          <div>
-            <dt>Fichas de projeto</dt>
-            <dd>{todosProjetos.length}</dd>
-          </div>
-          <div>
-            <dt>Código-fonte</dt>
-            <dd>
+            <div className="hero__actions hero__actions--secondary">
+              <Link className="button button--secondary" href="/projetos">
+                Consultar fichas
+              </Link>
+              <Link className="button button--secondary" href="/curriculo">
+                Ver currículo
+              </Link>
               <a
-                className="text-link"
-                href={perfil.linkGithub}
+                className="button button--secondary"
+                href={perfil.linkLinkedin}
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                GitHub
+                Falar pelo LinkedIn
               </a>
-            </dd>
+            </div>
           </div>
-        </dl>
+
+          <dl className="hero__record">
+            <div>
+              <dt>Áreas de profundidade</dt>
+              <dd>{areasProfundidade.join(" · ")}</dd>
+            </div>
+            <div>
+              <dt>Competências comprovadas</dt>
+              <dd>{totalCompetencias}</dd>
+            </div>
+            <div>
+              <dt>Projetos implementados</dt>
+              <dd>{implementados.length}</dd>
+            </div>
+            <div>
+              <dt>Código-fonte</dt>
+              <dd>
+                <a
+                  className="text-link"
+                  href={perfil.linkGithub}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  GitHub
+                </a>
+              </dd>
+            </div>
+          </dl>
+        </div>
       </section>
 
       <section className="page-section" aria-labelledby="competencies-title">
         <div className="section-heading">
-          <h2 id="competencies-title">Competências por área</h2>
+          <h2 id="competencies-title">Competências comprovadas nesta plataforma</h2>
         </div>
 
         <div className="competency-grid">
@@ -94,7 +115,8 @@ export default function Home() {
               key={area.area}
             >
               <h3>{area.area}</h3>
-              <ul>
+              {/* role="list" preserva a semântica que o Safari/VoiceOver descarta quando list-style é none. */}
+              <ul role="list">
                 {area.competencias.map((competencia) => (
                   <li key={competencia}>{competencia}</li>
                 ))}
@@ -102,6 +124,15 @@ export default function Home() {
             </section>
           ))}
         </div>
+
+        <p className="competency-roadmap-note">
+          Tecnologias de backend e cloud, como Python, Django, Docker e Google Cloud Platform,
+          aparecem apenas como estudo no{" "}
+          <Link className="text-link" href="/roadmap">
+            roadmap de estudos
+          </Link>
+          {"; não são competências declaradas nesta ficha."}
+        </p>
       </section>
 
       <section className="page-section" aria-labelledby="featured-projects-title">
@@ -117,29 +148,22 @@ export default function Home() {
             <Link href="/projetos">Consultar todos os projetos</Link>
           </div>
         ) : (
-          <>
-            {projetosReais.length > 0 ? (
-              <div className="project-grid">
-                {projetosReais.map((projeto) => (
-                  <ProjectCard key={projeto.slug} projeto={projeto} headingLevel={3} />
-                ))}
-              </div>
-            ) : null}
-
-            {projetosEstrutura.length > 0 ? (
-              <div className="project-group project-group--estrutura">
-                <p className="project-group__label">
-                  Estrutura de conteúdo em validação — projetos ainda não implementados
-                </p>
-                <div className="project-grid">
-                  {projetosEstrutura.map((projeto) => (
-                    <ProjectCard key={projeto.slug} projeto={projeto} headingLevel={3} />
-                  ))}
-                </div>
-              </div>
-            ) : null}
-          </>
+          <div className="project-grid">
+            {destaques.map((projeto) => (
+              <ProjectCard key={projeto.slug} projeto={projeto} headingLevel={3} />
+            ))}
+          </div>
         )}
+
+        {planejados.length > 0 ? (
+          <p className="page-intro__aside">
+            Outros {planejados.length} projetos estão registrados como escopo planejado, sem
+            software implementado.{" "}
+            <Link className="text-link" href="/roadmap">
+              Consultar o roadmap
+            </Link>
+          </p>
+        ) : null}
       </section>
     </>
   );

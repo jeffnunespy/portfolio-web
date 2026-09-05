@@ -8,15 +8,16 @@ a migração. Ele não cria uma API nova nem altera os requisitos de [spec.md](.
 | Rota                           | Contrato preservado                                                          |
 | ------------------------------ | ---------------------------------------------------------------------------- |
 | `/`                            | Home estática com posicionamento, competências e até 6 projetos em destaque  |
-| `/projetos`                    | Listagem estática de todos os projetos publicados                            |
-| `/projetos/<slug>`             | Página estática para cada slug publicado, com metadados derivados do projeto |
+| `/projetos`                    | Listagem estática somente dos projetos implementados                         |
+| `/roadmap`                     | Listagem estática de escopo planejado, sem links para fichas de projeto      |
+| `/projetos/<slug>`             | Página estática para cada slug implementado, com metadados derivados do projeto |
 | `/projetos/<slug-inexistente>` | Resposta 404 amigável com retorno à listagem                                 |
 | `/sobre`                       | Página estática Sobre com metadados próprios                                 |
 | `/curriculo`                   | Currículo visualizável e download do PDF                                     |
 | Qualquer rota inexistente      | 404 global sem erro técnico bruto                                            |
 
-O cabeçalho, o rodapé, os links externos, a ordem de tabulação, os breakpoints de 320/768/1280px e
-os requisitos WCAG 2.1 AA permanecem inalterados.
+O cabeçalho segue Início, Projetos, Roadmap, Sobre e Currículo. Rodapé, links externos, ordem de
+tabulação, breakpoints de 320/768/1280px e requisitos WCAG 2.1 AA permanecem válidos.
 
 ## Contrato de build e runtime
 
@@ -65,8 +66,9 @@ npm ci
 O build DEVE falhar, com mensagem identificando o arquivo e o campo, quando qualquer regra da matriz
 de validação em [data-model.md](../data-model.md) for violada. Em particular: campo obrigatório
 ausente, tipo inesperado, slug duplicado ou malformado, `status`/`natureza`/`categoria` fora do
-conjunto permitido, URL inválida, imagem referenciada inexistente, competência sem projeto que a
-sustente ou mais de 6 projetos marcados como destaque.
+conjunto permitido, URL inválida, imagem referenciada inexistente, competência sem projeto
+implementado que a sustente ou mais de 6 projetos reais marcados como destaque. Itens `real: false`
+nunca contam como evidência.
 
 ## Contrato de conteúdo publicado
 
@@ -87,8 +89,8 @@ Todos os itens abaixo são cumulativos:
 2. Testes unitários/componentes passam uma única vez em modo não interativo.
 3. Playwright e axe-core passam para todas as rotas cobertas pela feature.
 4. O build Turbopack conclui e lista todas as rotas esperadas.
-5. O smoke test em preview/canário confirma home, projetos, detalhe, 404, Sobre, currículo/PDF,
-   metadados, links globais, teclado e larguras responsivas.
+5. O smoke test em preview/canário confirma home, projetos, roadmap, detalhe, 404, Sobre,
+   currículo/PDF, metadados, links globais, teclado e larguras responsivas.
 6. A auditoria de produção não reporta severidade crítica ou alta.
 7. O pipeline de CI conclui com sucesso no commit promovido — nenhum gate ignorado ou desativado.
 8. As verificações manuais de acessibilidade que o axe não cobre (fluxo somente por teclado, foco

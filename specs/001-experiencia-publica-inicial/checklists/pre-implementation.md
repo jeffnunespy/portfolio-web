@@ -10,7 +10,7 @@ mensuráveis e com cobertura adequada) — não valida se a implementação func
 ## Clareza do posicionamento profissional
 
 - [x] CHK001 - É especificado exatamente qual conteúdo deve permanecer inalterado (título e descrição de posicionamento) versus o que pode variar por página? [Clarity, Spec §FR-002]
-- [x] CHK002 - A relação de prioridade entre "área de profundidade" (backend/engenharia de software) e "competências complementares" (cloud/DevOps) está definida de forma que seja objetivamente verificável na hierarquia visual? [Measurability, Spec §FR-003]
+- [x] CHK002 - A prioridade entre áreas demonstradas (Front-end e Engenharia de Software antes de Qualidade e Operação) está definida de forma objetivamente verificável na ordem do conteúdo? [Measurability, Spec §FR-003]
 - [x] CHK003 - Os requisitos de posicionamento profissional são consistentes entre a página inicial e a página Sobre, sem contradição de ênfase ou conteúdo? [Consistency, Spec §FR-002, §FR-014]
 
 ## Credibilidade das afirmações
@@ -88,3 +88,5 @@ mensuráveis e com cobertura adequada) — não valida se a implementação func
 - Itens marcados como [Gap] indicam ausência de requisito, não necessariamente um erro — cada um deve ser
   avaliado e, se aplicável, incorporado ao spec.md ou explicitamente registrado como decisão adiada antes do `/speckit-plan`.
 - Itens sem [Gap] apontam requisitos existentes cuja redação pode precisar de reforço de clareza/mensurabilidade.
+- Revisão de 2026-09-01 confirmou a distinção entre projetos implementados e escopo planejado em
+  `/roadmap`; somente os primeiros contam como evidência ou recebem ficha própria.

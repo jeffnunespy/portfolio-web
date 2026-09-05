@@ -1,22 +1,22 @@
 {
   "slug": "transcricao-audio",
   "titulo": "Plataforma de Transcrição e Análise de Áudio",
-  "resumo": "Plataforma colaborativa para transcrição automática e análise de conteúdo de arquivos de áudio.",
+  "resumo": "Estrutura planejada de uma plataforma para transcrição automática e análise de conteúdo de arquivos de áudio.",
   "problemaTratado": "Processo manual e demorado de transcrição de reuniões e entrevistas para extração de insights.",
   "status": "Pausado",
   "categoria": "Backend",
-  "natureza": "colaborativo",
+  "natureza": "autoral",
   "tecnologias": ["Python", "Node.js", "CI/CD"],
   "imagemApresentacao": "/images/projects/transcricao-audio.svg",
   "competenciasDemonstradas": ["CI/CD", "APIs REST", "Node.js"],
-  "contexto": "Projeto colaborativo desenvolvido em conjunto com outros desenvolvedores para automatizar transcrição de áudios.",
+  "contexto": "Ficha planejada. Descreve uma plataforma de transcrição automática de áudios. Nenhuma parte foi implementada.",
   "objetivo": "Reduzir o tempo de transcrição e permitir busca textual sobre o conteúdo de gravações de áudio.",
   "funcionalidadesPrincipais": [
     "Upload de arquivos de áudio e fila de processamento",
     "Transcrição automática com marcação de timestamps",
     "Busca textual sobre o conteúdo transcrito"
   ],
-  "responsabilidadeProprietario": "Implementação do pipeline de integração contínua e da API de orquestração das transcrições, em colaboração com outros dois desenvolvedores.",
+  "responsabilidadeProprietario": "Escopo planejado: pipeline de integração contínua e API de orquestração das transcrições. Nenhuma dessas partes foi executada.",
   "decisoesRelevantes": [
     {
       "titulo": "Pipeline de CI/CD para o pipeline de processamento",
@@ -29,9 +29,9 @@
   ],
   "stack": ["Python", "Node.js", "Redis"],
   "limitacoesConhecidas": [
-    "Projeto pausado por indisponibilidade da equipe colaboradora; acurácia da transcrição não validada em larga escala."
+    "Ficha planejada: não há implementação, e a acurácia da transcrição não foi medida."
   ],
-  "proximosPassos": ["Retomar validação de acurácia da transcrição automática"],
+  "proximosPassos": ["Implementar a estrutura descrita ou retirar a ficha do portfólio."],
   "destaque": true,
   "real": false
 }

@@ -1,4 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="t-hayyanu d-hayyanu">
+  <style>
+    @media (prefers-color-scheme: dark) {
+      [fill="#f4f1e8"] { fill: #242019; }
+      [fill="#1a1a17"] { fill: #efe9db; }
+      [fill="#6f6a5f"] { fill: #b9b1a0; }
+      [stroke="#1a1a17"] { stroke: #efe9db; }
+      [stroke="#c8c2b0"] { stroke: #41392c; }
+    }
+  </style>
   <title id="t-hayyanu">Ficha de índice do projeto HAYYANU</title>
   <desc id="d-hayyanu">Ficha catalográfica desenhada: Gestão de estúdios de tatuagem. Não é uma captura de tela da aplicação.</desc>
   <rect width="1200" height="720" fill="#f4f1e8"/>

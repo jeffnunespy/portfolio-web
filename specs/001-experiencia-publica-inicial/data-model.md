@@ -3,14 +3,15 @@
 Fonte: seção "Key Entities" de [spec.md](./spec.md). Todos os dados são estáticos (arquivos JSON
 em `content/`), sem persistência dinâmica nesta fase — ver [research.md](./research.md).
 
-## Projeto
+## Projeto e escopo planejado
 
-Representa um estudo de caso apresentado no portfólio. Um arquivo `content/projects/<slug>.json`
-por projeto.
+Cada arquivo `content/projects/<slug>.json` representa uma implementação real ou um item de escopo
+planejado. O discriminador `real` define a superfície pública e o valor probatório do registro.
 
 | Campo                          | Tipo                                    | Obrigatório | Regras                                                                                                                                                                               |
 | ------------------------------ | --------------------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `slug`                         | string                                  | Sim         | Identificador de URL definido pelo proprietário na publicação; estável, imutável após publicado (FR-013a). Chave primária de fato (nome do arquivo).                                 |
+| `real`                         | boolean                                 | Sim         | `true`: ficha implementada em `/projetos`; `false`: intenção exibida somente em `/roadmap`, sem página própria nem valor de evidência (FR-004b, FR-024).                            |
 | `titulo`                       | string                                  | Sim         | —                                                                                                                                                                                    |
 | `resumo`                       | string                                  | Sim         | —                                                                                                                                                                                    |
 | `problemaTratado`              | string                                  | Sim         | —                                                                                                                                                                                    |
@@ -30,11 +31,18 @@ por projeto.
 | `proximosPassos`               | string[]                                | Sim         | —                                                                                                                                                                                    |
 | `linkDemonstracao`             | string (URL)                            | Não         | Omitido no card/página quando ausente (FR-008, Edge Cases).                                                                                                                          |
 | `linkRepositorio`              | string (URL) \| `"privado"`             | Não         | Quando `"privado"`, renderiza CTA de contato em vez de link (FR-009a).                                                                                                               |
-| `destaque`                     | boolean                                 | Sim         | Seleção manual do proprietário para a home; respeita teto de 6 (FR-004).                                                                                                             |
+| `destaque`                     | boolean                                 | Sim         | Seleção manual do proprietário para a home; somente registros `real: true` podem participar do teto de 6 (FR-004).                                                                  |
 
-**Validação de publicação**: um projeto só pode ser incluído em `content/projects/` se todos os
-campos obrigatórios estiverem presentes — não há estado de rascunho nesta fase (sem área
-administrativa).
+**Validação de publicação**: um projeto implementado só pode entrar em `/projetos` quando todos os
+campos obrigatórios estiverem presentes — não há estado de rascunho. Um registro `real: false`
+permanece conteúdo prospectivo de `/roadmap`; ainda usa o formato comum dos arquivos, mas seus
+campos não são publicados como prova, status ou ficha de entrega.
+
+**Compatibilidade do esquema comum**: `status`, `natureza`, `imagemApresentacao`,
+`competenciasDemonstradas`, decisões e links continuam obrigatórios nos JSONs `real: false` por
+compatibilidade com o validador atual, mas são dados internos ignorados por `/roadmap`. Eles não
+contam como afirmação pública nem evidência; uma evolução futura pode tornar o esquema condicional
+sem alterar o contrato visível.
 
 ## Perfil profissional
 
@@ -42,10 +50,13 @@ Arquivo único `content/profile.json`.
 
 | Campo                     | Tipo                                       | Obrigatório | Regras                                                                                                    |
 | ------------------------- | ------------------------------------------ | ----------- | --------------------------------------------------------------------------------------------------------- |
-| `tituloPosicionamento`    | string                                     | Sim         | Valor fixo por FR-002: "Desenvolvedor Full-Stack em Formação".                                            |
-| `descricaoPosicionamento` | string                                     | Sim         | Valor fixo por FR-002.                                                                                    |
-| `competenciasPorArea`     | { area: string; competencias: string[] }[] | Sim         | Área de profundidade (backend/engenharia de software) distinta de complementares (cloud/DevOps) — FR-003. |
+| `nome`                    | string                                     | Sim         | Título principal de `/curriculo` e assinatura global do cabeçalho (FR-005a, FR-015a).                    |
+| `tituloPosicionamento`    | string                                     | Sim         | Valor definido por FR-002: "Desenvolvedor Web em Formação".                                             |
+| `descricaoPosicionamento` | string                                     | Sim         | Distingue implementação verificável de interesse/escopo planejado (FR-002).                              |
+| `competenciasPorArea`     | { area: string; competencias: string[] }[] | Sim         | Front-end e Engenharia de Software antes de Qualidade e Operação; somente competências evidenciadas (FR-003, FR-024). |
 | `biografiaSobre`          | string                                     | Sim         | Página Sobre; deve ser consistente (não contraditória) com posicionamento da home (FR-014).               |
+| `formacao`                | { periodo: string; titulo: string; descricao: string }[] | Sim | Formação datada, limitada a fatos confirmados (FR-015a). |
+| `trajetoria`              | { periodo: string; titulo: string; descricao: string }[] | Sim | Marcos técnicos datados e comprováveis, sem vínculos inventados (FR-015a). |
 | `linkCurriculo`           | string (path do arquivo para download)     | Sim         | Página de currículo também usa este conteúdo (FR-015).                                                    |
 | `linkGithub`              | string (URL)                               | Sim         | —                                                                                                         |
 | `linkLinkedin`            | string (URL)                               | Sim         | —                                                                                                         |
@@ -59,19 +70,20 @@ Não é um arquivo separado — é derivada de `competenciasPorArea` (Perfil) e 
 | Campo        | Tipo                   | Obrigatório | Regras                                                                                                                                 |
 | ------------ | ---------------------- | ----------- | -------------------------------------------------------------------------------------------------------------------------------------- |
 | `nome`       | string                 | Sim         | —                                                                                                                                      |
-| `area`       | string                 | Sim         | Ex.: backend, engenharia de software, cloud, DevOps.                                                                                   |
-| `evidencias` | referência a Projeto[] | Sim         | Toda competência exibida DEVE ter ao menos um projeto que a referencie em `competenciasDemonstradas`, ou build falha (FR-024, SC-007). |
+| `area`       | string                 | Sim         | Front-end, Engenharia de Software, Qualidade ou Operação.                                                                             |
+| `evidencias` | referência a Projeto[] | Sim         | Toda competência exibida DEVE ter ao menos um projeto `real: true` que a referencie em `competenciasDemonstradas`, ou o build falha (FR-024, SC-007). |
 
 **Regra de build**: um script de validação (`lib/content.ts`) DEVE rejeitar o build se qualquer
-competência listada em `profile.json` não tiver nenhum projeto publicado que a referencie —
+competência listada em `profile.json` não tiver nenhum projeto implementado que a referencie —
 aplicação automatizada de FR-024/SC-007, evitando publicação de afirmação sem evidência.
 
 ## Relacionamentos
 
 ```text
 Perfil profissional 1 ── N Competência (via competenciasPorArea)
-Competência          N ── N Projeto   (via competenciasDemonstradas)
-Projeto               1 ── 1 página própria (rota /projetos/[slug])
+Competência          N ── N Projeto implementado (via competenciasDemonstradas)
+Projeto real          1 ── 1 página própria (rota /projetos/[slug])
+Escopo planejado      N ── 1 listagem prospectiva (rota /roadmap)
 ```
 
 Não há entidades de usuário/visitante, sessão ou dado transacional — consistente com "sem
@@ -79,8 +91,8 @@ autenticação, sem cadastro de visitantes" (FR-019, spec Input).
 
 ## Impacto da migração para Next.js 16
 
-A migração não cria, remove nem altera entidades, campos, validações, relacionamentos ou arquivos de
-conteúdo. `Perfil profissional`, `Projeto` e `Competência` mantêm o contrato acima.
+A migração de framework não altera as entidades. A emenda funcional de 2026-09-01 documenta o
+discriminador `real`, já presente no conteúdo, e sua separação de superfícies.
 
 As únicas transições técnicas são de execução e tipagem:
 
@@ -102,8 +114,8 @@ renomeado ou tem seu tipo alterado. Duas coisas mudam:
 
 1. **Rigor da validação** — as mesmas regras já expressas nas tabelas acima passam a ser verificadas
    de forma completa em build time (ver P1/Etapa 5 do [plan.md](./plan.md)).
-2. **Valores de conteúdo** — placeholders em `content/profile.json` e nos projetos são substituídos
-   por conteúdo real (P3). Estrutura idêntica, dados verdadeiros.
+2. **Valores de conteúdo** — placeholders em `content/profile.json` e nos projetos devem ser
+   substituídos por conteúdo confirmado (P0 ainda pendente); intenção permanece separada de entrega.
 
 ### Matriz de validação em build time
 

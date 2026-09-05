@@ -6,6 +6,14 @@
 */
 
 :root {
+  /*
+    Altura total do cabeçalho fixo, incluindo o filete de 2px de .site-header
+    que fica fora de .site-header__inner. Serve de desconto para as alturas de
+    viewport do hero; é sobrescrito nos breakpoints onde o cabeçalho empilha.
+    O valor móvel inclui a assinatura visível acima da navegação.
+  */
+  --header-height: 3.875rem;
+
   /* Tinta e cartão */
   --ink: #1a1a17;
   --ink-soft: #4a4740;
@@ -14,8 +22,20 @@
   --card-raised: #faf8f2;
   --card-sunk: #eae5d7;
 
-  /* Filetes de campo: a única fonte de estrutura */
+  /*
+    Filetes de campo, em três pesos por função — não por gosto.
+
+    --rule é pauta decorativa: separa células de uma grade cujo conteúdo já é
+    legível sozinho. WCAG 1.4.11 isenta separadores puramente estéticos, então
+    ele fica claro o bastante para o papel continuar sendo papel.
+
+    --rule-edge é contorno que carrega significado: quando o filete é a única
+    coisa que define o objeto (moldura de imagem, chip, nota, estado vazio),
+    apagá-lo apaga o componente. Esses alcançam ≥3:1 sobre toda superfície em
+    que assentam, inclusive --card-sunk, conforme 1.4.11.
+  */
   --rule: #c8c2b0;
+  --rule-edge: #847d6a;
   --rule-strong: #1a1a17;
 
   /* Carimbo: voz única, aplicada com parcimônia */
@@ -27,6 +47,18 @@
 
   --content-width: 1240px;
   --field-gap: 1.5rem;
+
+  /*
+    O eixo de campo: a margem de consulta da ficha. Numa ficha catalográfica a
+    coluna de campos tem uma largura só — é o que permite folhear o acervo e
+    reencontrar o mesmo dado sempre na mesma posição. Antes cada rota inventava
+    a sua (320px no hero, 304px no 404, 477px na ficha, 620px no detalhe), e o
+    eixo direito oscilava mais de 300px entre rotas do mesmo fichário.
+    A goteira acompanha o container em vez de ser fixa, para o corpo de leitura
+    não estrangular entre 1024px e a medida plena.
+  */
+  --field-column: 19rem;
+  --field-gutter: clamp(2.5rem, 5.5vw, 5rem);
 }
 
 /*
@@ -44,6 +76,7 @@
     --card-sunk: #26221b;
 
     --rule: #41392c;
+    --rule-edge: #847a67;
     --rule-strong: #efe9db;
 
     --stamp: #e2694f;
@@ -104,11 +137,50 @@ button:focus-visible {
   background: var(--ink);
 }
 
+/*
+  A barra de rolagem é a última superfície que o navegador ainda desenhava com
+  a paleta dele: cinza de sistema sobre o cartão. Tinta sobre cartão, como todo
+  o resto. scrollbar-color cobre Firefox; ::-webkit-scrollbar cobre os demais.
+*/
+html {
+  scrollbar-color: var(--rule-edge) var(--card);
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--card);
+}
+
+::-webkit-scrollbar-thumb {
+  border: 3px solid var(--card);
+  background: var(--rule-edge);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ink-faint);
+}
+
 h1,
 h2,
 h3,
 p {
   margin-top: 0;
+}
+
+h1,
+h2,
+h3,
+p,
+li,
+dd,
+a,
+button,
+small {
+  overflow-wrap: anywhere;
 }
 
 h1,
@@ -140,6 +212,19 @@ h3 {
 
 /* ───────── Rótulo de campo: a régua tipográfica do fichário ───────── */
 
+/*
+  Numerais de registro são dados de medição, não texto corrido: contagens,
+  índices e códigos alinham em coluna com largura tabular, como numa ficha
+  datilografada. Sem isso os dígitos proporcionais fazem "1 / 5" dançar entre
+  fichas de índice diferente.
+*/
+.hero__index,
+.hero__record dd,
+.project-record-footer__position,
+.site-footer p {
+  font-variant-numeric: tabular-nums;
+}
+
 .field-label {
   display: block;
   color: var(--ink-faint);
@@ -148,6 +233,18 @@ h3 {
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 .skip-link {
@@ -208,16 +305,18 @@ h3 {
 
 .site-brand {
   display: flex;
+  min-height: 2.75rem;
   align-items: center;
   color: var(--ink);
   font-family: var(--font-field), Arial, sans-serif;
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.2em;
+  text-decoration: none;
   text-transform: uppercase;
 }
 
-.site-brand span {
+.site-brand:hover {
   color: var(--stamp);
 }
 
@@ -230,6 +329,7 @@ h3 {
 
 .site-nav a {
   display: flex;
+  min-width: 0;
   align-items: center;
   padding-inline: 1.1rem;
   border-left: 1px solid var(--rule);
@@ -238,13 +338,19 @@ h3 {
   font-size: 0.78rem;
   font-weight: 600;
   letter-spacing: 0.1em;
+  text-align: center;
   text-decoration: none;
   text-transform: uppercase;
   transition: color 140ms ease;
+  white-space: nowrap;
 }
 
 .site-nav a:last-child {
   border-right: 1px solid var(--rule);
+}
+
+.site-nav__label--compact {
+  display: none;
 }
 
 .site-nav a:hover {
@@ -252,7 +358,7 @@ h3 {
   background: var(--card-sunk);
 }
 
-/* A aba ativa do fichário: currículo é a saída principal. */
+/* Currículo é a saída principal do fichário, destacada enquanto não é a atual. */
 .site-nav .nav-curriculo-destaque {
   color: var(--card);
   background: var(--ink);
@@ -263,8 +369,25 @@ h3 {
   background: var(--stamp);
 }
 
+/*
+  A aba ativa do fichário. O carimbo não depende só da cor: o filete inferior
+  espesso sobrevive a alto contraste e à impressão, onde o fundo se perde.
+  Filete, não sombra — DESIGN.md proíbe box-shadow em todo o sistema.
+*/
+.site-nav a[aria-current="page"] {
+  color: var(--ink);
+  background: var(--card);
+  border-bottom: 3px solid var(--stamp);
+  font-weight: 600;
+}
+
+/*
+  dvh acompanha a barra de endereço móvel; vh fica como fallback para navegadores
+  sem suporte, onde a altura é medida com a barra retraída e o rodapé salta.
+*/
 .site-main {
   min-height: calc(100vh - 12rem);
+  min-height: calc(100dvh - 12rem);
 }
 
 /* ───────── A ficha de cabeçalho: primeiro viewport ───────── */
@@ -277,9 +400,29 @@ h3 {
 
 .hero {
   display: flex;
-  min-height: calc(100vh - 3.75rem);
+  min-height: calc(100vh - var(--header-height));
+  min-height: calc(100dvh - var(--header-height));
   flex-direction: column;
   padding-block: clamp(2rem, 5vw, 4rem) clamp(2rem, 4vw, 3rem);
+}
+
+/*
+  No desktop, o conteúdo principal ocupa a ficha e os campos catalográficos
+  formam uma margem de consulta à direita. A medida de leitura permanece no
+  corpo; o container continua alinhado ao eixo global do site.
+*/
+.hero__layout {
+  display: grid;
+  min-width: 0;
+  flex: 1;
+  align-items: center;
+  padding-block: clamp(2.5rem, 5vw, 4.5rem);
+  grid-template-columns: minmax(0, 1fr) var(--field-column);
+  gap: var(--field-gutter);
+}
+
+.hero__body {
+  min-width: 0;
 }
 
 /* Linha de índice: número de registro e data, como no topo de uma ficha real. */
@@ -299,7 +442,6 @@ h3 {
 }
 
 .hero__name {
-  padding-top: clamp(1.5rem, 4vw, 2.75rem);
   margin-bottom: 0;
   font-size: clamp(2.7rem, 11vw, 7rem);
   line-height: 0.92;
@@ -341,26 +483,51 @@ h3 {
   gap: 0.75rem;
 }
 
-.hero__actions {
+.hero__evidence {
   padding-top: 2rem;
 }
 
-/* Tabela de campos catalográficos: fecha o primeiro viewport. */
+/*
+  A medida é dada em px, não em ch: `ch` mede o avanço do glifo "0" e ignora
+  tanto o tracking quanto a caixa alta, então 58ch resolvia para 348px — cerca
+  de 40 caracteres reais, o que quebrava a nota em três linhas e deixava "CI."
+  órfão na última. `balance` distribui as duas linhas restantes.
+*/
+.hero__evidence-note {
+  max-width: 34rem;
+  margin: 0.7rem 0 0;
+  color: var(--ink-soft);
+  font-family: var(--font-field), Arial, sans-serif;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1.45;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+.hero__actions--secondary {
+  padding-top: 1rem;
+}
+
+/* Tabela de campos catalográficos: margem direita da ficha no desktop. */
 .hero__record {
   display: grid;
-  margin-top: auto;
-  padding-top: clamp(2rem, 5vw, 3.5rem);
+  width: 100%;
+  margin: 0;
+  align-self: center;
   border-top: 2px solid var(--rule-strong);
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: 1fr;
 }
 
 .hero__record > div {
-  padding: 1.1rem 1.25rem 0.25rem 0;
-  border-right: 1px solid var(--rule);
+  min-width: 0;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--rule);
 }
 
 .hero__record > div:last-child {
-  border-right: 0;
+  border-bottom: 0;
 }
 
 .hero__record dt {
@@ -380,11 +547,24 @@ h3 {
   line-height: 1.35;
 }
 
+/*
+  O dd tem line-height apertado (1.35), que comprimiria o padding do .text-link
+  abaixo dos 44px de alvo. A altura mínima é garantida aqui sem afrouxar o ritmo
+  tipográfico da tabela de registro.
+*/
+.hero__record dd .text-link {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+}
+
 /* ───────── Botões: carimbos retangulares, sem raio ───────── */
 
 .button {
   display: inline-flex;
-  min-height: 2.6rem;
+  max-width: 100%;
+  /* 2.75rem = 44px: alvo de toque mínimo (WCAG 2.5.5 / 2.5.8). */
+  min-height: 2.75rem;
   align-items: center;
   justify-content: center;
   padding: 0.6rem 1.25rem;
@@ -393,8 +573,10 @@ h3 {
   font-size: 0.78rem;
   font-weight: 700;
   letter-spacing: 0.12em;
+  text-align: center;
   text-decoration: none;
   text-transform: uppercase;
+  white-space: normal;
   transition:
     color 140ms ease,
     background-color 140ms ease;
@@ -466,6 +648,15 @@ h3 {
   border-bottom: 0;
 }
 
+/* O inventário desta seção só reúne o que a plataforma implementada comprova.
+   Estudos de backend e cloud ficam explicitamente fora dele, no roadmap. */
+.competency-roadmap-note {
+  max-width: 64ch;
+  margin: 1.5rem 0 0;
+  color: var(--ink-soft);
+  font-size: 0.92rem;
+}
+
 /* ───────── Seções ───────── */
 
 .page-section {
@@ -487,7 +678,15 @@ h3 {
   margin-bottom: 0;
 }
 
+/*
+  O padding vertical eleva a área de toque a 44px (WCAG 2.5.5/2.5.8); a margem
+  negativa equivalente devolve o espaço ao fluxo, para o link não empurrar as
+  linhas vizinhas nem desalinhar os filetes de campo em que ele aparece.
+*/
 .text-link {
+  display: inline-block;
+  padding-block: 0.75rem;
+  margin-block: -0.75rem;
   color: var(--ink);
   font-family: var(--font-field), Arial, sans-serif;
   font-size: 0.76rem;
@@ -504,20 +703,6 @@ h3 {
 }
 
 /* ───────── A ficha de projeto ───────── */
-
-.project-group--estrutura {
-  margin-top: 2.5rem;
-}
-
-.project-group__label {
-  margin-bottom: 0.75rem;
-  color: var(--ink-faint);
-  font-family: var(--font-field), Arial, sans-serif;
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
 
 .project-grid {
   display: grid;
@@ -540,20 +725,51 @@ h3 {
   border-right: 0;
 }
 
+/*
+  Uma ficha única não finge uma grade por preencher: vira o registro principal
+  do acervo. O índice visual recua para a margem — é referência, não conteúdo —
+  e o registro ocupa a coluna de tinta, alinhado ao h1 e ao lead acima dele.
+  Quando houver uma segunda ficha, a grade regular de duas colunas volta a
+  representar itens equivalentes.
+*/
+.project-grid:has(.project-card:only-child) {
+  grid-template-columns: 1fr;
+}
+
 .project-grid:has(.project-card:only-child) .project-card {
-  grid-column: 1 / -1;
-  padding-right: 0;
+  display: grid;
+  padding: 1.75rem 0;
   border-right: 0;
+  border-bottom: 0;
+  /*
+    Aqui o eixo de campo vale invertido. O corpo da ficha é leitura corrida
+    (resumo, problema, competências), não uma tabela de campos: espremê-lo em
+    --field-column quebraria a medida. Quem ocupa a margem é o índice visual,
+    que é justamente o dado consultável de largura fixa. O registro fica na
+    coluna de tinta, alinhado ao h1 e ao lead acima dele.
+
+    A margem ganha um passo a mais que --field-column porque carrega uma
+    imagem 5:3 com título interno, não uma tabela de rótulos: em 19rem o
+    índice deixa de ser legível como ficha.
+  */
+  grid-template-columns: calc(var(--field-column) + 6rem) minmax(0, 1fr);
+  gap: var(--field-gutter);
+}
+
+.project-grid:has(.project-card:only-child) .project-image {
+  margin-bottom: 0;
 }
 
 .project-image {
   display: block;
   width: 100%;
   margin-bottom: 1.25rem;
-  aspect-ratio: 16 / 9;
-  border: 1px solid var(--rule);
+  /* As fichas SVG são desenhadas em 1200 x 720. Preservar 5:3 impede que
+     índice, título e marcações inferiores sejam cortados por object-fit. */
+  aspect-ratio: 5 / 3;
+  border: 1px solid var(--rule-edge);
   background: var(--card-sunk);
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .project-image--fallback {
@@ -581,6 +797,7 @@ h3 {
 
 .project-card__body {
   display: flex;
+  min-width: 0;
   flex: 1;
   flex-direction: column;
   align-items: flex-start;
@@ -613,6 +830,11 @@ h3 {
 /*
   Carimbo de estado: cada status ganha marca tipográfica própria, legível
   sem cor nenhuma — o traço muda, não só o matiz.
+
+  Os glifos usam a forma `content: "X" / ""` — o alternativo vazio mantém a
+  marca visível e a exclui do nome acessível, para o leitor de tela anunciar
+  "Concluído", não "✓ Concluído". Vale para todos os glifos decorativos deste
+  arquivo (badges, `.tag`, travessão das listas de campo).
 */
 .project-status-badge {
   display: inline-flex;
@@ -639,7 +861,7 @@ h3 {
 }
 
 .project-status-badge--concluído::before {
-  content: "✓";
+  content: "✓" / "";
 }
 
 .project-status-badge--em-andamento {
@@ -648,7 +870,7 @@ h3 {
 }
 
 .project-status-badge--em-andamento::before {
-  content: "▶";
+  content: "▶" / "";
 }
 
 .project-status-badge--pausado {
@@ -658,7 +880,7 @@ h3 {
 }
 
 .project-status-badge--pausado::before {
-  content: "‖";
+  content: "‖" / "";
 }
 
 .project-status-badge--arquivado {
@@ -668,31 +890,7 @@ h3 {
 }
 
 .project-status-badge--arquivado::before {
-  content: "▣";
-}
-
-/*
-  Marca projetos que ainda são apenas estrutura de conteúdo: nenhum software
-  real por trás. Traço tracejado e glifo de esboço deixam isso legível mesmo
-  sem cor (princípio "evidências acima de afirmações").
-*/
-.project-real-badge {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.2rem 0.5rem;
-  border: 2px dashed var(--ink-faint);
-  color: var(--ink-faint);
-  font-family: var(--font-field), Arial, sans-serif;
-  font-size: 0.66rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-
-.project-real-badge::before {
-  content: "□";
-  margin-right: 0.4rem;
-  font-weight: 700;
+  content: "▣" / "";
 }
 
 /* Campos de classificação: texto entre filetes, não pílulas. */
@@ -710,14 +908,14 @@ h3 {
 .tag::before {
   margin-right: 0.5rem;
   color: var(--rule);
-  content: "·";
+  content: "·" / "";
 }
 
 .chip-list li {
   display: inline-flex;
   align-items: center;
   padding: 0.15rem 0.45rem;
-  border: 1px solid var(--rule);
+  border: 1px solid var(--rule-edge);
   color: var(--ink-soft);
   font-family: var(--font-field), Arial, sans-serif;
   font-size: 0.68rem;
@@ -765,8 +963,134 @@ h3 {
 
 .empty-state {
   padding: 2rem;
-  border: 1px dashed var(--rule);
+  border: 1px dashed var(--rule-edge);
   color: var(--ink-soft);
+}
+
+/*
+  Aviso adjacente a uma lista: ponte entre superfícies (fichas ↔ roadmap).
+  Filete superior porque separa blocos de conteúdo já legíveis sozinhos.
+*/
+.page-intro__aside {
+  max-width: 68ch;
+  padding-top: 1.25rem;
+  margin-top: 2.5rem;
+  border-top: 1px solid var(--rule);
+  color: var(--ink-soft);
+}
+
+/* ───────── O roadmap: escopo planejado, nunca estudo de caso ───────── */
+
+/*
+  Deliberadamente não reusa .project-card nem .project-grid. Uma entrada de
+  roadmap não é ficha: sem imagem, sem selo de status, sem link para detalhe,
+  sem competências. A moldura tracejada sobre cartão rebaixado é o vocabulário
+  já estabelecido do sistema para "registro incompleto" (ver
+  .private-code-note), e a lista numerada declara ordem de intenção em vez
+  de acervo.
+*/
+.roadmap-list {
+  display: grid;
+  padding: 0;
+  margin: 3rem 0 0;
+  gap: 1.5rem;
+  list-style: none;
+}
+
+.roadmap-entry {
+  padding: 1.75rem;
+  border: 1px dashed var(--rule-edge);
+  background: var(--card-sunk);
+}
+
+.roadmap-entry__index {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 0.75rem;
+  gap: 0.75rem;
+}
+
+/* Mesmo motivo de .private-code-note: --ink-faint sobre --card-sunk dá 4.27:1,
+   abaixo do mínimo AA para este corpo pequeno. */
+.roadmap-entry__index .muted-label {
+  color: var(--ink-soft);
+}
+
+.roadmap-entry h2 {
+  margin: 0 0 0.75rem;
+  font-size: clamp(1.25rem, 2.2vw, 1.6rem);
+}
+
+/* Sobre --card-sunk, --ink-faint não alcança 4.5:1 neste corpo. */
+.roadmap-entry p {
+  max-width: 68ch;
+  margin: 0 0 0.75rem;
+  color: var(--ink-soft);
+}
+
+.roadmap-stack {
+  max-width: 68ch;
+  padding-top: 1rem;
+  margin-top: 1.25rem;
+  border-top: 1px dashed var(--rule-edge);
+}
+
+.roadmap-stack h3 {
+  margin: 0 0 0.75rem;
+  color: var(--ink-soft);
+  font-family: var(--font-field), Arial, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.roadmap-stack__groups {
+  display: grid;
+  margin: 0;
+  gap: 0.55rem;
+}
+
+.roadmap-stack__group {
+  display: grid;
+  align-items: baseline;
+  grid-template-columns: minmax(7.5rem, 9.5rem) minmax(0, 1fr);
+  gap: 0.75rem;
+}
+
+.roadmap-stack__group dt {
+  color: var(--ink-soft);
+  font-family: var(--font-field), Arial, sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.roadmap-stack__group dd {
+  min-width: 0;
+  margin: 0;
+}
+
+.roadmap-stack__group ul {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0;
+  margin: 0;
+  gap: 0 0.4rem;
+  list-style: none;
+}
+
+.roadmap-stack__group li {
+  color: var(--ink-soft);
+  font-size: 0.84rem;
+  overflow-wrap: anywhere;
+}
+
+.roadmap-stack__group li:not(:last-child)::after {
+  margin-left: 0.4rem;
+  color: var(--rule-edge);
+  content: "·" / "";
 }
 
 /* ───────── Páginas internas ───────── */
@@ -800,9 +1124,77 @@ h3 {
   border-bottom: 2px solid var(--rule-strong);
 }
 
-.project-detail > .project-image {
+/*
+  A ficha de índice é desenhada na medida de uma coluna do fichário. Sem teto de
+  largura ela se estica pelos 1280px do container e o SVG escala junto, deixando
+  a linha de índice interna maior que o <h1> da página — a moldura passava a
+  competir com o título que deveria acompanhar. O teto a mantém na medida em que
+  foi desenhada; abaixo dele ela acompanha a largura disponível.
+*/
+/*
+  O índice visual ocupava 34rem e deixava metade da ficha vazia à direita. A
+  imagem fica na coluna de tinta e a procedência sobe para a margem de consulta,
+  no mesmo eixo de campo do hero: quem verifica a fonte lê no lugar onde os
+  campos sempre estão, em vez de descer até o pé da imagem.
+*/
+.project-detail__visual-index {
+  display: grid;
+  align-items: start;
   margin-bottom: 3rem;
-  aspect-ratio: 21 / 9;
+  /*
+    A margem de consulta só existe enquanto houver largura para as duas colunas
+    sem espremer a imagem. auto-fit + minmax colapsa para uma coluna sozinho
+    quando o cartão estreita, sem breakpoint e sem grid-row fixo — que era o
+    que fazia a imagem desaparecer no celular.
+  */
+  grid-template-columns: minmax(0, 1fr) var(--field-column);
+  gap: 1.5rem var(--field-gutter);
+}
+
+.project-detail__visual-index > h2 {
+  grid-column: 1 / -1;
+  margin-bottom: 0;
+}
+
+/* A ilustração registra a organização da ficha, não uma interface em uso.
+   O rótulo e as fontes verificáveis ficam no mesmo bloco para que a imagem
+   não seja interpretada como demonstração do software. */
+.project-detail__visual-index > h2,
+.project-detail__visual-index-sources > .muted-label {
+  display: block;
+  margin-bottom: 0.75rem;
+  color: var(--ink-soft);
+  font-family: var(--font-field), Arial, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.project-detail__visual-index > .project-image {
+  margin-bottom: 0;
+  aspect-ratio: 5 / 3;
+}
+
+/*
+  Lado a lado, o filete que separa procedência de imagem é o de topo da margem
+  de campo — o mesmo filete forte de .hero__record —, não uma régua horizontal
+  sob a imagem.
+*/
+/*
+  A margem de consulta acompanha a altura do registro em vez de parar logo
+  abaixo do botão, que deixava 421px de filete terminando no ar ao lado da
+  imagem. Numa ficha de catálogo a coluna de campos corre ao lado do registro
+  inteiro; `align-self: stretch` faz isso sem alterar o alinhamento do topo.
+*/
+.project-detail__visual-index-sources {
+  align-self: stretch;
+  padding-top: 1rem;
+  border-top: 2px solid var(--rule-strong);
+}
+
+.project-detail__visual-index-sources > .muted-label {
+  margin-top: 0;
 }
 
 .project-detail__content {
@@ -812,15 +1204,30 @@ h3 {
 }
 
 .project-detail__content > section {
+  min-width: 0;
   padding: 1.75rem 1.75rem 1.75rem 0;
   border-bottom: 1px solid var(--rule);
   border-right: 1px solid var(--rule);
 }
 
-.project-detail__content > section:nth-of-type(2n) {
+/*
+  A paridade das colunas não pode sair de nth-of-type: a seção larga
+  (Decisões relevantes) ocupa a linha inteira e inverte a contagem de tudo o
+  que vem depois — era por isso que o filete vertical aparecia à direita de
+  "Limitações" em vez de "Stack". A contagem reinicia a partir da seção larga,
+  que é o divisor real da grade.
+*/
+.project-detail__content > section:nth-of-type(2n),
+.project-detail__wide ~ section:nth-of-type(2n + 1) {
   padding-right: 0;
   padding-left: 1.75rem;
   border-right: 0;
+}
+
+.project-detail__wide ~ section:nth-of-type(2n) {
+  padding-right: 1.75rem;
+  padding-left: 0;
+  border-right: 1px solid var(--rule);
 }
 
 .project-detail__content h2 {
@@ -834,8 +1241,31 @@ h3 {
   color: var(--ink-soft);
 }
 
-.project-detail__content ul {
-  padding-left: 1.1rem;
+/*
+  Item de campo: o marcador do navegador é substituído pelo mesmo travessão de
+  tinta usado no restante do fichário. As listas de competência da home já
+  registravam assim; ficha e currículo usavam o disc padrão, que não pertence a
+  nenhum sistema. O recuo acomoda o travessão sem depender de list-style.
+*/
+.project-detail__content ul,
+.resume-skills ul {
+  padding-left: 0;
+  list-style: none;
+}
+
+.project-detail__content ul > li,
+.resume-skills ul > li {
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.project-detail__content ul > li::before,
+.resume-skills ul > li::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: var(--rule);
+  content: "—" / "";
 }
 
 .project-detail__content li + li {
@@ -848,9 +1278,118 @@ h3 {
   border-right: 0 !important;
 }
 
-.project-detail__placeholder-notice {
-  border-left: 3px dashed var(--ink-faint);
-  padding-left: 1.75rem !important;
+/*
+  Escassez assumida, não disfarçada. Quando o último campo cai sozinho na
+  coluna da esquerda, o filete vertical passava a dividir uma célula vazia —
+  pauta separando nada. O filete some e o campo ocupa a ficha inteira: uma
+  linha curta é a leitura correta de um acervo curto, não um buraco a tapar.
+  A paridade é contada a partir da seção larga, como nas regras acima.
+*/
+.project-detail__content > section:last-of-type:nth-of-type(odd),
+.project-detail__wide ~ section:last-of-type:nth-of-type(2n) {
+  grid-column: 1 / -1;
+  padding-right: 0;
+  border-right: 0;
+}
+
+/* ───────── Rodapé da ficha: orientação, continuidade e conversão ───────── */
+
+.project-record-footer {
+  margin-top: clamp(2.5rem, 5vw, 4rem);
+  border-top: 2px solid var(--rule-strong);
+}
+
+.project-record-footer__orientation {
+  display: flex;
+  min-height: 2.75rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px solid var(--rule);
+  color: var(--ink-faint);
+  font-family: var(--font-field), Arial, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.project-record-footer__orientation a {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  color: var(--ink);
+  text-underline-offset: 0.22em;
+}
+
+.project-record-footer__navigation {
+  display: grid;
+  border-bottom: 1px solid var(--rule);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.project-record-footer__project-link {
+  display: flex;
+  min-width: 0;
+  min-height: 7.5rem;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1.5rem;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.project-record-footer__project-link span {
+  color: var(--ink-faint);
+  font-family: var(--font-field), Arial, sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.project-record-footer__project-link strong {
+  max-width: 28ch;
+  overflow-wrap: anywhere;
+  font-size: clamp(1.1rem, 2vw, 1.35rem);
+  line-height: 1.2;
+}
+
+.project-record-footer__project-link--previous {
+  border-right: 1px solid var(--rule);
+}
+
+.project-record-footer__project-link--next {
+  align-items: flex-end;
+  grid-column: 2;
+  text-align: right;
+}
+
+.project-record-footer__project-link:hover strong {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+}
+
+.project-record-footer__resume {
+  display: grid;
+  align-items: center;
+  gap: 2rem;
+  padding-block: clamp(1.75rem, 4vw, 2.75rem);
+  border-bottom: 2px solid var(--rule-strong);
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.project-record-footer__resume h2 {
+  margin-bottom: 0.5rem;
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+}
+
+.project-record-footer__resume p {
+  max-width: 58ch;
+  margin-bottom: 0;
+  color: var(--ink-soft);
 }
 
 .decision-grid {
@@ -885,8 +1424,15 @@ h3 {
 /* Nota de código privado: cartão rebaixado, não alerta colorido. */
 .private-code-note {
   padding: 1rem 1.1rem;
-  border: 1px dashed var(--rule);
+  border: 1px dashed var(--rule-edge);
   background: var(--card-sunk);
+}
+
+/* Ressalva secundária não ocupa a coluna inteira: em largura total ela
+   compete com o conteúdo que qualifica. Limitada à medida de leitura,
+   lê como anotação de margem — que é o que é. */
+.availability-note {
+  max-width: 34ch;
 }
 
 /* --ink-soft, não --ink-faint: sobre o cartão rebaixado o tom apagado
@@ -895,16 +1441,93 @@ h3 {
   margin: 0 0 0.5rem;
   color: var(--ink-soft);
   font-family: var(--font-field), Arial, sans-serif;
-  font-size: 0.76rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  /* Frase, não rótulo: caixa-alta com letter-spacing degrada a leitura de
+     texto corrido. A métrica de ficha fica só nos rótulos de campo. */
+  font-size: 0.82rem;
+  letter-spacing: 0.01em;
+}
+
+.private-code-note .muted-label {
+  color: var(--ink-soft);
 }
 
 .message-page {
   width: min(calc(100% - 3rem), 68ch);
   min-height: 60vh;
+  min-height: 60dvh;
   margin-inline: auto;
   padding-block: clamp(4rem, 9vw, 7rem);
+}
+
+/*
+  O 404 pertence ao mesmo fichário das rotas válidas: mesmo eixo de tinta à
+  esquerda e mesmo eixo de campo à direita que o hero. Um registro inexistente
+  é lido na mesma ficha dos que existem — os poucos dados reais do acervo ficam
+  na margem de consulta, sem placeholders para preencher a página.
+*/
+.message-page--not-found {
+  width: min(calc(100% - 3rem), var(--content-width));
+}
+
+.message-page__layout {
+  display: grid;
+  align-items: start;
+  padding-top: clamp(2.5rem, 6vw, 5rem);
+  grid-template-columns: minmax(0, 1fr) var(--field-column);
+  gap: var(--field-gutter);
+}
+
+.message-page__body {
+  min-width: 0;
+  max-width: 68ch;
+}
+
+.message-page__body p {
+  max-width: 58ch;
+  margin-bottom: 1.75rem;
+  color: var(--ink-soft);
+  font-size: clamp(1.05rem, 1.6vw, 1.25rem);
+}
+
+.message-page__record {
+  display: grid;
+  min-width: 0;
+  margin: 0;
+  border-top: 2px solid var(--rule-strong);
+}
+
+.message-page__record > div {
+  min-width: 0;
+  padding-block: 1rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.message-page__record > div:last-child {
+  border-bottom: 0;
+}
+
+.message-page__record dt {
+  color: var(--ink-faint);
+  font-family: var(--font-field), Arial, sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.message-page__record dd {
+  margin: 0.4rem 0 0;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 1.05rem;
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+  line-height: 1.35;
+}
+
+.message-page__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
 }
 
 .resume-page,
@@ -945,6 +1568,13 @@ h3 {
   border-top: 1px solid var(--rule);
 }
 
+/* Texto corrido dessas rotas ocupava a largura inteira do container (~145
+   caracteres por linha no desktop), muito além da medida legível. */
+.resume-page > section > p,
+.about-page > section > p {
+  max-width: 68ch;
+}
+
 .resume-page h2,
 .about-page h2 {
   margin-bottom: 1.25rem;
@@ -956,6 +1586,45 @@ h3 {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1.5rem;
+}
+
+.resume-timeline {
+  max-width: 76ch;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.resume-timeline li {
+  display: grid;
+  padding-block: 1.25rem;
+  border-top: 1px solid var(--rule);
+  grid-template-columns: minmax(9rem, 12rem) minmax(0, 1fr);
+  gap: 1.5rem;
+}
+
+.resume-timeline li:last-child {
+  padding-bottom: 0;
+}
+
+.resume-timeline__period {
+  margin: 0;
+  color: var(--ink-soft);
+  font-family: var(--font-field), Arial, sans-serif;
+  font-size: 0.76rem;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.resume-timeline h3 {
+  margin: 0 0 0.35rem;
+}
+
+.resume-timeline div > p {
+  margin: 0;
+  color: var(--ink-soft);
 }
 
 .resume-skills > div,
@@ -970,32 +1639,46 @@ h3 {
 }
 
 .resume-skills ul {
-  padding-left: 1.1rem;
   margin-bottom: 0;
   color: var(--ink-soft);
 }
 
+/*
+  Linha de campos, não lista com marcador: o disc e o recuo de 40px vêm do
+  navegador e desalinhavam os itens do filete de campo em que a seção se apoia.
+  A separação passa a ser o filete vertical, como nas demais tabelas de registro.
+*/
 .resume-contact {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.75rem 2.5rem;
+  padding-left: 0;
+  gap: 0 2rem;
   margin-bottom: 0;
   color: var(--ink-soft);
+  list-style: none;
+}
+
+.resume-contact li {
+  display: inline-flex;
+  align-items: center;
+  padding-left: 2rem;
+  border-left: 1px solid var(--rule);
+}
+
+.resume-contact li:first-child {
+  padding-left: 0;
+  border-left: 0;
+}
+
+/* Alvo de toque de 44px (WCAG 2.5.5/2.5.8) nos links de contato e perfis. */
+.resume-contact a {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
 }
 
 .about-principles {
   grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
-.about-principles span {
-  display: block;
-  margin-bottom: 0.4rem;
-  color: var(--ink-faint);
-  font-family: var(--font-field), Arial, sans-serif;
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
 }
 
 .about-principles p {
@@ -1027,10 +1710,58 @@ h3 {
 }
 
 .footer-nav {
+  /* Sem gap vertical: a altura de toque de 2.75rem já separa as linhas. */
   gap: 0 1.5rem;
+  align-items: center;
 }
 
-.footer-nav a {
+.footer-contact {
+  min-width: min(100%, 22rem);
+}
+
+.footer-contact h2 {
+  margin: 0 0 0.35rem;
+  font-family: var(--font-field), Arial, sans-serif;
+  font-size: 0.74rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.footer-contact p {
+  max-width: 42ch;
+  margin: 0 0 0.5rem;
+  color: var(--ink-soft);
+  font-family: var(--font-body), Arial, sans-serif;
+  font-size: 0.88rem;
+  letter-spacing: normal;
+}
+
+.footer-contact__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 1.5rem;
+  align-items: center;
+}
+
+/*
+  Alvo de toque de 44px (WCAG 2.5.5/2.5.8) sem alterar a métrica tipográfica:
+  a altura vem do min-height, não de padding, para os rótulos permanecerem na
+  mesma linha de base do restante do rodapé. O min-width cobre os dois eixos —
+  "Início" (39,1px) e "Sobre" (40,9px) são curtos demais para alcançar 44px só
+  pelo texto; centralizar mantém o filete de campo alinhado ao rótulo.
+*/
+.footer-nav a,
+.footer-contact__actions a,
+.footer-contact__actions .muted-label {
+  display: inline-flex;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer-nav a,
+.footer-contact__actions a {
   color: var(--ink-soft);
   font-family: var(--font-field), Arial, sans-serif;
   font-size: 0.74rem;
@@ -1040,7 +1771,8 @@ h3 {
   text-transform: uppercase;
 }
 
-.footer-nav a:hover {
+.footer-nav a:hover,
+.footer-contact__actions a:hover {
   color: var(--stamp);
   text-decoration: underline;
   text-underline-offset: 0.3em;
@@ -1057,9 +1789,35 @@ h3 {
 /* ───────── Adaptação ───────── */
 
 @media (max-width: 900px) {
+  .hero__layout,
+  .message-page__layout,
+  .project-detail__visual-index {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  /*
+    Empilhado, a procedência volta a ser um rodapé de imagem e recupera a
+    régua fina; o filete forte pertence à margem de consulta, que aqui não
+    existe mais.
+  */
+  .project-detail__visual-index-sources {
+    border-top-width: 1px;
+    border-top-color: var(--rule);
+  }
+
   .hero__record,
   .competency-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .hero__record {
+    align-self: stretch;
+  }
+
+  .hero__record > div {
+    padding-right: 1.25rem;
+    border-right: 1px solid var(--rule);
   }
 
   .hero__record > div:nth-child(2n),
@@ -1068,12 +1826,50 @@ h3 {
     border-right: 0;
   }
 
+  .message-page__record {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .message-page__record > div {
+    padding-right: 1rem;
+    border-right: 1px solid var(--rule);
+    border-bottom: 0;
+  }
+
+  .message-page__record > div + div {
+    padding-left: 1rem;
+  }
+
+  .message-page__record > div:last-child {
+    padding-right: 0;
+    border-right: 0;
+  }
+
+  .project-grid:has(.project-card:only-child) .project-card {
+    display: flex;
+    padding: 1.75rem 0;
+    gap: 0;
+  }
+
+  .project-grid:has(.project-card:only-child) .project-image {
+    margin-bottom: 1.25rem;
+  }
+
   .competency-card:nth-child(n + 3) {
     border-top: 1px solid var(--rule);
   }
 }
 
 @media (max-width: 820px) {
+  /*
+    A marca passa a ocupar uma linha própria acima da navegação, então o
+    cabeçalho cresce e o desconto do hero precisa acompanhar. Medido em 93,8px
+    aqui, onde os rótulos da nav ainda cabem em uma linha.
+  */
+  :root {
+    --header-height: 5.875rem;
+  }
+
   .site-header__inner {
     min-height: auto;
     flex-direction: column;
@@ -1105,8 +1901,73 @@ h3 {
   }
 }
 
+/*
+  Abaixo de ~420px os rótulos da navegação quebram em linhas sucessivas e o
+  cabeçalho chega a 140,6px. A quebra vem do refluxo do texto, não de uma regra
+  de layout, então o desconto assume a altura máxima observada: subtrair de
+  menos causa transbordo, subtrair de mais só encurta o hero.
+*/
+@media (max-width: 420px) {
+  :root {
+    --header-height: 8.75rem;
+  }
+}
+
 @media (max-width: 640px) {
+  :root {
+    /* Assinatura compacta acima de uma única faixa de navegação. */
+    --header-height: 5.875rem;
+  }
+
+  .site-header__inner {
+    width: 100%;
+  }
+
+  .site-brand {
+    justify-content: center;
+    padding-block: 0.25rem;
+    font-size: 0.68rem;
+  }
+
+  .site-nav {
+    display: grid;
+    width: 100%;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr) auto auto auto;
+  }
+
+  .site-nav a {
+    min-height: 3rem;
+    padding-block: 0;
+    padding-inline: 0.35rem;
+  }
+
+  .site-nav__item--primary {
+    min-width: 0;
+  }
+
+  .site-nav__item--secondary {
+    min-width: 0;
+    color: var(--ink-faint);
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+  }
+
+  .site-nav .site-nav__item--secondary.nav-curriculo-destaque,
+  .site-nav .site-nav__item--secondary.nav-curriculo-destaque:hover {
+    color: var(--ink-faint);
+    background: transparent;
+  }
+
+  .site-nav__label--full {
+    display: none;
+  }
+
+  .site-nav__label--compact {
+    display: inline;
+  }
+
   .project-grid,
+  .project-grid:has(.project-card:only-child),
   .project-detail__content,
   .decision-grid,
   .resume-skills,
@@ -1114,6 +1975,32 @@ h3 {
   .hero__record,
   .competency-grid {
     grid-template-columns: 1fr;
+  }
+
+  .message-page__record {
+    grid-template-columns: 1fr;
+  }
+
+  .message-page__record > div,
+  .message-page__record > div + div {
+    padding-inline: 0;
+    border-right: 0;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .message-page__record > div:last-child {
+    border-bottom: 0;
+  }
+
+  .resume-timeline li {
+    grid-template-columns: 1fr;
+    gap: 0.35rem;
+  }
+
+  .roadmap-stack__group {
+    align-items: start;
+    grid-template-columns: 1fr;
+    gap: 0.15rem;
   }
 
   .project-card,
@@ -1135,6 +2022,35 @@ h3 {
     border-top: 1px solid var(--rule);
   }
 
+  .project-record-footer__navigation,
+  .project-record-footer__resume {
+    grid-template-columns: 1fr;
+  }
+
+  .project-record-footer__project-link {
+    min-height: 6.5rem;
+    padding: 1.25rem 0;
+  }
+
+  .project-record-footer__project-link--previous {
+    border-right: 0;
+  }
+
+  .project-record-footer__project-link--next {
+    align-items: flex-start;
+    border-top: 1px solid var(--rule);
+    grid-column: 1;
+    text-align: left;
+  }
+
+  .project-record-footer__resume {
+    gap: 1.25rem;
+  }
+
+  .project-record-footer__resume .button {
+    width: 100%;
+  }
+
   .section-heading,
   .resume-page__header {
     align-items: flex-start;
@@ -1151,14 +2067,108 @@ h3 {
     gap: 0.5rem 1.25rem;
   }
 
+  .footer-contact__actions {
+    gap: 0.5rem 1.25rem;
+  }
+
   .hero__actions {
     align-items: stretch;
     flex-direction: column;
   }
 
+  .hero__evidence .button {
+    width: 100%;
+  }
+
   .hero__actions .button {
     justify-content: center;
     width: 100%;
+  }
+
+  /* No cartão estreito, manter ação e estado lado a lado comprimia o CTA em
+     cinco linhas. A ação principal ocupa a coluna e os estados vêm abaixo. */
+  .project-card__actions {
+    width: 100%;
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .project-card__actions .button {
+    width: 100%;
+  }
+
+  .project-card__actions .text-link,
+  .project-card__actions .muted-label {
+    align-self: flex-start;
+  }
+}
+
+/* ───────── Alto contraste: a ficha respeita as tintas do sistema ───────── */
+
+@media (forced-colors: active) {
+  :root {
+    --ink: CanvasText;
+    --ink-soft: CanvasText;
+    --ink-faint: CanvasText;
+    --card: Canvas;
+    --card-raised: Canvas;
+    --card-sunk: Canvas;
+    --rule: CanvasText;
+    --rule-edge: CanvasText;
+    --rule-strong: CanvasText;
+    --stamp: LinkText;
+    --stamp-wash: Canvas;
+    --focus: Highlight;
+  }
+
+  html {
+    scrollbar-color: auto;
+  }
+
+  body {
+    background-image: none;
+  }
+
+  a:focus-visible,
+  button:focus-visible {
+    outline-color: Highlight;
+    outline-offset: 3px;
+    outline-width: 3px;
+  }
+
+  /*
+    Estes elementos dependem de inversão ou de um estilo de traço para
+    comunicar hierarquia/estado. A exceção preserva somente cores de sistema,
+    portanto continua obedecendo à paleta de alto contraste escolhida pelo
+    visitante em vez de reter a paleta autoral do site.
+  */
+  .button--primary,
+  .site-nav .nav-curriculo-destaque,
+  .hero__stamp,
+  .project-status-badge {
+    forced-color-adjust: none;
+  }
+
+  .site-nav a[aria-current="page"] {
+    border-bottom-color: LinkText;
+    text-decoration: underline;
+    text-decoration-thickness: 0.18em;
+    text-underline-offset: 0.35em;
+  }
+
+  .text-link,
+  .footer-nav a,
+  .footer-contact__actions a,
+  .project-record-footer__orientation a,
+  .project-record-footer__project-link {
+    color: LinkText;
+    text-decoration: underline;
+    text-decoration-thickness: max(1px, 0.08em);
+    text-underline-offset: 0.28em;
+  }
+
+  .button {
+    text-decoration: none;
   }
 }
 
@@ -1189,6 +2199,20 @@ h3 {
   }
 }
 
+/*
+  Movimento reduzido: menos movimento, não menos resposta.
+
+  O único movimento espacial do sistema é a rolagem suave de `html`; é ela que
+  sai aqui, junto com qualquer deslocamento que venha a existir depois.
+
+  As duas transições do sistema são de cor em 140ms (`.site-nav a` e `.button`)
+  e não deslocam nada — são o retorno que confirma o alvo sob o cursor e sob o
+  foco de teclado. Zerá-las com um `transition-duration: 0.01ms !important`
+  global apagaria esse retorno para quem pediu apenas menos movimento, o que a
+  2.3.3 não pede e a 3.2.4 desfavorece. Por isso o override abaixo é restrito às
+  propriedades que produzem deslocamento: cor, opacidade e contorno continuam
+  animando.
+*/
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -1198,6 +2222,9 @@ h3 {
   *::before,
   *::after {
     scroll-behavior: auto !important;
-    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-property:
+      color, background-color, border-color, outline-color, opacity, fill, stroke !important;
   }
 }

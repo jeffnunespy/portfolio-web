@@ -11,4 +11,7 @@ test("US2 - projeto inexistente exibe alternativa para a listagem", async ({ pag
     "href",
     "/projetos",
   );
+  await expect(page.getByText("Acervo publicado")).toBeVisible();
+  await expect(page.getByText("Escopo planejado")).toBeVisible();
+  await expect(page.getByText("Destino de retorno")).toBeVisible();
 });

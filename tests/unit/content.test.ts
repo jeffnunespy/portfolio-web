@@ -21,11 +21,17 @@ const mockedReaddirSync = vi.mocked(fs.readdirSync);
 
 function buildPerfil(overrides: Partial<PerfilProfissional> = {}): PerfilProfissional {
   return {
-    tituloPosicionamento: "Desenvolvedor Full-Stack em Formação",
+    nome: "Pessoa Exemplo",
+    tituloPosicionamento: "Desenvolvedor Web em Formação",
     descricaoPosicionamento: "Descrição de posicionamento.",
     competenciasPorArea: [{ area: "Backend", competencias: ["Node.js"] }],
     biografiaSobre: "Bio.",
-    linkCurriculo: "/curriculo.pdf",
+    formacao: [
+      { periodo: "2026 — presente", titulo: "Formação", descricao: "Descrição da formação." },
+    ],
+    trajetoria: [
+      { periodo: "2026 — presente", titulo: "Trajetória", descricao: "Descrição da trajetória." },
+    ],
     linkGithub: "https://github.com",
     linkLinkedin: "https://linkedin.com",
     contato: { tipo: "email", valor: "contato@portfolio.local" },
@@ -98,6 +104,8 @@ describe("lib/content", () => {
       expect(perfil.tituloPosicionamento).toBeTruthy();
       expect(perfil.descricaoPosicionamento).toBeTruthy();
       expect(perfil.competenciasPorArea.length).toBeGreaterThan(0);
+      expect(perfil.formacao.length).toBeGreaterThan(0);
+      expect(perfil.trajetoria.length).toBeGreaterThan(0);
       expect(perfil.contato.tipo).toBe("email");
       expect(perfil.contato.valor).toBeTruthy();
     });
@@ -251,7 +259,15 @@ describe("lib/content", () => {
       expect(() => getPerfil()).toThrow(/linkGithub/);
     });
 
+    it("aceita perfil sem linkCurriculo: o PDF é opcional", async () => {
+      mockFileSystem(buildPerfil(), { "valido.json": buildProjeto() });
+
+      const { getPerfil } = await import("../../lib/content");
+      expect(getPerfil().linkCurriculo).toBeUndefined();
+    });
+
     it.each([
+      ["nome com tipo inválido", buildPerfil({ nome: 42 as unknown as string }), /campo "nome"/],
       [
         "caminho de currículo relativo",
         buildPerfil({ linkCurriculo: "curriculo.pdf" }),
@@ -267,6 +283,14 @@ describe("lib/content", () => {
         buildPerfil({ competenciasPorArea: [{ area: "", competencias: [] }] }),
         /competenciasPorArea/,
       ],
+      [
+        "formação sem período",
+        buildPerfil({
+          formacao: [{ periodo: "", titulo: "Formação", descricao: "Descrição" }],
+        }),
+        /campo "formacao"/,
+      ],
+      ["trajetória vazia", buildPerfil({ trajetoria: [] }), /campo "trajetoria"/],
     ])("getPerfil rejeita %s", async (_description, perfil, expectedError) => {
       mockFileSystem(perfil, { "valido.json": buildProjeto() });
 

@@ -1,22 +1,22 @@
 {
   "slug": "gerenciamento-filas",
   "titulo": "Sistema de Gerenciamento de Filas",
-  "resumo": "Sistema acadêmico para organização e priorização de filas de atendimento em ambiente simulado.",
+  "resumo": "Estrutura planejada de um sistema para organização e priorização de filas de atendimento em ambiente simulado.",
   "problemaTratado": "Dificuldade em organizar e priorizar atendimentos concorrentes em cenários com múltiplos guichês.",
-  "status": "Arquivado",
+  "status": "Pausado",
   "categoria": "Backend",
-  "natureza": "acadêmico",
+  "natureza": "autoral",
   "tecnologias": ["Python", "Django", "PostgreSQL", "Docker"],
   "imagemApresentacao": "/images/projects/gerenciamento-filas.svg",
   "competenciasDemonstradas": ["Python", "Django", "PostgreSQL", "Docker", "Testes automatizados"],
-  "contexto": "Trabalho acadêmico desenvolvido em disciplina de estruturas de dados e sistemas distribuídos.",
+  "contexto": "Ficha planejada. Descreve um exercício de estruturas de dados e sistemas distribuídos aplicado a filas de atendimento. Nenhuma parte foi implementada.",
   "objetivo": "Simular e comparar estratégias de priorização de filas de atendimento com métricas de tempo de espera.",
   "funcionalidadesPrincipais": [
     "Cadastro de guichês e tipos de atendimento",
     "Algoritmo de priorização configurável",
     "Relatório de tempo médio de espera por fila"
   ],
-  "responsabilidadeProprietario": "Implementação individual do sistema com Python e Django como parte de avaliação acadêmica, incluindo regras de priorização, persistência e testes automatizados.",
+  "responsabilidadeProprietario": "Escopo planejado: implementação individual em Python e Django, com regras de priorização, persistência e testes automatizados. Nenhuma dessas partes foi executada.",
   "decisoesRelevantes": [
     {
       "titulo": "Fila de prioridade em Python",
@@ -28,8 +28,8 @@
     }
   ],
   "stack": ["Python", "Django", "PostgreSQL", "Docker"],
-  "limitacoesConhecidas": ["Projeto acadêmico não mantido após a conclusão da disciplina."],
-  "proximosPassos": ["Nenhuma evolução planejada"],
+  "limitacoesConhecidas": ["Ficha planejada: não há implementação, testes nem execução."],
+  "proximosPassos": ["Implementar a estrutura descrita ou retirar a ficha do portfólio."],
   "destaque": true,
   "real": false
 }

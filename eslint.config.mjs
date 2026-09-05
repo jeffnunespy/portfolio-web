@@ -17,6 +17,10 @@ const config = [
       "test-results/**",
       "out/**",
       "public/**",
+      ".agents/skills/**",
+      ".claude/skills/**",
+      ".github/skills/**",
+      ".opencode/skills/**",
     ],
   },
 ];

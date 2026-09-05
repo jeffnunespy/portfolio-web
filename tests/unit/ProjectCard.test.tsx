@@ -1,9 +1,9 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import ProjectCard from "../../components/project/ProjectCard";
-import type { Projeto } from "../../lib/types";
+import type { ProjetoImplementado } from "../../lib/types";
 
-const projeto: Projeto = {
+const projeto: ProjetoImplementado = {
   slug: "projeto-teste",
   titulo: "Projeto Teste",
   resumo: "Resumo do projeto.",
@@ -31,7 +31,7 @@ const projeto: Projeto = {
 
 describe("ProjectCard", () => {
   it("exibe os campos obrigatórios e links públicos disponíveis", () => {
-    render(
+    const { container } = render(
       <ProjectCard
         projeto={{
           ...projeto,
@@ -45,15 +45,17 @@ describe("ProjectCard", () => {
     expect(screen.getByText("Um problema concreto.")).toBeInTheDocument();
     expect(screen.getByText("Autoral")).toBeInTheDocument();
     expect(screen.getByText("Node.js")).toBeInTheDocument();
-    expect(screen.getByRole("img", { name: /imagem de apresentação/i })).toHaveAttribute(
-      "src",
-      projeto.imagemApresentacao,
-    );
+    // A ficha de índice é decorativa (alt=""): renderiza, mas não entra na
+    // árvore de acessibilidade, para não repetir o título que o cartão anuncia.
+    const fichaDeIndice = container.querySelector("img.project-image");
+    expect(fichaDeIndice).toHaveAttribute("src", projeto.imagemApresentacao);
+    expect(fichaDeIndice).toHaveAttribute("alt", "");
+    expect(screen.queryByRole("img")).toBeNull();
     expect(screen.getByRole("link", { name: "Ver demonstração" })).toHaveAttribute(
       "href",
       "https://demo.example.com",
     );
-    expect(screen.getByRole("link", { name: "Ver código" })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: "Ver código-fonte" })).toHaveAttribute(
       "href",
       "https://github.com/example/projeto",
     );
@@ -65,9 +67,21 @@ describe("ProjectCard", () => {
     );
 
     expect(screen.getByText("Código privado")).toBeInTheDocument();
-    expect(screen.queryByRole("link", { name: "Ver código" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "Ver código-fonte" })).not.toBeInTheDocument();
 
     rerender(<ProjectCard projeto={projeto} />);
     expect(screen.getByText("Código não disponível publicamente")).toBeInTheDocument();
+  });
+
+  // A ficha só publica software implementado; escopo planejado tem superfície
+  // própria em /roadmap (DESIGN.md, "duas superfícies, nunca uma"). A garantia
+  // é do tipo ProjetoImplementado — um `real: false` aqui não compila —, então
+  // resta afirmar que o cartão não carrega mais vocabulário de planejamento.
+  it("apresenta as competências como demonstradas, sem vocabulário de planejamento", () => {
+    render(<ProjectCard projeto={projeto} />);
+
+    expect(screen.getByText("Competências:")).toBeInTheDocument();
+    expect(screen.queryByText("Competências planejadas:")).not.toBeInTheDocument();
+    expect(screen.queryByText("Estrutura de conteúdo")).not.toBeInTheDocument();
   });
 });

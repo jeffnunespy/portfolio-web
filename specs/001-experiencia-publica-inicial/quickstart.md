@@ -116,12 +116,13 @@ acessível, que nenhuma tecnologia não utilizada é apresentada como competênc
 ### 1. Posicionamento profissional na página inicial (US1, P1)
 
 1. Acessar `/`.
-2. Verificar título "Desenvolvedor Full-Stack em Formação" e descrição de posicionamento visíveis
+2. Verificar título "Desenvolvedor Web em Formação" e descrição factual visíveis
    sem rolagem em desktop (SC-001).
-3. Verificar competências agrupadas por área, com distinção visual entre área de profundidade e
-   complementares (FR-003).
-4. Verificar até 6 projetos em destaque, cada um com título, resumo, status e categoria (FR-004,
-   FR-006).
+3. Verificar competências agrupadas por área, com Front-end e Engenharia de Software antes de
+   Qualidade e Operação (FR-003).
+4. Verificar até 6 projetos implementados em destaque, cada um com título, resumo, status e
+   categoria; itens planejados aparecem somente em `/roadmap` e sem link de detalhe (FR-004,
+   FR-004b, FR-006).
 5. Navegar por Tab: todos os elementos interativos devem ser alcançáveis em ordem visual
    estrita, sem saltos (FR-021, SC-005).
 

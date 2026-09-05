@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import EvidenceLink from "../../../components/project/EvidenceLink";
 import ProjectImage from "../../../components/project/ProjectImage";
-import ProjectRealBadge from "../../../components/project/ProjectRealBadge";
+import ProjectRecordFooter from "../../../components/project/ProjectRecordFooter";
 import ProjectStatusBadge from "../../../components/project/ProjectStatusBadge";
-import { getPerfil, getProjetoBySlug, getProjetos } from "../../../lib/content";
+import { getPerfil, getProjetosImplementados } from "../../../lib/content";
 import { NATUREZA_LABEL } from "../../../lib/labels";
 
 interface ProjectPageProps {
@@ -14,12 +14,12 @@ interface ProjectPageProps {
 }
 
 export function generateStaticParams() {
-  return getProjetos().map((projeto) => ({ slug: projeto.slug }));
+  return getProjetosImplementados().map((projeto) => ({ slug: projeto.slug }));
 }
 
 export async function generateMetadata({ params }: ProjectPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const projeto = getProjetoBySlug(slug);
+  const projeto = getProjetosImplementados().find((item) => item.slug === slug);
 
   if (!projeto) {
     return {
@@ -44,7 +44,10 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
 
 export default async function ProjectPage({ params }: ProjectPageProps) {
   const { slug } = await params;
-  const projeto = getProjetoBySlug(slug);
+  // Só ficha de projeto implementado é estudo de caso; escopo planejado tem
+  // superfície própria em /roadmap e nunca resolve como ficha aqui.
+  const projetos = getProjetosImplementados();
+  const projeto = projetos.find((item) => item.slug === slug);
 
   if (!projeto) {
     notFound();
@@ -61,135 +64,96 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         </div>
         <h1>{projeto.titulo}</h1>
         <p className="project-detail__lead">{projeto.resumo}</p>
-        <div className="project-card__meta" aria-label="Classificação do projeto">
-          {projeto.real ? null : <ProjectRealBadge />}
+        <div className="project-card__meta" role="group" aria-label="Classificação do projeto">
           <ProjectStatusBadge status={projeto.status} />
           <span className="tag">{projeto.categoria}</span>
           <span className="tag">{NATUREZA_LABEL[projeto.natureza]}</span>
         </div>
       </header>
 
-      <ProjectImage src={projeto.imagemApresentacao} title={projeto.titulo} />
-
-      {projeto.real ? (
-        <div className="project-detail__content">
-          <section>
-            <h2>Contexto</h2>
-            <p>{projeto.contexto}</p>
-            <p>
-              <strong>Problema tratado:</strong> {projeto.problemaTratado}
-            </p>
-          </section>
-
-          <section>
-            <h2>Objetivo</h2>
-            <p>{projeto.objetivo}</p>
-          </section>
-
-          <section>
-            <h2>Funcionalidades principais</h2>
-            <ul>
-              {projeto.funcionalidadesPrincipais.map((funcionalidade) => (
-                <li key={funcionalidade}>{funcionalidade}</li>
-              ))}
-            </ul>
-          </section>
-
-          <section>
-            <h2>Minha responsabilidade</h2>
-            <p>{projeto.responsabilidadeProprietario}</p>
-          </section>
-
-          <section className="project-detail__wide">
-            <h2>Decisões relevantes</h2>
-            <div className="decision-grid">
-              {projeto.decisoesRelevantes.map((decisao) => (
-                <article className="decision-card" data-testid="decision-card" key={decisao.titulo}>
-                  <h3>{decisao.titulo}</h3>
-                  <p>{decisao.descricao}</p>
-                </article>
-              ))}
-            </div>
-          </section>
-
-          <section>
-            <h2>Stack</h2>
-            <ul className="chip-list">
-              {projeto.stack.map((tecnologia) => (
-                <li key={tecnologia}>{tecnologia}</li>
-              ))}
-            </ul>
-          </section>
-
-          <section>
-            <h2>Situação atual</h2>
-            <p>
-              O projeto está com status <strong>{projeto.status}</strong>.
-            </p>
-          </section>
-
-          <section>
-            <h2>Limitações conhecidas</h2>
-            <ul>
-              {projeto.limitacoesConhecidas.map((limitacao) => (
-                <li key={limitacao}>{limitacao}</li>
-              ))}
-            </ul>
-          </section>
-
-          <section>
-            <h2>Próximos passos</h2>
-            <ul>
-              {projeto.proximosPassos.map((passo) => (
-                <li key={passo}>{passo}</li>
-              ))}
-            </ul>
-          </section>
-
-          <section className="project-detail__wide">
-            <h2>Links relacionados</h2>
-            <EvidenceLink
-              contatoEmail={perfil.contato.valor}
-              linkDemonstracao={projeto.linkDemonstracao}
-              linkRepositorio={projeto.linkRepositorio}
-            />
-          </section>
+      <section className="project-detail__visual-index" aria-labelledby="visual-index-title">
+        <h2 id="visual-index-title">Índice visual do registro</h2>
+        <ProjectImage src={projeto.imagemApresentacao} />
+        <div className="project-detail__visual-index-sources">
+          <p className="muted-label">Fonte e verificação</p>
+          <EvidenceLink
+            contatoEmail={perfil.contato.valor}
+            linkDemonstracao={projeto.linkDemonstracao}
+            linkRepositorio={projeto.linkRepositorio}
+            linkGithub={perfil.linkGithub}
+          />
         </div>
-      ) : (
-        <div className="project-detail__content">
-          <section className="project-detail__wide project-detail__placeholder-notice">
-            <h2>Estrutura de conteúdo</h2>
-            <p>
-              Este projeto ainda não foi implementado: a ficha registra intenção e escopo planejado,
-              não uma entrega real.
-            </p>
-            <p>
-              <strong>Problema que pretende tratar:</strong> {projeto.problemaTratado}
-            </p>
-            <p>
-              <strong>Objetivo:</strong> {projeto.objetivo}
-            </p>
-          </section>
+      </section>
 
-          <section>
-            <h2>Stack planejada</h2>
-            <ul className="chip-list">
-              {projeto.stack.map((tecnologia) => (
-                <li key={tecnologia}>{tecnologia}</li>
-              ))}
-            </ul>
-          </section>
+      <div className="project-detail__content">
+        <section>
+          <h2>Contexto</h2>
+          <p>{projeto.contexto}</p>
+          <p>
+            <strong>Problema tratado:</strong> {projeto.problemaTratado}
+          </p>
+        </section>
 
-          <section>
-            <h2>Próximos passos</h2>
-            <ul>
-              {projeto.proximosPassos.map((passo) => (
-                <li key={passo}>{passo}</li>
-              ))}
-            </ul>
-          </section>
-        </div>
-      )}
+        <section>
+          <h2>Objetivo</h2>
+          <p>{projeto.objetivo}</p>
+        </section>
+
+        <section>
+          <h2>Funcionalidades principais</h2>
+          <ul role="list">
+            {projeto.funcionalidadesPrincipais.map((funcionalidade) => (
+              <li key={funcionalidade}>{funcionalidade}</li>
+            ))}
+          </ul>
+        </section>
+
+        <section>
+          <h2>Minha responsabilidade</h2>
+          <p>{projeto.responsabilidadeProprietario}</p>
+        </section>
+
+        <section className="project-detail__wide">
+          <h2>Decisões relevantes</h2>
+          <div className="decision-grid">
+            {projeto.decisoesRelevantes.map((decisao) => (
+              <article className="decision-card" data-testid="decision-card" key={decisao.titulo}>
+                <h3>{decisao.titulo}</h3>
+                <p>{decisao.descricao}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section>
+          <h2>Stack</h2>
+          <ul role="list" className="chip-list">
+            {projeto.stack.map((tecnologia) => (
+              <li key={tecnologia}>{tecnologia}</li>
+            ))}
+          </ul>
+        </section>
+
+        <section>
+          <h2>Limitações conhecidas</h2>
+          <ul role="list">
+            {projeto.limitacoesConhecidas.map((limitacao) => (
+              <li key={limitacao}>{limitacao}</li>
+            ))}
+          </ul>
+        </section>
+
+        <section>
+          <h2>Próximos passos</h2>
+          <ul role="list">
+            {projeto.proximosPassos.map((passo) => (
+              <li key={passo}>{passo}</li>
+            ))}
+          </ul>
+        </section>
+      </div>
+
+      <ProjectRecordFooter projeto={projeto} projetos={projetos} />
     </article>
   );
 }

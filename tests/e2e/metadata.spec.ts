@@ -1,10 +1,19 @@
+import { readFileSync } from "node:fs";
+import path from "node:path";
 import { test, expect } from "@playwright/test";
+
+const perfil = JSON.parse(
+  readFileSync(path.join(process.cwd(), "content", "profile.json"), "utf8"),
+) as { tituloPosicionamento: string; descricaoPosicionamento: string };
+
+// Escapa o texto do perfil para uso literal em expressão regular.
+const literal = (value: string) => new RegExp(value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
 
 const pages = [
   {
     route: "/",
-    title: /Desenvolvedor Full-Stack em Formação/,
-    description: /desenvolvimento backend com Python e Django/i,
+    title: literal(perfil.tituloPosicionamento),
+    description: literal(perfil.descricaoPosicionamento),
   },
   {
     route: "/projetos",
