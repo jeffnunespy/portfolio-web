@@ -302,3 +302,9 @@ sem alterar os bloqueios factuais P0.
 ## Phase 12: Currículo P0
 
 - [X] T088 [US3] Usar o nome como `<h1>` de `/curriculo`, publicar formação e trajetória técnica datadas a partir de fatos verificáveis e exibir a assinatura do proprietário acima da dobra em todas as rotas e larguras suportadas per FR-005a, FR-015a e Constituição I/VII/X
+
+---
+
+## Phase 13: Otimização de carregamento
+
+- [X] T089 [US1] [US2] [US3] [US4] Reduzir requisições especulativas e payload tipográfico da primeira visita, preservando navegação cliente, identidade do fichário e métricas de acessibilidade, com medição antes/depois em mobile e desktop per FR-028 e Constituição IV/VII
