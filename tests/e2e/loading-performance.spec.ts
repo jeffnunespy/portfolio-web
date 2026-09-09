@@ -1,4 +1,10 @@
+import { readFileSync } from "node:fs";
+import path from "node:path";
 import { expect, test } from "@playwright/test";
+
+const perfil = JSON.parse(
+  readFileSync(path.join(process.cwd(), "content", "profile.json"), "utf8"),
+) as { nome: string };
 
 test("home evita trabalho redundante sem perder navegação cliente imediata", async ({ page }) => {
   const requisicoesRsc: string[] = [];
@@ -48,7 +54,7 @@ test("home evita trabalho redundante sem perder navegação cliente imediata", a
   await page.locator('.site-header a[href="/curriculo"]').click();
 
   await expect(page).toHaveURL(/\/curriculo$/);
-  await expect(page.getByRole("heading", { level: 1, name: "Jefferson Nunes" })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 1, name: perfil.nome })).toBeVisible();
   expect(await page.evaluate(() => Reflect.get(window, "__portfolioNavigationMarker"))).toBe(true);
   expect(documentos).toHaveLength(documentosAntesDoClique);
 });
