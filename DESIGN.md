@@ -78,15 +78,36 @@ como variáveis CSS:
 | Variável         | Fonte          | Uso                                                                                 |
 | ---------------- | -------------- | ----------------------------------------------------------------------------------- |
 | `--font-display` | Zilla Slab     | Títulos e nomes de ficha; a serifa com peso de catálogo impresso                    |
-| `--font-body`    | Archivo        | Corpo de texto corrido                                                              |
+| `--font-body`    | Archivo        | Corpo de texto corrido; pesos reais 400 e 600 para leitura e ênfase                 |
 | `--font-field`   | Archivo Narrow | Rótulos de campo, índices, botões, tags — sempre em caixa alta com `letter-spacing` |
 
 Os fallbacks acompanham a classe tipográfica da fonte real (sans para Archivo,
 serif para Zilla Slab), para o texto não trocar de classe durante o carregamento.
 
+Zilla Slab é entregue somente nos pesos 600 e 700. Dados catalográficos e leads
+que antes usavam 500 compartilham o 600: a diferença visual é mínima neste
+corpo, enquanto elimina um arquivo de fonte da primeira visita. Archivo e
+Archivo Narrow permanecem variáveis nos pesos necessários ao sistema.
+
 `.hero__name` usa `clamp(2.7rem, 11vw, 7rem)` com `hyphens: auto` — o piso e a
 hifenização existem porque "Desenvolvedor" sozinho estoura a viewport de 320px
 no corpo monumental.
+
+A escala tipográfica é nomeada por papel em `:root`: títulos de página, seção e
+ficha; lead; dado compacto; rótulo; controle; e texto de apoio. A
+microtipografia usa apenas três degraus (`0.7rem`, `0.75rem`, `0.8rem`) em vez
+de variações quase imperceptíveis por componente. Texto informativo curto fica
+em `0.875rem`; corpo corrido permanece em `1.0625rem`. Archivo inclui o peso 600,
+usado como padrão em `<strong>`; `font-synthesis: none` impede pesos sintéticos.
+
+## Estratégia de carregamento
+
+A navegação global mantém o prefetch do Next.js para destinos diferentes da
+rota atual. Em ensaio local sob rede limitada, buscar uma rota secundária
+somente depois do clique excedeu o limiar de 200 ms adotado para a medição;
+antecipá-la preserva uma resposta sem espera perceptível. A rota já aberta usa
+`prefetch={false}` e o rodapé não repete as antecipações que o cabeçalho já
+iniciou.
 
 ## Forma
 

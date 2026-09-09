@@ -8,14 +8,14 @@ import { SITE_LOCALE, SITE_NAME, SITE_URL } from "../lib/site";
 
 const zillaSlab = Zilla_Slab({
   subsets: ["latin"],
-  weight: ["500", "600", "700"],
+  weight: ["600", "700"],
   variable: "--font-display",
   display: "swap",
 });
 
 const archivo = Archivo({
   subsets: ["latin"],
-  weight: ["400"],
+  weight: ["400", "600"],
   variable: "--font-body",
   display: "swap",
 });

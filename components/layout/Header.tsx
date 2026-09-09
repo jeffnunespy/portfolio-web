@@ -24,10 +24,19 @@ export default function Header({ nome }: { nome: string }) {
   // nenhum item é marcado como atual e o destaque do currículo permanece.
   const pathname = usePathname() ?? "";
 
+  // A rota já aberta não precisa ser baixada de novo. Os demais destinos
+  // preservam o prefetch do Next.js: sob rede limitada, esperar pelo clique
+  // tornou a navegação perceptivelmente mais lenta.
+
   return (
     <header className="site-header">
       <div className="site-header__inner">
-        <Link className="site-brand" href="/" aria-label={`${nome} — Início`}>
+        <Link
+          className="site-brand"
+          href="/"
+          prefetch={pathname === "/" ? false : null}
+          aria-label={`${nome} — Início`}
+        >
           {nome}
         </Link>
         <nav className="site-nav" aria-label="Navegação principal">
@@ -40,6 +49,7 @@ export default function Header({ nome }: { nome: string }) {
               <Link
                 key={href}
                 href={href}
+                prefetch={pathname === href ? false : null}
                 aria-label={rotulo}
                 aria-current={ativo ? "page" : undefined}
                 // O destaque do currículo é a saída principal do fichário e só

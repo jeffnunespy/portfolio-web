@@ -24,12 +24,24 @@ export default function Footer({ nome, linkGithub, linkLinkedin, contatoEmail }:
   return (
     <footer className="site-footer">
       <div className="site-footer__inner">
+        {/* Rotas globais já estão disponíveis no cabeçalho. Evitar o prefetch
+            duplicado do rodapé reduz trabalho especulativo em páginas curtas. */}
         <nav className="footer-nav" aria-label="Links secundários">
-          <Link href="/">Início</Link>
-          <Link href="/projetos">Projetos</Link>
-          <Link href="/roadmap">Roadmap</Link>
-          <Link href="/sobre">Sobre</Link>
-          <Link href="/curriculo">Currículo</Link>
+          <Link href="/" prefetch={false}>
+            Início
+          </Link>
+          <Link href="/projetos" prefetch={false}>
+            Projetos
+          </Link>
+          <Link href="/roadmap" prefetch={false}>
+            Roadmap
+          </Link>
+          <Link href="/sobre" prefetch={false}>
+            Sobre
+          </Link>
+          <Link href="/curriculo" prefetch={false}>
+            Currículo
+          </Link>
         </nav>
         <section className="footer-contact" aria-labelledby="footer-contact-title">
           <h2 id="footer-contact-title">Contato e perfis</h2>

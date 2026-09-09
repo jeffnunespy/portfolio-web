@@ -181,6 +181,38 @@ verificação registrada abaixo:
   corrigir a quebra do rótulo “Projetos”
 - `git diff --check` → limpo
 
+## Otimização de carregamento — 2026-09-05
+
+- A navegação global deixou de antecipar a rota que já está aberta, e o rodapé
+  não repete o trabalho do cabeçalho. Os demais destinos mantêm o prefetch do
+  Next.js: em ensaio local sob rede limitada, retirar essa antecipação excedeu
+  o limiar de 200 ms adotado para a medição.
+- Zilla Slab passou de três pesos para 600 e 700. Dados catalográficos e leads
+  compartilham o peso 600, eliminando um arquivo WOFF2 sem mudar a família ou a
+  hierarquia tipográfica do fichário.
+- A regressão automatizada em `tests/e2e/loading-performance.spec.ts` limita a
+  primeira visita a quatro fontes e 100 KiB de payload tipográfico, verifica que
+  o rodapé não dispara prefetch duplicado, cobre a rota atual na home e em uma
+  rota interna e comprova navegação cliente sem recarregar o documento.
+- Registro exploratório de 2026-09-05 em Chromium headless, com três execuções
+  sem cache por cenário: no perfil mobile (390×844, rede 1,6 Mbps/150 ms e CPU
+  4×), a linha de base apresentou 29 requisições, 289,9 KB transferidos, LCP de
+  764 ms, TBT de 137 ms, load de 1.805 ms e CLS 0. A versão otimizada apresentou
+  26 requisições, 267,5 KB, LCP de 704 ms, TBT de 99 ms, load de 1.683 ms e
+  CLS 0. A navegação secundária pré-carregada alcançou o `<h1>` em 195 ms na
+  mediana. No desktop, TBT e CLS permaneceram em 0, e o LCP variou de 104 ms na
+  linha de base para 152 ms na versão otimizada.
+- As varreduras responsiva e de acessibilidade existentes cobrem as rotas
+  públicas após a mudança tipográfica; medições exploratórias sem artefato
+  reproduzível não são tratadas como gate automatizado; o registro acima
+  documenta o antes/depois exigido por T089, enquanto os limites estáveis ficam
+  protegidos pelo E2E versionado.
+- Gates executados antes da conclusão de T089: Prettier, TypeScript, ESLint,
+  43 testes unitários, build de produção, 42 testes E2E funcionais e 19 testes
+  E2E de acessibilidade. Depois do reforço da regressão de carregamento, seus
+  dois casos direcionados também passaram; a suíte funcional completa foi
+  repetida antes do commit.
+
 ## Pendências e riscos conhecidos
 
 - `content/profile.json` ainda tem `contato.valor` como placeholder
