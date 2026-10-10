@@ -4,6 +4,8 @@ Em 2026-10-09, ao revisar as referências ainda pendentes, o proprietário mante
 
 ## Imagens conceituais na raiz do repositório
 
+Os cinco arquivos abaixo foram apagados do repositório em 2026-10-09, a pedido do proprietário; continuam acessíveis no histórico do git (commit `78e4891`).
+
 | Arquivo                               | Referência                          |
 | ------------------------------------- | ----------------------------------- |
 | `referencia-01-escultura.png`         | 01 · Escultura (laço contínuo)      |
@@ -18,4 +20,4 @@ A `referencia-01b-planos-suspensos.png` já havia sido descartada antes; ver [di
 
 - `referencias/`: A · Prancha executiva, B · Grade suíça, C2 · Encadernação no escuro.
 - `referencias-v3/`: A · Folha de contato, B · Placa de vidro, C · Catálogo JN, D · Padrão escuro.
-- `revisao/`: sites de revisão gerados a partir das cinco imagens acima.
+- `revisao/`: sites de revisão gerados a partir das cinco imagens acima; usam recortes próprios em `revisao/img/`.

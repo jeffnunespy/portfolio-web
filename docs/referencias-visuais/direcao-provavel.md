@@ -31,4 +31,4 @@ Tema escuro em grafite, texto marfim, tipografia sem serifa de peso leve, metal 
 
 ## Proveniência
 
-Referência gerada com a ferramenta integrada `image_gen`, usando `referencia-01-escultura.png` como referência de estilo. O prompt integral está incorporado no PNG e foi preservado em `.impeccable/mocks/exploracao-escultura/referencia-01b-planos-suspensos.txt`.
+Referência gerada com a ferramenta integrada `image_gen`, usando `referencia-01-escultura.png` como referência de estilo (apagada em 2026-10-09; disponível no histórico do git). O prompt integral está incorporado no PNG e foi preservado em `.impeccable/mocks/exploracao-escultura/referencia-01b-planos-suspensos.txt`.
