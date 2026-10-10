@@ -1,6 +1,6 @@
 # Direção visual provável — variação B
 
-> **Situação (2026-10-09):** deixada de lado. Na mesma data, o proprietário pediu direções totalmente novas, e a fusão **Levantamento e sondagem** foi registrada como candidato potencial em [candidato-levantamento-sondagem.md](candidato-levantamento-sondagem.md). Este registro fica como histórico.
+> **Situação (2026-10-09):** descartada pelo proprietário. Na mesma data, foram pedidas direções totalmente novas. A fusão **Levantamento e sondagem** foi registrada como candidato potencial em [candidato-levantamento-sondagem.md](candidato-levantamento-sondagem.md), e a C3 ficou como alternativa a considerar em [candidato-c3-encadernacao.md](candidato-c3-encadernacao.md). Este registro fica como histórico.
 
 ## Decisão do proprietário
 

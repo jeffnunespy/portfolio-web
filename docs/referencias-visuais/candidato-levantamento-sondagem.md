@@ -4,7 +4,7 @@
 
 Em 2026-10-09, depois de comparar cinco protótipos de direção para a página inicial, o proprietário gostou da fusão **Levantamento e sondagem**. Pediu que ela fosse registrada como **candidato potencial**. Isso é preferência registrada, não aprovação: o layout não está aprovado, o frontend não deve ser implementado e o `DESIGN.md` não deve ser substituído.
 
-A fusão combina as duas direções de que o proprietário gostou. O visual vem de **Levantamento noturno** (mapa topográfico à noite) e a interação de assinatura vem de **Negatoscópio** (lente que revela a estrutura). Nesta mesma rodada, a referência 01B (`direcao-provavel.md`) ficou de lado: o proprietário pediu direções totalmente novas.
+A fusão combina as duas direções de que o proprietário gostou. O visual vem de **Levantamento noturno** (mapa topográfico à noite) e a interação de assinatura vem de **Negatoscópio** (lente que revela a estrutura). Na mesma data, o proprietário descartou a referência 01B (`direcao-provavel.md`). A C3 — Encadernação interativa ficou como alternativa a considerar ([candidato-c3-encadernacao.md](candidato-c3-encadernacao.md)).
 
 Protótipo navegável: [prototipo-levantamento-sondagem.html](prototipo-levantamento-sondagem.html). É um HTML autocontido; só as fontes vêm do Google Fonts.
 
@@ -63,5 +63,4 @@ O protótipo foi construído em código, sem imagem gerada, com o skill Impeccab
 
 - `levantamento.html`
 - `negatoscopio.html`
-- `segmentos.html`
-- `especime.html`
+- `segmentos.html` e `especime.html` foram descartados e removidos em 2026-10-09
