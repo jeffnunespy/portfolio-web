@@ -156,6 +156,44 @@ mini-framework de validação — critério registrado em [research.md](./resear
 
 ## Convergence Design
 
+### Emenda de direção visual — Levantamento e sondagem (2026-10-23)
+
+Direção aprovada pelo proprietário em 2026-10-23, na versão sem lente e com o movimento das curvas:
+[candidato-levantamento-sondagem.md](../../docs/referencias-visuais/candidato-levantamento-sondagem.md)
+e o protótipo `docs/referencias-visuais/prototipo-levantamento-sondagem.html`. A migração substitui
+a gramática de ficha catalográfica em todas as rotas públicas sem alterar requisitos funcionais,
+modelo de conteúdo, validação de build, rotas ou metadados.
+
+- **Arquitetura**: mesma stack (Next.js 16, React 19, TypeScript, CSS puro em `app/globals.css`).
+  Geologica (variável) e Martian Mono 400 entram por `next/font/google` e são servidas pelo próprio
+  site. Nenhuma dependência nova.
+- **Terreno**: desenho decorativo (`aria-hidden`) em componente cliente da home: três `<svg>`
+  empilhados (isolinhas finas, intermediárias e mestras), cada um com um único `<path>`, gerados no
+  navegador por função determinística, em fatias curtas e com cache entre navegações. São três
+  elementos porque a paralaxe desloca cada camada em profundidade distinta; o `transform` vai no
+  `<svg>` da camada, sem duplicar coordenadas. Gerar no servidor levaria centenas de KB de
+  coordenadas ilustrativas ao HTML e ao payload RSC, sem valor para leitor de tela ou indexação. A
+  paralaxe responde só a mouse com ponteiro fino, agrupada por `requestAnimationFrame`;
+  `prefers-reduced-motion` desliga varredura, paralaxe e animações por rolagem.
+- **Ver estrutura**: botão de divulgação com `aria-expanded` e `aria-controls` revela o painel
+  textual “O que sustenta a superfície”, com contagens derivadas de `content/` por `lib/content.ts`.
+  O protótipo usava `aria-pressed` com rótulo alternado; o APG pede rótulo fixo para botões de
+  alternância, e o rótulo alternado é próprio do padrão de divulgação.
+- **Divergências registradas antes da implementação**:
+  1. A composição aprovada (item 6) lista os projetos planejados na home; FR-004, FR-004b e SC-008
+     determinam que itens não implementados apareçam somente em `/roadmap`. Prevalece a spec: a home
+     mostra a área tracejada “Terreno ainda não levantado” com a contagem e o link para o roadmap,
+     sem listar itens; o tratamento tracejado e hachurado vale para as entradas de `/roadmap`.
+  2. O estudo de caso expansível da home (item 5) já existe como a rota `/projetos/<slug>`; a home
+     leva a ele pela ação da ficha em vez de duplicar o conteúdo em `<details>`.
+  3. O orçamento tipográfico de `tests/e2e/loading-performance.spec.ts` passa de quatro para dois
+     arquivos woff2, mantido o teto de 100 KiB.
+  4. O site passa a ter um único esquema noturno (`color-scheme: dark`). As fichas SVG de
+     `public/images/projects/` são redesenhadas nessa paleta, e a regressão de cor da ficha verifica
+     o fundo noturno nos dois esquemas do sistema.
+  5. Testes que fixavam a composição anterior mudam apenas onde a estrutura mudou, com força
+     equivalente; nenhuma verificação de acessibilidade, teclado, responsividade ou conteúdo sai.
+
 ### Emenda de auditoria Impeccable — 2026-09-01
 
 A remediação P1–P3 formaliza `/projetos` como catálogo exclusivo de implementações reais e
@@ -333,6 +371,14 @@ A numeração segue a ordem sugerida no documento de recomendações; a ordem de
 prioridades (P0 -> P1 -> P2 -> P3), com o PR 3 podendo ser intercalado assim que o PR 2 estabilizar.
 
 ## Riscos conhecidos
+
+**Revalidação de segurança — 2026-10-23**: o baseline instalado `next@16.3.4`,
+`sharp@0.35.4` e `source-map-js@1.2.1` passou a apresentar uma vulnerabilidade crítica e duas
+altas. T090 atualiza somente esses pacotes e a configuração Next correspondente dentro das faixas
+existentes no manifesto (alvo da resolução: Next/config 16.4.2, Sharp 0.35.5, source-map-js 1.2.2).
+Esta manutenção preserva Node.js 24, React 19, SSG, os requisitos públicos e a arquitetura; as
+versões 16.3.1 citadas acima registram o alvo histórico da migração inicial. O novo lockfile deve
+passar por `npm ci`, auditoria e todos os gates antes de ser aceito.
 
 | Risco                                                                   | Mitigação                                                                          |
 | ----------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |

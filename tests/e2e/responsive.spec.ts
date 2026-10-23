@@ -340,24 +340,28 @@ test("texto ampliado a 200% reflui sem corte em todas as rotas públicas", async
   }
 });
 
-test("ficha ilustrada acompanha o tema escuro", async ({ page }) => {
-  await page.emulateMedia({ colorScheme: "dark" });
-  await page.goto("/projetos/plataforma-portfolio");
+// O site tem um único tema noturno: a ficha ilustrada precisa usar o mesmo
+// terreno (#121615) qualquer que seja a preferência de esquema do sistema.
+for (const colorScheme of ["light", "dark"] as const) {
+  test(`ficha ilustrada usa o terreno noturno com esquema ${colorScheme}`, async ({ page }) => {
+    await page.emulateMedia({ colorScheme });
+    await page.goto("/projetos/plataforma-portfolio");
 
-  const image = page.locator(".project-detail__visual-index > .project-image");
-  await expect(image).toHaveJSProperty("complete", true);
+    const image = page.locator(".project-detail__visual-index > .project-image");
+    await expect(image).toHaveJSProperty("complete", true);
 
-  const backgroundPixel = await image.evaluate((element) => {
-    const imageElement = element as HTMLImageElement;
-    const canvas = document.createElement("canvas");
-    canvas.width = 120;
-    canvas.height = 72;
-    const context = canvas.getContext("2d");
-    if (!context) return null;
+    const backgroundPixel = await image.evaluate((element) => {
+      const imageElement = element as HTMLImageElement;
+      const canvas = document.createElement("canvas");
+      canvas.width = 120;
+      canvas.height = 72;
+      const context = canvas.getContext("2d");
+      if (!context) return null;
 
-    context.drawImage(imageElement, 0, 0, canvas.width, canvas.height);
-    return Array.from(context.getImageData(1, 1, 1, 1).data.slice(0, 3));
+      context.drawImage(imageElement, 0, 0, canvas.width, canvas.height);
+      return Array.from(context.getImageData(1, 1, 1, 1).data.slice(0, 3));
+    });
+
+    expect(backgroundPixel).toEqual([18, 22, 21]);
   });
-
-  expect(backgroundPixel).toEqual([36, 32, 25]);
-});
+}

@@ -21,6 +21,19 @@ for (const route of publicRoutes) {
   });
 }
 
+for (const width of [320, 1280]) {
+  test(`@a11y nomes da navegação contêm os rótulos visíveis em ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/");
+
+    const links = page.getByRole("navigation", { name: "Navegação principal" }).getByRole("link");
+    for (const link of await links.all()) {
+      const rotuloVisivel = (await link.locator("span:visible").innerText()).trim();
+      await expect(link).toHaveAccessibleName(new RegExp(rotuloVisivel, "i"));
+    }
+  });
+}
+
 test("@a11y primeiro Tab alcança o skip link e segue a ordem visual da navegação", async ({
   page,
 }) => {

@@ -1,66 +1,105 @@
-# Candidato potencial — Levantamento e sondagem
+# Direção aprovada — Levantamento e sondagem
+
+**Status: aprovado pelo proprietário em 2026-10-23.**
 
 ## Decisão do proprietário
 
-Em 2026-10-09, depois de comparar cinco protótipos de direção para a página inicial, o proprietário gostou da fusão **Levantamento e sondagem**. Pediu que ela fosse registrada como **candidato potencial**. Isso é preferência registrada, não aprovação: o layout não está aprovado, o frontend não deve ser implementado e o `DESIGN.md` não deve ser substituído.
+O proprietário aprovou a versão **sem lente**, com o movimento das curvas
+preservado, e solicitou o registro com a mensagem “aprovado, registra”. Essa é a
+referência escolhida para o redesign do portfólio.
 
-A fusão combina as duas direções de que o proprietário gostou. O visual vem de **Levantamento noturno** (mapa topográfico à noite) e a interação de assinatura vem de **Negatoscópio** (lente que revela a estrutura). Na mesma data, o proprietário descartou a referência 01B (`direcao-provavel.md`). A C3 — Encadernação interativa ficou como alternativa a considerar ([candidato-c3-encadernacao.md](candidato-c3-encadernacao.md)).
+Referência aprovada:
+[prototipo-levantamento-sondagem.html](prototipo-levantamento-sondagem.html).
+Escopo, execução local e verificações:
+[exemplo-interativo.md](exemplo-interativo.md).
 
-Protótipo navegável: [prototipo-levantamento-sondagem.html](prototipo-levantamento-sondagem.html). É um HTML autocontido; só as fontes vêm do Google Fonts.
+A aprovação cobre a direção visual e a composição demonstrada nesse protótipo.
+As demais rotas devem ser desenvolvidas no mesmo mundo visual, respeitando a
+constituição e os requisitos de `specs/`. A migração do frontend e a publicação
+são etapas posteriores. `DESIGN.md` descreve a implementação atual até a
+migração para a direção aprovada.
 
-## Ideia central
+## Conceito aprovado
 
-A página é um levantamento topográfico noturno. A superfície mostra o que foi feito. A lente funciona como uma sondagem: abaixo da superfície aparece a estrutura que sustenta a página, com anotações verificáveis (origem do conteúdo, validação que quebra o build, competências comprovadas). A metáfora serve ao princípio "evidências acima de afirmações": quem visita pode conferir.
+Um levantamento topográfico noturno apresenta o trabalho verificável. As
+curvas de nível dão profundidade e respondem ao ponteiro. As explicações sobre
+conteúdo, validação e competências ficam em um painel textual acessível pelo
+botão **Ver estrutura**.
+
+A metáfora serve ao princípio “evidências acima de afirmações”: a apresentação
+separa trabalho implementado de intenção e permite consultar o que sustenta
+cada afirmação.
 
 ## Linguagem visual
 
-- **Cores:** fundo `#0c0f0e`; linhas `#232a27` / `#34403a` / `#5b6862`; texto marfim `#e7e4da` (secundários `#a9aea6`, `#7f877f`).
-  - Marco laranja `#e8703f` / `#ff9a6b`, reservado a trabalho implementado e a evidência.
-  - Foco âmbar `#f2c46b`.
-- **Tipografia:** Geologica em peso leve (200–400) para títulos e texto corrido; Martian Mono para legenda, coordenadas, rótulos da ficha e anotações.
-- **Legenda do mapa como contrato de honestidade:**
-  - marco = implementado;
-  - tracejado = planejado;
-  - isolinhas = terreno ilustrativo, que não representa dado.
+- **Fundo:** preto esverdeado `#0c0f0e`.
+- **Curvas e filetes:** `#232a27`, `#34403a` e `#5b6862`.
+- **Texto:** marfim `#e7e4da`; secundários `#a9aea6` e `#7f877f`.
+- **Acento de evidência:** laranja `#e8703f` / `#ff9a6b`.
+- **Foco de teclado:** âmbar `#f2c46b`.
+- **Tipografia:** Geologica leve nos títulos e no corpo; Martian Mono em
+  coordenadas, legendas, campos e notação técnica.
+- **Formas:** cantos retos, filetes finos, mapas geométricos e espaço entre
+  grupos de conteúdo.
+- **Legenda:** marco identifica implementação; tracejado identifica
+  planejamento; isolinhas e coordenadas são ilustrativas, não dados reais.
 
-## Interações de assinatura
+## Composição e interações aprovadas
 
-- **Curvas de nível**, geradas a partir de um terreno sintético, em três camadas com profundidade (paralaxe) ligada ao ponteiro. Aparecem varridas da esquerda para a direita, como num plotter (`@property --scan` + `mask-image`).
-- **Lente de sondagem** seguindo o ponteiro: `clip-path: circle()` controlado por `--k`, `--lx` e `--ly`.
-  - Dentro dela: quadriculado, textos só em contorno (`-webkit-text-stroke`), caixas tracejadas e anotações em `attr(data-note)`.
-  - O anel com marcações é desenhado fora do recorte com `transform: scale(var(--k))`.
-- **Botão "Ver estrutura"** (`aria-pressed`) expande a sondagem para a abertura inteira.
-- **Painel de coordenadas** (E/N/cota) sob o ponteiro.
-- **Linha de caminhamento** ligada à rolagem (`animation-timeline: scroll()`).
-- **Estações da integração contínua** acendem em sequência quando a ficha entra na tela. Usa uma `view-timeline` nomeada e `animation-range` escalonado por `--i`.
+1. Cabeçalho horizontal com assinatura e navegação; navegação em outra linha
+   nas telas estreitas.
+2. Abertura ampla com terreno topográfico, posicionamento “Desenvolvedor Web em
+   Formação”, descrição factual, ações e legenda.
+3. Curvas em três camadas, com varredura inicial e paralaxe ligada ao ponteiro.
+   Atualizações agrupadas por `requestAnimationFrame`, limitadas aos grupos SVG;
+   ao sair da abertura, as curvas voltam à posição neutra.
+4. Botão **Ver estrutura** abre o painel textual “O que sustenta a superfície”,
+   também disponível no celular e por teclado, sem alterar o aspecto da abertura.
+5. **Terreno levantado:** ficha da Plataforma de Portfólio, com situação, stack,
+   verificações, ordem configurada da integração contínua, limitação e repositório.
+   O estudo de caso pode ser expandido.
+6. **Terreno ainda não levantado:** projetos planejados em área tracejada e
+   hachurada, separados da implementação, sem imagem ou link de detalhe.
+7. Rodapé com nome e contatos confirmados do perfil.
 
-## Estrutura da página
+**A lente circular foi retirada por decisão explícita do proprietário.** Não
+reintroduzir círculo seguindo o ponteiro, raio-X, cópia estrutural da abertura
+ou efeitos que mudem o aspecto da página ao passar o mouse.
 
-1. Abertura: posicionamento "Desenvolvedor Web em Formação", descrição, ações e legenda do mapa.
-2. **Terreno levantado:** ficha de campo da Plataforma de Portfólio, com estes campos:
-   - situação;
-   - stack;
-   - verificação;
-   - integração contínua (audit → format → lint → typecheck → vitest → build → e2e → axe);
-   - limitação conhecida;
-   - repositório.
-3. **Terreno ainda não levantado:** os quatro projetos planejados, em área tracejada e hachurada, sem marco, imagem nem link de detalhe.
+O movimento das curvas permanece aprovado, com respeito a
+`prefers-reduced-motion`. A linha de caminhamento e as estações visuais de CI
+usam animação por rolagem onde houver suporte; o fallback conserva a leitura.
+A animação de CI ilustra a ordem configurada, não uma execução ao vivo.
 
-## Limites e decisões pendentes
+## Limites para a implementação
 
-- **Anotações vindas do conteúdo:** na implementação, as anotações da lente precisam ser derivadas do conteúdo e do schema reais, nunca escritas fixas. O protótipo usa valores fixos ("13 competências declaradas / 13 comprovadas"), corretos em 2026-10-09.
-- **Projetos planejados:** continuam claramente separados e nunca recebem o laranja de marco.
-- **Celular:** as anotações ficam ocultas por falta de espaço. Falta decidir como apresentá-las, por exemplo em lista abaixo da abertura no modo "Ver estrutura".
-- **Fontes:** no Next.js, usar `next/font` para servi-las pelo próprio site e evitar requisição ao Google Fonts.
-- **Firefox e outros navegadores sem animação por rolagem:** as estações aparecem já acesas e a linha de caminhamento fica estática. É aceitável, mas precisa ser confirmado.
-- **Acessibilidade:** a camada da lente é decorativa (`aria-hidden`). O conteúdo das anotações precisa existir também em texto acessível, se for considerado relevante. Validar com axe, foco visível e `prefers-reduced-motion`.
-- **Desempenho:** medir o custo do SVG de curvas de nível (gerado em JS no protótipo) e considerar gerá-lo em tempo de build.
-- **Fonte de verdade:** os requisitos em `specs/` e a constituição continuam valendo. Registrar divergências antes de implementar.
+- Preservar o posicionamento “em formação”, a voz sóbria e o conteúdo verificável.
+- Derivar perfil, projetos, competências e explicações dos dados reais. O HTML
+  aprovado contém um retrato do conteúdo consultado em 2026-10-23.
+- Preservar a separação entre implementação e planejamento; o roadmap não conta
+  como evidência e não recebe apresentação de projeto entregue.
+- Preservar semântica, foco visível, teclado, responsividade e movimento reduzido.
+  O protótipo foi verificado automaticamente em 1280, 390 e 320px; isso não
+  substitui as inspeções humanas previstas para publicação do portfólio.
+- Na aplicação Next.js, servir as fontes pelo próprio site com `next/font`.
+- Avaliar desempenho e alternativas de geração do SVG durante a migração. As
+  medições anteriores da lente não descrevem esta versão sem lente.
+- Registrar divergências e alinhar spec, plano e tarefas antes da implementação
+  nas rotas do portfólio. Não marcar a migração como entregue por esta aprovação.
 
-## Proveniência
+## Histórico e proveniência
 
-O protótipo foi construído em código, sem imagem gerada, com o skill Impeccable em 2026-10-09. Outros protótipos da mesma rodada (fora do versionamento) ficam em `.impeccable/mocks/prototipos/`:
+Em 2026-10-09, a fusão de **Levantamento noturno** com **Negatoscópio** foi
+registrada como candidato potencial. A versão inicial incluía uma lente de
+sondagem. Em 2026-10-23, o proprietário solicitou um exemplo navegável, avaliou
+a manutenção da lente por desempenho e depois pediu sua retirada. A aprovação
+atual corresponde à versão final **sem lente**.
 
-- `levantamento.html`
-- `negatoscopio.html`
-- `segmentos.html` e `especime.html` foram descartados e removidos em 2026-10-09
+A referência 01B — Planos suspensos foi descartada. C3 — Encadernação interativa
+e C — Encadernação exposta permanecem referências alternativas de arquivo; não
+são a direção escolhida. O nome deste arquivo foi preservado para manter os
+links existentes.
+
+O protótipo foi construído em HTML, CSS e JavaScript com o skill Impeccable, sem
+imagem gerada. A referência executável é o HTML indicado acima. Outros estudos
+da rodada inicial ficam em `.impeccable/mocks/prototipos/`, fora do versionamento.

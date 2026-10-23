@@ -1,29 +1,23 @@
 import type { Metadata } from "next";
-import { Zilla_Slab, Archivo, Archivo_Narrow } from "next/font/google";
+import { Geologica, Martian_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import { getPerfil } from "../lib/content";
 import { SITE_LOCALE, SITE_NAME, SITE_URL } from "../lib/site";
 
-const zillaSlab = Zilla_Slab({
+// Geologica variável cobre todos os pesos do texto em um único arquivo; a
+// Martian Mono só aparece em legendas e notação técnica, por isso um peso.
+const geologica = Geologica({
   subsets: ["latin"],
-  weight: ["600", "700"],
-  variable: "--font-display",
+  variable: "--font-sans",
   display: "swap",
 });
 
-const archivo = Archivo({
+const martianMono = Martian_Mono({
   subsets: ["latin"],
-  weight: ["400", "600"],
-  variable: "--font-body",
-  display: "swap",
-});
-
-const archivoNarrow = Archivo_Narrow({
-  subsets: ["latin"],
-  weight: ["400", "600", "700"],
-  variable: "--font-field",
+  weight: "400",
+  variable: "--font-mono",
   display: "swap",
 });
 
@@ -65,7 +59,7 @@ export default function RootLayout({
     <html
       lang="pt-BR"
       data-scroll-behavior="smooth"
-      className={`${zillaSlab.variable} ${archivo.variable} ${archivoNarrow.variable}`}
+      className={`${geologica.variable} ${martianMono.variable}`}
     >
       <body>
         {/* O sistema visual — tese, paleta, tipografia e bans — está em DESIGN.md. */}

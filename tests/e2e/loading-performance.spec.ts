@@ -27,9 +27,9 @@ test("home evita trabalho redundante sem perder navegação cliente imediata", a
   expect(requisicoesRsc.filter((pathname) => pathname === "/")).toHaveLength(0);
   expect(requisicoesRsc).toContain("/curriculo");
 
-  // O orçamento tipográfico da primeira visita é: Zilla Slab 600/700,
-  // Archivo variável e Archivo Narrow variável.
-  expect(fontes.size).toBe(4);
+  // O orçamento tipográfico da primeira visita é: Geologica variável (texto e
+  // títulos) e Martian Mono 400 (notação), ambas no subconjunto latino.
+  expect(fontes.size).toBe(2);
   expect(
     (await Promise.all(tamanhosDasFontes)).reduce((total, bytes) => total + bytes, 0),
   ).toBeLessThanOrEqual(100 * 1024);

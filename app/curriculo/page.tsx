@@ -28,10 +28,6 @@ export default function ResumePage() {
     <article className="resume-page">
       <header className="resume-page__header">
         <div>
-          <div className="hero__index">
-            <span>Registro 005 · Currículo</span>
-            <span>pt-BR</span>
-          </div>
           <h1>{perfil.nome}</h1>
           <p className="resume-page__role">{perfil.tituloPosicionamento}</p>
         </div>

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import EvidenceLink from "../../../components/project/EvidenceLink";
 import ProjectImage from "../../../components/project/ProjectImage";
+import ProjectMark from "../../../components/project/ProjectMark";
 import ProjectRecordFooter from "../../../components/project/ProjectRecordFooter";
 import ProjectStatusBadge from "../../../components/project/ProjectStatusBadge";
 import { getPerfil, getProjetosImplementados } from "../../../lib/content";
@@ -58,11 +59,11 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   return (
     <article className="project-detail">
       <header className="project-detail__hero">
-        <div className="hero__index">
-          <span>Ficha · {projeto.slug}</span>
-          <span>{NATUREZA_LABEL[projeto.natureza]}</span>
-        </div>
-        <h1>{projeto.titulo}</h1>
+        <h1>
+          <ProjectMark />
+          {projeto.titulo}
+        </h1>
+        <p className="page-intro__cota">Ficha · {projeto.slug}</p>
         <p className="project-detail__lead">{projeto.resumo}</p>
         <div className="project-card__meta" role="group" aria-label="Classificação do projeto">
           <ProjectStatusBadge status={projeto.status} />

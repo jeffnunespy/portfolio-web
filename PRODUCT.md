@@ -90,8 +90,12 @@ português. Nomes de interfaces e propriedades seguem o vocabulário existente.
 
 ## Brand Commitments
 
-Nome pessoal: Jefferson. Sem identidade visual, logotipo ou paleta previamente estabelecidos como
-vinculantes.
+Nome pessoal: Jefferson. Em 2026-10-23, o proprietário aprovou a direção visual
+**Levantamento e sondagem**, na versão sem lente e com curvas em movimento, como
+referência para o redesign. Paleta, tipografia, composição e limites aprovados
+estão em [`candidato-levantamento-sondagem.md`](docs/referencias-visuais/candidato-levantamento-sondagem.md).
+O protótipo é a referência da próxima identidade; `DESIGN.md` descreve o sistema
+atualmente implementado até a migração.
 
 Voz: sóbria, específica e verificável. O tom da constituição e dos estudos de caso evita superlativo
 e promessa; descreve problema, decisão e limitação. Trabalho futuro deve preservar essa voz — o
@@ -128,11 +132,12 @@ enganaria exatamente o leitor que o portfólio quer convencer. Trabalho futuro (
 metadados) não deve tratar esses textos, tecnologias, decisões arquiteturais ou status como fatos
 sobre o proprietário.
 
-**Placeholders explícitos ainda no conteúdo:**
+**Conteúdo de publicação confirmado em 2026-10-23:**
 
-- `contato.valor` = `SEU-EMAIL@exemplo.com` — e-mail real pendente. Passa na validação silenciosamente
-  porque o formato é válido.
-- `public/curriculo.pdf` — o PDF definitivo ainda não foi fornecido.
+- Nome, e-mail, formação, trajetória e estudo de caso da plataforma foram confirmados pelo
+  proprietário. O perfil atual não usa e-mail placeholder.
+- `public/curriculo.pdf` foi gerado com esses dados e está disponível para download em `/curriculo`.
+  O documento tem uma página, com conteúdo e links conferidos contra `content/profile.json`.
 - As URLs inventadas de `transcricao-audio` (`exemplo-transcricao.vercel.app` e
   `github.com/transcricao-audio`) foram removidas do conteúdo; a ficha não expõe mais link algum.
 - Imagens em `public/images/projects/*.svg` são apresentação genérica, não capturas de aplicações

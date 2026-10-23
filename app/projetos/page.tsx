@@ -23,20 +23,17 @@ export default function ProjectsPage() {
 
   return (
     <section className="page-section page-intro" aria-labelledby="projects-title">
-      <div className="hero__index">
-        <span>Registro 002 · Fichas de projeto</span>
-        {/*
-          A contagem carrega o acervo inteiro, não só esta rota. "1 ficha"
-          sozinho lê como acervo vazio; o par implementado/planejado é dado
-          real e anuncia a existência do roadmap acima da dobra, sem precisar
-          de um segundo CTA.
-        */}
-        <span>
-          {projetos.length} {projetos.length === 1 ? "implementado" : "implementados"}
-          {planejados.length > 0 ? ` · ${planejados.length} planejados` : ""}
-        </span>
-      </div>
       <h1 id="projects-title">Projetos</h1>
+      {/*
+        A contagem carrega o acervo inteiro, não só esta rota. "1 ficha"
+        sozinho lê como acervo vazio; o par implementado/planejado é dado
+        real e anuncia a existência do roadmap acima da dobra, sem precisar
+        de um segundo CTA.
+      */}
+      <p className="page-intro__cota">
+        {projetos.length} {projetos.length === 1 ? "implementado" : "implementados"}
+        {planejados.length > 0 ? ` · ${planejados.length} planejados` : ""}
+      </p>
       <p className="page-intro__lead">
         Decisões, responsabilidades e aprendizados apresentados com contexto e limitações. Esta rota
         lista apenas software implementado.

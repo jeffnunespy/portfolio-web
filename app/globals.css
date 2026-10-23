@@ -1,263 +1,146 @@
 /*
-  A FICHA DE CATÁLOGO
-  Sistema visual do portfólio: cada projeto é uma ficha catalográfica indexada.
-  Tinta sobre cartão, filetes de campo, carimbos de estado. Sem raio, sem sombra:
-  o relevo vem da hierarquia de filetes e do peso tipográfico, como em papel impresso.
+  Levantamento e sondagem — mapa topográfico noturno.
+
+  O fundo é o terreno à noite; o texto marfim é a anotação do levantamento; o
+  laranja marca apenas o que foi implementado e o que leva até a evidência.
+  Escopo planejado é terreno ainda não levantado: tracejado e hachura, nunca
+  marco nem laranja. A paleta é única (escura) — `color-scheme: dark` faz o
+  navegador acompanhar controles, barras de rolagem e seleção.
+
+  Tipografia: Geologica leve para títulos e texto; Martian Mono só para
+  notação — cotas, legendas, rótulos de campo, código e etapas de CI.
 */
+
+@property --scan {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 0%;
+}
 
 :root {
-  /*
-    Altura total do cabeçalho fixo, incluindo o filete de 2px de .site-header
-    que fica fora de .site-header__inner. Serve de desconto para as alturas de
-    viewport do hero; é sobrescrito nos breakpoints onde o cabeçalho empilha.
-    O valor móvel inclui a assinatura visível acima da navegação.
-  */
-  --header-height: 3.875rem;
-
-  /* Tinta e cartão */
-  --ink: #1a1a17;
-  --ink-soft: #4a4740;
-  --ink-faint: #6f6a5f;
-  --card: #f4f1e8;
-  --card-raised: #faf8f2;
-  --card-sunk: #eae5d7;
-
-  /*
-    Filetes de campo, em três pesos por função — não por gosto.
-
-    --rule é pauta decorativa: separa células de uma grade cujo conteúdo já é
-    legível sozinho. WCAG 1.4.11 isenta separadores puramente estéticos, então
-    ele fica claro o bastante para o papel continuar sendo papel.
-
-    --rule-edge é contorno que carrega significado: quando o filete é a única
-    coisa que define o objeto (moldura de imagem, chip, nota, estado vazio),
-    apagá-lo apaga o componente. Esses alcançam ≥3:1 sobre toda superfície em
-    que assentam, inclusive --card-sunk, conforme 1.4.11.
-  */
-  --rule: #c8c2b0;
-  --rule-edge: #847d6a;
-  --rule-strong: #1a1a17;
-
-  /* Carimbo: voz única, aplicada com parcimônia */
-  --stamp: #8a2c1e;
-  --stamp-wash: #f0e2dd;
-
-  /* Foco: verificação, distinto do carimbo */
-  --focus: #1d4a4a;
-
-  --content-width: 1240px;
-  --field-gap: 1.5rem;
-
-  /*
-    O eixo de campo: a margem de consulta da ficha. Numa ficha catalográfica a
-    coluna de campos tem uma largura só — é o que permite folhear o acervo e
-    reencontrar o mesmo dado sempre na mesma posição. Antes cada rota inventava
-    a sua (320px no hero, 304px no 404, 477px na ficha, 620px no detalhe), e o
-    eixo direito oscilava mais de 300px entre rotas do mesmo fichário.
-    A goteira acompanha o container em vez de ser fixa, para o corpo de leitura
-    não estrangular entre 1024px e a medida plena.
-  */
-  --field-column: 19rem;
-  --field-gutter: clamp(2.5rem, 5.5vw, 5rem);
-
-  /*
-    Escala por papel, não por componente. Três passos cobrem a microtipografia
-    do fichário: dado compacto, rótulo e controle. Texto de apoio permanece um
-    passo acima para não virar rótulo por acidente em colunas estreitas.
-  */
-  --type-page-title: clamp(3rem, 9vw, 6rem);
-  --type-section-title: clamp(1.75rem, 3.5vw, 2.6rem);
-  --type-card-title: clamp(1.5rem, 2.2vw, 1.9rem);
-  --type-lead: clamp(1.05rem, 1.6vw, 1.25rem);
-  --type-field-compact: 0.7rem;
-  --type-field-label: 0.75rem;
-  --type-control: 0.8rem;
-  --type-supporting: 0.875rem;
-
-  --measure-reading: 68ch;
-  --measure-lead: 62ch;
+  --ground: #0c0f0e;
+  --ground-2: #121615;
+  --line-fine: #232a27;
+  --line: #34403a;
+  --line-index: #5b6862;
+  --ink: #e7e4da;
+  --ink-2: #a9aea6;
+  --ink-3: #7f877f;
+  --flag: #e8703f;
+  --flag-ink: #ff9a6b;
+  --focus: #f2c46b;
+  --display: var(--font-sans), "Segoe UI", system-ui, sans-serif;
+  --mono: var(--font-mono), ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --gutter: clamp(1rem, 4vw, 3.5rem);
+  --content-width: 84rem;
+  /* Coluna de consulta: a mesma largura e o mesmo eixo em toda rota que a usa. */
+  --consulta: 19rem;
+  --consulta-gap: clamp(2.5rem, 5.5vw, 5rem);
+  /* Altura reservada para o cabeçalho fixo. */
+  --header-space: 5.5rem;
+  --type-notation: 0.8125rem;
+  --type-notation-compact: 0.75rem;
+  color-scheme: dark;
 }
 
-/*
-  Tema escuro: a mesma ficha sob luz de arquivo — tinta clara sobre cartão
-  escurecido, não um "modo escuro" de aplicativo. Filetes, carimbo e regra de
-  contraste seguem a mesma lógica do tema claro; nenhuma forma nova.
-*/
-@media (prefers-color-scheme: dark) {
-  :root {
-    --ink: #efe9db;
-    --ink-soft: #b9b1a0;
-    --ink-faint: #9a917e;
-    --card: #1c1a15;
-    --card-raised: #242019;
-    --card-sunk: #26221b;
+/* ───────── Base ───────── */
 
-    --rule: #41392c;
-    --rule-edge: #847a67;
-    --rule-strong: #efe9db;
-
-    --stamp: #e2694f;
-    --stamp-wash: #3a2721;
-
-    --focus: #5fb3ad;
-  }
-}
-
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
 html {
+  background: var(--ground);
+  scrollbar-color: var(--line-index) var(--ground);
+  scroll-padding-top: calc(var(--header-space) + 1rem);
   scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
-  min-width: 320px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
   margin: 0;
   color: var(--ink);
-  background-color: var(--card);
-  /* Trama de fibra do cartão: dois filetes cruzados quase imperceptíveis. */
-  background-image:
-    repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 3px,
-      color-mix(in srgb, var(--ink) 1.5%, transparent) 3px,
-      color-mix(in srgb, var(--ink) 1.5%, transparent) 4px
-    ),
-    repeating-linear-gradient(
-      90deg,
-      transparent,
-      transparent 3px,
-      color-mix(in srgb, var(--ink) 1.2%, transparent) 3px,
-      color-mix(in srgb, var(--ink) 1.2%, transparent) 4px
-    );
-  /* Archivo é sans: o fallback acompanha, para o texto não trocar de classe
-     tipográfica enquanto a webfont carrega. */
-  font-family: var(--font-body), "Helvetica Neue", Arial, sans-serif;
-  font-size: 1.0625rem;
-  font-synthesis: none;
-  line-height: 1.65;
+  background: var(--ground);
+  font: 300 1.0625rem/1.65 var(--display);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  color: var(--ground);
+  background: var(--flag);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+  font-weight: 300;
+  text-wrap: balance;
+  overflow-wrap: break-word;
+}
+
+p,
+ul,
+ol,
+dl,
+dd {
+  margin: 0;
+}
+
+p {
+  text-wrap: pretty;
 }
 
 strong {
-  font-weight: 600;
+  font-weight: 500;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
 }
 
 a {
   color: inherit;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.3em;
 }
 
-a:focus-visible,
-button:focus-visible {
-  outline: 2px solid var(--focus);
-  outline-offset: 2px;
-}
-
-::selection {
-  color: var(--card);
-  background: var(--ink);
-}
-
-/*
-  A barra de rolagem é a última superfície que o navegador ainda desenhava com
-  a paleta dele: cinza de sistema sobre o cartão. Tinta sobre cartão, como todo
-  o resto. scrollbar-color cobre Firefox; ::-webkit-scrollbar cobre os demais.
-*/
-html {
-  scrollbar-color: var(--rule-edge) var(--card);
-}
-
-::-webkit-scrollbar {
-  width: 12px;
-  height: 12px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--card);
-}
-
-::-webkit-scrollbar-thumb {
-  border: 3px solid var(--card);
-  background: var(--rule-edge);
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--ink-faint);
-}
-
-h1,
-h2,
-h3,
-p {
-  margin-top: 0;
-}
-
-h1,
-h2,
-h3,
-p,
-li,
-dd,
 a,
-button,
-small {
+button {
+  touch-action: manipulation;
+}
+
+button {
+  font: inherit;
+}
+
+code {
+  font: 400 0.85em/1.6 var(--mono);
   overflow-wrap: anywhere;
 }
 
-h1,
-h2,
-h3 {
-  font-family: var(--font-display), Georgia, serif;
-  font-weight: 600;
-  hyphens: auto;
-  text-wrap: balance;
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 4px;
 }
 
-h1 {
-  margin-bottom: 1rem;
-  font-size: var(--type-page-title);
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  line-height: 0.98;
-}
-
-h2 {
-  margin-bottom: 0.75rem;
-  font-size: var(--type-section-title);
-  letter-spacing: -0.02em;
-  line-height: 1.08;
-}
-
-h3 {
-  font-size: 1.2rem;
-  letter-spacing: -0.01em;
-  line-height: 1.18;
-}
-
-/* ───────── Rótulo de campo: a régua tipográfica do fichário ───────── */
-
-/*
-  Numerais de registro são dados de medição, não texto corrido: contagens,
-  índices e códigos alinham em coluna com largura tabular, como numa ficha
-  datilografada. Sem isso os dígitos proporcionais fazem "1 / 5" dançar entre
-  fichas de índice diferente.
-*/
-.hero__index,
-.hero__record dd,
-.project-record-footer__position,
-.site-footer__inner > p {
-  font-variant-numeric: tabular-nums;
-}
-
-.field-label {
-  display: block;
-  color: var(--ink-faint);
-  font-family: var(--font-field), Arial, sans-serif;
-  font-size: var(--type-field-compact);
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
+/* O <main> recebe foco programático do link de salto; o anel fica com os controles. */
+.site-main:focus,
+.site-main:focus-visible {
+  outline: none;
 }
 
 .visually-hidden {
@@ -273,980 +156,1085 @@ h3 {
 }
 
 .skip-link {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
+  position: fixed;
+  z-index: 100;
+  top: 0.5rem;
+  left: var(--gutter);
+  padding: 0.75rem 1rem;
+  color: var(--ground);
+  background: var(--ink);
+  font-weight: 500;
+  text-decoration: none;
+  transform: translateY(-200%);
 }
 
 .skip-link:focus {
-  position: fixed;
-  z-index: 1000;
-  top: 1rem;
-  left: 1rem;
-  width: auto;
-  height: auto;
-  padding: 0.75rem 1rem;
-  margin: 0;
-  overflow: visible;
-  clip: auto;
-  color: var(--card);
-  background: var(--ink);
-  font-family: var(--font-field), Arial, sans-serif;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-decoration: none;
-  text-transform: uppercase;
-  white-space: normal;
+  transform: translateY(0);
 }
 
-/* ───────── Cabeçalho: a aba do fichário ───────── */
-
-.site-header {
-  position: relative;
-  z-index: 10;
-  border-bottom: 2px solid var(--rule-strong);
-  background: var(--card);
-}
+/* ───────── Eixo compartilhado ───────── */
 
 .site-header__inner,
-.site-footer__inner {
-  display: flex;
-  width: min(calc(100% - 3rem), var(--content-width));
+.site-footer__inner,
+.hero,
+.structure-notes__inner,
+.station,
+.page-section,
+.project-detail,
+.about-page,
+.resume-page,
+.message-page {
+  width: min(100% - 2 * var(--gutter), var(--content-width));
   margin-inline: auto;
 }
 
+.site-main {
+  position: relative;
+  flex: 1 0 auto;
+  padding-top: var(--header-space);
+}
+
+/* ───────── Notação compartilhada ───────── */
+
+.text-link {
+  color: var(--ink);
+  text-decoration-color: var(--line-index);
+  transition: text-decoration-color 0.3s var(--ease-out);
+}
+
+.muted-label,
+.cota,
+.page-intro__cota {
+  color: var(--ink-3);
+  font: 400 var(--type-notation) / 1.5 var(--mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.page-intro__cota {
+  margin-top: 1rem;
+  overflow-wrap: anywhere;
+}
+
+.availability-note,
+.empty-state {
+  color: var(--ink-2);
+  font-size: 0.95rem;
+}
+
+.empty-state {
+  display: grid;
+  gap: 0.75rem;
+  justify-items: start;
+  margin-top: 2rem;
+  padding: 1.75rem clamp(1.25rem, 3vw, 2rem);
+  border: 1px dashed var(--line-index);
+}
+
+/* ───────── Botões: traço de evidência com seta ───────── */
+
+/*
+  Ação é texto com filete, não pílula. O filete inferior é o traço de base do
+  levantamento; ao passar o ponteiro ou focar, ele é preenchido com a cor do
+  texto. A seta indica o destino: avançar, sair do site ou baixar.
+*/
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  min-height: 44px;
+  padding: 0.55rem 0;
+  color: var(--ink);
+  font-weight: 400;
+  line-height: 1.35;
+  text-align: left;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+  background:
+    linear-gradient(currentColor 0 0) left bottom / 0% 1px no-repeat,
+    linear-gradient(var(--line-index) 0 0) left bottom / 100% 1px no-repeat;
+  transition: background-size 0.6s var(--ease-out);
+}
+
+.button::after {
+  flex: none;
+  width: 1.1em;
+  height: 1.1em;
+  background: currentColor;
+  content: "";
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%23000' stroke-width='1.3'%3E%3Cpath d='M3 10h14M12 5l5 5-5 5'/%3E%3C/svg%3E")
+    center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%23000' stroke-width='1.3'%3E%3Cpath d='M3 10h14M12 5l5 5-5 5'/%3E%3C/svg%3E")
+    center / contain no-repeat;
+  transition: translate 0.5s var(--ease-out);
+}
+
+.button[target="_blank"]::after {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%23000' stroke-width='1.3'%3E%3Cpath d='M7 4h9v9M16 4 4 16'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%23000' stroke-width='1.3'%3E%3Cpath d='M7 4h9v9M16 4 4 16'/%3E%3C/svg%3E");
+}
+
+.button[download]::after {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%23000' stroke-width='1.3'%3E%3Cpath d='M10 3v13M5 11l5 5 5-5'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%23000' stroke-width='1.3'%3E%3Cpath d='M10 3v13M5 11l5 5 5-5'/%3E%3C/svg%3E");
+}
+
+button.button {
+  border: 0;
+  cursor: pointer;
+}
+
+button.button::after {
+  display: none;
+}
+
+.button:focus-visible {
+  background-size:
+    100% 1px,
+    100% 1px;
+}
+
+.button--primary {
+  color: var(--flag-ink);
+}
+
+.button--secondary {
+  color: var(--ink);
+}
+
+/* ───────── Cabeçalho ───────── */
+
+.site-header {
+  position: fixed;
+  z-index: 20;
+  inset: 0 0 auto;
+  padding-block: 1.1rem 1.6rem;
+  background: linear-gradient(var(--ground) 55%, transparent);
+  /* O degradê não pode bloquear o clique no conteúdo que passa por baixo. */
+  pointer-events: none;
+}
+
 .site-header__inner {
-  min-height: 3.75rem;
-  align-items: stretch;
-  justify-content: space-between;
-  gap: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 2rem;
+}
+
+.site-header__inner > * {
+  pointer-events: auto;
 }
 
 .site-brand {
-  display: flex;
-  min-height: 2.75rem;
+  display: inline-flex;
   align-items: center;
-  color: var(--ink);
-  font-family: var(--font-field), Arial, sans-serif;
-  font-size: var(--type-field-label);
-  font-weight: 700;
-  letter-spacing: 0.2em;
+  min-height: 44px;
+  margin-right: auto;
+  font-weight: 500;
+  letter-spacing: -0.01em;
   text-decoration: none;
-  text-transform: uppercase;
 }
 
-.site-brand:hover {
-  color: var(--stamp);
-}
-
-.site-nav,
-.footer-nav {
+.site-nav {
   display: flex;
   flex-wrap: wrap;
-  align-items: stretch;
+  gap: 0 clamp(1rem, 2.4vw, 2rem);
+  color: var(--ink-2);
+  font-size: 0.9rem;
 }
 
 .site-nav a {
-  display: flex;
-  min-width: 0;
+  position: relative;
+  display: inline-flex;
   align-items: center;
-  padding-inline: 1.1rem;
-  border-left: 1px solid var(--rule);
-  color: var(--ink-soft);
-  font-family: var(--font-field), Arial, sans-serif;
-  font-size: var(--type-control);
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-align: center;
+  min-height: 44px;
   text-decoration: none;
-  text-transform: uppercase;
-  transition: color 140ms ease;
-  white-space: nowrap;
+  transition: color 0.3s var(--ease-out);
 }
 
-.site-nav a:last-child {
-  border-right: 1px solid var(--rule);
+.site-nav a::after {
+  position: absolute;
+  right: 0;
+  bottom: 0.55rem;
+  left: 0;
+  height: 1px;
+  background: currentColor;
+  content: "";
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.5s var(--ease-out);
+}
+
+.site-nav a[aria-current="page"] {
+  color: var(--ink);
+}
+
+.site-nav a[aria-current="page"]::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.site-nav .nav-curriculo-destaque {
+  color: var(--flag-ink);
 }
 
 .site-nav__label--compact {
   display: none;
 }
 
-.site-nav a:hover {
+/* ───────── Rodapé ───────── */
+
+.site-footer {
+  margin-top: clamp(4rem, 10vh, 7rem);
+  border-top: 1px solid var(--line-fine);
+  color: var(--ink-2);
+  font-size: 0.95rem;
+}
+
+.site-footer__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--consulta);
+  gap: 2.5rem var(--consulta-gap);
+  padding-block: 3.5rem 3rem;
+}
+
+.footer-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: start;
+  gap: 0 1.75rem;
+}
+
+.footer-nav a,
+.footer-contact__actions a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  text-decoration-color: var(--line-index);
+}
+
+.footer-contact {
+  display: grid;
+  gap: 0.6rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--line-index);
+}
+
+.footer-contact h2 {
   color: var(--ink);
-  background: var(--card-sunk);
+  font-size: 1.0625rem;
+  font-weight: 400;
 }
 
-/* Currículo é a saída principal do fichário, destacada enquanto não é a atual. */
-.site-nav .nav-curriculo-destaque {
-  color: var(--card);
-  background: var(--ink);
-}
-
-.site-nav .nav-curriculo-destaque:hover {
-  color: var(--card);
-  background: var(--stamp);
-}
-
-/*
-  A aba ativa do fichário. O carimbo não depende só da cor: o filete inferior
-  espesso sobrevive a alto contraste e à impressão, onde o fundo se perde.
-  Filete, não sombra — DESIGN.md proíbe box-shadow em todo o sistema.
-*/
-.site-nav a[aria-current="page"] {
+.footer-contact__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 1.5rem;
   color: var(--ink);
-  background: var(--card);
-  border-bottom: 3px solid var(--stamp);
-  font-weight: 600;
 }
 
-/*
-  dvh acompanha a barra de endereço móvel; vh fica como fallback para navegadores
-  sem suporte, onde a altura é medida com a barra retraída e o rodapé salta.
-*/
-.site-main {
-  min-height: calc(100vh - 12rem);
-  min-height: calc(100dvh - 12rem);
+.site-footer__inner > p {
+  grid-column: 1 / -1;
+  color: var(--ink-3);
+  font: 400 var(--type-notation-compact) / 1.6 var(--mono);
 }
 
-/* ───────── A ficha de cabeçalho: primeiro viewport ───────── */
+/* ───────── Abertura: levantamento e sondagem ───────── */
 
-.hero,
-.page-section {
-  width: min(calc(100% - 3rem), var(--content-width));
-  margin-inline: auto;
+.survey {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  align-items: end;
+  min-height: 100vh;
+  min-height: 100svh;
+  margin-top: calc(-1 * var(--header-space));
+  padding-top: calc(var(--header-space) + clamp(2rem, 9vh, 7rem));
+  padding-bottom: clamp(2.5rem, 7vh, 5rem);
+  overflow: clip;
+}
+
+.survey__field {
+  position: absolute;
+  z-index: -1;
+  inset: -6% -14% -10% 22%;
+  pointer-events: none;
+}
+
+.survey__drawing {
+  position: absolute;
+  inset: 0;
+}
+
+/* Varredura de plotter: velocidade constante, sem curva, só quando há desenho. */
+.survey__drawing[data-desenhado] {
+  -webkit-mask-image: linear-gradient(90deg, #000 calc(var(--scan) - 4%), transparent var(--scan));
+  mask-image: linear-gradient(90deg, #000 calc(var(--scan) - 4%), transparent var(--scan));
+  animation: plot 3.2s linear 0.2s both;
+}
+
+@keyframes plot {
+  from {
+    --scan: 0%;
+  }
+
+  to {
+    --scan: 108%;
+  }
+}
+
+.survey__layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  transition: transform 1.4s var(--ease-out);
+}
+
+.survey__layer path {
+  fill: none;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.survey__layer--fine path {
+  stroke: var(--line-fine);
+  stroke-width: 1;
+}
+
+.survey__layer--mid path {
+  stroke: var(--line);
+  stroke-width: 1;
+}
+
+.survey__layer--index path {
+  stroke: var(--line-index);
+  stroke-width: 1.4;
 }
 
 .hero {
+  position: relative;
   display: flex;
-  min-height: calc(100vh - var(--header-height));
-  min-height: calc(100dvh - var(--header-height));
-  flex-direction: column;
-  padding-block: clamp(2rem, 5vw, 4rem) clamp(2rem, 4vw, 3rem);
-}
-
-/*
-  No desktop, o conteúdo principal ocupa a ficha e os campos catalográficos
-  formam uma margem de consulta à direita. A medida de leitura permanece no
-  corpo; o container continua alinhado ao eixo global do site.
-*/
-.hero__layout {
-  display: grid;
-  min-width: 0;
-  flex: 1;
-  align-items: center;
-  padding-block: clamp(2.5rem, 5vw, 4.5rem);
-  grid-template-columns: minmax(0, 1fr) var(--field-column);
-  gap: var(--field-gutter);
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 2.5rem var(--consulta-gap);
 }
 
 .hero__body {
+  flex: 1 1 28rem;
   min-width: 0;
+  container-type: inline-size;
 }
 
-/* Linha de índice: número de registro e data, como no topo de uma ficha real. */
-.hero__index {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 1rem;
-  padding-bottom: 0.6rem;
-  border-bottom: 1px solid var(--rule);
-  color: var(--ink-faint);
-  font-family: var(--font-field), Arial, sans-serif;
-  font-size: var(--type-field-compact);
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
+.hero__title {
+  margin-bottom: 1.4rem;
+  font-weight: 200;
+  font-size: clamp(2.25rem, min(6.6vw, 10.5cqi), 5.75rem);
+  line-height: 0.96;
+  letter-spacing: -0.035em;
 }
 
-.hero__name {
-  margin-bottom: 0;
-  font-size: clamp(2.7rem, 11vw, 7rem);
-  line-height: 0.92;
-  /* "Desenvolvedor" sozinho excede 320px no corpo monumental; a hifenização
-     preserva a escala em vez de encolher o título em toda a faixa. */
-  hyphens: auto;
-  overflow-wrap: break-word;
+.hero__title-state {
+  display: block;
+  color: var(--ink-2);
 }
 
 .hero__description {
-  max-width: var(--measure-lead);
-  padding-top: 1.25rem;
-  margin-bottom: 0;
-  color: var(--ink-soft);
-  font-size: clamp(1.1rem, 1.6vw, 1.3rem);
-  line-height: 1.5;
-  text-wrap: pretty;
-}
-
-/* Carimbo de estado: aplicado em ângulo, como tinta sobre o campo. */
-.hero__stamp {
-  display: inline-block;
-  align-self: flex-start;
-  padding: 0.4rem 1rem;
-  margin-top: 1.75rem;
-  border: 2px solid var(--stamp);
-  color: var(--stamp);
-  font-family: var(--font-field), Arial, sans-serif;
-  font-size: var(--type-control);
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  rotate: -2.4deg;
-}
-
-.hero__actions,
-.project-card__actions {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.75rem;
+  max-width: 34rem;
+  margin-bottom: 2rem;
+  color: var(--ink-2);
+  font-size: 1.125rem;
 }
 
 .hero__evidence {
-  padding-top: 2rem;
-}
-
-/*
-  A medida é dada em px, não em ch: `ch` mede o avanço do glifo "0" e ignora
-  tanto o tracking quanto a caixa alta, então 58ch resolvia para 348px — cerca
-  de 40 caracteres reais, o que quebrava a nota em três linhas e deixava "CI."
-  órfão na última. `balance` distribui as duas linhas restantes.
-*/
-.hero__evidence-note {
+  display: grid;
+  gap: 0.6rem;
+  justify-items: start;
   max-width: 34rem;
-  margin: 0.7rem 0 0;
-  color: var(--ink-soft);
-  font-family: var(--font-field), Arial, sans-serif;
-  font-size: var(--type-field-label);
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  line-height: 1.45;
-  text-transform: uppercase;
-  text-wrap: balance;
+  margin-bottom: 1.5rem;
 }
 
-.hero__actions--secondary {
-  padding-top: 1rem;
+.hero__evidence-note {
+  color: var(--ink-2);
+  font-size: 0.875rem;
 }
 
-/* Tabela de campos catalográficos: margem direita da ficha no desktop. */
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 2.25rem;
+}
+
 .hero__record {
   display: grid;
-  width: 100%;
-  margin: 0;
-  align-self: center;
-  border-top: 2px solid var(--rule-strong);
-  grid-template-columns: 1fr;
-}
-
-.hero__record > div {
-  min-width: 0;
-  padding: 1rem 0;
-  border-bottom: 1px solid var(--rule);
-}
-
-.hero__record > div:last-child {
-  border-bottom: 0;
-}
-
-.hero__record dt {
-  color: var(--ink-faint);
-  font-family: var(--font-field), Arial, sans-serif;
-  font-size: var(--type-field-compact);
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-}
-
-.hero__record dd {
-  margin: 0.4rem 0 0;
-  font-family: var(--font-display), Georgia, serif;
-  font-size: 1.05rem;
-  font-weight: 600;
-  line-height: 1.35;
-}
-
-/*
-  O dd tem line-height apertado (1.35), que comprimiria o padding do .text-link
-  abaixo dos 44px de alvo. A altura mínima é garantida aqui sem afrouxar o ritmo
-  tipográfico da tabela de registro.
-*/
-.hero__record dd .text-link {
-  display: inline-flex;
-  min-height: 2.75rem;
-  align-items: center;
-}
-
-/* ───────── Botões: carimbos retangulares, sem raio ───────── */
-
-.button {
-  display: inline-flex;
+  flex: 0 0 var(--consulta);
+  gap: 1.5rem;
   max-width: 100%;
-  /* 2.75rem = 44px: alvo de toque mínimo (WCAG 2.5.5 / 2.5.8). */
-  min-height: 2.75rem;
-  align-items: center;
-  justify-content: center;
-  padding: 0.6rem 1.25rem;
-  border: 1.5px solid var(--ink);
-  font-family: var(--font-field), Arial, sans-serif;
-  font-size: var(--type-control);
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-align: center;
-  text-decoration: none;
-  text-transform: uppercase;
-  white-space: normal;
-  transition:
-    color 140ms ease,
-    background-color 140ms ease;
+  margin-left: auto;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--line-index);
 }
 
-.button--primary {
-  color: var(--card);
-  background: var(--ink);
-}
-
-.button--primary:hover {
-  background: var(--stamp);
-  border-color: var(--stamp);
-}
-
-.button--secondary {
-  color: var(--ink);
-  background: transparent;
-}
-
-.button--secondary:hover {
-  color: var(--card);
-  background: var(--ink);
-}
-
-/* ───────── Fichas de competência ───────── */
-
-.competency-grid {
+.field-record {
   display: grid;
-  border-top: 1px solid var(--rule);
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.35rem;
+  font-size: 0.95rem;
 }
 
-.competency-card {
-  padding: 1.4rem 1.25rem 1.5rem 0;
-  border-right: 1px solid var(--rule);
+.field-record > div {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.1rem 1rem;
 }
 
-.competency-card:last-child {
-  border-right: 0;
+.field-record dt {
+  color: var(--ink-3);
+  font: 400 var(--type-notation) / 1.6 var(--mono);
 }
 
-/* Área de profundidade: marcada por peso de filete, não por cor de fundo. */
-.competency-card--depth {
-  border-top: 3px solid var(--ink);
-  margin-top: -1px;
+.field-record dd {
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
 }
 
-.competency-card h3 {
-  margin: 0 0 0.75rem;
-  font-size: 1.15rem;
-}
-
-.competency-card ul,
-.chip-list {
+.map-legend {
+  display: grid;
+  gap: 0.5rem;
   padding: 0;
-  margin: 0;
+  color: var(--ink-2);
+  font: 400 var(--type-notation) / 1.5 var(--mono);
   list-style: none;
 }
 
-.competency-card li {
-  padding-block: 0.3rem;
-  border-bottom: 1px solid var(--rule);
-  color: var(--ink-soft);
-  font-size: 0.94rem;
+.map-legend li {
+  display: grid;
+  grid-template-columns: 2.2rem minmax(0, 1fr);
+  align-items: center;
+  gap: 0.9rem;
 }
 
-.competency-card li:last-child {
-  border-bottom: 0;
+.map-legend svg {
+  width: 100%;
+  height: 12px;
 }
 
-/* O inventário desta seção só reúne o que a plataforma implementada comprova.
-   Estudos de backend e cloud ficam explicitamente fora dele, no roadmap. */
-.competency-roadmap-note {
-  max-width: 64ch;
-  margin: 1.5rem 0 0;
-  color: var(--ink-soft);
-  font-size: 0.92rem;
+.map-legend__mark {
+  fill: none;
+  stroke: var(--flag);
+  stroke-width: 1.3;
 }
 
-/* ───────── Seções ───────── */
-
-.page-section {
-  padding-block: clamp(3rem, 6vw, 5.5rem);
+.map-legend__dashed {
+  stroke: var(--line-index);
+  stroke-dasharray: 3 3;
 }
 
-.section-heading {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 2rem;
-  padding-bottom: 0.75rem;
-  border-bottom: 2px solid var(--rule-strong);
-  margin-bottom: 2.5rem;
+.map-legend__contour {
+  fill: none;
+  stroke: var(--line-index);
 }
 
-.section-heading h2,
-.section-heading p {
-  margin-bottom: 0;
+.survey__probe {
+  display: grid;
+  gap: 0.75rem;
+  justify-items: start;
 }
 
-/*
-  O padding vertical eleva a área de toque a 44px (WCAG 2.5.5/2.5.8); a margem
-  negativa equivalente devolve o espaço ao fluxo, para o link não empurrar as
-  linhas vizinhas nem desalinhar os filetes de campo em que ele aparece.
-*/
-.text-link {
-  display: inline-block;
-  padding-block: 0.75rem;
-  margin-block: -0.75rem;
+.survey__readout {
+  min-height: 3em;
+  color: var(--ink-3);
+  font: 400 var(--type-notation) / 1.5 var(--mono);
+  font-variant-numeric: tabular-nums;
+  white-space: pre-wrap;
+}
+
+.survey__toggle {
+  min-height: 44px;
+  padding: 0.8rem 1rem;
   color: var(--ink);
-  font-family: var(--font-field), Arial, sans-serif;
-  font-size: var(--type-field-label);
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-decoration: underline;
-  text-transform: uppercase;
-  text-underline-offset: 0.3em;
-  text-decoration-thickness: 1px;
+  background: rgba(12, 15, 14, 0.6);
+  border: 1px solid var(--line-index);
+  font: 400 var(--type-notation) / 1 var(--mono);
+  cursor: pointer;
+  transition:
+    background-color 0.4s var(--ease-out),
+    border-color 0.4s var(--ease-out),
+    color 0.4s var(--ease-out);
 }
 
-.text-link:hover {
-  color: var(--stamp);
+.survey__toggle[aria-expanded="true"] {
+  color: var(--ground);
+  background: var(--flag);
+  border-color: var(--flag);
 }
 
-/* ───────── A ficha de projeto ───────── */
+/* Sem ponteiro fino não há o que explorar: a leitura de coordenadas some. */
+@media (hover: none), (pointer: coarse), (pointer: none) {
+  .survey__readout {
+    display: none;
+  }
+}
+
+/* Painel textual da estrutura: mesma informação, sem depender do desenho. */
+.structure-notes {
+  padding-block: 2.5rem;
+  background: var(--ground-2);
+  border-block: 1px solid var(--line-index);
+}
+
+.structure-notes[hidden] {
+  display: none;
+}
+
+.structure-notes h2 {
+  margin-bottom: 1.5rem;
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  letter-spacing: -0.02em;
+}
+
+.structure-notes__list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem 3rem;
+}
+
+.structure-notes__list dt {
+  margin-bottom: 0.5rem;
+  color: var(--flag-ink);
+  font-weight: 400;
+}
+
+.structure-notes__list dd {
+  color: var(--ink-2);
+  font-size: 0.95rem;
+}
+
+/* ───────── Caminhamento: estações da home ───────── */
+
+.stations {
+  position: relative;
+}
+
+/* Poligonal do caminhamento: acompanha a rolagem onde o navegador permite. */
+.traverse {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: max(var(--gutter) * 0.5, (100% - var(--content-width)) / 2 - var(--gutter) * 0.5);
+  width: 1px;
+  background: var(--line-fine);
+}
+
+.traverse::after {
+  position: absolute;
+  inset: 0;
+  background: var(--flag);
+  content: "";
+  transform: scaleY(0);
+  transform-origin: top;
+}
+
+.station {
+  position: relative;
+  padding-block: clamp(4.5rem, 12vh, 8rem) 0;
+}
+
+.station__head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+  align-items: end;
+  gap: 1.25rem 4rem;
+  margin-bottom: 3rem;
+}
+
+.station__head h2 {
+  font-size: clamp(2rem, 4.6vw, 3.6rem);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+}
+
+.station__head p {
+  max-width: 38rem;
+  color: var(--ink-2);
+}
+
+.ci-record {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+  gap: 1rem 4rem;
+  margin-top: 3rem;
+}
+
+.ci-record__title {
+  font-size: 1.25rem;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+.pipeline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0;
+  font: 400 var(--type-notation) / 1 var(--mono);
+  list-style: none;
+  view-timeline: --pipeline block;
+}
+
+.pipeline li {
+  position: relative;
+  padding: 0.5rem 0.65rem;
+  color: var(--ink);
+  background: linear-gradient(var(--flag) 0 0) left bottom / 100% 1px no-repeat;
+  border: 1px solid var(--line);
+}
+
+.pipeline li + li::before {
+  position: absolute;
+  top: 50%;
+  left: calc(-0.5rem - 1px);
+  width: 0.5rem;
+  height: 1px;
+  background: var(--line-index);
+  content: "";
+}
+
+.ci-record__note {
+  grid-column: 2;
+  color: var(--ink-2);
+  font-size: 0.875rem;
+}
+
+.competency-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-top: 1px solid var(--line-index);
+}
+
+.competency-card {
+  min-width: 0;
+  padding: 1.5rem 1.5rem 1.75rem 0;
+}
+
+.competency-card + .competency-card {
+  padding-left: 1.5rem;
+  border-left: 1px solid var(--line-fine);
+}
+
+.competency-card h3 {
+  margin-bottom: 1rem;
+  color: var(--ink);
+  font-size: 1.125rem;
+  font-weight: 400;
+}
+
+.competency-card ul {
+  display: grid;
+  gap: 0.35rem;
+  padding: 0;
+  color: var(--ink-2);
+  font-size: 0.95rem;
+  list-style: none;
+}
+
+.competency-roadmap-note {
+  max-width: 44rem;
+  margin-top: 2rem;
+  color: var(--ink-2);
+  font-size: 0.95rem;
+}
+
+/* Terreno não levantado: hachura e tracejado, sem marco nem cor de evidência. */
+.unsurveyed,
+.roadmap-entry {
+  background: repeating-linear-gradient(
+    135deg,
+    transparent 0 9px,
+    rgba(127, 135, 127, 0.07) 9px 10px
+  );
+  border: 1px dashed var(--line-index);
+}
+
+.unsurveyed {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem 3rem;
+  padding: 2rem clamp(1.25rem, 3vw, 2.5rem) 2.2rem;
+}
+
+.unsurveyed__count {
+  display: grid;
+  gap: 0.5rem;
+  color: var(--ink-2);
+  font-size: 1.125rem;
+}
+
+/* ───────── Fichas de projeto ───────── */
 
 .project-grid {
-  display: grid;
-  border-top: 1px solid var(--rule);
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border-top: 1px solid var(--line-index);
 }
 
 .project-card {
-  display: flex;
-  min-width: 0;
-  flex-direction: column;
-  padding: 1.75rem 1.75rem 1.75rem 0;
-  border-bottom: 1px solid var(--rule);
-  border-right: 1px solid var(--rule);
-}
-
-.project-card:nth-child(2n) {
-  padding-right: 0;
-  padding-left: 1.75rem;
-  border-right: 0;
-}
-
-/*
-  Uma ficha única não finge uma grade por preencher: vira o registro principal
-  do acervo. O índice visual recua para a margem — é referência, não conteúdo —
-  e o registro ocupa a coluna de tinta, alinhado ao h1 e ao lead acima dele.
-  Quando houver uma segunda ficha, a grade regular de duas colunas volta a
-  representar itens equivalentes.
-*/
-.project-grid:has(.project-card:only-child) {
-  grid-template-columns: 1fr;
-}
-
-.project-grid:has(.project-card:only-child) .project-card {
   display: grid;
-  padding: 1.75rem 0;
-  border-right: 0;
-  border-bottom: 0;
-  /*
-    Aqui o eixo de campo vale invertido. O corpo da ficha é leitura corrida
-    (resumo, problema, competências), não uma tabela de campos: espremê-lo em
-    --field-column quebraria a medida. Quem ocupa a margem é o índice visual,
-    que é justamente o dado consultável de largura fixa. O registro fica na
-    coluna de tinta, alinhado ao h1 e ao lead acima dele.
-
-    A margem ganha um passo a mais que --field-column porque carrega uma
-    imagem 5:3 com título interno, não uma tabela de rótulos: em 19rem o
-    índice deixa de ser legível como ficha.
-  */
-  grid-template-columns: calc(var(--field-column) + 6rem) minmax(0, 1fr);
-  gap: var(--field-gutter);
-}
-
-.project-grid:has(.project-card:only-child) .project-image {
-  margin-bottom: 0;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+  gap: 2rem 4rem;
+  padding-block: 2.5rem;
+  border-bottom: 1px solid var(--line);
 }
 
 .project-image {
-  display: block;
+  align-self: start;
   width: 100%;
-  margin-bottom: 1.25rem;
-  /* As fichas SVG são desenhadas em 1200 x 720. Preservar 5:3 impede que
-     índice, título e marcações inferiores sejam cortados por object-fit. */
+  height: auto;
   aspect-ratio: 5 / 3;
-  border: 1px solid var(--rule-edge);
-  background: var(--card-sunk);
   object-fit: contain;
+  background: var(--ground-2);
+  border: 1px solid var(--line);
 }
 
 .project-image--fallback {
   display: grid;
-  align-content: center;
-  justify-items: center;
+  place-content: center;
   gap: 0.4rem;
-  /* --ink-soft pelo mesmo motivo de .private-code-note: este texto pequeno
-     cai sobre --card-sunk, onde --ink-faint não alcança 4.5:1. */
-  color: var(--ink-soft);
-  font-family: var(--font-field), Arial, sans-serif;
-  font-size: var(--type-field-compact);
-  letter-spacing: 0.14em;
+  color: var(--ink-3);
+  font-family: var(--mono);
   text-align: center;
-  text-transform: uppercase;
 }
 
 .project-image--fallback span {
-  color: var(--ink-soft);
-  font-family: var(--font-display), Georgia, serif;
-  font-size: 1.6rem;
-  font-weight: 600;
-  letter-spacing: 0;
+  font-size: 1.5rem;
+}
+
+.project-image--fallback small {
+  font-size: var(--type-notation-compact);
 }
 
 .project-card__body {
-  display: flex;
+  display: grid;
+  align-content: start;
+  gap: 1.1rem;
   min-width: 0;
-  flex: 1;
-  flex-direction: column;
-  align-items: flex-start;
 }
 
-.project-card__body h2,
-.project-card__body h3 {
-  margin-block: 0 0.5rem;
-  font-size: var(--type-card-title);
-}
-
-/* Linha de índice da ficha: estado, categoria e natureza como campos. */
 .project-card__meta {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.5rem;
-  padding-bottom: 0.7rem;
-  margin-bottom: 0.9rem;
-  border-bottom: 1px solid var(--rule);
+  gap: 0.35rem 1.25rem;
+  color: var(--ink-3);
+  font: 400 var(--type-notation-compact) / 1.5 var(--mono);
+}
+
+.project-card h2,
+.project-card h3 {
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  overflow-wrap: anywhere;
+}
+
+.project-mark {
+  display: inline-block;
+  width: 0.62em;
+  height: 0.62em;
+  margin-right: 0.75rem;
+  vertical-align: 0.02em;
+  overflow: visible;
+}
+
+.project-detail__hero .project-mark {
+  width: 0.5em;
+  height: 0.5em;
+  margin-right: 1rem;
+}
+
+.project-mark path {
+  fill: none;
+  stroke: var(--flag);
+  stroke-width: 1.3;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.project-card__summary {
+  max-width: 34rem;
+  color: var(--ink-2);
+}
+
+/* Campos de caderneta: rótulo em notação à esquerda, valor à direita. */
+.project-card__problem,
+.project-card__evidence {
+  display: grid;
+  grid-template-columns: 9rem minmax(0, 1fr);
+  gap: 0.25rem 1.5rem;
+  padding-block: 0.9rem;
+  border-top: 1px solid var(--line-fine);
+  font-size: 0.95rem;
+  overflow-wrap: anywhere;
+}
+
+.project-card__evidence {
+  border-bottom: 1px solid var(--line-fine);
+}
+
+.project-card__problem strong,
+.project-card__evidence strong {
+  color: var(--ink-3);
+  font: 400 var(--type-notation) / 1.9 var(--mono);
 }
 
 .chip-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.35rem;
-  margin-bottom: 1.1rem;
-}
-
-/*
-  Carimbo de estado: cada status ganha marca tipográfica própria, legível
-  sem cor nenhuma — o traço muda, não só o matiz.
-
-  Os glifos usam a forma `content: "X" / ""` — o alternativo vazio mantém a
-  marca visível e a exclui do nome acessível, para o leitor de tela anunciar
-  "Concluído", não "✓ Concluído". Vale para todos os glifos decorativos deste
-  arquivo (badges, `.tag`, travessão das listas de campo).
-*/
-.project-status-badge {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.2rem 0.5rem;
-  border: 1.5px solid currentcolor;
-  color: var(--ink);
-  font-family: var(--font-field), Arial, sans-serif;
-  font-size: var(--type-field-compact);
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-
-.project-status-badge::before {
-  margin-right: 0.4rem;
-  font-weight: 700;
-}
-
-.project-status-badge--concluído {
-  color: var(--card);
-  background: var(--ink);
-  border-color: var(--ink);
-}
-
-.project-status-badge--concluído::before {
-  content: "✓" / "";
-}
-
-.project-status-badge--em-andamento {
-  color: var(--stamp);
-  border-color: var(--stamp);
-}
-
-.project-status-badge--em-andamento::before {
-  content: "▶" / "";
-}
-
-.project-status-badge--pausado {
-  color: var(--ink-faint);
-  border-color: var(--ink-faint);
-  border-style: dashed;
-}
-
-.project-status-badge--pausado::before {
-  content: "‖" / "";
-}
-
-.project-status-badge--arquivado {
-  color: var(--ink-faint);
-  border-color: var(--ink-faint);
-  border-style: dotted;
-}
-
-.project-status-badge--arquivado::before {
-  content: "▣" / "";
-}
-
-/* Campos de classificação: texto entre filetes, não pílulas. */
-.tag {
-  display: inline-flex;
-  align-items: center;
-  color: var(--ink-faint);
-  font-family: var(--font-field), Arial, sans-serif;
-  font-size: var(--type-field-compact);
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.tag::before {
-  margin-right: 0.5rem;
-  color: var(--rule);
-  content: "·" / "";
+  gap: 0.4rem;
+  padding: 0;
+  list-style: none;
 }
 
 .chip-list li {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.15rem 0.45rem;
-  border: 1px solid var(--rule-edge);
-  color: var(--ink-soft);
-  font-family: var(--font-field), Arial, sans-serif;
-  font-size: var(--type-field-compact);
-  font-weight: 600;
-  letter-spacing: 0.06em;
-}
-
-.project-card__summary {
-  margin-bottom: 0.8rem;
-  color: var(--ink);
-  font-size: 1.02rem;
-  line-height: 1.55;
-  text-wrap: pretty;
-}
-
-.project-card__problem,
-.project-card__evidence {
-  max-width: 60ch;
-  margin-bottom: 0.8rem;
-  color: var(--ink-soft);
-  font-size: 0.92rem;
-}
-
-.project-card__problem strong,
-.project-card__evidence strong {
-  color: var(--ink-faint);
-  font-family: var(--font-field), Arial, sans-serif;
-  font-size: var(--type-field-compact);
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+  max-width: 100%;
+  padding: 0.3rem 0.55rem;
+  color: var(--ink-2);
+  border: 1px solid var(--line);
+  font: 400 var(--type-notation-compact) / 1.4 var(--mono);
+  overflow-wrap: anywhere;
 }
 
 .project-card__actions {
-  margin-top: auto;
-  padding-top: 0.9rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 2rem;
+  margin-top: 0.4rem;
 }
 
-.muted-label {
-  color: var(--ink-faint);
-  font-family: var(--font-field), Arial, sans-serif;
-  font-size: var(--type-field-label);
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+.project-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  color: var(--ink);
 }
 
-.empty-state {
-  padding: 2rem;
-  border: 1px dashed var(--rule-edge);
-  color: var(--ink-soft);
+.project-status-badge::before {
+  flex: none;
+  width: 7px;
+  height: 7px;
+  background: var(--flag);
+  content: "";
 }
 
-/*
-  Aviso adjacente a uma lista: ponte entre superfícies (fichas ↔ roadmap).
-  Filete superior porque separa blocos de conteúdo já legíveis sozinhos.
-*/
+.project-status-badge--pausado,
+.project-status-badge--arquivado {
+  color: var(--ink-2);
+}
+
+.project-status-badge--pausado::before,
+.project-status-badge--arquivado::before {
+  background: transparent;
+  border: 1px solid var(--ink-3);
+}
+
+/* ───────── Abertura das rotas internas ───────── */
+
+.page-section {
+  padding-block: clamp(3rem, 9vh, 6rem) 0;
+}
+
+.page-intro h1,
+.project-detail__hero h1,
+.about-page > header h1,
+.resume-page__header h1,
+.message-page h1 {
+  font-weight: 200;
+  font-size: clamp(2.5rem, 6vw, 4.75rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.page-intro__lead {
+  max-width: 40rem;
+  margin-top: 1.5rem;
+  color: var(--ink-2);
+  font-size: 1.125rem;
+}
+
+.page-intro > .project-grid,
+.page-intro > .roadmap-list,
+.page-intro > .empty-state {
+  margin-top: clamp(2.5rem, 6vh, 4rem);
+}
+
 .page-intro__aside {
-  max-width: 68ch;
-  padding-top: 1.25rem;
+  max-width: 44rem;
   margin-top: 2.5rem;
-  border-top: 1px solid var(--rule);
-  color: var(--ink-soft);
+  color: var(--ink-2);
 }
 
-/* ───────── O roadmap: escopo planejado, nunca estudo de caso ───────── */
+/* ───────── Roadmap: escopo planejado ───────── */
 
-/*
-  Deliberadamente não reusa .project-card nem .project-grid. Uma entrada de
-  roadmap não é ficha: sem imagem, sem selo de status, sem link para detalhe,
-  sem competências. A moldura tracejada sobre cartão rebaixado é o vocabulário
-  já estabelecido do sistema para "registro incompleto" (ver
-  .private-code-note), e a lista numerada declara ordem de intenção em vez
-  de acervo.
-*/
 .roadmap-list {
   display: grid;
+  gap: 1.25rem;
   padding: 0;
-  margin: 3rem 0 0;
-  gap: 1.5rem;
   list-style: none;
 }
 
 .roadmap-entry {
-  padding: 1.75rem;
-  border: 1px dashed var(--rule-edge);
-  background: var(--card-sunk);
+  display: grid;
+  gap: 1rem;
+  padding: 2rem clamp(1.25rem, 3vw, 2.5rem) 2.2rem;
 }
 
 .roadmap-entry__index {
   display: flex;
   flex-wrap: wrap;
-  margin-bottom: 0.75rem;
-  gap: 0.75rem;
-}
-
-/* Mesmo motivo de .private-code-note: --ink-faint sobre --card-sunk dá 4.27:1,
-   abaixo do mínimo AA para este corpo pequeno. */
-.roadmap-entry__index .muted-label {
-  color: var(--ink-soft);
+  gap: 0.25rem 1.5rem;
 }
 
 .roadmap-entry h2 {
-  margin: 0 0 0.75rem;
-  font-size: clamp(1.25rem, 2.2vw, 1.6rem);
+  font-size: clamp(1.4rem, 2.6vw, 1.9rem);
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  overflow-wrap: anywhere;
 }
 
-/* Sobre --card-sunk, --ink-faint não alcança 4.5:1 neste corpo. */
-.roadmap-entry p {
-  max-width: 68ch;
-  margin: 0 0 0.75rem;
-  color: var(--ink-soft);
+.roadmap-entry__problem,
+.roadmap-entry__goal {
+  max-width: 62ch;
+  color: var(--ink-2);
+  overflow-wrap: anywhere;
 }
 
 .roadmap-stack {
-  max-width: 68ch;
+  margin-top: 0.5rem;
   padding-top: 1rem;
-  margin-top: 1.25rem;
-  border-top: 1px dashed var(--rule-edge);
+  border-top: 1px dashed var(--line);
 }
 
 .roadmap-stack h3 {
-  margin: 0 0 0.75rem;
-  color: var(--ink-soft);
-  font-family: var(--font-field), Arial, sans-serif;
-  font-size: var(--type-field-label);
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  margin-bottom: 0.9rem;
+  color: var(--ink-3);
+  font: 400 var(--type-notation) / 1.5 var(--mono);
 }
 
 .roadmap-stack__groups {
   display: grid;
-  margin: 0;
-  gap: 0.55rem;
-}
-
-.roadmap-stack__group {
-  display: grid;
-  align-items: baseline;
-  grid-template-columns: minmax(7.5rem, 9.5rem) minmax(0, 1fr);
-  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+  gap: 1rem 2rem;
 }
 
 .roadmap-stack__group dt {
-  color: var(--ink-soft);
-  font-family: var(--font-field), Arial, sans-serif;
-  font-size: var(--type-field-compact);
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.roadmap-stack__group dd {
-  min-width: 0;
-  margin: 0;
+  margin-bottom: 0.4rem;
+  color: var(--ink);
+  font-weight: 400;
 }
 
 .roadmap-stack__group ul {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  gap: 0.2rem;
   padding: 0;
-  margin: 0;
-  gap: 0 0.4rem;
+  color: var(--ink-2);
+  font-size: 0.95rem;
   list-style: none;
-}
-
-.roadmap-stack__group li {
-  color: var(--ink-soft);
-  font-size: var(--type-supporting);
   overflow-wrap: anywhere;
 }
 
-.roadmap-stack__group li:not(:last-child)::after {
-  margin-left: 0.4rem;
-  color: var(--rule-edge);
-  content: "·" / "";
-}
-
-/* ───────── Páginas internas ───────── */
-
-.page-intro h1,
-.project-detail h1,
-.message-page h1 {
-  max-width: 16ch;
-}
-
-.page-intro__lead,
-.project-detail__lead {
-  max-width: var(--measure-lead);
-  color: var(--ink-soft);
-  font-size: var(--type-lead);
-  line-height: 1.5;
-  text-wrap: pretty;
-}
-
-.page-intro .project-grid {
-  margin-top: 3rem;
-}
+/* ───────── Ficha de projeto ───────── */
 
 .project-detail {
-  width: min(calc(100% - 3rem), var(--content-width));
-  margin-inline: auto;
-  padding-block: clamp(2.5rem, 6vw, 5rem);
+  padding-top: clamp(3rem, 9vh, 6rem);
 }
 
 .project-detail__hero {
-  padding-bottom: 1.5rem;
-  margin-bottom: 2.5rem;
-  border-bottom: 2px solid var(--rule-strong);
-}
-
-/*
-  A ficha de índice é desenhada na medida de uma coluna do fichário. Sem teto de
-  largura ela se estica pelos 1280px do container e o SVG escala junto, deixando
-  a linha de índice interna maior que o <h1> da página — a moldura passava a
-  competir com o título que deveria acompanhar. O teto a mantém na medida em que
-  foi desenhada; abaixo dele ela acompanha a largura disponível.
-*/
-/*
-  O índice visual ocupava 34rem e deixava metade da ficha vazia à direita. A
-  imagem fica na coluna de tinta e a procedência sobe para a margem de consulta,
-  no mesmo eixo de campo do hero: quem verifica a fonte lê no lugar onde os
-  campos sempre estão, em vez de descer até o pé da imagem.
-*/
-.project-detail__visual-index {
   display: grid;
-  align-items: start;
-  margin-bottom: 3rem;
-  /*
-    A margem de consulta só existe enquanto houver largura para as duas colunas
-    sem espremer a imagem. auto-fit + minmax colapsa para uma coluna sozinho
-    quando o cartão estreita, sem breakpoint e sem grid-row fixo — que era o
-    que fazia a imagem desaparecer no celular.
-  */
-  grid-template-columns: minmax(0, 1fr) var(--field-column);
-  gap: 1.5rem var(--field-gutter);
+  gap: 0;
+  max-width: 56rem;
 }
 
-.project-detail__visual-index > h2 {
-  grid-column: 1 / -1;
-  margin-bottom: 0;
+.project-detail__hero h1 {
+  overflow-wrap: anywhere;
 }
 
-/* A ilustração registra a organização da ficha, não uma interface em uso.
-   O rótulo e as fontes verificáveis ficam no mesmo bloco para que a imagem
-   não seja interpretada como demonstração do software. */
-.project-detail__visual-index > h2,
-.project-detail__visual-index-sources > .muted-label {
-  display: block;
-  margin-bottom: 0.75rem;
-  color: var(--ink-soft);
-  font-family: var(--font-field), Arial, sans-serif;
-  font-size: var(--type-field-label);
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+.project-detail__lead {
+  max-width: 40rem;
+  margin-block: 1.5rem;
+  color: var(--ink-2);
+  font-size: 1.125rem;
+}
+
+/* Mesmo eixo de consulta da abertura: imagem à esquerda, fontes na coluna. */
+.project-detail__visual-index {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 1.5rem var(--consulta-gap);
+  margin-top: clamp(2.5rem, 6vh, 4rem);
+}
+
+.project-detail__visual-index h2 {
+  flex: 1 0 100%;
+  color: var(--ink-3);
+  font: 400 var(--type-notation) / 1.5 var(--mono);
 }
 
 .project-detail__visual-index > .project-image {
-  margin-bottom: 0;
-  aspect-ratio: 5 / 3;
+  flex: 1 1 28rem;
+  min-width: 0;
 }
 
-/*
-  Lado a lado, o filete que separa procedência de imagem é o de topo da margem
-  de campo — o mesmo filete forte de .hero__record —, não uma régua horizontal
-  sob a imagem.
-*/
-/*
-  A margem de consulta acompanha a altura do registro em vez de parar logo
-  abaixo do botão, que deixava 421px de filete terminando no ar ao lado da
-  imagem. Numa ficha de catálogo a coluna de campos corre ao lado do registro
-  inteiro; `align-self: stretch` faz isso sem alterar o alinhamento do topo.
-*/
 .project-detail__visual-index-sources {
-  align-self: stretch;
-  padding-top: 1rem;
-  border-top: 2px solid var(--rule-strong);
+  display: grid;
+  flex: 0 0 var(--consulta);
+  align-content: start;
+  gap: 1.25rem;
+  max-width: 100%;
+  margin-left: auto;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--line-index);
 }
 
-.project-detail__visual-index-sources > .muted-label {
-  margin-top: 0;
+.evidence-links {
+  display: grid;
+  justify-items: start;
+  gap: 0.5rem;
+}
+
+.private-code-note {
+  display: grid;
+  justify-items: start;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  color: var(--ink-2);
+  font-size: 0.95rem;
 }
 
 .project-detail__content {
   display: grid;
-  border-top: 1px solid var(--rule);
   grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: clamp(3rem, 8vh, 5rem);
+  border-top: 1px solid var(--line-index);
 }
 
 .project-detail__content > section {
   min-width: 0;
   padding: 1.75rem 1.75rem 1.75rem 0;
-  border-bottom: 1px solid var(--rule);
-  border-right: 1px solid var(--rule);
+  border-right: 1px solid var(--line-fine);
+  border-bottom: 1px solid var(--line-fine);
 }
 
 /*
-  A paridade das colunas não pode sair de nth-of-type: a seção larga
+  A paridade das colunas não pode sair de nth-of-type sozinho: a seção larga
   (Decisões relevantes) ocupa a linha inteira e inverte a contagem de tudo o
-  que vem depois — era por isso que o filete vertical aparecia à direita de
-  "Limitações" em vez de "Stack". A contagem reinicia a partir da seção larga,
-  que é o divisor real da grade.
+  que vem depois. A contagem reinicia a partir dela, que é o divisor real da
+  grade.
 */
 .project-detail__content > section:nth-of-type(2n),
 .project-detail__wide ~ section:nth-of-type(2n + 1) {
@@ -1258,63 +1246,19 @@ h3 {
 .project-detail__wide ~ section:nth-of-type(2n) {
   padding-right: 1.75rem;
   padding-left: 0;
-  border-right: 1px solid var(--rule);
-}
-
-.project-detail__content h2 {
-  margin-bottom: 1rem;
-  font-size: 1.5rem;
-}
-
-.project-detail__content p,
-.project-detail__content li {
-  max-width: 62ch;
-  color: var(--ink-soft);
-}
-
-/*
-  Item de campo: o marcador do navegador é substituído pelo mesmo travessão de
-  tinta usado no restante do fichário. As listas de competência da home já
-  registravam assim; ficha e currículo usavam o disc padrão, que não pertence a
-  nenhum sistema. O recuo acomoda o travessão sem depender de list-style.
-*/
-.project-detail__content ul,
-.resume-skills ul {
-  padding-left: 0;
-  list-style: none;
-}
-
-.project-detail__content ul > li,
-.resume-skills ul > li {
-  position: relative;
-  padding-left: 1.5rem;
-}
-
-.project-detail__content ul > li::before,
-.resume-skills ul > li::before {
-  position: absolute;
-  top: 0;
-  left: 0;
-  color: var(--rule);
-  content: "—" / "";
-}
-
-.project-detail__content li + li {
-  margin-top: 0.4rem;
+  border-right: 1px solid var(--line-fine);
 }
 
 .project-detail__wide {
   grid-column: 1 / -1;
   padding-right: 0 !important;
+  padding-left: 0 !important;
   border-right: 0 !important;
 }
 
 /*
-  Escassez assumida, não disfarçada. Quando o último campo cai sozinho na
-  coluna da esquerda, o filete vertical passava a dividir uma célula vazia —
-  pauta separando nada. O filete some e o campo ocupa a ficha inteira: uma
-  linha curta é a leitura correta de um acervo curto, não um buraco a tapar.
-  A paridade é contada a partir da seção larga, como nas regras acima.
+  Escassez assumida: quando o último campo cai sozinho na coluna da esquerda,
+  o filete vertical dividiria uma célula vazia. O campo ocupa a linha inteira.
 */
 .project-detail__content > section:last-of-type:nth-of-type(odd),
 .project-detail__wide ~ section:last-of-type:nth-of-type(2n) {
@@ -1323,673 +1267,482 @@ h3 {
   border-right: 0;
 }
 
-/* ───────── Rodapé da ficha: orientação, continuidade e conversão ───────── */
-
-.project-record-footer {
-  margin-top: clamp(2.5rem, 5vw, 4rem);
-  border-top: 2px solid var(--rule-strong);
+.project-detail__content h2 {
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  letter-spacing: -0.015em;
 }
 
-.project-record-footer__orientation {
-  display: flex;
-  min-height: 2.75rem;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  border-bottom: 1px solid var(--rule);
-  color: var(--ink-faint);
-  font-family: var(--font-field), Arial, sans-serif;
-  font-size: var(--type-field-label);
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.project-record-footer__orientation a {
-  display: inline-flex;
-  min-height: 2.75rem;
-  align-items: center;
-  color: var(--ink);
-  text-underline-offset: 0.22em;
-}
-
-.project-record-footer__navigation {
-  display: grid;
-  border-bottom: 1px solid var(--rule);
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.project-record-footer__project-link {
-  display: flex;
-  min-width: 0;
-  min-height: 7.5rem;
-  flex-direction: column;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 1.5rem;
-  color: var(--ink);
-  text-decoration: none;
-}
-
-.project-record-footer__project-link span {
-  color: var(--ink-faint);
-  font-family: var(--font-field), Arial, sans-serif;
-  font-size: var(--type-field-compact);
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.project-record-footer__project-link strong {
-  max-width: 28ch;
+.project-detail__content p,
+.project-detail__content li {
+  max-width: 62ch;
+  color: var(--ink-2);
   overflow-wrap: anywhere;
-  font-size: clamp(1.1rem, 2vw, 1.35rem);
-  line-height: 1.2;
 }
 
-.project-record-footer__project-link--previous {
-  border-right: 1px solid var(--rule);
+.project-detail__content p + p {
+  margin-top: 0.9rem;
 }
 
-.project-record-footer__project-link--next {
-  align-items: flex-end;
-  grid-column: 2;
-  text-align: right;
+.project-detail__content strong {
+  color: var(--ink);
+  font-weight: 400;
 }
 
-.project-record-footer__project-link:hover strong {
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.22em;
-}
-
-.project-record-footer__resume {
+/* Itens de campo: travessão de notação no lugar do marcador do navegador. */
+.project-detail__content ul:not(.chip-list),
+.resume-skills ul {
   display: grid;
-  align-items: center;
-  gap: 2rem;
-  padding-block: clamp(1.75rem, 4vw, 2.75rem);
-  border-bottom: 2px solid var(--rule-strong);
-  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.4rem;
+  padding: 0;
+  list-style: none;
 }
 
-.project-record-footer__resume h2 {
-  margin-bottom: 0.5rem;
-  font-size: clamp(1.5rem, 3vw, 2.2rem);
+.project-detail__content ul:not(.chip-list) > li,
+.resume-skills ul > li {
+  position: relative;
+  padding-left: 1.5rem;
 }
 
-.project-record-footer__resume p {
-  max-width: 58ch;
-  margin-bottom: 0;
-  color: var(--ink-soft);
+.project-detail__content ul:not(.chip-list) > li::before,
+.resume-skills ul > li::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: var(--line-index);
+  content: "—" / "";
+}
+
+.project-detail__content .chip-list li {
+  color: var(--ink-2);
 }
 
 .decision-grid {
   display: grid;
-  gap: 1.5rem;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  margin-top: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+  gap: 1.5rem 3rem;
 }
 
 .decision-card {
-  padding-left: 1rem;
-  border-left: 1px solid var(--rule-strong);
+  display: grid;
+  align-content: start;
+  gap: 0.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
 }
 
 .decision-card h3 {
-  margin-bottom: 0.5rem;
+  color: var(--flag-ink);
+  font-size: 1.0625rem;
+  font-weight: 400;
 }
 
-.decision-card p {
-  margin-bottom: 0;
-  color: var(--ink-soft);
+.project-record-footer {
+  margin-top: clamp(3rem, 8vh, 5rem);
+  border-top: 1px solid var(--line-index);
 }
 
-.evidence-links {
+.project-record-footer__orientation {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 1rem;
+  justify-content: space-between;
+  gap: 0.5rem 2rem;
+  min-height: 3.25rem;
+  border-bottom: 1px solid var(--line-fine);
 }
 
-.availability-note,
-/* Nota de código privado: cartão rebaixado, não alerta colorido. */
-.private-code-note {
-  padding: 1rem 1.1rem;
-  border: 1px dashed var(--rule-edge);
-  background: var(--card-sunk);
+.project-record-footer__orientation a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  text-decoration-color: var(--line-index);
 }
 
-/* Ressalva secundária não ocupa a coluna inteira: em largura total ela
-   compete com o conteúdo que qualifica. Limitada à medida de leitura,
-   lê como anotação de margem — que é o que é. */
-.availability-note {
-  max-width: 34ch;
+.project-record-footer__position {
+  color: var(--ink-3);
+  font: 400 var(--type-notation) / 1.5 var(--mono);
+  font-variant-numeric: tabular-nums;
 }
 
-/* --ink-soft, não --ink-faint: sobre o cartão rebaixado o tom apagado
-   fica em 4.27:1 neste corpo pequeno, abaixo do mínimo AA de 4.5:1. */
-.private-code-note p {
-  margin: 0 0 0.5rem;
-  color: var(--ink-soft);
-  font-family: var(--font-field), Arial, sans-serif;
-  /* Frase, não rótulo: caixa-alta com letter-spacing degrada a leitura de
-     texto corrido. A métrica de ficha fica só nos rótulos de campo. */
-  font-size: var(--type-supporting);
-  letter-spacing: 0.01em;
+.project-record-footer__navigation {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border-bottom: 1px solid var(--line-fine);
 }
 
-.private-code-note .muted-label {
-  color: var(--ink-soft);
+.project-record-footer__project-link {
+  display: grid;
+  gap: 0.35rem;
+  min-width: 0;
+  padding-block: 1.5rem;
+  text-decoration: none;
 }
+
+.project-record-footer__project-link span {
+  color: var(--ink-3);
+  font: 400 var(--type-notation) / 1.5 var(--mono);
+}
+
+.project-record-footer__project-link strong {
+  font-size: 1.25rem;
+  font-weight: 400;
+  text-decoration: underline;
+  text-decoration-color: var(--line-index);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.3em;
+  overflow-wrap: anywhere;
+}
+
+.project-record-footer__project-link--next {
+  grid-column: 2;
+  padding-left: 1.75rem;
+  text-align: right;
+  border-left: 1px solid var(--line-fine);
+}
+
+.project-record-footer__project-link--previous {
+  padding-right: 1.75rem;
+}
+
+.project-record-footer__resume {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.25rem 3rem;
+  padding-block: 2.5rem 0;
+}
+
+.project-record-footer__resume h2 {
+  margin-bottom: 0.5rem;
+  font-size: clamp(1.5rem, 3vw, 2.1rem);
+  letter-spacing: -0.02em;
+}
+
+.project-record-footer__resume p {
+  max-width: 38rem;
+  color: var(--ink-2);
+}
+
+/* ───────── Mensagens: 404 e erro ───────── */
 
 .message-page {
-  width: min(calc(100% - 3rem), var(--measure-reading));
-  min-height: 60vh;
-  min-height: 60dvh;
-  margin-inline: auto;
-  padding-block: clamp(4rem, 9vw, 7rem);
+  display: grid;
+  align-content: start;
+  gap: 1.25rem;
+  padding-top: clamp(3rem, 12vh, 8rem);
 }
 
-/*
-  O 404 pertence ao mesmo fichário das rotas válidas: mesmo eixo de tinta à
-  esquerda e mesmo eixo de campo à direita que o hero. Um registro inexistente
-  é lido na mesma ficha dos que existem — os poucos dados reais do acervo ficam
-  na margem de consulta, sem placeholders para preencher a página.
-*/
 .message-page--not-found {
-  width: min(calc(100% - 3rem), var(--content-width));
+  display: block;
 }
 
 .message-page__layout {
-  display: grid;
-  align-items: start;
-  padding-top: clamp(2.5rem, 6vw, 5rem);
-  grid-template-columns: minmax(0, 1fr) var(--field-column);
-  gap: var(--field-gutter);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 2.5rem var(--consulta-gap);
 }
 
 .message-page__body {
+  display: grid;
+  flex: 1 1 28rem;
+  justify-items: start;
+  gap: 1.25rem;
   min-width: 0;
-  max-width: var(--measure-reading);
 }
 
-.message-page__body p {
-  max-width: 58ch;
-  margin-bottom: 1.75rem;
-  color: var(--ink-soft);
-  font-size: var(--type-lead);
-  line-height: 1.5;
-  text-wrap: pretty;
+.message-page__body .page-intro__cota,
+.message-page > .page-intro__cota {
+  margin-top: 0;
+}
+
+.message-page p:not([class]),
+.message-page [role="alert"] {
+  max-width: 40rem;
+  color: var(--ink-2);
+  font-size: 1.125rem;
 }
 
 .message-page__record {
   display: grid;
-  min-width: 0;
-  margin: 0;
-  border-top: 2px solid var(--rule-strong);
+  flex: 0 0 var(--consulta);
+  gap: 0.35rem;
+  max-width: 100%;
+  margin-left: auto;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--line-index);
+  font-size: 0.95rem;
 }
 
 .message-page__record > div {
-  min-width: 0;
-  padding-block: 1rem;
-  border-bottom: 1px solid var(--rule);
-}
-
-.message-page__record > div:last-child {
-  border-bottom: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.1rem 1rem;
 }
 
 .message-page__record dt {
-  color: var(--ink-faint);
-  font-family: var(--font-field), Arial, sans-serif;
-  font-size: var(--type-field-compact);
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
+  color: var(--ink-3);
+  font: 400 var(--type-notation) / 1.6 var(--mono);
 }
 
 .message-page__record dd {
-  margin: 0.4rem 0 0;
-  font-family: var(--font-display), Georgia, serif;
-  font-size: 1.05rem;
-  font-variant-numeric: tabular-nums;
-  font-weight: 600;
-  line-height: 1.35;
+  margin-left: auto;
+  text-align: right;
+  overflow-wrap: anywhere;
 }
 
 .message-page__actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.75rem;
+  gap: 0.75rem 2.25rem;
 }
 
-.resume-page,
+/* ───────── Sobre ───────── */
+
 .about-page {
-  width: min(calc(100% - 3rem), var(--content-width));
-  margin-inline: auto;
-  padding-block: clamp(2.5rem, 6vw, 5rem);
+  display: grid;
+  gap: clamp(3rem, 8vh, 4.5rem);
+  padding-top: clamp(3rem, 9vh, 6rem);
 }
 
-.resume-page__header {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 2rem;
-  padding-bottom: 1.25rem;
-  margin-bottom: 2.5rem;
-  border-bottom: 2px solid var(--rule-strong);
-}
-
-.resume-page__header h1,
-.about-page h1 {
-  margin-bottom: 0.35rem;
-}
-
-.resume-page__role,
 .about-page__lead {
-  max-width: var(--measure-lead);
-  margin: 0;
-  color: var(--ink-soft);
-  font-family: var(--font-display), Georgia, serif;
-  font-size: clamp(1.1rem, 2vw, 1.4rem);
-  font-weight: 600;
-  line-height: 1.35;
+  margin-top: 1.25rem;
+  color: var(--ink-2);
+  font-size: 1.25rem;
 }
 
-.resume-page > section,
 .about-page > section {
-  padding-block: 1.75rem;
-  border-top: 1px solid var(--rule);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+  gap: 1.25rem 4rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--line-index);
 }
 
-/* Texto corrido dessas rotas ocupava a largura inteira do container (~145
-   caracteres por linha no desktop), muito além da medida legível. */
-.resume-page > section > p,
+.about-page > section h2 {
+  font-size: clamp(1.6rem, 3.2vw, 2.4rem);
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+}
+
 .about-page > section > p {
-  max-width: var(--measure-reading);
+  max-width: 62ch;
+  color: var(--ink-2);
 }
 
-.resume-page h2,
-.about-page h2 {
-  margin-bottom: 1.25rem;
-  font-size: clamp(1.4rem, 2.5vw, 1.8rem);
-}
-
-.resume-skills,
 .about-principles {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1.5rem;
+  gap: 0;
 }
 
-.resume-timeline {
-  max-width: 76ch;
-  padding: 0;
-  margin: 0;
-  list-style: none;
-}
-
-.resume-timeline li {
-  display: grid;
-  padding-block: 1.25rem;
-  border-top: 1px solid var(--rule);
-  grid-template-columns: minmax(9rem, 12rem) minmax(0, 1fr);
-  gap: 1.5rem;
-}
-
-.resume-timeline li:last-child {
-  padding-bottom: 0;
-}
-
-.resume-timeline__period {
-  margin: 0;
-  color: var(--ink-soft);
-  font-family: var(--font-field), Arial, sans-serif;
-  font-size: var(--type-field-label);
-  font-variant-numeric: tabular-nums;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
-.resume-timeline h3 {
-  margin: 0 0 0.35rem;
-}
-
-.resume-timeline div > p {
-  margin: 0;
-  color: var(--ink-soft);
-}
-
-.resume-skills > div,
 .about-principles article {
-  padding-left: 1rem;
-  border-left: 1px solid var(--rule);
+  display: grid;
+  gap: 0.4rem;
+  padding-block: 1.1rem;
+  border-bottom: 1px solid var(--line-fine);
 }
 
-.resume-skills h3,
+.about-principles article:first-child {
+  padding-top: 0;
+}
+
 .about-principles h3 {
-  margin-bottom: 0.6rem;
-}
-
-.resume-skills ul {
-  margin-bottom: 0;
-  color: var(--ink-soft);
-}
-
-/*
-  Linha de campos, não lista com marcador: o disc e o recuo de 40px vêm do
-  navegador e desalinhavam os itens do filete de campo em que a seção se apoia.
-  A separação passa a ser o filete vertical, como nas demais tabelas de registro.
-*/
-.resume-contact {
-  display: flex;
-  flex-wrap: wrap;
-  padding-left: 0;
-  gap: 0 2rem;
-  margin-bottom: 0;
-  color: var(--ink-soft);
-  list-style: none;
-}
-
-.resume-contact li {
-  display: inline-flex;
-  align-items: center;
-  padding-left: 2rem;
-  border-left: 1px solid var(--rule);
-}
-
-.resume-contact li:first-child {
-  padding-left: 0;
-  border-left: 0;
-}
-
-/* Alvo de toque de 44px (WCAG 2.5.5/2.5.8) nos links de contato e perfis. */
-.resume-contact a {
-  display: inline-flex;
-  min-height: 2.75rem;
-  align-items: center;
-}
-
-.about-principles {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  color: var(--flag-ink);
+  font-size: 1.0625rem;
+  font-weight: 400;
 }
 
 .about-principles p {
-  margin-bottom: 0;
-  color: var(--ink-soft);
+  color: var(--ink-2);
 }
 
 .about-page__actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.75rem;
-  margin-top: 2rem;
+  gap: 0.75rem 2.25rem;
 }
 
-/* ───────── Rodapé: o verso da ficha ───────── */
+/* ───────── Currículo ───────── */
 
-.site-footer {
-  border-top: 2px solid var(--rule-strong);
-  background: var(--card);
+.resume-page {
+  display: grid;
+  gap: clamp(2.5rem, 6vh, 3.5rem);
+  padding-top: clamp(3rem, 9vh, 6rem);
 }
 
-.site-footer__inner {
-  min-height: 7rem;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem 2rem;
-  padding-block: 1.75rem;
-}
-
-.footer-nav {
-  /* Sem gap vertical: a altura de toque de 2.75rem já separa as linhas. */
-  gap: 0 1.5rem;
-  align-items: center;
-}
-
-.footer-contact {
-  min-width: min(100%, 22rem);
-}
-
-.footer-contact h2 {
-  margin: 0 0 0.35rem;
-  font-family: var(--font-field), Arial, sans-serif;
-  font-size: var(--type-field-label);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
-.footer-contact p {
-  max-width: 42ch;
-  margin: 0 0 0.5rem;
-  color: var(--ink-soft);
-  font-family: var(--font-body), Arial, sans-serif;
-  font-size: var(--type-supporting);
-  letter-spacing: normal;
-}
-
-.footer-contact__actions {
+.resume-page__header {
   display: flex;
   flex-wrap: wrap;
-  gap: 0 1.5rem;
-  align-items: center;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem 3rem;
 }
 
-/*
-  Alvo de toque de 44px (WCAG 2.5.5/2.5.8) sem alterar a métrica tipográfica:
-  a altura vem do min-height, não de padding, para os rótulos permanecerem na
-  mesma linha de base do restante do rodapé. O min-width cobre os dois eixos —
-  "Início" (39,1px) e "Sobre" (40,9px) são curtos demais para alcançar 44px só
-  pelo texto; centralizar mantém o filete de campo alinhado ao rótulo.
-*/
-.footer-nav a,
-.footer-contact__actions a,
-.footer-contact__actions .muted-label {
+.resume-page__header h1 {
+  overflow-wrap: anywhere;
+}
+
+.resume-page__role {
+  margin-top: 1rem;
+  color: var(--ink-2);
+  font-size: 1.25rem;
+}
+
+.resume-page__header .availability-note {
+  max-width: var(--consulta);
+}
+
+.resume-page > section {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2.2fr);
+  gap: 1rem 4rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--line-index);
+}
+
+.resume-page > section > h2 {
+  grid-row: span 3;
+  font-size: 1.5rem;
+  letter-spacing: -0.015em;
+}
+
+.resume-page > section > p {
+  max-width: 62ch;
+  color: var(--ink-2);
+}
+
+.resume-timeline {
+  display: grid;
+  padding: 0;
+  list-style: none;
+}
+
+.resume-timeline li {
+  display: grid;
+  grid-template-columns: 9rem minmax(0, 1fr);
+  gap: 0.25rem 1.5rem;
+  padding-block: 1rem;
+  border-bottom: 1px solid var(--line-fine);
+}
+
+.resume-timeline li:first-child {
+  padding-top: 0;
+}
+
+.resume-timeline__period {
+  color: var(--ink-3);
+  font: 400 var(--type-notation) / 1.9 var(--mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.resume-timeline h3 {
+  margin-bottom: 0.3rem;
+  font-size: 1.125rem;
+  font-weight: 400;
+}
+
+.resume-timeline p:not([class]) {
+  color: var(--ink-2);
+}
+
+.resume-skills {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr));
+  gap: 1.5rem 2.5rem;
+}
+
+.resume-skills h3 {
+  margin-bottom: 0.6rem;
+  font-size: 1.0625rem;
+  font-weight: 400;
+}
+
+.resume-skills li {
+  color: var(--ink-2);
+}
+
+.resume-contact {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 1.75rem;
+  padding: 0;
+  list-style: none;
+}
+
+.resume-contact a {
   display: inline-flex;
-  min-width: 2.75rem;
-  min-height: 2.75rem;
   align-items: center;
-  justify-content: center;
+  min-height: 44px;
+  text-decoration-color: var(--line-index);
+  overflow-wrap: anywhere;
 }
 
-.footer-nav a,
-.footer-contact__actions a {
-  color: var(--ink-soft);
-  font-family: var(--font-field), Arial, sans-serif;
-  font-size: var(--type-field-label);
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-decoration: none;
-  text-transform: uppercase;
-}
-
-.footer-nav a:hover,
-.footer-contact__actions a:hover {
-  color: var(--stamp);
-  text-decoration: underline;
-  text-underline-offset: 0.3em;
-}
-
-.site-footer__inner > p {
-  margin: 0;
-  color: var(--ink-faint);
-  font-family: var(--font-field), Arial, sans-serif;
-  font-size: var(--type-field-compact);
-  letter-spacing: 0.08em;
-}
-
-/* ───────── Adaptação ───────── */
+/* ───────── Tablet e celular ───────── */
 
 @media (max-width: 900px) {
-  .hero__layout,
-  .message-page__layout,
-  .project-detail__visual-index {
-    grid-template-columns: 1fr;
-    gap: 2.5rem;
-  }
-
-  /*
-    Empilhado, a procedência volta a ser um rodapé de imagem e recupera a
-    régua fina; o filete forte pertence à margem de consulta, que aqui não
-    existe mais.
-  */
-  .project-detail__visual-index-sources {
-    border-top-width: 1px;
-    border-top-color: var(--rule);
+  .survey__field {
+    inset: -4% -50% 30% -10%;
+    opacity: 0.85;
   }
 
   .hero__record,
+  .message-page__record,
+  .project-detail__visual-index-sources {
+    flex-basis: 100%;
+    margin-left: 0;
+  }
+
+  .structure-notes__list,
+  .station__head,
+  .ci-record,
+  .project-card,
+  .about-page > section,
+  .resume-page > section,
+  .site-footer__inner {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .ci-record__note {
+    grid-column: auto;
+  }
+
   .competency-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .hero__record {
-    align-self: stretch;
-  }
-
-  .hero__record > div {
-    padding-right: 1.25rem;
-    border-right: 1px solid var(--rule);
-  }
-
-  .hero__record > div:nth-child(2n),
-  .competency-card:nth-child(2n) {
-    padding-right: 0;
-    border-right: 0;
-  }
-
-  .message-page__record {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  .message-page__record > div {
-    padding-right: 1rem;
-    border-right: 1px solid var(--rule);
-    border-bottom: 0;
-  }
-
-  .message-page__record > div + div {
-    padding-left: 1rem;
-  }
-
-  .message-page__record > div:last-child {
-    padding-right: 0;
-    border-right: 0;
-  }
-
-  .project-grid:has(.project-card:only-child) .project-card {
-    display: flex;
-    padding: 1.75rem 0;
-    gap: 0;
-  }
-
-  .project-grid:has(.project-card:only-child) .project-image {
-    margin-bottom: 1.25rem;
+  .competency-card:nth-child(odd) {
+    padding-left: 0;
+    border-left: 0;
   }
 
   .competency-card:nth-child(n + 3) {
-    border-top: 1px solid var(--rule);
-  }
-}
-
-@media (max-width: 820px) {
-  /*
-    A marca passa a ocupar uma linha própria acima da navegação, então o
-    cabeçalho cresce e o desconto do hero precisa acompanhar. Medido em 93,8px
-    aqui, onde os rótulos da nav ainda cabem em uma linha.
-  */
-  :root {
-    --header-height: 5.875rem;
+    border-top: 1px solid var(--line-fine);
   }
 
-  .site-header__inner {
-    min-height: auto;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0;
-    padding: 0;
-  }
-
-  .site-brand {
-    padding-block: 0.75rem;
-    border-bottom: 1px solid var(--rule);
-  }
-
-  .site-nav {
-    width: 100%;
-  }
-
-  .site-nav a {
-    flex: 1;
-    justify-content: center;
-    padding-block: 0.85rem;
-    padding-inline: 0.5rem;
-    border-left: 0;
-    border-right: 1px solid var(--rule);
-  }
-
-  .site-nav a:last-child {
-    border-right: 0;
-  }
-}
-
-/*
-  Abaixo de ~420px os rótulos da navegação quebram em linhas sucessivas e o
-  cabeçalho chega a 140,6px. A quebra vem do refluxo do texto, não de uma regra
-  de layout, então o desconto assume a altura máxima observada: subtrair de
-  menos causa transbordo, subtrair de mais só encurta o hero.
-*/
-@media (max-width: 420px) {
-  :root {
-    --header-height: 8.75rem;
+  .resume-page > section > h2 {
+    grid-row: auto;
   }
 }
 
 @media (max-width: 640px) {
   :root {
-    /* Assinatura compacta acima de uma única faixa de navegação. */
-    --header-height: 5.875rem;
+    --header-space: 6.75rem;
   }
 
-  .site-header__inner {
-    width: 100%;
-  }
-
-  .site-brand {
-    justify-content: center;
-    padding-block: 0.25rem;
-    font-size: var(--type-field-compact);
+  /* Duas linhas de cabeçalho fixas ocupariam um terço da tela do celular. */
+  .site-header {
+    position: absolute;
+    padding-block: 0.75rem 1rem;
   }
 
   .site-nav {
-    display: grid;
+    justify-content: space-between;
     width: 100%;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr) auto auto auto;
-  }
-
-  .site-nav a {
-    min-height: 3rem;
-    padding-block: 0;
-    padding-inline: 0.35rem;
-  }
-
-  .site-nav__item--primary {
-    min-width: 0;
-  }
-
-  .site-nav__item--secondary {
-    min-width: 0;
-    color: var(--ink-faint);
-    font-size: var(--type-field-compact);
-    letter-spacing: 0.06em;
-  }
-
-  .site-nav .site-nav__item--secondary.nav-curriculo-destaque,
-  .site-nav .site-nav__item--secondary.nav-curriculo-destaque:hover {
-    color: var(--ink-faint);
-    background: transparent;
+    font-size: 0.85rem;
   }
 
   .site-nav__label--full {
@@ -2000,162 +1753,218 @@ h3 {
     display: inline;
   }
 
-  .project-grid,
-  .project-grid:has(.project-card:only-child),
-  .project-detail__content,
-  .decision-grid,
-  .resume-skills,
-  .about-principles,
-  .hero__record,
-  .competency-grid {
-    grid-template-columns: 1fr;
+  .traverse {
+    display: none;
   }
 
-  .message-page__record {
-    grid-template-columns: 1fr;
-  }
-
-  .message-page__record > div,
-  .message-page__record > div + div {
-    padding-inline: 0;
-    border-right: 0;
-    border-bottom: 1px solid var(--rule);
-  }
-
-  .message-page__record > div:last-child {
-    border-bottom: 0;
-  }
-
-  .resume-timeline li {
-    grid-template-columns: 1fr;
-    gap: 0.35rem;
-  }
-
-  .roadmap-stack__group {
-    align-items: start;
-    grid-template-columns: 1fr;
-    gap: 0.15rem;
-  }
-
-  .project-card,
-  .project-card:nth-child(2n),
-  .project-detail__content > section,
-  .project-detail__content > section:nth-of-type(2n) {
-    padding: 1.5rem 0;
-    border-right: 0;
-    padding-left: 0;
-  }
-
-  .competency-card,
-  .hero__record > div {
-    padding-right: 0;
-    border-right: 0;
-  }
-
-  .competency-card + .competency-card {
-    border-top: 1px solid var(--rule);
-  }
-
-  .project-record-footer__navigation,
-  .project-record-footer__resume {
-    grid-template-columns: 1fr;
-  }
-
-  .project-record-footer__project-link {
-    min-height: 6.5rem;
-    padding: 1.25rem 0;
-  }
-
-  .project-record-footer__project-link--previous {
-    border-right: 0;
-  }
-
-  .project-record-footer__project-link--next {
-    align-items: flex-start;
-    border-top: 1px solid var(--rule);
-    grid-column: 1;
-    text-align: left;
-  }
-
-  .project-record-footer__resume {
-    gap: 1.25rem;
-  }
-
-  .project-record-footer__resume .button {
+  .hero__evidence .button,
+  .hero__actions .button,
+  .project-card__actions .button,
+  .project-record-footer__resume .button,
+  .message-page__actions .button,
+  .about-page__actions .button {
+    justify-content: space-between;
     width: 100%;
   }
 
-  .section-heading,
-  .resume-page__header {
-    align-items: flex-start;
+  .hero__actions,
+  .project-card__actions,
+  .message-page__actions,
+  .about-page__actions {
     flex-direction: column;
-    gap: 0.75rem;
-  }
-
-  .site-footer__inner {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
-  .footer-nav {
-    gap: 0.5rem 1.25rem;
-  }
-
-  .footer-contact__actions {
-    gap: 0.5rem 1.25rem;
-  }
-
-  .hero__actions {
     align-items: stretch;
-    flex-direction: column;
-  }
-
-  .hero__evidence .button {
-    width: 100%;
-  }
-
-  .hero__actions .button {
-    justify-content: center;
-    width: 100%;
-  }
-
-  body {
-    line-height: 1.58;
-  }
-
-  /* No cartão estreito, manter ação e estado lado a lado comprimia o CTA em
-     cinco linhas. A ação principal ocupa a coluna e os estados vêm abaixo. */
-  .project-card__actions {
-    width: 100%;
-    align-items: stretch;
-    flex-direction: column;
-  }
-
-  .project-card__actions .button {
-    width: 100%;
+    gap: 0.5rem;
   }
 
   .project-card__actions .text-link,
   .project-card__actions .muted-label {
     align-self: flex-start;
   }
+
+  .project-card__actions .text-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+
+  .project-card__problem,
+  .project-card__evidence,
+  .resume-timeline li {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .competency-grid,
+  .project-detail__content,
+  .project-record-footer__navigation {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .competency-card,
+  .competency-card + .competency-card {
+    padding: 1.25rem 0;
+    border-left: 0;
+  }
+
+  .competency-card + .competency-card {
+    border-top: 1px solid var(--line-fine);
+  }
+
+  .project-detail__content > section,
+  .project-detail__content > section:nth-of-type(n),
+  .project-detail__wide ~ section:nth-of-type(n) {
+    grid-column: 1 / -1;
+    padding: 1.5rem 0;
+    border-right: 0;
+  }
+
+  .project-record-footer__project-link--next {
+    grid-column: 1;
+    padding-left: 0;
+    text-align: left;
+    border-top: 1px solid var(--line-fine);
+    border-left: 0;
+  }
+
+  .project-record-footer__project-link--previous {
+    padding-right: 0;
+  }
 }
 
-/* ───────── Alto contraste: a ficha respeita as tintas do sistema ───────── */
+/* ───────── Movimento ───────── */
+
+/* Retorno de ponteiro só onde há ponteiro: no toque, o hover ficaria preso. */
+@media (hover: hover) {
+  .site-nav a:hover {
+    color: var(--ink);
+  }
+
+  .site-nav a:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  .site-nav .nav-curriculo-destaque:hover {
+    color: var(--flag-ink);
+  }
+
+  .button:hover {
+    background-size:
+      100% 1px,
+      100% 1px;
+  }
+
+  .button:hover::after {
+    translate: 0.3em 0;
+  }
+
+  .text-link:hover,
+  .footer-nav a:hover,
+  .footer-contact__actions a:hover,
+  .resume-contact a:hover,
+  .project-record-footer__orientation a:hover,
+  .project-record-footer__project-link:hover strong {
+    text-decoration-color: currentColor;
+  }
+
+  .survey__toggle:hover {
+    border-color: var(--ink-2);
+  }
+}
+
+/* As camadas só ganham camada de composição própria onde a paralaxe acontece. */
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .survey__layer {
+    will-change: transform;
+  }
+}
+
+@supports (animation-timeline: scroll()) {
+  .traverse::after {
+    animation: walk linear both;
+    animation-timeline: scroll(root);
+  }
+
+  @keyframes walk {
+    to {
+      transform: scaleY(1);
+    }
+  }
+}
+
+/*
+  Etapas da integração contínua acendem em ordem quando o registro entra na
+  tela. É ilustração da ordem configurada, não execução ao vivo — a nota ao
+  lado diz isso. Sem suporte a view timeline, as etapas já aparecem acesas.
+*/
+@supports (animation-timeline: view()) {
+  .pipeline li {
+    animation: station linear both;
+    animation-timeline: --pipeline;
+    animation-range: cover calc(10% + var(--ordem, 0) * 3.5%) cover
+      calc(16% + var(--ordem, 0) * 3.5%);
+  }
+
+  @keyframes station {
+    from {
+      color: var(--ink-3);
+      background-size: 0% 1px;
+      border-color: var(--line-fine);
+    }
+  }
+}
+
+/*
+  Movimento reduzido: sai o deslocamento (varredura, paralaxe, poligonal,
+  setas, rolagem suave); fica o retorno de cor que confirma ponteiro e foco.
+*/
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .survey__drawing[data-desenhado] {
+    -webkit-mask-image: none;
+    mask-image: none;
+    animation: none;
+  }
+
+  .survey__layer,
+  .site-nav a::after,
+  .button::after {
+    transition: none;
+  }
+
+  .button:hover::after {
+    translate: none;
+  }
+
+  .button {
+    transition: none;
+  }
+
+  .traverse::after {
+    animation: none;
+  }
+
+  .pipeline li {
+    animation: none;
+  }
+}
+
+/* ───────── Alto contraste: as tintas do sistema mandam ───────── */
 
 @media (forced-colors: active) {
   :root {
+    --ground: Canvas;
+    --ground-2: Canvas;
+    --line-fine: CanvasText;
+    --line: CanvasText;
+    --line-index: CanvasText;
     --ink: CanvasText;
-    --ink-soft: CanvasText;
-    --ink-faint: CanvasText;
-    --card: Canvas;
-    --card-raised: Canvas;
-    --card-sunk: Canvas;
-    --rule: CanvasText;
-    --rule-edge: CanvasText;
-    --rule-strong: CanvasText;
-    --stamp: LinkText;
-    --stamp-wash: Canvas;
+    --ink-2: CanvasText;
+    --ink-3: CanvasText;
+    --flag: LinkText;
+    --flag-ink: LinkText;
     --focus: Highlight;
   }
 
@@ -2167,102 +1976,161 @@ h3 {
     background-image: none;
   }
 
+  .survey__field {
+    display: none;
+  }
+
   a:focus-visible,
   button:focus-visible {
-    outline-color: Highlight;
+    outline: 3px solid Highlight;
     outline-offset: 3px;
-    outline-width: 3px;
+  }
+
+  .button {
+    padding-inline: 0.75rem;
+    border: 1px solid ButtonText;
   }
 
   /*
-    Estes elementos dependem de inversão ou de um estilo de traço para
-    comunicar hierarquia/estado. A exceção preserva somente cores de sistema,
-    portanto continua obedecendo à paleta de alto contraste escolhida pelo
-    visitante em vez de reter a paleta autoral do site.
+    Estes elementos dependem de preenchimento ou de um traço para comunicar
+    hierarquia ou estado. A exceção usa apenas cores de sistema, portanto
+    continua obedecendo à paleta escolhida pelo visitante.
   */
-  .button--primary,
-  .site-nav .nav-curriculo-destaque,
-  .hero__stamp,
-  .project-status-badge {
+  .button--primary {
+    color: ButtonText;
+    background: ButtonFace;
+    border: 1px solid ButtonText;
+    forced-color-adjust: none;
+  }
+
+  .button::after {
+    background: currentColor;
     forced-color-adjust: none;
   }
 
   .site-nav a[aria-current="page"] {
-    border-bottom-color: LinkText;
     text-decoration: underline;
     text-decoration-thickness: 0.18em;
     text-underline-offset: 0.35em;
   }
 
+  .site-nav a::after {
+    display: none;
+  }
+
+  .site-nav .nav-curriculo-destaque {
+    color: LinkText;
+    forced-color-adjust: none;
+  }
+
   .text-link,
   .footer-nav a,
   .footer-contact__actions a,
+  .resume-contact a,
   .project-record-footer__orientation a,
   .project-record-footer__project-link {
     color: LinkText;
     text-decoration: underline;
-    text-decoration-thickness: max(1px, 0.08em);
-    text-underline-offset: 0.28em;
   }
 
-  .button {
-    text-decoration: none;
+  .survey__toggle[aria-expanded="true"] {
+    color: HighlightText;
+    background: Highlight;
+    border-color: Highlight;
+    forced-color-adjust: none;
+  }
+
+  /*
+    O quadrado de cor vira glifo: em alto contraste ele perderia a única
+    diferença entre estados. `content: "X" / ""` mantém o glifo visível e fora
+    do nome acessível — o leitor de tela anuncia "Concluído", não "✓ Concluído".
+  */
+  .project-status-badge {
+    padding: 0.1rem 0.45rem;
+    color: CanvasText;
+    background: Canvas;
+    border: 1px solid CanvasText;
+    forced-color-adjust: none;
+  }
+
+  .project-status-badge::before {
+    width: auto;
+    height: auto;
+    background: none;
+    border: 0;
+  }
+
+  .project-status-badge--concluído::before {
+    content: "✓" / "";
+  }
+
+  .project-status-badge--em-andamento::before {
+    content: "▶" / "";
+  }
+
+  .project-status-badge--pausado {
+    border-style: dashed;
+  }
+
+  .project-status-badge--pausado::before {
+    content: "‖" / "";
+  }
+
+  .project-status-badge--arquivado {
+    border-style: dotted;
+  }
+
+  .project-status-badge--arquivado::before {
+    content: "▣" / "";
   }
 }
 
-/* ───────── Impressão: a ficha volta a ser papel ───────── */
+/* ───────── Impressão: o levantamento volta ao papel ───────── */
 
 @media print {
+  :root {
+    --ground: #ffffff;
+    --ground-2: #ffffff;
+    --line-fine: #cccccc;
+    --line: #bbbbbb;
+    --line-index: #888888;
+    --ink: #111111;
+    --ink-2: #333333;
+    --ink-3: #555555;
+    --flag: #b5481c;
+    --flag-ink: #8a3412;
+    color-scheme: light;
+  }
+
   .skip-link,
   .site-header,
   .site-footer,
+  .survey__field,
+  .survey__probe,
+  .traverse,
   .resume-page__header .button {
     display: none;
   }
 
-  body {
-    color: #111111;
-    background: #ffffff;
-    background-image: none;
+  .site-main {
+    padding-top: 0;
   }
 
-  .resume-page {
+  .survey {
+    min-height: 0;
+    margin-top: 0;
+    padding-top: 0;
+  }
+
+  .resume-page,
+  .project-detail,
+  .about-page {
     width: 100%;
-    padding: 0;
+    padding-top: 0;
   }
 
-  .resume-page > section {
-    border-color: #cccccc;
+  .resume-page > section,
+  .project-detail__content > section {
     break-inside: avoid;
-  }
-}
-
-/*
-  Movimento reduzido: menos movimento, não menos resposta.
-
-  O único movimento espacial do sistema é a rolagem suave de `html`; é ela que
-  sai aqui, junto com qualquer deslocamento que venha a existir depois.
-
-  As duas transições do sistema são de cor em 140ms (`.site-nav a` e `.button`)
-  e não deslocam nada — são o retorno que confirma o alvo sob o cursor e sob o
-  foco de teclado. Zerá-las com um `transition-duration: 0.01ms !important`
-  global apagaria esse retorno para quem pediu apenas menos movimento, o que a
-  2.3.3 não pede e a 3.2.4 desfavorece. Por isso o override abaixo é restrito às
-  propriedades que produzem deslocamento: cor, opacidade e contorno continuam
-  animando.
-*/
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-
-  *,
-  *::before,
-  *::after {
-    scroll-behavior: auto !important;
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-property:
-      color, background-color, border-color, outline-color, opacity, fill, stroke !important;
   }
 }

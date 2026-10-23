@@ -6,9 +6,112 @@ Experiência Pública Inicial do Portfólio (`001-experiencia-publica-inicial`).
 
 ## Status
 
-Convergência técnica concluída para as fases 1–7 e itens técnicos da Fase 8. A publicação continua
-bloqueada por conteúdo profissional que precisa ser confirmado pelo proprietário e por validações
-manuais/de preview.
+Implementação das fases 1–15 entregue, exceto pelas inspeções de publicação de T055. A fase 15
+(T092–T098) migrou todas as rotas para a direção visual **Levantamento e sondagem**.
+Em 2026-10-23, o proprietário confirmou o perfil atual e o estudo de caso da plataforma e autorizou
+a geração do PDF. A publicação continua bloqueada pelas inspeções manuais/de preview.
+
+## Direção visual aprovada — 2026-10-23
+
+O proprietário aprovou **Levantamento e sondagem**, na versão **sem lente**, e
+solicitou o registro da decisão. A referência aprovada é
+[`prototipo-levantamento-sondagem.html`](referencias-visuais/prototipo-levantamento-sondagem.html).
+Preservar o mapa topográfico noturno, as curvas em movimento, Geologica e
+Martian Mono, o marfim sobre fundo escuro, o laranja para evidência e o painel
+textual “Ver estrutura”. A lente circular e o raio-X foram retirados por decisão
+do proprietário e não devem ser reintroduzidos em uma passagem de acabamento.
+
+Decisão completa em
+[`candidato-levantamento-sondagem.md`](referencias-visuais/candidato-levantamento-sondagem.md);
+escopo e verificações do protótipo em
+[`exemplo-interativo.md`](referencias-visuais/exemplo-interativo.md).
+A migração foi implementada em 2026-10-23 (fase 15, abaixo); `DESIGN.md` agora
+descreve o sistema efetivamente construído, e a gramática **A Ficha de Catálogo**
+deixa de valer.
+
+## Migração visual — Levantamento e sondagem (fase 15, 2026-10-23)
+
+- T092: emenda de direção visual em `plan.md` com as divergências registradas antes do código
+  (home sem listar itens planejados, estudo de caso mantido na rota de detalhe, orçamento de duas
+  fontes, esquema noturno único e fichas SVG redesenhadas).
+- T093: tokens noturnos, Geologica variável e Martian Mono 400 via `next/font`, foco âmbar, seleção,
+  barra de rolagem, skip link, forced-colors, impressão e movimento reduzido em `app/layout.tsx` e
+  `app/globals.css`.
+- T094: `components/home/SurveyOpening.tsx` — três camadas SVG de um `<path>` cada, geradas no
+  cliente; varredura inicial; paralaxe só para mouse com ponteiro fino, agrupada em um
+  `requestAnimationFrame`; legenda; leitura “ilustrativo”; “Ver estrutura” como botão de divulgação
+  com painel textual derivado de `content/` e Escape devolvendo o foco. Sem lente nem raio-X.
+- T095: home em estações (terreno levantado com registro de CI de `lib/ci.ts`, competências
+  comprovadas, terreno ainda não levantado só com contagem e link) e linguagem estendida a
+  `/projetos`, `/projetos/[slug]`, `/roadmap`, `/sobre`, `/curriculo`, 404 e erro; `ProjectMark`
+  marca só trabalho implementado.
+- T096: fichas SVG de `public/images/projects/` redesenhadas (paleta fixa, 5:3, marco só no
+  implementado, tracejado nos planejados), ícone e cartões Open Graph na paleta noturna.
+- T097: orçamento tipográfico de quatro para dois woff2 (teto de 100 KiB mantido); cor da ficha
+  verificada como `[18, 22, 21]` nos esquemas claro e escuro; novos E2E para “Ver estrutura”/Escape,
+  paralaxe sem alterar a página e movimento reduzido; `tests/unit/ci.test.ts` confere as etapas
+  contra `.github/workflows/ci.yml`.
+- T098: `format:check`, `lint`, `typecheck`, `test -- --run` (8 arquivos, 44 testes), `build`,
+  `test:e2e:functional` (47 testes) e `test:e2e:a11y` (21 testes) aprovados. Inspeção visual em
+  1280, 390 e 320px de todas as rotas, sem rolagem horizontal; rodada de correção ajustou o marco
+  da legenda e as isolinhas das fichas SVG. Sem commit, push ou deploy.
+
+## Execução Speckit — 2026-10-23
+
+- Git inicialmente limpo; checklists de requisitos e pré-implementação completos (53 itens).
+- T041/T052/T056: conteúdo atual confirmado pelo proprietário nesta sessão. PDF de uma página
+  gerado a partir do perfil, com nome, posicionamento, formação, trajetória, competências e links.
+  Renderização inspecionada; extração de 31 textos do perfil e três links conferida com pypdf.
+  Download configurado em `/curriculo`; E2E aciona o link, verifica a conclusão do download e
+  compara os bytes com `public/curriculo.pdf`. Nenhuma dependência de PDF foi adicionada ao projeto:
+  as ferramentas de autoria e inspeção foram isoladas em `/tmp`.
+- T052: os cinco registros foram revisados. Somente `plataforma-portfolio` é implementação e
+  sustenta as 13 competências do perfil; contexto, decisões, limitações e próximos passos são
+  coerentes com os arquivos locais. As quatro intenções permanecem exclusivamente no roadmap.
+  Todas as imagens existem; não há imagens órfãs nem métricas inventadas. O parecer especializado
+  `content-integrity` confirmou a revisão e a consistência do PDF. Disponibilidade HTTP externa
+  das redes e do repositório não foi revalidada nesta sessão.
+- Divergência registrada antes da remediação: a auditoria de produção atual voltou a falhar
+  (lockfile Next 16.3.1/Sharp 0.35.3; instalação local Next 16.3.4/Sharp 0.35.4;
+  source-map-js 1.2.1), apesar dos resultados históricos verdes. T090 atualizou a resolução para
+  Next/config 16.4.2, Sharp 0.35.5 e source-map-js 1.2.2, dentro das faixas já aprovadas no
+  manifesto, sem `--force`, overrides ou alteração dos requisitos públicos.
+- Não há hooks `before_implement`/`after_implement`: `.specify/extensions.yml` ausente.
+- T091: a revisão semântica encontrou nomes acessíveis que não continham os rótulos compactos
+  “Plano” e “CV”. A regressão reproduziu a falha em 320px antes da correção; os nomes agora são
+  “Roadmap (Plano)” e “Currículo (CV)”, sem mudança visual. Os testes de tabulação e de componentes
+  foram alinhados, e a regressão passou em 320px/1280px. Os gates de código, build e E2E foram
+  repetidos após essa correção.
+
+### Gates executados após instalação limpa
+
+- `node --version` → v24.19.0.
+- `npm ci --cache /tmp/portfolio-npm-cache` → concluído pelo lockfile atualizado.
+- `npm audit --omit=dev --audit-level=high --cache /tmp/portfolio-npm-cache` → 0 vulnerabilidades.
+- `npm run format:check`, `npm run lint` e `npm run typecheck` → aprovados.
+- `npm test -- --run` → 7 arquivos, 43 testes aprovados.
+- `npm run build` → Next.js 16.4.2/Turbopack concluído; rotas estáticas e ficha SSG preservadas.
+- `npm run test:e2e:functional` → 43 testes aprovados, incluindo download real do currículo,
+  metadados, navegação, roadmap, 404, responsividade 320/768/1280px e zoom de texto a 200%.
+- `npm run test:e2e:a11y` → 21 testes aprovados, incluindo axe, teclado, foco, cores forçadas e
+  correspondência entre rótulo visível e nome acessível no mobile/desktop.
+- `git diff --check` → limpo. Revisão final constitucional e consolidação do diff sem bloqueadores;
+  o limite de publicação de T055 permanece explícito.
+
+### T055 — inspeções ainda não concluídas
+
+| Item                                               | Evidência nesta sessão                        | Inspeção manual              |
+| -------------------------------------------------- | --------------------------------------------- | ---------------------------- |
+| Teclado, foco, ordem e skip link                   | E2E aprovado em todas as rotas                | Pendente                     |
+| Zoom e responsividade                              | E2E de texto a 200% e 320/768/1280px aprovado | Pendente                     |
+| Headings, landmarks, alternativas e nomes de links | axe aprovado; revisão estrutural do código    | Pendente no navegador/leitor |
+| Leitor de tela real                                | Não executado                                 | Pendente                     |
+| Preview/canário e links externos                   | URL desta versão não fornecida                | Pendente                     |
+
+A ferramenta de inspeção de UI não disponibilizou navegador nem aplicativo nesta sessão. Testes
+automatizados e revisão de código não foram registrados como inspeção humana. A URL do preview e
+eventual resultado de leitor de tela foram solicitados ao proprietário. T055 continua aberta;
+nenhum deploy, commit, push ou promoção foi executado.
 
 ## Entregues
 
@@ -205,28 +308,24 @@ verificação registrada abaixo:
 
 ## Pendências e riscos conhecidos
 
-- `content/profile.json` ainda tem `contato.valor` como placeholder
-  (`SEU-EMAIL@exemplo.com`). Não quebra o build: a validação só exige formato de e-mail
-  válido, então o placeholder passa silenciosamente. Não publicar antes de substituir.
-- `content/profile.json` traz `"nome": "Jefferson Nunes"`, **inferido** do handle do GitHub e
-  do LinkedIn. Precisa de confirmação do proprietário — aparece no rodapé de todas as páginas.
 - `plataforma-portfolio` é hoje o único projeto implementado e não tem `linkDemonstracao`. O
   repositório está público em `https://github.com/jeffnunespy/portfolio-web`, verificado sem
   autenticação em 2026-09-04; a ficha agora oferece acesso direto ao código. Publicar a URL de
   produção permanece como a próxima evidência externa de maior efeito no valor da peça.
-- Os estudos de caso e `public/curriculo.pdf` exigem confirmação do proprietário antes de serem
-  declarados conteúdo profissional publicado.
-- O asset-fonte `original-8696facb39b0641248efdeb31bc641db.webp` não está no workspace; portanto
-  `assets/portfolio-source.webp` não pode ser criado sem receber o arquivo original.
-- Teclado completo e zoom a 200% possuem cobertura automatizada; leitor de tela real e
-  preview/canário permanecem como verificações manuais antes da publicação.
+- Perfil e estudo de caso confirmados pelo proprietário em 2026-10-23; PDF definitivo gerado e
+  consistente. As pendências anteriores de identidade, e-mail e currículo foram encerradas.
+- T006/T063 estão superadas: o asset-fonte removido era intermediário sem uso no build; não há
+  bloqueio de publicação por esse arquivo ausente.
+- T055 continua como o bloqueio de publicação: inspeção humana de teclado/foco/zoom, leitor de
+  tela real, links e preview/canário não concluídos. CI remoto não foi executado nesta sessão.
+- `npm ci` reportou 10 alertas ao incluir dependências de desenvolvimento (2 moderados e 8 altos).
+  A auditoria de produção após T090 retorna zero; a modernização do ferramental de desenvolvimento
+  não foi ampliada nesta entrega.
 - `npm ci` emite avisos de peer dependency porque plugins transitivos do `eslint-config-next` ainda
-  declaram suporte até ESLint 9; o lint em ESLint 10.8.1 passa. Não foi feita troca de versões fora
-  do plano aprovado.
+  declaram suporte até ESLint 9; o lint em ESLint 10.8.1 passa. Também houve aviso de script
+  pendente de `unrs-resolver`; nenhuma permissão de scripts foi ampliada, e os gates passaram.
 
 ## Próximos passos
 
-1. Fornecer e revisar biografia, e-mail, currículo, conteúdo/evidências reais dos projetos e o
-   asset-fonte ausente. Os links de redes já estão definidos.
-2. Atualizar os arquivos de conteúdo sem introduzir métricas ou experiências não verificadas.
-3. Executar e registrar as inspeções manuais de acessibilidade e o preview/canário antes da promoção.
+1. Executar e registrar as inspeções humanas de T055, incluindo leitor de tela real.
+2. Validar esta versão em preview/canário e confirmar o CI no commit candidato antes da promoção.

@@ -130,7 +130,7 @@ Aplicação Next.js única: `app/`, `components/`, `content/`, `lib/`, `tests/`,
 - [X] T038 [US3] Preservar currículo visualizável, download e metadados próprios em `app/curriculo/page.tsx`
 - [X] T039 [US3] Garantir navegação para currículo na ordem definida em `components/layout/Header.tsx`
 - [X] T040 [US3] Garantir currículo, redes, contato `mailto:` e titularidade no rodapé em `components/layout/Footer.tsx`
-- [ ] T041 [US3] Substituir o arquivo de currículo por versão confirmada e consistente em `public/curriculo.pdf`
+- [X] T041 [US3] Substituir o arquivo de currículo por versão confirmada e consistente em `public/curriculo.pdf`
 
 **Checkpoint**: US3 é verificável sem backend, formulário, cookies de rastreamento ou armazenamento de dados de visitantes.
 
@@ -166,7 +166,7 @@ Aplicação Next.js única: `app/`, `components/`, `content/`, `lib/`, `tests/`,
 - [X] T049 Atualizar a resolução do Vitest 4 e dependências de teste em `package-lock.json`
 - [X] T050 [P] Cobrir comportamentos condicionais e links dos cards em `tests/unit/ProjectCard.test.tsx`
 - [X] T051 [P] Cobrir navegação e links globais em `tests/unit/HeaderFooter.test.tsx`
-- [ ] T052 Revisar cada estudo de caso com contexto, decisões, limitações, próximos passos, links e evidências confirmadas em `content/projects/*.json`
+- [X] T052 Revisar cada estudo de caso com contexto, decisões, limitações, próximos passos, links e evidências confirmadas em `content/projects/*.json`
 - [X] T053 Verificar a existência das imagens publicadas referenciadas pelo conteúdo em `public/images/projects/`
 - [X] T054 Executar formatação, lint, tipos, unitários, build Turbopack, E2E e auditoria de produção conforme `specs/001-experiencia-publica-inicial/quickstart.md`
 - [ ] T055 Registrar a inspeção manual de teclado, foco, headings, zoom, leitor de tela, links e preview/canário em `docs/ACTIVE_CONTEXT.md`
@@ -242,7 +242,7 @@ Task: "Validar status fechado em components/project/ProjectStatusBadge.tsx"
 
 ## Phase 8: Convergence
 
-- [ ] T056 CRITICAL Substituir placeholders, URLs de exemplo e currículo por conteúdo profissional confirmado com evidência verificável em `content/profile.json` e `public/curriculo.pdf` per Constituição I/X e plan: P3 (contradicts)
+- [X] T056 CRITICAL Substituir placeholders, URLs de exemplo e currículo por conteúdo profissional confirmado com evidência verificável em `content/profile.json` e `public/curriculo.pdf` per Constituição I/X e plan: P3 (contradicts)
 - [X] T057 Fortalecer a validação de tipos, URLs, `mailto:`, enums, slugs, imagens, links e teto de destaques em `lib/content.ts` per FR-011a, FR-024 e contrato de conteúdo
 - [X] T058 Cobrir todas as regras inválidas da validação de conteúdo em `tests/unit/content.test.ts` per FR-011a, FR-024 e Constitution V
 - [X] T059 Expandir teclado, foco e axe-core para listagem, Sobre, currículo e ambos os estados 404 em `tests/e2e/accessibility.a11y.spec.ts` per FR-021, FR-022 e SC-005
@@ -308,3 +308,36 @@ sem alterar os bloqueios factuais P0.
 ## Phase 13: Otimização de carregamento
 
 - [X] T089 [US1] [US2] [US3] [US4] Reduzir requisições especulativas e payload tipográfico da primeira visita, preservando navegação cliente, identidade do fichário e métricas de acessibilidade, com medição antes/depois em mobile e desktop per FR-028 e Constituição IV/VII
+
+---
+
+## Phase 14: Revalidação de segurança e fechamento de conteúdo
+
+Auditoria de 2026-10-23 identificou novas vulnerabilidades de produção após os gates históricos.
+O perfil atual e o estudo de caso da plataforma foram confirmados pelo proprietário nesta sessão;
+T041/T052/T056 mantêm seus critérios originais, e T055 permanece dependente de inspeção real com
+leitor de tela e preview/canário.
+
+- [X] T090 Remediar as vulnerabilidades de produção em Next.js, Sharp e source-map-js com atualização direcionada de `package-lock.json` dentro das faixas já declaradas em `package.json`, mantendo a configuração Next alinhada, e reexecutar instalação limpa, auditoria, formato, lint, tipos, unitários, build Turbopack e E2E funcional/a11y per Constituição V/VI e contrato de segurança
+- [X] T091 Corrigir a divergência preexistente entre os rótulos compactos visíveis e os nomes acessíveis da navegação em `components/layout/Header.tsx`, com regressão mobile/desktop em `tests/e2e/accessibility.a11y.spec.ts`, preservando a ordem, os rótulos visuais e o layout per FR-021/FR-022 e WCAG 2.5.3
+
+**Resultado de 2026-10-23**: T041/T052/T056/T090/T091 concluídas após confirmação do conteúdo, revisão
+de integridade e gates verdes. T055 permanece aberta: cobertura automatizada e revisão semântica
+não substituem inspeção humana, leitor de tela real e preview/canário. Detalhes em
+`docs/ACTIVE_CONTEXT.md`. T006/T063 seguem superadas, sem arquivo a recuperar.
+
+---
+
+## Phase 15: Migração visual — Levantamento e sondagem
+
+Direção aprovada pelo proprietário em 2026-10-23 (versão sem lente, com movimento das curvas),
+registrada em `docs/referencias-visuais/candidato-levantamento-sondagem.md`. Divergências com a
+composição aprovada e com a regressão existente estão na emenda de direção visual de `plan.md`.
+
+- [X] T092 Alinhar `plan.md` e `tasks.md` à direção aprovada, registrando as divergências com FR-004/FR-004b/SC-008, o estudo de caso expansível, o orçamento tipográfico e o redesenho das fichas SVG antes de editar código per Constituição VIII
+- [X] T093 [US1] [US2] [US3] [US4] Substituir tokens, tipografia (Geologica e Martian Mono via `next/font`), foco âmbar, seleção, barra de rolagem, forced-colors e movimento reduzido em `app/layout.tsx` e `app/globals.css` per FR-021/FR-022
+- [X] T094 [US1] Implementar a abertura da home com terreno de isolinhas em três camadas SVG de um `<path>` cada, varredura inicial, paralaxe agrupada por `requestAnimationFrame`, legenda e botão “Ver estrutura” com painel textual derivado de `content/`, sem lente per FR-001, FR-024 e direção aprovada
+- [X] T095 [US1] [US2] [US3] [US4] Reorganizar a home em estações (terreno levantado, competências comprovadas, terreno ainda não levantado) e estender a linguagem a `/projetos`, `/projetos/[slug]`, `/roadmap`, `/sobre`, `/curriculo`, 404 e erro, preservando conteúdo, ações e separação entre implementação e roadmap per FR-004/FR-004b/SC-008
+- [X] T096 [US1] [US2] Redesenhar as fichas SVG de `public/images/projects/`, o ícone e a imagem de compartilhamento na paleta noturna, preservando a proporção 5:3 e os arquivos exigidos pela validação
+- [X] T097 Ajustar a regressão afetada (orçamento tipográfico, cor da ficha) com força equivalente e cobrir “Ver estrutura”, Escape e movimento reduzido em E2E
+- [X] T098 Executar formato, lint, tipos, unitários, build, E2E funcional/a11y e inspeção visual em 1280, 390 e 320 px; atualizar `DESIGN.md` com o sistema implementado e `docs/ACTIVE_CONTEXT.md`
