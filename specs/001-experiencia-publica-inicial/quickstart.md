@@ -19,6 +19,10 @@ npm run dev
 
 ## Validação da migração para Next.js 16
 
+Revalidação de 2026-10-23 (T090): as versões 16.3.1 mencionadas como alvo original abaixo são
+históricas. O lockfile de aceite deve resolver Next.js/configuração em 16.4.2, Sharp em 0.35.5 ou
+superior e source-map-js em 1.2.2 ou superior, preservando a sequência de gates.
+
 Executar em ordem, a partir de uma instalação limpa e com o mesmo runtime usado no deploy:
 
 ```bash

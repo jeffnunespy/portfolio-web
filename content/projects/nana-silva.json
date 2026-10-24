@@ -1,0 +1,79 @@
+{
+  "slug": "nana-silva",
+  "titulo": "Nana Silva",
+  "resumo": "Portfólio-catálogo de tatuagens com Astro, conteúdo editado no Notion e contato pelo WhatsApp, publicado na Cloudflare.",
+  "problemaTratado": "Reunir desenhos de tatuagem e sua disponibilidade em um catálogo que a artista possa atualizar pelo celular, sem editar código, encaminhando os interessados ao WhatsApp.",
+  "status": "Em andamento",
+  "categoria": "Web",
+  "natureza": "profissional",
+  "tecnologias": ["Astro", "TypeScript", "Notion", "Cloudflare Workers"],
+  "imagemApresentacao": "/images/projects/nana-silva.svg",
+  "competenciasDemonstradas": [
+    "TypeScript",
+    "CSS sem framework",
+    "Arquitetura modular",
+    "Validação de dados em build",
+    "Versionamento com Git",
+    "Testes automatizados",
+    "Testes end-to-end",
+    "Node.js",
+    "CI/CD"
+  ],
+  "contexto": "Projeto profissional desenvolvido para a tatuadora Nana Silva apresentar seus flashes, informar disponibilidade e receber contatos. A artista mantém o conteúdo em um painel privado no Notion, e o visitante consulta páginas estáticas. O site está publicado em ambiente de validação, com verificações operacionais ainda pendentes.",
+  "objetivo": "Permitir que visitantes encontrem um desenho, consultem suas informações e iniciem uma conversa com a artista, mantendo a edição do catálogo acessível pelo celular.",
+  "funcionalidadesPrincipais": [
+    "Catálogo de flashes disponíveis e reservados, com páginas individuais e ampliação das artes",
+    "Ações de contato pelo WhatsApp com mensagem preenchida conforme o desenho e sua disponibilidade",
+    "Edição de flashes, textos e dúvidas frequentes em fontes de conteúdo do Notion",
+    "Publicação estática e automação agendada para detectar alterações no conteúdo e solicitar um novo build",
+    "Processamento de imagens com redimensionamento, formatos otimizados e cache de derivados",
+    "Filtro de autorização e revogação para impedir a inclusão de fotos sem autorização no próximo build"
+  ],
+  "responsabilidadeProprietario": "Responsável pelo desenvolvimento completo da solução: site, integração com o Notion, processamento de imagens, automação de publicação, testes e publicação na Cloudflare.",
+  "decisoesRelevantes": [
+    {
+      "titulo": "Site estático com conteúdo preparado no build",
+      "descricao": "As páginas são geradas com Astro a partir de modelos de conteúdo validados. O visitante recebe arquivos estáticos, sem depender de consultas ao Notion para montar o catálogo nem receber suas credenciais."
+    },
+    {
+      "titulo": "Notion como painel editorial",
+      "descricao": "O conteúdo é mantido no Notion para permitir edição pelo celular. Uma interface TypeScript separa a apresentação da origem dos dados e permite usar fixtures nos testes sem acessar o painel real."
+    },
+    {
+      "titulo": "Automação separada do site",
+      "descricao": "Um Cloudflare Worker agendado compara a assinatura do conteúdo com o manifesto publicado e solicita um build quando há diferença. O estado técnico fica em KV, separando a detecção de alterações da entrega das páginas ao visitante."
+    },
+    {
+      "titulo": "Imagens derivadas com cache de build",
+      "descricao": "O pipeline com Sharp gera e reutiliza versões das imagens para a publicação estática. Apenas os derivados registrados no build são copiados para a saída, mantendo os originais e o cache fora dos arquivos públicos."
+    }
+  ],
+  "stack": [
+    "Astro",
+    "TypeScript",
+    "CSS puro",
+    "Node.js",
+    "Notion API",
+    "Sharp",
+    "Cloudflare Pages",
+    "Cloudflare Workers e KV",
+    "Vitest",
+    "Playwright e axe-core",
+    "GitHub Actions"
+  ],
+  "limitacoesConhecidas": [
+    "O WhatsApp concentra atendimento e negociação; o site não confirma reservas nem processa pagamentos.",
+    "Alterações editoriais dependem de um novo build para aparecer no site público.",
+    "Retirar uma foto do próximo build não comprova sua remoção de caches e publicações anteriores; essa retirada exige verificação operacional.",
+    "O ambiente publicado é de validação; os testes reais de dispositivos, desempenho, recuperação e capacidade ainda precisam ser concluídos."
+  ],
+  "proximosPassos": [
+    "Concluir as verificações reais de navegação, WhatsApp, acessibilidade e desempenho com o conteúdo final.",
+    "Validar a retirada de fotos nos URLs antigos e os procedimentos de recuperação da publicação.",
+    "Verificar a consistência entre o conteúdo das páginas e o manifesto quando há edição durante o build."
+  ],
+  "linkDemonstracao": "https://nana-silva-validacao.pages.dev/",
+  "linkRepositorio": "privado",
+  "destaque": true,
+  "real": true
+}

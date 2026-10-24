@@ -25,10 +25,6 @@ export default function AboutPage() {
   return (
     <article className="about-page">
       <header>
-        <div className="hero__index">
-          <span>Registro 004 · Perfil</span>
-          <span>pt-BR</span>
-        </div>
         <h1>Sobre</h1>
         <p className="about-page__lead">{perfil.tituloPosicionamento}</p>
       </header>

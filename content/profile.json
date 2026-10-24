@@ -1,7 +1,7 @@
 {
   "nome": "Jefferson Nunes",
   "tituloPosicionamento": "Desenvolvedor Web em Formação",
-  "descricaoPosicionamento": "Em formação, com interesse em desenvolvimento backend. O que apresento como trabalho implementado é esta plataforma: conteúdo validado em tempo de build, testes automatizados, acessibilidade verificada e integração contínua. O caminho para backend com Python e Django está registrado como escopo planejado, não como entrega.",
+  "descricaoPosicionamento": "Em formação, com interesse em desenvolvimento backend. O que apresento como trabalho implementado inclui esta plataforma: conteúdo validado em tempo de build, testes automatizados, acessibilidade verificada e integração contínua. O caminho para backend com Python e Django está registrado como escopo planejado, não como entrega.",
   "competenciasPorArea": [
     {
       "area": "Front-end",
@@ -45,6 +45,7 @@
       "descricao": "Evolução da plataforma com validação de conteúdo em tempo de build, testes end-to-end, acessibilidade WCAG 2.1 AA e integração contínua."
     }
   ],
+  "linkCurriculo": "/curriculo.pdf",
   "linkGithub": "https://github.com/jeffnunespy",
   "linkLinkedin": "https://www.linkedin.com/in/jefferson-nunes-7bb309122/",
   "contato": {

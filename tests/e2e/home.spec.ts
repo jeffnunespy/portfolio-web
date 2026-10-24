@@ -103,9 +103,9 @@ test("US1 - navegação por tabulação sem tabindex positivo", async ({ page })
     `${perfil.nome} — Início`,
     "Início",
     "Projetos",
-    "Roadmap",
+    "Roadmap (Plano)",
     "Sobre",
-    "Currículo",
+    "Currículo (CV)",
   ];
 
   for (const expectedLabel of expectedLabels) {
@@ -116,5 +116,74 @@ test("US1 - navegação por tabulação sem tabindex positivo", async ({ page })
         document.activeElement?.textContent?.trim(),
     );
     expect(focusedLabel).toBe(expectedLabel);
+  }
+});
+
+test("US1 - Ver comprovação abre o painel textual e Escape devolve o foco", async ({ page }) => {
+  await page.goto("/");
+
+  const painel = page.locator("#estrutura");
+  const abrir = page.getByRole("button", { name: "Ver comprovação" });
+  await expect(abrir).toHaveAttribute("aria-expanded", "false");
+  await expect(abrir).toHaveAttribute("aria-controls", "estrutura");
+  await expect(painel).toBeHidden();
+
+  await abrir.focus();
+  await page.keyboard.press("Enter");
+
+  const ocultar = page.getByRole("button", { name: "Ocultar comprovação" });
+  await expect(ocultar).toHaveAttribute("aria-expanded", "true");
+  await expect(painel).toBeVisible();
+  await expect(
+    painel.getByRole("heading", { level: 2, name: "O que sustenta a superfície" }),
+  ).toBeVisible();
+  await expect(painel.getByText("content/profile.json")).toBeVisible();
+
+  await page.keyboard.press("Escape");
+  await expect(painel).toBeHidden();
+  await expect(page.getByRole("button", { name: "Ver comprovação" })).toBeFocused();
+});
+
+test("US1 - curvas acompanham o mouse sem alterar a página", async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 720 });
+  await page.goto("/");
+  await expect(page.locator(".survey__drawing")).toHaveAttribute("data-desenhado", "");
+
+  const titulo = page.locator(".hero__title");
+  const corAntes = await titulo.evaluate((element) => getComputedStyle(element).color);
+
+  await page.mouse.move(900, 300);
+  await page.mouse.move(980, 360);
+  await expect
+    .poll(() =>
+      page.locator(".survey__layer--index").evaluate((element) => element.style.transform),
+    )
+    .toContain("translate3d");
+
+  // Sem lente nem raio-X: só as camadas do terreno se deslocam.
+  expect(await titulo.evaluate((element) => getComputedStyle(element).color)).toBe(corAntes);
+});
+
+test("US1 - movimento reduzido mostra as curvas sem varredura nem deslocamento", async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.setViewportSize({ width: 1280, height: 720 });
+  await page.goto("/");
+
+  const desenho = page.locator(".survey__drawing");
+  await expect(desenho).toHaveAttribute("data-desenhado", "");
+  expect(
+    await desenho.evaluate((element) => {
+      const estilo = getComputedStyle(element);
+      return { mascara: estilo.maskImage, animacao: estilo.animationName };
+    }),
+  ).toEqual({ mascara: "none", animacao: "none" });
+
+  await page.mouse.move(900, 300);
+  await page.mouse.move(980, 360);
+  await page.waitForTimeout(100);
+  for (const camada of await page.locator(".survey__layer").all()) {
+    expect(await camada.evaluate((element) => element.style.transform)).toBe("");
   }
 });

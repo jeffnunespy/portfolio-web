@@ -14,12 +14,10 @@ export default function ProjectNotFound() {
 
   return (
     <section className="message-page message-page--not-found">
-      <div className="hero__index">
-        <span>HTTP 404 · Ficha inexistente</span>
-      </div>
       <div className="message-page__layout">
         <div className="message-page__body">
           <h1>Projeto não encontrado</h1>
+          <p className="page-intro__cota">HTTP 404 · Ficha inexistente</p>
           <p>Não há uma ficha publicada para este endereço.</p>
           <Link className="button button--primary" href="/projetos">
             Ver todos os projetos

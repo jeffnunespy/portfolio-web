@@ -50,7 +50,7 @@ export default function Header({ nome }: { nome: string }) {
                 key={href}
                 href={href}
                 prefetch={pathname === href ? false : null}
-                aria-label={rotulo}
+                aria-label={rotulo === rotuloCompacto ? rotulo : `${rotulo} (${rotuloCompacto})`}
                 aria-current={ativo ? "page" : undefined}
                 // O destaque do currículo é a saída principal do fichário e só
                 // aparece quando ele não é a página atual — assim o realce de

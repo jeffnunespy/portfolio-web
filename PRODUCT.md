@@ -90,8 +90,18 @@ português. Nomes de interfaces e propriedades seguem o vocabulário existente.
 
 ## Brand Commitments
 
-Nome pessoal: Jefferson. Sem identidade visual, logotipo ou paleta previamente estabelecidos como
-vinculantes.
+Nome pessoal: Jefferson. Em 2026-10-23, o proprietário aprovou a direção visual
+**Minimalismo escuro** como o novo visual oficial, conforme o
+[`registro da decisão`](docs/referencias-visuais/direcao-minimalista-escura.md) e a versão final de
+[`prototipo-minimalista-escuro.html`](docs/referencias-visuais/prototipo-minimalista-escuro.html).
+Tema escuro, Geologica leve, composição aberta, assinatura “Nunes.” com ponto laranja e
+interações simples definem a identidade. Nana Silva aparece em texto, sem prévia de imagem.
+Terreno, curvas e animações da direção anterior deixam de orientar o projeto.
+
+`DESIGN.md` registra o sistema oficial construído no protótipo. As rotas Next.js continuam
+temporariamente em **Levantamento e sondagem**, cuja migração está pendente na fase 17 de
+`tasks.md`. Os exemplos fictícios do HTML continuam exclusivos da demonstração visual;
+aprovar o visual não os transforma em conteúdo ou evidência do portfólio.
 
 Voz: sóbria, específica e verificável. O tom da constituição e dos estudos de caso evita superlativo
 e promessa; descreve problema, decisão e limitação. Trabalho futuro deve preservar essa voz — o
@@ -110,8 +120,14 @@ declarado pelo proprietário nesta sessão:
 - **A própria plataforma** — este repositório: Next.js 16, validação de conteúdo em build, testes
   Vitest, E2E funcionais e de acessibilidade (axe-core, WCAG 2.1 A/AA), CI completo, Dependabot.
   O código está público em `https://github.com/jeffnunespy/portfolio-web`. A ficha
-  `plataforma-portfolio` descreve **este** repositório e é por isso a única marcada `real: true` em
-  `content/projects/`: o que ela afirma pode ser conferido lendo o código que a serve.
+  `plataforma-portfolio` descreve **este** repositório: o que ela afirma pode ser conferido lendo o
+  código que a serve.
+- **Nana Silva** — projeto profissional desenvolvido integralmente pelo proprietário para uma
+  necessidade real da artista, conforme confirmação em 2026-10-23. Catálogo estático com Astro,
+  conteúdo no Notion e automação de publicação com Cloudflare Workers/KV. A ficha `nana-silva`
+  também usa `real: true` e aponta para `https://nana-silva-validacao.pages.dev/`, ambiente publicado
+  de validação. O relatório técnico de 2026-10-22 fundamenta a arquitetura e as limitações; não é
+  aprovação de lançamento comercial nem comprovação de todos os portões operacionais.
 
 **Não reais — as outras quatro fichas descrevem estrutura planejada:**
 
@@ -128,11 +144,12 @@ enganaria exatamente o leitor que o portfólio quer convencer. Trabalho futuro (
 metadados) não deve tratar esses textos, tecnologias, decisões arquiteturais ou status como fatos
 sobre o proprietário.
 
-**Placeholders explícitos ainda no conteúdo:**
+**Conteúdo de publicação confirmado em 2026-10-23:**
 
-- `contato.valor` = `SEU-EMAIL@exemplo.com` — e-mail real pendente. Passa na validação silenciosamente
-  porque o formato é válido.
-- `public/curriculo.pdf` — o PDF definitivo ainda não foi fornecido.
+- Nome, e-mail, formação, trajetória e estudo de caso da plataforma foram confirmados pelo
+  proprietário. O perfil atual não usa e-mail placeholder.
+- `public/curriculo.pdf` foi gerado com esses dados e está disponível para download em `/curriculo`.
+  O documento tem uma página, com conteúdo e links conferidos contra `content/profile.json`.
 - As URLs inventadas de `transcricao-audio` (`exemplo-transcricao.vercel.app` e
   `github.com/transcricao-audio`) foram removidas do conteúdo; a ficha não expõe mais link algum.
 - Imagens em `public/images/projects/*.svg` são apresentação genérica, não capturas de aplicações

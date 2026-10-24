@@ -1,7 +1,8 @@
 import { test, expect } from "@playwright/test";
-import { getRoadmap } from "../../lib/content";
+import { getProjetosImplementados, getRoadmap } from "../../lib/content";
 
 const projetosPlanejados = getRoadmap();
+const projetosImplementados = getProjetosImplementados();
 
 test("US2 - abre um projeto pela home e exibe todas as seções obrigatórias", async ({ page }) => {
   await page.goto("/");
@@ -109,13 +110,64 @@ test("US2 - rodapé da ficha permite retomar o catálogo e abrir o currículo", 
   );
 });
 
-test("US2 - navegação entre fichas comunica os limites sem links inválidos", async ({ page }) => {
-  await page.goto("/projetos/plataforma-portfolio");
+for (const [index, projeto] of projetosImplementados.entries()) {
+  test(`US2 - navegação entre fichas respeita posição e limites de ${projeto.slug}`, async ({
+    page,
+  }) => {
+    await page.goto(`/projetos/${projeto.slug}`);
 
-  const position = page.locator(".project-record-footer__position");
-  await expect(position).toContainText("Ficha 1 de 1");
-  await expect(position.locator('[aria-hidden="true"]')).toHaveText("1 / 1");
-  // Ficha única: nenhum vizinho, e nenhum link apontando para lugar nenhum.
-  await expect(page.getByRole("link", { name: /Ficha anterior/ })).toHaveCount(0);
-  await expect(page.getByRole("link", { name: /Próxima ficha/ })).toHaveCount(0);
+    const position = page.locator(".project-record-footer__position");
+    await expect(position).toContainText(`Ficha ${index + 1} de ${projetosImplementados.length}`);
+    await expect(position.locator('[aria-hidden="true"]')).toHaveText(
+      `${index + 1} / ${projetosImplementados.length}`,
+    );
+
+    const anterior = projetosImplementados[index - 1];
+    const proximo = projetosImplementados[index + 1];
+    for (const [name, vizinho] of [
+      [/Ficha anterior/, anterior],
+      [/Próxima ficha/, proximo],
+    ] as const) {
+      const link = page.getByRole("link", { name });
+      if (vizinho) {
+        await expect(link).toHaveAttribute("href", `/projetos/${vizinho.slug}`);
+        await expect(link).toContainText(vizinho.titulo);
+        await link.click();
+        await expect(page.getByRole("heading", { level: 1, name: vizinho.titulo })).toBeVisible();
+        await page.goto(`/projetos/${projeto.slug}`);
+      } else {
+        await expect(link).toHaveCount(0);
+      }
+    }
+  });
+}
+
+test("US2 - Nana Silva aparece no catálogo e oferece acesso ao site publicado", async ({
+  page,
+}) => {
+  await page.goto("/projetos");
+  await expect(page.getByRole("link", { name: "Ver detalhes de Nana Silva" })).toBeVisible();
+
+  await page.goto("/");
+  await page.getByRole("link", { name: "Ver detalhes de Nana Silva" }).click();
+  await expect(page).toHaveURL(/\/projetos\/nana-silva$/);
+  await expect(page.getByRole("heading", { level: 1, name: "Nana Silva" })).toBeVisible();
+  await expect(page.getByText("Em andamento", { exact: true })).toBeVisible();
+  await expect(page.getByText(/ambiente de validação/).first()).toBeVisible();
+  const demonstracao = page.getByRole("link", { name: "Abrir demonstração" });
+  await expect(demonstracao).toHaveAttribute("href", "https://nana-silva-validacao.pages.dev/");
+  await expect(demonstracao).toHaveAttribute("target", "_blank");
+  await expect(demonstracao).toHaveAttribute("rel", "noopener noreferrer");
+  await expect(page.getByText(/O código-fonte deste projeto é privado/)).toBeVisible();
+  await expect(page.getByRole("link", { name: "Solicitar acesso ao código" })).toHaveAttribute(
+    "href",
+    /^mailto:/,
+  );
+  await expect(page.getByRole("link", { name: "Ver código-fonte" })).toHaveCount(0);
+
+  const imagem = page.locator("img.project-image");
+  await expect(imagem).toBeVisible();
+  await expect
+    .poll(() => imagem.evaluate((element) => (element as HTMLImageElement).naturalWidth))
+    .toBeGreaterThan(0);
 });

@@ -1,9 +1,10 @@
 import { test, expect } from "@playwright/test";
+import { getProjetosImplementados } from "../../lib/content";
 
 const routes = [
   "/",
   "/projetos",
-  "/projetos/plataforma-portfolio",
+  ...getProjetosImplementados().map((projeto) => `/projetos/${projeto.slug}`),
   "/roadmap",
   "/sobre",
   "/curriculo",
@@ -53,7 +54,7 @@ for (const width of [320, 768, 1280]) {
   });
 }
 
-test("composição desktop usa a margem direita e assume a ficha única", async ({ page }) => {
+test("composição desktop usa a margem direita e mantém a largura das fichas", async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto("/");
 
@@ -73,22 +74,23 @@ test("composição desktop usa a margem direita e assume a ficha única", async 
   expect(recordBox!.x + recordBox!.width).toBeCloseTo(heroBox!.x + heroBox!.width, 0);
 
   const projectGrid = page.locator(".project-grid").last();
-  const projectCard = projectGrid.locator(".project-card:only-child");
-  const projectImage = projectCard.locator(".project-image");
-  const projectBody = projectCard.locator(".project-card__body");
-  const [gridBox, cardBox, imageBox, projectBodyBox] = await Promise.all([
-    projectGrid.boundingBox(),
-    projectCard.boundingBox(),
-    projectImage.boundingBox(),
-    projectBody.boundingBox(),
-  ]);
+  const gridBox = await projectGrid.boundingBox();
 
   expect(gridBox).not.toBeNull();
-  expect(cardBox).not.toBeNull();
-  expect(imageBox).not.toBeNull();
-  expect(projectBodyBox).not.toBeNull();
-  expect(cardBox!.width).toBeCloseTo(gridBox!.width, 0);
-  expect(imageBox!.x + imageBox!.width).toBeLessThan(projectBodyBox!.x);
+  const cards = projectGrid.locator(".project-card");
+  expect(await cards.count()).toBeGreaterThan(0);
+  for (const card of await cards.all()) {
+    const [cardBox, imageBox, projectBodyBox] = await Promise.all([
+      card.boundingBox(),
+      card.locator(".project-image").boundingBox(),
+      card.locator(".project-card__body").boundingBox(),
+    ]);
+    expect(cardBox).not.toBeNull();
+    expect(imageBox).not.toBeNull();
+    expect(projectBodyBox).not.toBeNull();
+    expect(cardBox!.width).toBeCloseTo(gridBox!.width, 0);
+    expect(imageBox!.x + imageBox!.width).toBeLessThan(projectBodyBox!.x);
+  }
 });
 
 test("404 compartilha o eixo global e mantém os campos na margem direita", async ({ page }) => {
@@ -274,14 +276,17 @@ test("ação principal da ficha permanece legível e ocupa a coluna em 320px", a
   await page.setViewportSize({ width: 320, height: 900 });
   await page.goto("/");
 
-  const card = page.locator(".project-card__body");
-  const action = card.getByRole("link", { name: /ver detalhes/i });
-  const [cardBox, actionBox] = await Promise.all([card.boundingBox(), action.boundingBox()]);
+  const cards = page.locator(".project-card__body");
+  expect(await cards.count()).toBeGreaterThan(0);
+  for (const card of await cards.all()) {
+    const action = card.getByRole("link", { name: /ver detalhes/i });
+    const [cardBox, actionBox] = await Promise.all([card.boundingBox(), action.boundingBox()]);
 
-  expect(cardBox).not.toBeNull();
-  expect(actionBox).not.toBeNull();
-  expect(actionBox!.width).toBeGreaterThanOrEqual(cardBox!.width - 1);
-  expect(actionBox!.height).toBeLessThanOrEqual(72);
+    expect(cardBox).not.toBeNull();
+    expect(actionBox).not.toBeNull();
+    expect(actionBox!.width).toBeGreaterThanOrEqual(cardBox!.width - 1);
+    expect(actionBox!.height).toBeLessThanOrEqual(72);
+  }
 });
 
 test("ação de implementação permanece dominante e legível em 320px", async ({ page }) => {
@@ -340,24 +345,28 @@ test("texto ampliado a 200% reflui sem corte em todas as rotas públicas", async
   }
 });
 
-test("ficha ilustrada acompanha o tema escuro", async ({ page }) => {
-  await page.emulateMedia({ colorScheme: "dark" });
-  await page.goto("/projetos/plataforma-portfolio");
+// O site tem um único tema noturno: a ficha ilustrada precisa usar o mesmo
+// terreno (#121615) qualquer que seja a preferência de esquema do sistema.
+for (const colorScheme of ["light", "dark"] as const) {
+  test(`ficha ilustrada usa o terreno noturno com esquema ${colorScheme}`, async ({ page }) => {
+    await page.emulateMedia({ colorScheme });
+    await page.goto("/projetos/plataforma-portfolio");
 
-  const image = page.locator(".project-detail__visual-index > .project-image");
-  await expect(image).toHaveJSProperty("complete", true);
+    const image = page.locator(".project-detail__visual-index > .project-image");
+    await expect(image).toHaveJSProperty("complete", true);
 
-  const backgroundPixel = await image.evaluate((element) => {
-    const imageElement = element as HTMLImageElement;
-    const canvas = document.createElement("canvas");
-    canvas.width = 120;
-    canvas.height = 72;
-    const context = canvas.getContext("2d");
-    if (!context) return null;
+    const backgroundPixel = await image.evaluate((element) => {
+      const imageElement = element as HTMLImageElement;
+      const canvas = document.createElement("canvas");
+      canvas.width = 120;
+      canvas.height = 72;
+      const context = canvas.getContext("2d");
+      if (!context) return null;
 
-    context.drawImage(imageElement, 0, 0, canvas.width, canvas.height);
-    return Array.from(context.getImageData(1, 1, 1, 1).data.slice(0, 3));
+      context.drawImage(imageElement, 0, 0, canvas.width, canvas.height);
+      return Array.from(context.getImageData(1, 1, 1, 1).data.slice(0, 3));
+    });
+
+    expect(backgroundPixel).toEqual([18, 22, 21]);
   });
-
-  expect(backgroundPixel).toEqual([36, 32, 25]);
-});
+}

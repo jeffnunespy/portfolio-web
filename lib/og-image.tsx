@@ -12,8 +12,9 @@ interface OgImageParams {
   descricao?: string;
 }
 
-// Gera o PNG de preview em tempo de build, na mesma gramática de ficha
-// catalográfica de app/globals.css: tinta sobre cartão, filetes, zero raio.
+// Gera o PNG de preview em tempo de build, na paleta noturna de levantamento
+// de app/globals.css: marfim sobre terreno escuro, filetes de curva de nível,
+// zero raio e laranja só no estado "em formação".
 // Usa apenas as fontes padrão do runtime — o cartão não carrega webfont.
 export function renderOgImage({ indice, titulo, descricao }: OgImageParams): ImageResponse {
   return new ImageResponse(
@@ -25,9 +26,9 @@ export function renderOgImage({ indice, titulo, descricao }: OgImageParams): Ima
         flexDirection: "column",
         justifyContent: "space-between",
         padding: "64px 72px",
-        background: "#f4f1e8",
-        color: "#1a1a17",
-        border: "3px solid #1a1a17",
+        background: "#0c0f0e",
+        color: "#e7e4da",
+        border: "3px solid #34403a",
       }}
     >
       <div
@@ -35,12 +36,12 @@ export function renderOgImage({ indice, titulo, descricao }: OgImageParams): Ima
           display: "flex",
           justifyContent: "space-between",
           alignItems: "flex-end",
-          borderBottom: "2px solid #1a1a17",
+          borderBottom: "2px solid #5b6862",
           paddingBottom: 20,
           fontSize: 24,
           letterSpacing: 4,
           textTransform: "uppercase",
-          color: "#6f6a5f",
+          color: "#7f877f",
         }}
       >
         <div>{indice}</div>
@@ -48,9 +49,9 @@ export function renderOgImage({ indice, titulo, descricao }: OgImageParams): Ima
       </div>
 
       <div style={{ display: "flex", flexDirection: "column", gap: 26 }}>
-        <div style={{ fontSize: 72, fontWeight: 700, lineHeight: 1.1 }}>{titulo}</div>
+        <div style={{ fontSize: 72, fontWeight: 400, lineHeight: 1.1 }}>{titulo}</div>
         {descricao ? (
-          <div style={{ fontSize: 31, lineHeight: 1.45, color: "#4a4740" }}>{descricao}</div>
+          <div style={{ fontSize: 31, lineHeight: 1.45, color: "#a9aea6" }}>{descricao}</div>
         ) : null}
       </div>
 
@@ -59,16 +60,16 @@ export function renderOgImage({ indice, titulo, descricao }: OgImageParams): Ima
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          borderTop: "1px solid #c8c2b0",
+          borderTop: "1px solid #34403a",
           paddingTop: 20,
           fontSize: 25,
           letterSpacing: 3,
           textTransform: "uppercase",
-          color: "#6f6a5f",
+          color: "#7f877f",
         }}
       >
         <div>{SITE_NAME}</div>
-        <div style={{ color: "#8a2c1e" }}>Em formação</div>
+        <div style={{ color: "#ff9a6b" }}>Em formação</div>
       </div>
     </div>,
     OG_SIZE,

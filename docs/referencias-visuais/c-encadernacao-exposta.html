@@ -1,0 +1,691 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Referência C · Encadernação Exposta</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Commissioner:wght@300;400;500;600&family=Gelasio:wght@500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --linen: #e2dfd8;
+        --leaf: #f3f1ec;
+        --ink: #1f1d1a;
+        --ink-2: #4f4a42;
+        --ink-3: #6c655a;
+        --board: #5e4f3c;
+        --board-2: #4a3e2f;
+        --thread: #efe9dc;
+        --rule: #cfc9bd;
+        --rule-2: #958d7e;
+        --sans: "Commissioner", ui-sans-serif, system-ui, sans-serif;
+        --serif: "Gelasio", Georgia, serif;
+        --spine: 132px;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: var(--sans);
+        color: var(--ink);
+        background: var(--linen);
+        font-size: 17px;
+        line-height: 1.55;
+        -webkit-font-smoothing: antialiased;
+        background-image:
+          repeating-linear-gradient(0deg, rgba(31, 29, 26, 0.025) 0 1px, transparent 1px 3px),
+          repeating-linear-gradient(90deg, rgba(31, 29, 26, 0.02) 0 1px, transparent 1px 4px);
+      }
+      ::selection {
+        background: var(--board);
+        color: var(--thread);
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      :focus-visible {
+        outline: 2px solid var(--board);
+        outline-offset: 3px;
+      }
+
+      .book {
+        display: grid;
+        grid-template-columns: var(--spine) 1fr;
+        min-height: 100vh;
+        max-width: 1480px;
+        margin: 0 auto;
+      }
+
+      /* lombada: a cadeia de validação */
+      .spine {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        background: var(--board);
+        color: var(--thread);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 28px 0;
+        background-image: repeating-linear-gradient(
+          92deg,
+          rgba(0, 0, 0, 0.06) 0 2px,
+          transparent 2px 7px
+        );
+      }
+      .spine .mono {
+        font: 600 13px/1 var(--sans);
+        letter-spacing: 0.24em;
+        text-transform: uppercase;
+        writing-mode: vertical-rl;
+        transform: rotate(180deg);
+      }
+      .spine ol {
+        list-style: none;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin: 24px 0;
+        position: relative;
+      }
+      .spine ol::before {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: 0;
+        bottom: 0;
+        border-left: 1px dashed rgba(239, 233, 220, 0.35);
+      }
+      .spine li {
+        position: relative;
+      }
+      .spine li a {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        padding: 10px 0;
+        width: var(--spine);
+      }
+      .stitch {
+        width: 30px;
+        height: 46px;
+        display: block;
+      }
+      .stitch path {
+        fill: none;
+        stroke: var(--thread);
+        stroke-width: 2.2;
+        stroke-linecap: round;
+      }
+      .spine li a span {
+        font-size: 10.5px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        opacity: 0.82;
+        transition: opacity 0.2s;
+      }
+      .spine li a:hover span,
+      .spine li a[aria-current] span {
+        opacity: 1;
+      }
+      .spine li a[aria-current] .stitch path {
+        stroke-width: 3.2;
+      }
+      .spine li.loose .stitch path {
+        stroke-dasharray: 3 4;
+        opacity: 0.6;
+      }
+      .spine .gates {
+        font-size: 10px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        opacity: 0.75;
+        text-align: center;
+        line-height: 1.5;
+      }
+
+      /* folha aberta */
+      .leaf {
+        background: var(--leaf);
+        border-left: 1px solid var(--board-2);
+        box-shadow: inset 18px 0 24px -20px rgba(74, 62, 47, 0.35);
+        padding: clamp(28px, 5vw, 80px) clamp(24px, 6vw, 104px) 80px;
+      }
+      .opening {
+        display: grid;
+        grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+        gap: clamp(32px, 5vw, 88px);
+        min-height: calc(100vh - 160px);
+        align-items: end;
+      }
+      .opening .title {
+        align-self: stretch;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 48px;
+      }
+      .colophon {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.8125rem;
+        color: var(--ink-3);
+        border-bottom: 1px solid var(--rule);
+        padding-bottom: 12px;
+      }
+      .opening h1 {
+        font-family: var(--serif);
+        font-weight: 500;
+        font-size: clamp(3rem, 6vw, 5.5rem);
+        line-height: 0.98;
+        letter-spacing: -0.025em;
+      }
+      .opening .lead {
+        font-size: 1.1875rem;
+        color: var(--ink-2);
+        max-width: 34ch;
+        margin-top: 28px;
+        font-weight: 300;
+      }
+      .opening .lead strong {
+        font-weight: 500;
+        color: var(--ink);
+      }
+      .links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px 28px;
+        font-size: 0.9375rem;
+      }
+      .links a {
+        border-bottom: 1px solid var(--rule-2);
+        padding-bottom: 2px;
+      }
+      .links a:hover {
+        border-color: var(--ink);
+      }
+
+      /* caderno: a ficha real costurada */
+      .signature {
+        border: 1px solid var(--rule-2);
+        background: #f8f7f3;
+        position: relative;
+        padding: 36px 36px 28px 64px;
+      }
+      .signature .holes {
+        position: absolute;
+        left: 24px;
+        top: 28px;
+        bottom: 28px;
+        width: 16px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+      .signature .holes i {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--linen);
+        border: 1px solid var(--rule-2);
+        display: block;
+        position: relative;
+      }
+      .signature .holes::before {
+        content: "";
+        position: absolute;
+        left: 3px;
+        top: 4px;
+        bottom: 4px;
+        border-left: 1.5px solid var(--board);
+      }
+      .signature .holes i {
+        z-index: 1;
+      }
+      .sig-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        font-size: 0.8125rem;
+        color: var(--ink-3);
+      }
+      .signature h2 {
+        font-family: var(--serif);
+        font-weight: 500;
+        font-size: 2rem;
+        line-height: 1.05;
+        margin-top: 14px;
+        letter-spacing: -0.015em;
+      }
+      .signature p.sum {
+        color: var(--ink-2);
+        margin-top: 10px;
+        max-width: 46ch;
+      }
+      .chain {
+        list-style: none;
+        margin-top: 26px;
+        border-top: 1px solid var(--rule);
+      }
+      .chain li {
+        display: grid;
+        grid-template-columns: 1.25rem 1fr;
+        gap: 14px;
+        padding: 11px 0;
+        border-bottom: 1px solid var(--rule);
+        font-size: 0.9375rem;
+      }
+      .chain li svg {
+        width: 20px;
+        height: 14px;
+        margin-top: 4px;
+      }
+      .chain li svg path {
+        fill: none;
+        stroke: var(--board);
+        stroke-width: 1.6;
+        stroke-linecap: round;
+      }
+      .chain li b {
+        font-weight: 500;
+      }
+      .chain li span {
+        display: block;
+        font-size: 0.8125rem;
+        color: var(--ink-3);
+      }
+      .sig-foot {
+        display: flex;
+        gap: 0;
+        margin-top: 24px;
+      }
+      .sig-foot a {
+        flex: 1;
+        padding: 13px 16px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        border: 1px solid var(--ink);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition:
+          background 0.25s,
+          color 0.25s;
+      }
+      .sig-foot a + a {
+        border-left: 0;
+      }
+      .sig-foot a.p {
+        background: var(--ink);
+        color: var(--leaf);
+      }
+      .sig-foot a:hover {
+        background: var(--board);
+        border-color: var(--board);
+        color: var(--thread);
+      }
+
+      /* cadernos seguintes */
+      .quire {
+        margin-top: 120px;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+        gap: clamp(32px, 5vw, 88px);
+        border-top: 1px solid var(--ink);
+        padding-top: 24px;
+      }
+      .quire h2 {
+        font-family: var(--serif);
+        font-weight: 500;
+        font-size: 1.75rem;
+        line-height: 1.1;
+      }
+      .quire .aside {
+        font-size: 0.9375rem;
+        color: var(--ink-2);
+        margin-top: 12px;
+        max-width: 30ch;
+      }
+      .evid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0 40px;
+      }
+      .evid div {
+        border-bottom: 1px solid var(--rule);
+        padding: 14px 0;
+      }
+      .evid h3 {
+        font-size: 0.8125rem;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--ink-3);
+      }
+      .evid p {
+        margin-top: 6px;
+        font-size: 1rem;
+      }
+      .blank ol {
+        list-style: none;
+        counter-reset: b;
+      }
+      .blank li {
+        border: 1px dashed var(--rule-2);
+        padding: 18px 22px;
+        margin-bottom: 12px;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 4px 24px;
+        background: transparent;
+      }
+      .blank li b {
+        font-weight: 500;
+      }
+      .blank li p {
+        grid-column: 1;
+        font-size: 0.875rem;
+        color: var(--ink-2);
+      }
+      .blank li small {
+        grid-row: 1/3;
+        grid-column: 2;
+        align-self: center;
+        font-size: 0.75rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--ink-3);
+      }
+      footer {
+        margin-top: 120px;
+        padding-top: 18px;
+        border-top: 1px solid var(--rule);
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.8125rem;
+        color: var(--ink-3);
+      }
+
+      @media (max-width: 980px) {
+        .opening {
+          grid-template-columns: 1fr;
+          min-height: 0;
+          align-items: start;
+        }
+        .quire {
+          grid-template-columns: 1fr;
+        }
+      }
+      @media (max-width: 720px) {
+        .book {
+          grid-template-columns: 1fr;
+        }
+        .spine {
+          position: sticky;
+          top: 0;
+          height: auto;
+          z-index: 5;
+          flex-direction: row;
+          padding: 0 12px;
+          background-image: repeating-linear-gradient(
+            2deg,
+            rgba(0, 0, 0, 0.06) 0 2px,
+            transparent 2px 7px
+          );
+        }
+        .spine .mono,
+        .spine .gates {
+          display: none;
+        }
+        .spine ol {
+          flex-direction: row;
+          margin: 0;
+          justify-content: space-between;
+          width: 100%;
+        }
+        .spine ol::before {
+          left: 0;
+          right: 0;
+          top: 50%;
+          bottom: auto;
+          border-left: 0;
+          border-top: 1px dashed rgba(239, 233, 220, 0.35);
+        }
+        .spine li a {
+          width: auto;
+          padding: 8px 4px;
+          min-height: 44px;
+        }
+        .stitch {
+          width: 22px;
+          height: 26px;
+        }
+        .spine li a span {
+          font-size: 9.5px;
+          letter-spacing: 0.06em;
+        }
+        .leaf {
+          border-left: 0;
+          box-shadow: inset 0 18px 24px -20px rgba(74, 62, 47, 0.35);
+        }
+        .signature {
+          padding: 28px 20px 22px 48px;
+        }
+        .signature .holes {
+          left: 16px;
+        }
+        .evid {
+          grid-template-columns: 1fr;
+        }
+        .sig-foot {
+          flex-direction: column;
+        }
+        .sig-foot a + a {
+          border-left: 1px solid var(--ink);
+          border-top: 0;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          transition: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="book">
+      <nav class="spine" aria-label="Seções">
+        <span class="mono">Jefferson Nunes</span>
+        <ol role="list">
+          <li>
+            <a href="#" aria-current="page"
+              ><svg class="stitch" viewBox="0 0 30 46" aria-hidden="true">
+                <path d="M15 2c-9 6-9 15 0 21c9 6 9 15 0 21" />
+                <path d="M15 2c9 6 9 15 0 21c-9 6-9 15 0 21" /></svg
+              ><span>Início</span></a
+            >
+          </li>
+          <li>
+            <a href="#fichas"
+              ><svg class="stitch" viewBox="0 0 30 46" aria-hidden="true">
+                <path d="M15 2c-9 6-9 15 0 21c9 6 9 15 0 21" />
+                <path d="M15 2c9 6 9 15 0 21c-9 6-9 15 0 21" /></svg
+              ><span>Projetos</span></a
+            >
+          </li>
+          <li class="loose">
+            <a href="#roadmap"
+              ><svg class="stitch" viewBox="0 0 30 46" aria-hidden="true">
+                <path d="M15 2c-9 6-9 15 0 21c9 6 9 15 0 21" />
+                <path d="M15 2c9 6 9 15 0 21c-9 6-9 15 0 21" /></svg
+              ><span>Roadmap</span></a
+            >
+          </li>
+          <li>
+            <a href="#"
+              ><svg class="stitch" viewBox="0 0 30 46" aria-hidden="true">
+                <path d="M15 2c-9 6-9 15 0 21c9 6 9 15 0 21" />
+                <path d="M15 2c9 6 9 15 0 21c-9 6-9 15 0 21" /></svg
+              ><span>Sobre</span></a
+            >
+          </li>
+          <li>
+            <a href="#"
+              ><svg class="stitch" viewBox="0 0 30 46" aria-hidden="true">
+                <path d="M15 2c-9 6-9 15 0 21c9 6 9 15 0 21" />
+                <path d="M15 2c9 6 9 15 0 21c-9 6-9 15 0 21" /></svg
+              ><span>Currículo</span></a
+            >
+          </li>
+        </ol>
+        <span class="gates">5 seções<br />1 solta</span>
+      </nav>
+
+      <main class="leaf">
+        <section class="opening">
+          <div class="title">
+            <p class="colophon">
+              <span>Desenvolvedor Web em Formação</span><span>Rev. set. 2026</span>
+            </p>
+            <div>
+              <h1>Jefferson Nunes</h1>
+              <p class="lead">
+                Da especificação ao deploy. <strong>Nada escondido:</strong> a estrutura que valida
+                este conteúdo é a mesma que você está lendo.
+              </p>
+            </div>
+            <p class="links">
+              <a href="https://github.com/jeffnunespy">GitHub</a
+              ><a href="https://www.linkedin.com/in/jefferson-nunes-7bb309122/">LinkedIn</a
+              ><a href="mailto:jeffnunesxavier@gmail.com">jeffnunesxavier@gmail.com</a
+              ><a href="#">Currículo</a>
+            </p>
+          </div>
+
+          <article class="signature" id="fichas" aria-labelledby="pp">
+            <div class="holes" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+            <div class="sig-head">
+              <span>Caderno 1 · software implementado</span><span>Em andamento</span>
+            </div>
+            <h2 id="pp">Plataforma de Portfólio</h2>
+            <p class="sum">
+              Este site, costurado por uma cadeia de verificações. Se um elo rompe, nada é
+              publicado.
+            </p>
+            <ol class="chain" role="list">
+              <li>
+                <svg viewBox="0 0 20 14" aria-hidden="true">
+                  <path d="M2 7c4-6 8-6 8 0s4 6 8 0" />
+                </svg>
+                <div>
+                  <b>Conteúdo validado em build</b
+                  ><span>Competência sem projeto que a comprove quebra o build</span>
+                </div>
+              </li>
+              <li>
+                <svg viewBox="0 0 20 14" aria-hidden="true">
+                  <path d="M2 7c4-6 8-6 8 0s4 6 8 0" />
+                </svg>
+                <div><b>Testes unitários e end-to-end</b><span>Vitest e Playwright</span></div>
+              </li>
+              <li>
+                <svg viewBox="0 0 20 14" aria-hidden="true">
+                  <path d="M2 7c4-6 8-6 8 0s4 6 8 0" />
+                </svg>
+                <div>
+                  <b>Acessibilidade verificada</b
+                  ><span>axe-core contra WCAG 2.1 A/AA em todas as rotas</span>
+                </div>
+              </li>
+              <li>
+                <svg viewBox="0 0 20 14" aria-hidden="true">
+                  <path d="M2 7c4-6 8-6 8 0s4 6 8 0" />
+                </svg>
+                <div>
+                  <b>Integração contínua</b
+                  ><span>format · lint · typecheck · testes · build · e2e</span>
+                </div>
+              </li>
+            </ol>
+            <div class="sig-foot">
+              <a class="p" href="#">Ler o estudo de caso <span aria-hidden="true">→</span></a
+              ><a href="https://github.com/jeffnunespy/portfolio-web"
+                >Ver o código <span aria-hidden="true">↗</span></a
+              >
+            </div>
+          </article>
+        </section>
+
+        <section class="quire" aria-labelledby="ev">
+          <div>
+            <h2 id="ev">Competências e onde estão costuradas</h2>
+            <p class="aside">Nenhuma aparece sem um caderno que a demonstre.</p>
+          </div>
+          <div class="evid">
+            <div>
+              <h3>Front-end</h3>
+              <p>TypeScript, React, Next.js, CSS sem framework</p>
+            </div>
+            <div>
+              <h3>Engenharia de software</h3>
+              <p>Arquitetura modular, validação em build, design de sistemas, Git</p>
+            </div>
+            <div>
+              <h3>Qualidade</h3>
+              <p>Testes automatizados, end-to-end, WCAG 2.1 AA</p>
+            </div>
+            <div>
+              <h3>Operação</h3>
+              <p>Node.js, CI/CD</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="quire blank" id="roadmap" aria-labelledby="rm">
+          <div>
+            <h2 id="rm">Cadernos ainda não costurados</h2>
+            <p class="aside">
+              Escopo planejado. Folhas soltas, fora da lombada até existirem como código.
+            </p>
+          </div>
+          <ol role="list">
+            <li>
+              <b>HAYYANU</b>
+              <p>Gestão operacional, financeira e digital de estúdios de tatuagem.</p>
+              <small>Planejado</small>
+            </li>
+            <li>
+              <b>Sistema de Suporte/Helpdesk</b>
+              <p>Abertura, triagem e acompanhamento de chamados.</p>
+              <small>Planejado</small>
+            </li>
+            <li>
+              <b>Gerenciamento de Filas</b>
+              <p>Priorização de filas de atendimento em ambiente simulado.</p>
+              <small>Planejado</small>
+            </li>
+            <li>
+              <b>Transcrição e Análise de Áudio</b>
+              <p>Transcrição automática e análise de conteúdo.</p>
+              <small>Planejado</small>
+            </li>
+          </ol>
+        </section>
+
+        <footer>
+          <span>Referência C — Encadernação Exposta</span
+          ><span>Next.js · conteúdo em JSON versionado</span>
+        </footer>
+      </main>
+    </div>
+  </body>
+</html>

@@ -1,6 +1,7 @@
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import { test, expect } from "@playwright/test";
+import { getProjetosImplementados } from "../../lib/content";
 
 const perfil = JSON.parse(
   readFileSync(path.join(process.cwd(), "content", "profile.json"), "utf8"),
@@ -20,11 +21,11 @@ const pages = [
     title: /Projetos/,
     description: /estudos de caso/i,
   },
-  {
-    route: "/projetos/plataforma-portfolio",
-    title: /Plataforma de Portfólio/,
-    description: /Next\.js/i,
-  },
+  ...getProjetosImplementados().map((projeto) => ({
+    route: `/projetos/${projeto.slug}`,
+    title: literal(projeto.titulo),
+    description: literal(projeto.resumo),
+  })),
   {
     route: "/sobre",
     title: /Sobre/,

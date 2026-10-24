@@ -1,301 +1,352 @@
+---
+name: Minimalismo escuro
+description: Autoria visível — nome, trabalho e escolhas técnicas apresentados com precisão e espaço.
+colors:
+  ground: "#0c0f0e"
+  surface: "#121615"
+  ink: "#e7e4da"
+  muted: "#a9aea6"
+  line: "#34403a"
+  accent: "#ff9a6b"
+  focus: "#f2c46b"
+typography:
+  display:
+    fontFamily: "Geologica, Segoe UI, sans-serif"
+    fontSize: "clamp(3.6rem, 7.6vw, 5.75rem)"
+    fontWeight: 200
+    lineHeight: 1.02
+    letterSpacing: "-0.04em"
+  headline:
+    fontFamily: "Geologica, Segoe UI, sans-serif"
+    fontSize: "clamp(2rem, 3.8vw, 2.5rem)"
+    fontWeight: 200
+    lineHeight: 1.15
+    letterSpacing: "-0.025em"
+  title:
+    fontFamily: "Geologica, Segoe UI, sans-serif"
+    fontSize: "clamp(1.5rem, 2.9vw, 2.375rem)"
+    fontWeight: 300
+    lineHeight: 1.2
+    letterSpacing: "-0.025em"
+  callout:
+    fontFamily: "Geologica, Segoe UI, sans-serif"
+    fontSize: "clamp(2.5rem, 6vw, 4.75rem)"
+    fontWeight: 200
+    lineHeight: 1.15
+    letterSpacing: "-0.025em"
+  lead:
+    fontFamily: "Geologica, Segoe UI, sans-serif"
+    fontSize: "1.25rem"
+    fontWeight: 300
+    lineHeight: 1.5
+  body:
+    fontFamily: "Geologica, Segoe UI, sans-serif"
+    fontSize: "1.0625rem"
+    fontWeight: 300
+    lineHeight: 1.7
+  body-small:
+    fontFamily: "Geologica, Segoe UI, sans-serif"
+    fontSize: "0.95rem"
+    fontWeight: 300
+    lineHeight: 1.7
+  nav:
+    fontFamily: "Geologica, Segoe UI, sans-serif"
+    fontSize: "0.875rem"
+    fontWeight: 300
+    lineHeight: 1.7
+  action:
+    fontFamily: "Geologica, Segoe UI, sans-serif"
+    fontSize: "0.875rem"
+    fontWeight: 400
+    lineHeight: 1.7
+  label:
+    fontFamily: "Geologica, Segoe UI, sans-serif"
+    fontSize: "0.8125rem"
+    fontWeight: 300
+    lineHeight: 1.7
+rounded:
+  none: "0"
+  point: "50%"
+spacing:
+  gutter: "clamp(1.25rem, 5vw, 5rem)"
+  content-width: "88rem"
+  column-gap: "3rem"
+  section-space: "clamp(3rem, 6vw, 5.5rem)"
+  project-space: "2.75rem"
+  detail-padding: "clamp(1.25rem, 3vw, 2rem)"
+components:
+  name-signature:
+    textColor: "{colors.ink}"
+    typography: "{typography.display}"
+  nav-link:
+    textColor: "{colors.muted}"
+    typography: "{typography.nav}"
+  nav-resume:
+    textColor: "{colors.accent}"
+    typography: "{typography.nav}"
+  text-link:
+    textColor: "{colors.ink}"
+    typography: "{typography.action}"
+  text-link-accent:
+    textColor: "{colors.accent}"
+    typography: "{typography.action}"
+  project-text:
+    textColor: "{colors.ink}"
+    rounded: "{rounded.none}"
+    padding: "2.75rem 0"
+  project-details:
+    backgroundColor: "{colors.surface}"
+    textColor: "{colors.muted}"
+    rounded: "{rounded.none}"
+    padding: "{spacing.detail-padding}"
+  build-diagram:
+    backgroundColor: "{colors.surface}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.none}"
+    padding: "2rem"
+---
+
 <!-- impeccable:design-schema 2 -->
 
-# DESIGN.md — A Ficha de Catálogo
-
-Sistema visual do portfólio. Este documento descreve o mundo que está construído
-em `app/globals.css` e `app/layout.tsx`, não uma intenção futura.
-
-## Tese
-
-O portfólio é um **fichário catalográfico**, não uma vitrine. Cada projeto é uma
-ficha indexada que declara o que foi verificado e o que ainda não foi. A forma
-serve ao princípio constitucional do projeto — evidências acima de afirmações:
-uma ficha registra, não vende.
-
-**Anti-referência declarada:** a grade de cartões roxos com gradiente, sombra
-suave e cantos arredondados que o CSS anterior implementava e que a categoria
-"portfólio de dev" sempre entrega. Nenhum elemento novo deve reintroduzir
-gradiente decorativo, sombra ou raio de canto.
-
-## Linhagem
-
-Fichas de catálogo de arquivo e de biblioteca técnica. Papel-cartão, carimbo de
-tinta, régua tipográfica, linha de índice. O relevo vem do papel e da hierarquia
-de filetes — nunca de sombra simulada.
-
-## Paleta
-
-Tokens em `:root` (`app/globals.css`).
-
-| Token           | Valor     | Papel                                                                            |
-| --------------- | --------- | -------------------------------------------------------------------------------- |
-| `--ink`         | `#1a1a17` | Tinta principal: títulos, filetes fortes, fundo dos botões primários             |
-| `--ink-soft`    | `#4a4740` | Corpo de texto secundário; mínimo seguro sobre `--card-sunk`                     |
-| `--ink-faint`   | `#6f6a5f` | Rótulos de campo e índices **sobre `--card` apenas**                             |
-| `--card`        | `#f4f1e8` | Cartão: o fundo de toda a página                                                 |
-| `--card-raised` | `#faf8f2` | Superfície elevada discreta                                                      |
-| `--card-sunk`   | `#eae5d7` | Superfície rebaixada (notas, fundo de imagem)                                    |
-| `--rule`        | `#c8c2b0` | Pauta decorativa: separa células de grade cujo conteúdo já é legível sozinho     |
-| `--rule-edge`   | `#847d6a` | Contorno significante: o filete **é** o objeto (moldura, chip, nota, vazio)      |
-| `--rule-strong` | `#1a1a17` | Filete de separação hierárquica                                                  |
-| `--stamp`       | `#8a2c1e` | Carimbo cinábrio: voz única, aplicada com parcimônia                             |
-| `--stamp-wash`  | `#f0e2dd` | Lavagem do carimbo                                                               |
-| `--focus`       | `#1d4a4a` | Foco de teclado — distinto do carimbo, para não confundir estado com verificação |
-
-**Regra de contraste verificada.** `--ink-faint` sobre `--card-sunk` alcança
-apenas 4.27:1, abaixo do mínimo AA de 4.5:1 em corpo pequeno. Texto pequeno
-sobre `--card-sunk` usa `--ink-soft` (ver `.private-code-note p` e
-`.project-image--fallback`). Essa combinação já quebrou a suíte axe uma vez;
-não a reintroduza.
-
-**Filete decorativo vs. filete significante.** O sistema separa os dois porque a
-WCAG os trata de forma diferente, e uni-los degrada um dos lados.
-
-`--rule` é pauta: as hairlines que dividem as células de `.competency-grid`,
-`.project-grid`, `.project-detail__content` e `.hero__record`. Cada célula já se
-lê sozinha pelo texto; o filete só organiza a página. O critério 1.4.11 isenta
-separadores puramente estéticos, então esses ficam claros e o papel continua
-parecendo papel.
-
-`--rule-edge` é contorno: os casos em que apagar o filete apaga o componente —
-moldura de `.project-image`, borda de `.chip-list li`, `.empty-state`,
-`.availability-note`/`.private-code-note`, `.project-detail__placeholder-notice`
-e o polegar da barra de rolagem. Esses alcançam **≥3:1 sobre toda superfície em
-que assentam, inclusive `--card-sunk`**, nos dois temas: 3.26:1 no claro e
-3.74:1 no escuro no pior caso.
-
-Não promova toda hairline a `--rule-edge`: elevar a pauta ao mesmo peso
-aproximaria os filetes do valor de `--ink-faint` e as grades de quatro colunas
-passariam a competir com o próprio texto. A distinção é funcional, não estética.
-Os glifos `::before` (`·` em `.tag`, `—` em listas) permanecem em `--rule` — são
-ornamento adjacente a texto que já carrega o sentido.
-
-## Tipografia
-
-Três fontes auto-hospedadas via `next/font/google` (`app/layout.tsx`), expostas
-como variáveis CSS:
-
-| Variável         | Fonte          | Uso                                                                                 |
-| ---------------- | -------------- | ----------------------------------------------------------------------------------- |
-| `--font-display` | Zilla Slab     | Títulos e nomes de ficha; a serifa com peso de catálogo impresso                    |
-| `--font-body`    | Archivo        | Corpo de texto corrido; pesos reais 400 e 600 para leitura e ênfase                 |
-| `--font-field`   | Archivo Narrow | Rótulos de campo, índices, botões, tags — sempre em caixa alta com `letter-spacing` |
-
-Os fallbacks acompanham a classe tipográfica da fonte real (sans para Archivo,
-serif para Zilla Slab), para o texto não trocar de classe durante o carregamento.
-
-Zilla Slab é entregue somente nos pesos 600 e 700. Dados catalográficos e leads
-que antes usavam 500 compartilham o 600: a diferença visual é mínima neste
-corpo, enquanto elimina um arquivo de fonte da primeira visita. Archivo e
-Archivo Narrow permanecem variáveis nos pesos necessários ao sistema.
-
-`.hero__name` usa `clamp(2.7rem, 11vw, 7rem)` com `hyphens: auto` — o piso e a
-hifenização existem porque "Desenvolvedor" sozinho estoura a viewport de 320px
-no corpo monumental.
-
-A escala tipográfica é nomeada por papel em `:root`: títulos de página, seção e
-ficha; lead; dado compacto; rótulo; controle; e texto de apoio. A
-microtipografia usa apenas três degraus (`0.7rem`, `0.75rem`, `0.8rem`) em vez
-de variações quase imperceptíveis por componente. Texto informativo curto fica
-em `0.875rem`; corpo corrido permanece em `1.0625rem`. Archivo inclui o peso 600,
-usado como padrão em `<strong>`; `font-synthesis: none` impede pesos sintéticos.
-
-## Estratégia de carregamento
-
-A navegação global mantém o prefetch do Next.js para destinos diferentes da
-rota atual. Em ensaio local sob rede limitada, buscar uma rota secundária
-somente depois do clique excedeu o limiar de 200 ms adotado para a medição;
-antecipá-la preserva uma resposta sem espera perceptível. A rota já aberta usa
-`prefetch={false}` e o rodapé não repete as antecipações que o cabeçalho já
-iniciou.
-
-## Forma
-
-- **Zero `border-radius`. Zero `box-shadow`.** Em todo o sistema, sem exceção.
-- Estrutura vem de filetes de 1px (`--rule`/`--rule-edge`) e 2px/3px (`--rule-strong`).
-- O corpo carrega uma textura de fibra cruzada quase imperceptível (dois
-  `repeating-linear-gradient` a 1.5% e 1.2% de opacidade) — é papel, não cor chapada.
-- Botões são carimbos retangulares em Archivo Narrow, caixa alta.
-- `::selection` é tematizada.
-
-## Os dois eixos verticais
-
-O desktop tem **dois eixos, não quatro**. Toda rota se apoia neles, e é o que
-faz o conjunto ler como um fichário em vez de páginas avulsas.
-
-**Eixo de tinta.** A margem esquerda do container (`--content-width`, 1240px):
-onde começam índice, `h1`, corpo, cabeçalho e rodapé, em todas as rotas.
-
-**Eixo de campo.** A margem de consulta à direita: `--field-column` (19rem) com
-`--field-gutter` de goteira. É onde assentam as tabelas catalográficas — os
-campos do hero (`.hero__record`), os do 404 (`.message-page__record`) e a
-procedência do índice visual da ficha (`.project-detail__visual-index-sources`).
-Numa ficha real essa coluna tem uma largura só; é o que permite folhear o
-acervo e reencontrar o mesmo dado sempre na mesma posição. Antes cada rota
-inventava a sua — 320px no hero, 304px no 404, 477px na ficha, 620px no
-detalhe — e o eixo direito oscilava mais de 300px entre rotas do mesmo fichário.
-
-Duas exceções deliberadas, ambas porque o que ocupa a margem ali não é uma
-tabela de rótulos:
-
-- **Ficha única** (`.project-grid:has(.project-card:only-child)`): o eixo vale
-  invertido. O corpo é leitura corrida e seria estrangulado em 19rem; quem recua
-  para a margem é o índice visual, com `--field-column + 6rem` porque carrega
-  uma imagem 5:3 com título interno, ilegível na medida de campo.
-- **`.project-detail__content`**: duas colunas iguais de campo de ficha, não
-  corpo mais margem.
-
-Abaixo de 900px os dois eixos colapsam em um só e as tabelas de campo viram
-grades horizontais.
-
-## Escassez assumida
-
-O acervo tem uma ficha implementada. O layout declara isso em vez de disfarçar:
-
-- Uma ficha única não finge uma grade de duas colunas com metade vazia — vira o
-  registro principal, ocupando a página.
-- No `.project-detail__content`, o último campo que cairia sozinho na coluna
-  esquerda passa a ocupar a linha inteira e perde o filete vertical: pauta não
-  separa célula vazia. Uma linha curta é a leitura correta de um acervo curto.
-- A paridade dos filetes é contada a partir de `.project-detail__wide`, não por
-  `nth-of-type` puro — a seção larga ocupa a linha toda e inverte a contagem de
-  tudo que vem depois.
-
-Nenhum desses vazios é preenchido com placeholder, métrica ou ficha inventada.
-
-## Assinatura e currículo
-
-O cabeçalho usa `perfil.nome` como assinatura textual e link para o início. A
-assinatura permanece visível acima da dobra em toda rota: à esquerda da
-navegação no desktop e em uma faixa própria de 44px no mobile. Ela substitui a
-marca decorativa “portfólio.”; identidade pessoal é informação, não ornamento.
-
-Em `/curriculo`, o mesmo nome é o `<h1>`. Formação e trajetória usam linhas de
-registro com período em algarismos tabulares e conteúdo vindo de
-`content/profile.json`. O modelo exige `periodo`, `titulo` e `descricao` em cada
-marco, para que a página não volte a ser apenas um resumo de competências nem
-publique instituição ou vínculo profissional inventado.
-
-## Estado sem depender de cor
-
-Cada status de projeto carrega uma **marca tipográfica legível sem cor alguma**,
-via `::before` em `.project-status-badge--*`:
-
-| Status       | Marca | Tratamento                      |
-| ------------ | ----- | ------------------------------- |
-| Concluído    | `✓`   | Tinta sólida invertida          |
-| Em andamento | `▶`   | Carimbo cinábrio                |
-| Pausado      | `‖`   | Borda tracejada                 |
-| Arquivado    | `▣`   | Borda pontilhada, tinta apagada |
-
-Arquivado usou `line-through` numa versão anterior; foi removido porque riscava
-o rótulo inteiro e prejudicava a leitura. O glifo e a borda bastam.
-
-Os glifos são escritos como `content: "✓" / ""` — o alternativo vazio mantém a
-marca visível e a mantém fora do nome acessível, para o leitor de tela anunciar
-"Concluído" e não "✓ Concluído". Vale para todo glifo decorativo do sistema:
-badge de estado, marca de estrutura de conteúdo, ponto de `.tag` e travessão das
-listas de campo. Um glifo novo entra pela mesma forma.
-
-Pelo mesmo motivo, toda `<ul>` que recebe `list-style: none` carrega `role="list"`
-no JSX: o Safari com VoiceOver descarta a semântica de lista quando o marcador
-some, e o papel explícito a devolve sem alterar um pixel.
-
-## Alto contraste e cores forçadas
-
-`@media (forced-colors: active)` troca os tokens autorais pelas cores semânticas
-do sistema (`Canvas`, `CanvasText`, `LinkText` e `Highlight`). A textura do cartão
-é removida, o foco cresce para 3px e links textuais recuperam sublinhado. A aba
-atual mantém filete e sublinhado; os quatro status mantêm glifos e estilos de
-borda distintos.
-
-`forced-color-adjust: none` é restrito aos elementos cuja inversão ou traço
-carrega significado — botão primário, destaque de currículo, carimbo e badges —
-e esses elementos usam somente cores de sistema nesse modo. Nunca aplique essa
-exceção a uma árvore inteira nem restaure nela cores hexadecimais da paleta.
-
-## Índices visuais de projeto
-
-`public/images/projects/*.svg` são **índices visuais desenhados**, não capturas
-de tela. Somente o índice de `plataforma-portfolio` é publicado como imagem de
-uma ficha, porque esse registro representa software implementado. Os quatro SVGs
-de escopo planejado permanecem como assets catalográficos, mas não são renderizados
-em `/roadmap` nem transformam intenção em ficha ou evidência. Simular telas de
-aplicações inexistentes seria evidência inventada — proibido pelo princípio X da
-constituição. Cada SVG declara sua natureza no próprio `<desc>`.
-
-Constroem-se em tinta sobre cartão, na mesma grade de campo do site, sem
-gradiente e sem raio.
-
-A moldura preserva a proporção nativa **5:3 (1200×720)** no card e no detalhe,
-sem recorte por `object-fit`. Cada SVG traz uma folha de estilo interna para
-`prefers-color-scheme: dark`: cartão `#242019`, tinta `#efe9db`, tinta secundária
-`#b9b1a0` e pauta `#41392c`. Como o SVG é carregado como imagem externa, essa
-adaptação precisa viver no próprio arquivo; os tokens CSS da página não atravessam
-a fronteira do recurso.
-
-Quando publicado, o índice é **decorativo na árvore de acessibilidade**:
-`ProjectImage` usa `alt=""`, porque a ficha ao lado já dá a identificação que a imagem repetiria.
-Se alguma passar a carregar dado próprio — uma captura real, um diagrama — o
-alternativo precisa descrever esse dado, não o título.
-
-## Cartões Open Graph
-
-`lib/og-image.tsx` renderiza o mesmo mundo em 1200×630: cartão `#f4f1e8`,
-moldura de tinta de 3px, linha de índice no topo entre filetes, carimbo
-"Em formação" no rodapé. Recebe `indice` (não `eyebrow`).
-
-## Bans locais
-
-- Nenhum `eyebrow` — nem como classe, nem como campo de dados. Foi removido de
-  todas as rotas e do helper de OG; a linha de índice (`.hero__index`) o
-  substitui e carrega dado real (registro, contagem, slug, código HTTP).
-- Nenhuma numeração decorativa (`01`/`02`/`03`) que não seja um índice real.
-- Nenhum gradiente, sombra ou canto arredondado.
-- Nenhuma métrica, resultado ou evidência inventada em conteúdo ou imagem.
-- Nenhum projeto não implementado renderizado como ficha, nem `/projetos/<slug>`
-  resolvendo para escopo planejado.
-- Nenhum `title` como portador de informação essencial: não é anunciado de forma
-  confiável por leitor de tela nem alcançável por teclado ou toque.
-
-## Fichas e roadmap: duas superfícies, nunca uma
-
-A distinção é constitucional, não estética. `/projetos` só abriga software
-implementado (`real: true`): tem imagem, selo de status, competências e link de
-detalhe. Escopo planejado vive em `/roadmap` e usa vocabulário próprio —
-`.roadmap-entry`, moldura `1px dashed var(--rule-edge)` sobre `--card-sunk`,
-lista numerada (`<ol>`), sem imagem, sem selo, sem link de detalhe e sem
-competências. Uma entrada de roadmap declara intenção; uma ficha declara
-entrega, e o leitor nunca deve precisar do texto para saber qual está vendo.
-
-`.roadmap-entry` deliberadamente não reusa `.project-card` nem `.project-grid`:
-reutilizar a moldura da ficha faria plano parecer trabalho. A moldura tracejada
-é o vocabulário já estabelecido do sistema para registro incompleto (ver
-`.private-code-note`).
-
-O mesmo limite vale para tecnologias. `.chip-list` é inventário de stack de uma
-ficha implementada e não aparece no roadmap. Tecnologia pretendida usa
-`.roadmap-stack`: pauta tracejada, termos sem caixa e corpo em tinta secundária.
-Quando uma plataforma concentra muitos itens, a lista é condensada por camada.
-Na HAYYANU, os 19 itens ficam em duas linhas sem perder informação: nove itens
-de aplicação e Google Cloud Platform como rótulo dos nove serviços GCP. A
-hierarquia expõe que se trata de hipótese arquitetural, não de competência ou
-entrega comprovada.
-
-Sobre `--card-sunk`, `--ink-faint` fica em 4.27:1 e reprova em AA; por isso
-`.roadmap-entry__index .muted-label` sobe para `--ink-soft`. Vale para qualquer
-corpo pequeno que assente sobre o cartão rebaixado.
-
-Ordem dos registros: 001 Início · 002 Fichas · 003 Escopo planejado ·
-004 Perfil · 005 Currículo.
-
-## Responsivo
-
-Breakpoints em 900px, 820px e 640px. Em 640px a grade colapsa para uma coluna,
-os filetes verticais somem, os botões do hero empilham na mesma medida e as
-ações do card ocupam a largura inteira para evitar CTAs estreitos e quebrados.
-A assinatura ocupa uma faixa de toque de 44px acima da navegação compacta; os
-cinco rótulos usam toda a largura da viewport e não quebram linha.
-A suíte E2E verifica ausência de rolagem horizontal em 320px, 768px e 1280px,
-a geometria dos CTAs em 320px, a proporção 5:3 das fichas e zoom de texto a
-200% sem perda de conteúdo.
+# Design System: Minimalismo escuro
+
+## Overview
+
+**Creative North Star: "Autoria visível"**
+
+**Minimalismo escuro** é o visual oficial do portfólio, aprovado expressamente pelo
+proprietário em 2026-10-23. A tese **Autoria visível** aproxima o nome, o trabalho e as
+escolhas técnicas: Geologica leve, marfim sobre fundo escuro, ponto laranja recorrente e
+linhas abertas deixam a evidência e seus limites conduzirem a leitura.
+
+A direção já está implementada no [protótipo de referência](docs/referencias-visuais/prototipo-minimalista-escuro.html),
+na versão final **sem prévia de Nana Silva**. Esta aprovação é documental: as rotas Next.js
+ainda usam o visual anterior e sua migração será uma tarefa posterior. Não houve publicação
+nem migração da aplicação nesta etapa. O frontmatter registra valores extraídos do HTML;
+este texto e o sidecar descrevem sua aplicação e os compromissos que a migração deve preservar.
+
+A [decisão oficial](docs/referencias-visuais/direcao-minimalista-escura.md) registra a autoridade
+da direção. O [sistema anterior](docs/referencias-visuais/design-levantamento-sondagem.md) foi
+preservado como histórico da implementação que continua em código. Composição exata da home,
+ordem dos projetos e exemplos fictícios pertencem ao documento da referência e ao brief local
+`.impeccable/surfaces/docs-referencias-visuais-prototipo-minimalista-escuro-html.md`,
+não ao sistema global. Rotas, competências, estudos de caso completos e roadmap continuam
+sob a especificação em `specs/` e a constituição do projeto.
+
+O sidecar e os artefatos em `.impeccable/` são locais e seguem as exclusões existentes do Git.
+As regras e os valores normativos necessários à migração estão neste documento versionado.
+
+**Key Characteristics:**
+
+- Tema escuro único, marfim legível e uma cor de acento usada com parcimônia.
+- Geologica leve como voz única; informação de apoio em tamanho menor, sem mono obrigatória.
+- Nome em duas linhas, “Nunes.” recuado e ponto laranja como assinatura reconhecível.
+- Projetos em linhas abertas; superfícies tonais apenas para contexto e diagramas.
+- Interação nativa, foco visível e somente transição de cor nos links.
+- Evidência real, estágio declarado e nenhum preenchimento fictício nas rotas públicas.
+
+## Colors
+
+Paleta noturna de marfim e verdes quase neutros, com laranja de leitura e âmbar reservado
+a foco. Os sete valores canônicos estão no frontmatter e correspondem às propriedades de
+`:root` do HTML de referência; não se herdam as camadas de isolinha da direção anterior.
+
+### Primary
+
+- **Laranja de autoria** (`accent`): ponto do nome e da assinatura, marcadores de projeto real
+  e de decisão, links destacados, hover dos links, ícones do fluxo e marcador nativo de
+  `summary`. Seleção de texto inverte para fundo escuro sobre esse laranja.
+
+### Secondary
+
+- **Âmbar de foco** (`focus`): contorno de teclado distinto do acento editorial. Não indica
+  status nem entrega.
+
+### Neutral
+
+- **Fundo noturno** (`ground`): página, contêiner e base da leitura.
+- **Superfície de contexto** (`surface`): conteúdo expandido e diagrama semântico.
+- **Marfim principal** (`ink`): nome, títulos, tecnologias, rótulo de projeto real e links.
+- **Marfim de apoio** (`muted`): descrições, contexto, metadados, legendas e navegação em repouso.
+- **Filete discreto** (`line`): separação entre conteúdos já identificados por texto e espaço.
+  É decorativo; não serve como único limite de controle, indicador de estado ou portador de sentido.
+
+### Named Rules
+
+**The Ponto de Autoria Rule.** O laranja assina o nome e aproxima projetos reais e decisões documentadas. Não certifica publicação, maturidade ou resultado; o texto sempre declara o estágio.
+
+WCAG 2.1 A/AA é requisito preservado. Texto usa os tons de leitura; estado e significado
+precisam continuar legíveis sem cor. O filete discreto não substitui o anel de foco nem a
+sinalização textual. Em cores forçadas, preservar as cores de sistema: o HTML usa `Highlight`
+no foco e `CanvasText` nos pequenos pontos de projeto e decisão. A migração deve manter links,
+marcadores e controles perceptíveis nesse modo, sem impor a paleta de marca.
+
+## Typography
+
+**Display Font:** Geologica (com “Segoe UI”, sans-serif).
+
+**Body Font:** Geologica (mesma pilha).
+
+**Label/Mono Font:** Geologica; não há família mono no protótipo aprovado.
+
+**Character:** sans geométrica leve com títulos de traço fino e corpo arejado. A hierarquia
+vem de escala, posição e respiro; pesos médios ficam nos links, na assinatura pequena e nas
+frases que apresentam decisões.
+
+### Hierarchy
+
+- **Display:** nome pessoal, no papel `display`; duas linhas, “Nunes.” com recuo de 0.55em e
+  ponto decorativo. O nome acessível continua completo, sem o ponto.
+- **Headline:** títulos de seção, no papel `headline`; traço leve e linhas equilibradas.
+- **Title:** nomes de projetos, no papel `title`; diferenciados do corpo pela escala.
+- **Callout:** chamada de contato, no papel `callout`; a escala maior encerra a leitura sem
+  impor essa composição às demais rotas.
+- **Lead:** posicionamento, no papel `lead`; o estágio “em formação” permanece explícito.
+- **Body:** leitura principal, no papel `body`; corpo menor de descrições usa `body-small`,
+  com medida observada de 40ch nos projetos e 42ch no texto de apresentação.
+- **Nav / Action:** navegação em 300 e links de ação em 400, nos papéis `nav` e `action`.
+- **Label:** metadados, tecnologias, legenda e rodapé; texto comum, sem caixa-alta compulsória.
+
+Os títulos usam `text-wrap: balance`. Até 760px, a navegação compacta usa 0.8125rem. As
+variações locais de chamada e do primeiro viewport pertencem ao brief; não impõem a mesma
+composição a todas as rotas.
+
+**The Uma Voz Rule.** Geologica atende nome, títulos, corpo, navegação e metadados. Martian Mono não é uma voz obrigatória da direção nova.
+
+O HTML independente carrega Geologica pelo Google Fonts e tem fallback. **Na produção, servir
+a fonte localmente pelo mecanismo `next/font` já existente**; a URL externa do protótipo não
+é requisito nem dependência da aplicação. Esta etapa não altera a configuração de fontes,
+nem os testes de carregamento que ainda descrevem o sistema anterior.
+
+## Layout
+
+O contêiner observado limita a largura a `spacing.content-width`, centraliza a página e usa
+`spacing.gutter` para as margens fluidas. Filetes e intervalos verticais estabelecem o ritmo,
+sem enquadrar cada unidade. A grade recorrente é assimétrica (1.3fr / 1fr), com intervalo
+`spacing.column-gap`; o projeto que acompanha um diagrama inverte a proporção. Isso é
+vocabulário de composição, não uma grade obrigatória para todas as rotas.
+
+Seções usam `spacing.section-space`; linhas de projetos, `spacing.project-space`, com ajustes
+nas extremidades. Textos longos mantêm medidas de leitura, sem esticar parágrafos para ocupar
+o contêiner. Cabeçalhos, metadados, grupos de links e rodapé quebram linha naturalmente.
+
+Até 760px, as composições de duas colunas se empilham, o cabeçalho assume direção vertical e
+a navegação distribui os links na largura disponível. O diagrama passa a uma coluna até
+1050px, com etapas em ordem e conectores reposicionados. Preservar leitura, zoom, ordem de
+foco e ausência de perda de conteúdo nas larguras estreitas. Esses limiares são os observados
+no protótipo; adaptações de outras rotas devem responder ao conteúdo real sob a especificação.
+
+O cabeçalho do protótipo participa do fluxo normal, sem posição fixa ou fundo em degradê.
+O deslocamento para âncoras reserva 2rem no topo. A ordem exata de seções, a posição do
+primeiro projeto e os exemplos fictícios ficam no brief da superfície.
+
+## Elevation & Depth
+
+O sistema é plano: não usa sombras, degradês nem relevo por terreno. A única mudança de
+plano é tonal, em `surface`, para explicar um fluxo ou revelar contexto em `details`.
+Filetes, tipografia e espaço distinguem unidades sem fabricar camadas decorativas.
+
+**The Linha Aberta Rule.** Organizar trabalho por texto, filetes e espaço. Reservar a superfície tonal a contexto revelado e diagramas; não cercar cada projeto com um cartão decorativo.
+
+Não há paralaxe, varredura, lente, curva de terreno ou efeito ligado ao ponteiro. A única
+transição do protótipo é `color 160ms ease-out` em links; `prefers-reduced-motion: reduce`
+a remove. Mudanças de layout e a abertura nativa de `details` permanecem imediatas.
+
+## Shapes
+
+Superfícies e áreas de conteúdo têm cantos retos, sem cápsulas. A exceção recorrente é o
+ponto circular de autoria (`rounded.point`): aparece como pontuação tipográfica no nome e
+na assinatura; como marca de 5px nos rótulos de projeto real e nos títulos de decisões.
+O ponto de texto não deve receber dimensões artificiais de marcador.
+
+Filetes de 1px separam linhas abertas; os exemplos fictícios do protótipo usam tracejado e
+rótulo explícito, sem converter esse recurso local em regra para o roadmap. Ícones são SVG
+lineares, sem preenchimento; setas de link usam traço `currentColor` de 1.5 e terminais retos.
+Não são imagens raster nem fontes de ícones.
+
+## Components
+
+### Assinatura e nome
+
+A assinatura pequena do cabeçalho é um link em Geologica 400, sem sublinhado e com alvo
+mínimo de 44px. O nome em destaque usa o papel `display`, quebra em duas linhas e desloca
+“Nunes.” em 0.55em. Ambos repetem o ponto laranja; `aria-hidden="true"` remove a pontuação
+decorativa do nome acessível “Jefferson Nunes”. A assinatura reconhecível não obriga toda
+rota a repetir o hero da home.
+
+### Navigation
+
+Navegação horizontal flexível, em `muted`; currículo e hover em `accent`, sem movimento ou
+sublinhado animado. O HTML usa âncoras reais e mantém o currículo acessível por link.
+Até 760px, cabeçalho e navegação se reorganizam sem menu novo. Estados de rota atual e
+integração Next.js serão definidos na migração conforme as rotas e acessibilidade existentes;
+o protótipo não implementa um estado de rota atual.
+
+### Links de ação e foco
+
+Ações são links de texto com SVG de seta quando pertinente, sublinhado legível e intervalo
+de 0.75rem entre texto e ícone. A variante padrão usa `ink`; a destacada, `accent`. O hover
+altera somente a cor. Navegação, ações e `summary` têm altura mínima de 44px. O foco visível
+usa contorno sólido de 2px em `focus`, afastado 5px, e `Highlight` em cores forçadas.
+
+O link de salto, oculto fora de foco, aparece como texto escuro sobre marfim e aponta para
+o `main` com `tabindex="-1"`. Nome de link, alvo e ordem do documento devem permitir uso
+completo por teclado. Nenhuma informação essencial depende de hover ou `title`.
+
+### Projeto textual
+
+O projeto é uma linha editorial aberta: título, rótulo “Projeto real”, natureza e estágio,
+descrição, stack, evidência e limitações. Metadados e grupos de links quebram linha. A marca
+laranja acompanha o rótulo textual; a cor sozinha não distingue trabalho entregue de intenção.
+
+Na referência aprovada, **Nana Silva permanece textual**, em validação, com link real para
+o site de validação e nota de repositório privado. Não há imagem, captura, legenda de captura
+ou link de PNG. A exceção de apresentação está formalizada em **FR-006a** da especificação;
+os demais projetos continuam sujeitos a FR-006. Isso não autoriza retirar os arquivos de imagem referenciados pelo schema
+de conteúdo nem eliminar estudos de caso completos. A aprovação visual tampouco muda o
+estado de lançamento do projeto ou as competências comprovadas.
+
+### Detalhes de decisão
+
+`details` e `summary` nativos revelam escolha e limite sem JavaScript. O marcador de
+`summary` usa `accent`; texto em repouso usa `muted` e passa a `ink` no hover ou quando
+aberto. O painel usa `surface` e `spacing.detail-padding`, com duas colunas que se empilham
+até 760px. Títulos internos em 400 e pontos decorativos ajudam a leitura, sem substituir o
+conteúdo. Preservar abertura e fechamento por teclado, foco e estado nativos.
+
+A primeira pessoa descreve somente decisões sustentadas pelas fontes reais. Resumos em
+`details` complementam a consulta; não substituem os campos de estudo de caso aprovados
+na especificação.
+
+### Diagrama semântico de publicação
+
+`figure` com `figcaption`, superfície tonal e três etapas em **`ol role="list"`**: Conteúdo
+(JSON versionado), Validação (campos e evidências) e Publicação (páginas estáticas). O papel
+explícito preserva semântica de lista ao retirar os marcadores. Toda lista sem marcador
+mantém `role="list"`.
+
+Os ícones e conectores são SVG decorativos com `aria-hidden="true"`; o texto carrega o
+significado. A legenda identifica um esquema simplificado do build. Não é monitor de CI
+nem execução ao vivo. A composição horizontal passa a vertical até 1050px; nada anima as
+etapas. O diagrama é HTML/SVG, sem raster publicado na referência atual.
+
+## Do's and Don'ts
+
+### Do:
+
+- **Do** usar os tokens do frontmatter e a mesma Geologica leve em toda a hierarquia.
+- **Do** preservar o nome acessível “Jefferson Nunes” e esconder o ponto decorativo da tecnologia assistiva.
+- **Do** declarar estágio, limitações, procedência e caráter simplificado de cada evidência.
+- **Do** manter alvos de pelo menos 44px, foco visível, operação por teclado e listas sem marcador com `role="list"`.
+- **Do** preservar WCAG 2.1 A/AA, cores forçadas, movimento reduzido e legibilidade no empilhamento responsivo.
+- **Do** servir Geologica localmente na produção com o mecanismo `next/font` existente.
+
+### Don't:
+
+- **Don't** reintroduzir terreno, curvas, paralaxe, varredura, lente ou movimento complexo.
+- **Don't** usar sombra, gradiente decorativo, cápsulas ou cartões contornados para ornamentar projetos.
+- **Don't** apresentar Nana Silva com captura, prévia de imagem ou link de PNG; preservar o estado de validação e o link real.
+- **Don't** tratar o diagrama de build como execução ao vivo ou inventar verificação, métrica ou resultado.
+- **Don't** promover Acervo, Intervalo, a ordem dos projetos ou a composição exata da home a regra global ou dado a migrar.
+- **Don't** remover imagens exigidas pelo schema de conteúdo nem reduzir estudos de caso, competências, rotas ou roadmap por causa desta aprovação visual.
+- **Don't** assumir que a aprovação documental já migrou ou publicou a aplicação, nem usar `title` como portador de informação essencial.

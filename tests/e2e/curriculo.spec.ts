@@ -117,9 +117,23 @@ test("US3 - página de currículo é visualizável e oferece PDF para download",
 
   // O conteúdo importa, não só o status: um PDF de modelo é pior que nenhum.
   const texto = (await pdfResponse.body()).toString("latin1");
+  expect(texto.startsWith("%PDF-")).toBe(true);
   for (const marcador of MARCADORES_DE_TEMPLATE) {
     expect(texto.toLowerCase()).not.toContain(marcador.toLowerCase());
   }
+
+  const downloadPromise = page.waitForEvent("download");
+  await downloadLink.click();
+  const download = await downloadPromise;
+  expect(download.suggestedFilename()).toBe("curriculo.pdf");
+  expect(await download.failure()).toBeNull();
+
+  const downloadPath = await download.path();
+  expect(downloadPath).not.toBeNull();
+  const arquivoPublicado = readFileSync(
+    path.join(process.cwd(), "public", perfil.linkCurriculo!.slice(1)),
+  );
+  expect(readFileSync(downloadPath!)).toEqual(arquivoPublicado);
 });
 
 test("US3 - o meio de contato do currículo acompanha o estado do perfil", async ({ page }) => {

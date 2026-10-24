@@ -15,6 +15,33 @@ auditoria Impeccable. Os bloqueios P0 de conteúdo confirmado e currículo defin
 
 **Note**: This template is filled in by the `/speckit-plan` command; its definition describes the execution workflow.
 
+### Atualização de conteúdo — Nana Silva (2026-10-23)
+
+O proprietário solicitou incluir o catálogo Nana Silva como implementação real e forneceu
+`https://nana-silva-validacao.pages.dev/`. O relatório técnico de 2026-10-22 é a fonte para
+funcionalidades, arquitetura e limitações; o endereço principal respondeu com HTTP 200 e seu HTML
+identifica a artista e o catálogo. A publicação é apresentada como ambiente de validação, com
+status "Em andamento", sem inferir lançamento comercial ou aprovação dos portões pendentes.
+
+A premissa inicial de uma única implementação deixa de descrever o acervo atual. Isso é evolução
+dos dados prevista em FR-004/FR-004a, sem alterar requisitos, schema ou componentes. Adicionar o JSON
+e um índice SVG ilustrativo, ajustar a frase exclusiva do perfil e sincronizar seu PDF. Adaptar as
+verificações que pressupõem ficha única para conferir posições, vizinhos e ordem de foco no acervo;
+incluir o novo detalhe nas verificações de metadados, responsividade e acessibilidade. O proprietário
+confirmou desenvolvimento completo e natureza profissional. O endereço principal fornecido é a
+evidência pública; a consulta de metadados do repositório confirmou visibilidade privada, representada
+por `linkRepositorio: "privado"`, sem divulgar seu endereço no estudo de caso.
+
+### Visual oficial — Minimalismo escuro (2026-10-23)
+
+O proprietário aprovou o HTML final **sem prévia de Nana Silva** como novo visual oficial.
+Esta decisão substitui a direção Levantamento e sondagem para a próxima migração visual,
+preservando stack e dados e formalizando a exceção de apresentação já autorizada em FR-006a.
+Os demais requisitos funcionais permanecem vigentes. Registro em
+[`direcao-minimalista-escura.md`](../../docs/referencias-visuais/direcao-minimalista-escura.md).
+`DESIGN.md` passa a registrar o sistema aprovado, já construído no protótipo; as rotas Next.js
+continuam na implementação anterior até a fase 17 de `tasks.md`.
+
 ## Summary
 
 Levar a experiência pública já implementada da stack atual (Next.js 14.2.18, React 18.3, Node 20,
@@ -155,6 +182,91 @@ biblioteca de schema runtime só entra se o arquivo passar a acumular regras a p
 mini-framework de validação — critério registrado em [research.md](./research.md).
 
 ## Convergence Design
+
+### Emenda vigente — Minimalismo escuro (2026-10-23)
+
+Referência oficial: `docs/referencias-visuais/prototipo-minimalista-escuro.html`, na versão
+sem captura de Nana Silva. Tokens e componentes em `DESIGN.md`; composição da home no documento
+adjacente e no brief da superfície. O registro desta decisão é a tarefa T101; T102–T105
+continuam pendentes. Nenhuma implementação ou publicação é declarada por esta emenda.
+
+- **Arquitetura e dados:** preservar Next.js 16, React 19, TypeScript, CSS puro, geração
+  estática, metadados, `lib/content.ts`, JSONs e validação de evidências. Nenhuma dependência,
+  coleta de dados ou alteração de schema é necessária. Consultar os guias locais do Next.js
+  antes de implementar.
+- **Identidade:** tema escuro, marfim, laranja discreto, Geologica leve, assinatura “Nunes.” e
+  composição aberta por texto, espaço e filetes. Servir Geologica localmente pelo mecanismo
+  `next/font` já adotado. A URL Google Fonts do protótipo não é requisito da aplicação.
+  Martian Mono, isolinhas, terreno, lente, varredura e paralaxe deixam de orientar o novo visual.
+- **Conteúdo:** derivar todas as seções e comprovações dos dados reais. Manter Nana Silva em
+  validação, com repositório privado, apresentação textual e seus limites. Acervo e Intervalo
+  não entram em `content/` ou em evidências. O esquema da plataforma é semântico e ilustrativo,
+  sem sugerir execução de CI ao vivo.
+- **Adaptações do protótipo ao contrato vigente:** a navegação por âncoras do HTML não remove
+  as rotas existentes. A home precisa conservar posicionamento e competências por área na
+  primeira dobra em 1280px (FR-001–FR-003/SC-001), e somente projetos reais podem ser destacados.
+  Preservar `/roadmap`, campos completos dos estudos de caso e currículo HTML/PDF. A retirada
+  da prévia é a exceção de exibição de FR-006a para Nana Silva; não remove imagens obrigatórias
+  do schema, arquivos públicos ou metadados. A exigência de exibição de FR-006 continua para
+  os demais projetos. T103 deve verificar a ausência da prévia de Nana e a presença do seu
+  campo/arquivo/metadados, além dos campos e ações preservados.
+- **Interações e acessibilidade:** preservar os destinos e a informação útil dos controles
+  existentes, reorganizando a comprovação técnica para a nova composição. Usar divulgações
+  nativas quando houver conteúdo expansível. Foco, salto, ordem de teclado, contraste AA,
+  `role="list"` em listas sem marcador, movimento reduzido e cores forçadas permanecem gates.
+- **Validação por fatia:** T102 cobre moldura/home e seus fluxos; T103 cobre catálogo/fichas;
+  T104 cobre demais rotas e estados. Cada uma inclui testes funcionais/a11y e documentação.
+  T105 repete formato, lint, tipos, unitários, build e E2E funcional/a11y, confere o orçamento
+  tipográfico existente e inspeciona desktop/celular. Alterar expectativas visuais somente
+  quando substituídas por verificações equivalentes da nova direção, sem afrouxar os contratos.
+
+**Limite operacional:** a aprovação do visual não autoriza deploy. T055 continua aberta até
+as inspeções humanas/de preview serem efetivamente concluídas.
+
+### Histórico — emenda Levantamento e sondagem (2026-10-23)
+
+Esta emenda documenta a migração entregue na fase 15. Foi substituída como direção normativa
+pela emenda vigente acima; seus resultados e tarefas concluídas permanecem no histórico.
+
+Direção aprovada pelo proprietário em 2026-10-23, na versão sem lente e com o movimento das curvas:
+[candidato-levantamento-sondagem.md](../../docs/referencias-visuais/candidato-levantamento-sondagem.md)
+e o protótipo `docs/referencias-visuais/prototipo-levantamento-sondagem.html`. A migração substitui
+a gramática de ficha catalográfica em todas as rotas públicas sem alterar requisitos funcionais,
+modelo de conteúdo, validação de build, rotas ou metadados.
+
+- **Arquitetura**: mesma stack (Next.js 16, React 19, TypeScript, CSS puro em `app/globals.css`).
+  Geologica (variável) e Martian Mono 400 entram por `next/font/google` e são servidas pelo próprio
+  site. Nenhuma dependência nova.
+- **Terreno**: desenho decorativo (`aria-hidden`) em componente cliente da home: três `<svg>`
+  empilhados (isolinhas finas, intermediárias e mestras), cada um com um único `<path>`, gerados no
+  navegador por função determinística, em fatias curtas e com cache entre navegações. São três
+  elementos porque a paralaxe desloca cada camada em profundidade distinta; o `transform` vai no
+  `<svg>` da camada, sem duplicar coordenadas. Gerar no servidor levaria centenas de KB de
+  coordenadas ilustrativas ao HTML e ao payload RSC, sem valor para leitor de tela ou indexação. A
+  paralaxe responde só a mouse com ponteiro fino, agrupada por `requestAnimationFrame`;
+  `prefers-reduced-motion` desliga varredura, paralaxe e animações por rolagem.
+- **Ver comprovação**: botão de divulgação com `aria-expanded` e `aria-controls` revela o painel
+  textual “O que sustenta a superfície”, com contagens derivadas de `content/` por `lib/content.ts`.
+  O protótipo usava `aria-pressed` com rótulo alternado; o APG pede rótulo fixo para botões de
+  alternância, e o rótulo alternado é próprio do padrão de divulgação.
+- **Divergências registradas antes da implementação**:
+  1. A composição aprovada (item 6) lista os projetos planejados na home; FR-004, FR-004b e SC-008
+     determinam que itens não implementados apareçam somente em `/roadmap`. Prevalece a spec: a home
+     mostra a área tracejada “Terreno ainda não levantado” com a contagem e o link para o roadmap,
+     sem listar itens; o tratamento tracejado e hachurado vale para as entradas de `/roadmap`.
+  2. O estudo de caso expansível da home (item 5) já existe como a rota `/projetos/<slug>`; a home
+     leva a ele pela ação da ficha em vez de duplicar o conteúdo em `<details>`.
+  3. O orçamento tipográfico de `tests/e2e/loading-performance.spec.ts` passa de quatro para dois
+     arquivos woff2, mantido o teto de 100 KiB.
+  4. O rótulo do protótipo, “Ver estrutura”, passa a “Ver comprovação”/“Ocultar comprovação”
+     (decisão do proprietário em 2026-10-23, T099). Ao lado da legenda e da leitura do mapa,
+     “estrutura” lia como camada do desenho; “comprovação” nomeia o que o painel entrega e repete o
+     termo do registro de campo. Título do painel, `id="estrutura"` e comportamento permanecem.
+  4. O site passa a ter um único esquema noturno (`color-scheme: dark`). As fichas SVG de
+     `public/images/projects/` são redesenhadas nessa paleta, e a regressão de cor da ficha verifica
+     o fundo noturno nos dois esquemas do sistema.
+  5. Testes que fixavam a composição anterior mudam apenas onde a estrutura mudou, com força
+     equivalente; nenhuma verificação de acessibilidade, teclado, responsividade ou conteúdo sai.
 
 ### Emenda de auditoria Impeccable — 2026-09-01
 
@@ -333,6 +445,14 @@ A numeração segue a ordem sugerida no documento de recomendações; a ordem de
 prioridades (P0 -> P1 -> P2 -> P3), com o PR 3 podendo ser intercalado assim que o PR 2 estabilizar.
 
 ## Riscos conhecidos
+
+**Revalidação de segurança — 2026-10-23**: o baseline instalado `next@16.3.4`,
+`sharp@0.35.4` e `source-map-js@1.2.1` passou a apresentar uma vulnerabilidade crítica e duas
+altas. T090 atualiza somente esses pacotes e a configuração Next correspondente dentro das faixas
+existentes no manifesto (alvo da resolução: Next/config 16.4.2, Sharp 0.35.5, source-map-js 1.2.2).
+Esta manutenção preserva Node.js 24, React 19, SSG, os requisitos públicos e a arquitetura; as
+versões 16.3.1 citadas acima registram o alvo histórico da migração inicial. O novo lockfile deve
+passar por `npm ci`, auditoria e todos os gates antes de ser aceito.
 
 | Risco                                                                   | Mitigação                                                                          |
 | ----------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |

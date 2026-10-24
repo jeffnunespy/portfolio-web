@@ -2,6 +2,7 @@ import Link from "next/link";
 import { NATUREZA_LABEL, estadoRepositorio } from "../../lib/labels";
 import type { ProjetoImplementado } from "../../lib/types";
 import ProjectImage from "./ProjectImage";
+import ProjectMark from "./ProjectMark";
 import ProjectStatusBadge from "./ProjectStatusBadge";
 
 export interface ProjectCardProps {
@@ -26,7 +27,10 @@ export default function ProjectCard({ projeto, headingLevel = 2 }: ProjectCardPr
           <span className="tag">{NATUREZA_LABEL[projeto.natureza]}</span>
         </div>
 
-        <Heading>{projeto.titulo}</Heading>
+        <Heading>
+          <ProjectMark />
+          {projeto.titulo}
+        </Heading>
         <p className="project-card__summary">{projeto.resumo}</p>
         <p className="project-card__problem">
           <strong>Problema:</strong> {projeto.problemaTratado}

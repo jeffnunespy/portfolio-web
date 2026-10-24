@@ -34,6 +34,11 @@ tabulação, breakpoints de 320/768/1280px e requisitos WCAG 2.1 AA permanecem v
 
 ## Contrato de dependências
 
+Revalidação de 2026-10-23 (T090): o alvo histórico 16.3.1 abaixo é sucedido pela resolução segura
+16.4.2 de `next` e `eslint-config-next`, dentro das faixas já declaradas. Sharp deve resolver em
+0.35.5 ou superior e source-map-js em 1.2.2 ou superior. Permanecem obrigatórios instalação
+reproduzível e auditoria de produção sem crítica/alta; não há alteração dos contratos públicos.
+
 - `next` e `eslint-config-next`: 16.3.1 na entrega planejada.
 - `react` e `react-dom`: mesma versão na linha 19.2.x, com tipos React 19 correspondentes.
 - `postcss`: 8.5.23 ou superior; `nanoid`: 3.3.18 ou superior.
