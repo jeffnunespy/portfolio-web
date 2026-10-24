@@ -1,628 +1,352 @@
 ---
-name: Levantamento e sondagem
-description: Levantamento de campo noturno — trabalho implementado é terreno medido; escopo planejado é terreno ainda não levantado.
+name: Minimalismo escuro
+description: Autoria visível — nome, trabalho e escolhas técnicas apresentados com precisão e espaço.
 colors:
   ground: "#0c0f0e"
-  ground-2: "#121615"
-  line-fine: "#232a27"
-  line: "#34403a"
-  line-index: "#5b6862"
+  surface: "#121615"
   ink: "#e7e4da"
-  ink-2: "#a9aea6"
-  ink-3: "#7f877f"
-  flag: "#e8703f"
-  flag-ink: "#ff9a6b"
+  muted: "#a9aea6"
+  line: "#34403a"
+  accent: "#ff9a6b"
   focus: "#f2c46b"
 typography:
   display:
-    fontFamily: "Geologica, Segoe UI, system-ui, sans-serif"
-    fontSize: "clamp(2.25rem, min(6.6vw, 10.5cqi), 5.75rem)"
+    fontFamily: "Geologica, Segoe UI, sans-serif"
+    fontSize: "clamp(3.6rem, 7.6vw, 5.75rem)"
     fontWeight: 200
-    lineHeight: 0.96
-    letterSpacing: "-0.035em"
+    lineHeight: 1.02
+    letterSpacing: "-0.04em"
   headline:
-    fontFamily: "Geologica, Segoe UI, system-ui, sans-serif"
+    fontFamily: "Geologica, Segoe UI, sans-serif"
+    fontSize: "clamp(2rem, 3.8vw, 2.5rem)"
+    fontWeight: 200
+    lineHeight: 1.15
+    letterSpacing: "-0.025em"
+  title:
+    fontFamily: "Geologica, Segoe UI, sans-serif"
+    fontSize: "clamp(1.5rem, 2.9vw, 2.375rem)"
+    fontWeight: 300
+    lineHeight: 1.2
+    letterSpacing: "-0.025em"
+  callout:
+    fontFamily: "Geologica, Segoe UI, sans-serif"
     fontSize: "clamp(2.5rem, 6vw, 4.75rem)"
     fontWeight: 200
-    lineHeight: 1
-    letterSpacing: "-0.03em"
-  title:
-    fontFamily: "Geologica, Segoe UI, system-ui, sans-serif"
-    fontSize: "clamp(2rem, 4.6vw, 3.6rem)"
-    fontWeight: 300
-    lineHeight: 1.02
-    letterSpacing: "-0.03em"
-  title-ficha:
-    fontFamily: "Geologica, Segoe UI, system-ui, sans-serif"
-    fontSize: "clamp(1.6rem, 3vw, 2.4rem)"
-    fontWeight: 400
-    lineHeight: 1.1
-    letterSpacing: "-0.02em"
-  title-roadmap:
-    fontFamily: "Geologica, Segoe UI, system-ui, sans-serif"
-    fontSize: "clamp(1.4rem, 2.6vw, 1.9rem)"
-    fontWeight: 400
     lineHeight: 1.15
-    letterSpacing: "-0.015em"
-  title-estrutura:
-    fontFamily: "Geologica, Segoe UI, system-ui, sans-serif"
-    fontSize: "clamp(1.5rem, 3vw, 2.25rem)"
-    fontWeight: 300
-    letterSpacing: "-0.02em"
-  title-chamada:
-    fontFamily: "Geologica, Segoe UI, system-ui, sans-serif"
-    fontSize: "clamp(1.5rem, 3vw, 2.1rem)"
-    fontWeight: 300
-    letterSpacing: "-0.02em"
-  title-secao:
-    fontFamily: "Geologica, Segoe UI, system-ui, sans-serif"
-    fontSize: "1.5rem"
-    fontWeight: 300
-    letterSpacing: "-0.015em"
-  subtitle:
-    fontFamily: "Geologica, Segoe UI, system-ui, sans-serif"
+    letterSpacing: "-0.025em"
+  lead:
+    fontFamily: "Geologica, Segoe UI, sans-serif"
     fontSize: "1.25rem"
     fontWeight: 300
-    lineHeight: 1.65
-  lead:
-    fontFamily: "Geologica, Segoe UI, system-ui, sans-serif"
-    fontSize: "1.125rem"
-    fontWeight: 300
-    lineHeight: 1.65
+    lineHeight: 1.5
   body:
-    fontFamily: "Geologica, Segoe UI, system-ui, sans-serif"
+    fontFamily: "Geologica, Segoe UI, sans-serif"
     fontSize: "1.0625rem"
     fontWeight: 300
-    lineHeight: 1.65
+    lineHeight: 1.7
   body-small:
-    fontFamily: "Geologica, Segoe UI, system-ui, sans-serif"
+    fontFamily: "Geologica, Segoe UI, sans-serif"
     fontSize: "0.95rem"
     fontWeight: 300
-    lineHeight: 1.65
+    lineHeight: 1.7
   nav:
-    fontFamily: "Geologica, Segoe UI, system-ui, sans-serif"
-    fontSize: "0.9rem"
-    fontWeight: 300
-  nav-compact:
-    fontFamily: "Geologica, Segoe UI, system-ui, sans-serif"
-    fontSize: "0.85rem"
-    fontWeight: 300
-  note:
-    fontFamily: "Geologica, Segoe UI, system-ui, sans-serif"
+    fontFamily: "Geologica, Segoe UI, sans-serif"
     fontSize: "0.875rem"
     fontWeight: 300
-    lineHeight: 1.65
+    lineHeight: 1.7
+  action:
+    fontFamily: "Geologica, Segoe UI, sans-serif"
+    fontSize: "0.875rem"
+    fontWeight: 400
+    lineHeight: 1.7
   label:
-    fontFamily: "Martian Mono, ui-monospace, SFMono-Regular, Menlo, monospace"
+    fontFamily: "Geologica, Segoe UI, sans-serif"
     fontSize: "0.8125rem"
-    fontWeight: 400
-    lineHeight: 1.5
-    fontFeature: "tnum"
-  label-compact:
-    fontFamily: "Martian Mono, ui-monospace, SFMono-Regular, Menlo, monospace"
-    fontSize: "0.75rem"
-    fontWeight: 400
-    lineHeight: 1.4
+    fontWeight: 300
+    lineHeight: 1.7
 rounded:
   none: "0"
+  point: "50%"
 spacing:
-  gutter: "clamp(1rem, 4vw, 3.5rem)"
-  content-width: "84rem"
-  consulta: "19rem"
-  consulta-gap: "clamp(2.5rem, 5.5vw, 5rem)"
-  header-space: "5.5rem"
+  gutter: "clamp(1.25rem, 5vw, 5rem)"
+  content-width: "88rem"
+  column-gap: "3rem"
+  section-space: "clamp(3rem, 6vw, 5.5rem)"
+  project-space: "2.75rem"
+  detail-padding: "clamp(1.25rem, 3vw, 2rem)"
 components:
-  button-primary:
-    textColor: "{colors.flag-ink}"
-    rounded: "{rounded.none}"
-    padding: "0.55rem 0"
-    height: "44px"
-  button-secondary:
+  name-signature:
     textColor: "{colors.ink}"
-    rounded: "{rounded.none}"
-    padding: "0.55rem 0"
-    height: "44px"
-  button-toggle:
-    textColor: "{colors.ink}"
-    typography: "{typography.label}"
-    rounded: "{rounded.none}"
-    padding: "0.8rem 1rem"
-    height: "44px"
-  button-toggle-open:
-    backgroundColor: "{colors.flag}"
-    textColor: "{colors.ground}"
-  chip:
-    textColor: "{colors.ink-2}"
-    typography: "{typography.label-compact}"
-    rounded: "{rounded.none}"
-    padding: "0.3rem 0.55rem"
-  status-badge:
-    textColor: "{colors.ink}"
-  status-badge-mark:
-    backgroundColor: "{colors.flag}"
-    size: "7px"
-  status-badge-inactive:
-    textColor: "{colors.ink-2}"
+    typography: "{typography.display}"
   nav-link:
-    textColor: "{colors.ink-2}"
-    height: "44px"
-  nav-link-current:
+    textColor: "{colors.muted}"
+    typography: "{typography.nav}"
+  nav-resume:
+    textColor: "{colors.accent}"
+    typography: "{typography.nav}"
+  text-link:
     textColor: "{colors.ink}"
-  nav-link-curriculo:
-    textColor: "{colors.flag-ink}"
-  project-card:
-    textColor: "{colors.ink}"
-    typography: "{typography.body}"
-    rounded: "{rounded.none}"
-    padding: "2.5rem 0"
-  project-image:
-    backgroundColor: "{colors.ground-2}"
-    rounded: "{rounded.none}"
-  roadmap-entry:
+    typography: "{typography.action}"
+  text-link-accent:
+    textColor: "{colors.accent}"
+    typography: "{typography.action}"
+  project-text:
     textColor: "{colors.ink}"
     rounded: "{rounded.none}"
-    padding: "2rem clamp(1.25rem, 3vw, 2.5rem) 2.2rem"
-  skip-link:
-    backgroundColor: "{colors.ink}"
-    textColor: "{colors.ground}"
-    padding: "0.75rem 1rem"
+    padding: "2.75rem 0"
+  project-details:
+    backgroundColor: "{colors.surface}"
+    textColor: "{colors.muted}"
+    rounded: "{rounded.none}"
+    padding: "{spacing.detail-padding}"
+  build-diagram:
+    backgroundColor: "{colors.surface}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.none}"
+    padding: "2rem"
 ---
 
 <!-- impeccable:design-schema 2 -->
 
-# Sistema visual: Levantamento e sondagem
-
-Sistema visual do portfólio. Este documento descreve o que está construído em
-`app/globals.css`, `app/layout.tsx`, `components/home/SurveyOpening.tsx` e nos
-componentes de rota, não uma intenção futura. O frontmatter acima é normativo
-para os valores; o texto explica onde e por que cada um se aplica. A direção foi
-aprovada pelo proprietário em 2026-10-23, na versão **sem lente e com o
-movimento das curvas**:
-[candidato](docs/referencias-visuais/candidato-levantamento-sondagem.md) e
-protótipo `docs/referencias-visuais/prototipo-levantamento-sondagem.html`. As
-divergências deliberadas em relação ao protótipo estão na emenda de direção
-visual de `specs/001-experiencia-publica-inicial/plan.md`.
+# Design System: Minimalismo escuro
 
 ## Overview
 
-**Creative North Star: "O Levantamento de Campo Noturno"**
+**Creative North Star: "Autoria visível"**
 
-O portfólio é um **levantamento de campo noturno**. Trabalho implementado é
-terreno medido, marcado com um marco laranja; escopo planejado é terreno ainda
-não levantado, tracejado e hachurado, sem marco. A forma serve ao princípio
-constitucional — evidências acima de afirmações: o mapa mostra o que foi
-medido e declara, na legenda, o que é ilustrativo.
+**Minimalismo escuro** é o visual oficial do portfólio, aprovado expressamente pelo
+proprietário em 2026-10-23. A tese **Autoria visível** aproxima o nome, o trabalho e as
+escolhas técnicas: Geologica leve, marfim sobre fundo escuro, ponto laranja recorrente e
+linhas abertas deixam a evidência e seus limites conduzirem a leitura.
 
-A página é escura, rarefeita e plana. Marfim em pesos leves assenta sobre o
-terreno; a notação em mono ocupa uma coluna de consulta fixa à direita; o
-relevo vem de isolinhas e filetes, nunca de sombra. O laranja é raro de
-propósito: aparece onde há evidência e em nenhum outro lugar.
+A direção já está implementada no [protótipo de referência](docs/referencias-visuais/prototipo-minimalista-escuro.html),
+na versão final **sem prévia de Nana Silva**. Esta aprovação é documental: as rotas Next.js
+ainda usam o visual anterior e sua migração será uma tarefa posterior. Não houve publicação
+nem migração da aplicação nesta etapa. O frontmatter registra valores extraídos do HTML;
+este texto e o sidecar descrevem sua aplicação e os compromissos que a migração deve preservar.
 
-**Anti-referências:** a vitrine de cartões com gradiente, sombra e cantos
-arredondados da categoria “portfólio de dev”; e efeitos que alteram a página
-sob o cursor (lente circular, raio-X, recorte de máscara). Nenhum elemento novo
-deve reintroduzi-los.
+A [decisão oficial](docs/referencias-visuais/direcao-minimalista-escura.md) registra a autoridade
+da direção. O [sistema anterior](docs/referencias-visuais/design-levantamento-sondagem.md) foi
+preservado como histórico da implementação que continua em código. Composição exata da home,
+ordem dos projetos e exemplos fictícios pertencem ao documento da referência e ao brief local
+`.impeccable/surfaces/docs-referencias-visuais-prototipo-minimalista-escuro-html.md`,
+não ao sistema global. Rotas, competências, estudos de caso completos e roadmap continuam
+sob a especificação em `specs/` e a constituição do projeto.
+
+O sidecar e os artefatos em `.impeccable/` são locais e seguem as exclusões existentes do Git.
+As regras e os valores normativos necessários à migração estão neste documento versionado.
 
 **Key Characteristics:**
 
-- Esquema único noturno: terreno quase preto, marfim e três tons de isolinha.
-- Laranja de marco reservado a trabalho implementado e à ação que leva a ele.
-- Geologica em pesos leves para leitura; Martian Mono só para notação.
-- Dois eixos fixos: margem de leitura à esquerda, coluna de consulta à direita.
-- Zero sombra, zero canto arredondado; relevo por isolinha e filete.
-- Movimento de plotadora e paralaxe discreta, desligados sob movimento reduzido.
+- Tema escuro único, marfim legível e uma cor de acento usada com parcimônia.
+- Geologica leve como voz única; informação de apoio em tamanho menor, sem mono obrigatória.
+- Nome em duas linhas, “Nunes.” recuado e ponto laranja como assinatura reconhecível.
+- Projetos em linhas abertas; superfícies tonais apenas para contexto e diagramas.
+- Interação nativa, foco visível e somente transição de cor nos links.
+- Evidência real, estágio declarado e nenhum preenchimento fictício nas rotas públicas.
 
 ## Colors
 
-Paleta noturna de terreno e marfim com uma única cor de evidência; esquema
-único (`color-scheme: dark`), tokens em `:root` de `app/globals.css`.
+Paleta noturna de marfim e verdes quase neutros, com laranja de leitura e âmbar reservado
+a foco. Os sete valores canônicos estão no frontmatter e correspondem às propriedades de
+`:root` do HTML de referência; não se herdam as camadas de isolinha da direção anterior.
 
 ### Primary
 
-- **Laranja de marco** (`--flag`, #e8703f; 6,26:1 sobre o terreno): marco de
-  trabalho implementado (`ProjectMark`, legenda, ícone), seleção de texto
-  (`::selection`, terreno sobre laranja), traço da travessia, quadrado do selo de
-  estado e fundo de “Ver estrutura” aberto.
-- **Laranja de leitura** (`--flag-ink`, #ff9a6b; 9,25:1): texto laranja — a ação
-  de evidência “Ver implementação e verificações”, títulos de decisão de uma
-  ficha implementada e o destaque do currículo na navegação.
+- **Laranja de autoria** (`accent`): ponto do nome e da assinatura, marcadores de projeto real
+  e de decisão, links destacados, hover dos links, ícones do fluxo e marcador nativo de
+  `summary`. Seleção de texto inverte para fundo escuro sobre esse laranja.
 
 ### Secondary
 
-- **Âmbar de foco** (`--focus`, #f2c46b; 11,82:1): exclusivamente o anel de foco
-  de teclado (2px sólido, afastado 4px). É distinto do laranja para que estado
-  de interação nunca seja lido como evidência.
+- **Âmbar de foco** (`focus`): contorno de teclado distinto do acento editorial. Não indica
+  status nem entrega.
 
 ### Neutral
 
-- **Terreno noturno** (`--ground`, #0c0f0e): fundo de toda a página e de
-  `<html>`.
-- **Prancheta de consulta** (`--ground-2`, #121615): fundo das fichas SVG, da
-  moldura da imagem da ficha e do painel de estrutura.
-- **Isolinha fina** (`--line-fine`, #232a27; decorativo): isolinhas finas,
-  travessia, pauta discreta entre células.
-- **Isolinha intermediária** (`--line`, #34403a; decorativo): isolinhas
-  intermediárias, filetes de grade, contorno de chips e da imagem da ficha.
-- **Isolinha mestra** (`--line-index`, #5b6862; 3,30:1): isolinhas mestras,
-  filetes significantes, tracejado do roadmap, polegar da barra de rolagem.
-- **Marfim de campo** (`--ink`, #e7e4da; 15,14:1): títulos e corpo principal.
-- **Marfim apagado** (`--ink-2`, #a9aea6; 8,52:1): corpo secundário, segunda
-  linha do título (“em formação”), navegação em repouso.
-- **Notação de cota** (`--ink-3`, #7f877f; 5,20:1, ou 4,93:1 sobre a prancheta):
-  notação mono — rótulos de campo, cotas, legenda.
+- **Fundo noturno** (`ground`): página, contêiner e base da leitura.
+- **Superfície de contexto** (`surface`): conteúdo expandido e diagrama semântico.
+- **Marfim principal** (`ink`): nome, títulos, tecnologias, rótulo de projeto real e links.
+- **Marfim de apoio** (`muted`): descrições, contexto, metadados, legendas e navegação em repouso.
+- **Filete discreto** (`line`): separação entre conteúdos já identificados por texto e espaço.
+  É decorativo; não serve como único limite de controle, indicador de estado ou portador de sentido.
 
 ### Named Rules
 
-**A Regra do Laranja como Evidência.** `--flag`/`--flag-ink` só marcam trabalho
-implementado e a ação que leva a ele (marco, “Ver implementação e
-verificações”, selo de estado, travessia, destaque do currículo, títulos de
-decisões de uma ficha implementada e “Ver estrutura” aberto, que expõe como a
-plataforma é verificada). Escopo planejado nunca recebe laranja.
+**The Ponto de Autoria Rule.** O laranja assina o nome e aproxima projetos reais e decisões documentadas. Não certifica publicação, maturidade ou resultado; o texto sempre declara o estágio.
 
-**A Regra do Filete Significante.** `--line-fine` e `--line` são pauta e
-terreno: separam células que já se leem pelo texto, e o critério 1.4.11 os
-isenta. Quando apagar o filete apaga o objeto — moldura tracejada do roadmap e de
-“Terreno ainda não levantado”, sublinhado-trilho do `.button`, polegar da barra
-de rolagem — o filete usa `--line-index` (≥3:1). Corpo pequeno nunca usa tom
-abaixo de `--ink-3`.
-
-Seleção (`::selection`), barra de rolagem (`scrollbar-color`) e foco são
-tematizados.
-
-### Cores forçadas
-
-`@media (forced-colors: active)` troca os tokens por cores de sistema
-(`Canvas`, `CanvasText`, `LinkText`, `Highlight`, `HighlightText`, `ButtonText`,
-`ButtonFace`), oculta o terreno decorativo, aumenta o foco para 3px `Highlight`,
-devolve sublinhado aos links e borda `ButtonText` ao `.button`.
-`forced-color-adjust: none` fica restrito a elementos cuja inversão carrega
-sentido (ação primária, “Ver estrutura” aberto, selos) e, nesses, usa só cores
-de sistema.
+WCAG 2.1 A/AA é requisito preservado. Texto usa os tons de leitura; estado e significado
+precisam continuar legíveis sem cor. O filete discreto não substitui o anel de foco nem a
+sinalização textual. Em cores forçadas, preservar as cores de sistema: o HTML usa `Highlight`
+no foco e `CanvasText` nos pequenos pontos de projeto e decisão. A migração deve manter links,
+marcadores e controles perceptíveis nesse modo, sem impor a paleta de marca.
 
 ## Typography
 
-**Display Font:** Geologica variável (com “Segoe UI”, `system-ui`, sans-serif)
-**Body Font:** Geologica variável (mesma pilha)
-**Label/Mono Font:** Martian Mono 400 (com `ui-monospace`, “SFMono-Regular”,
-Menlo, monospace)
+**Display Font:** Geologica (com “Segoe UI”, sans-serif).
 
-**Character:** uma sans geométrica de traço fino, usada leve como grafite de
-prancheta, contra uma mono larga de instrumento que só aparece para medir,
-rotular e citar código.
+**Body Font:** Geologica (mesma pilha).
 
-As duas famílias são servidas pelo próprio site via `next/font/google`
-(`app/layout.tsx`, variáveis `--font-sans` e `--font-mono`), subconjunto latino,
-`display: swap`. `--display` e `--mono` encadeiam fallbacks da mesma classe. A
-primeira visita baixa **dois** woff2 (~35 KB): a Geologica variável só no eixo
-`wght` e a Martian Mono estática. A regressão de
-`tests/e2e/loading-performance.spec.ts` fixa dois arquivos e teto de 100 KiB.
+**Label/Mono Font:** Geologica; não há família mono no protótipo aprovado.
+
+**Character:** sans geométrica leve com títulos de traço fino e corpo arejado. A hierarquia
+vem de escala, posição e respiro; pesos médios ficam nos links, na assinatura pequena e nas
+frases que apresentam decisões.
 
 ### Hierarchy
 
-- **Display** (200, `clamp(2.25rem, min(6.6vw, 10.5cqi), 5.75rem)`, 0,96): só o
-  título do hero. “em formação” desce para uma segunda linha em `--ink-2`; o
-  `<h1>` continua com o texto completo de `perfil.tituloPosicionamento`.
-- **Headline** (200, `clamp(2.5rem, 6vw, 4.75rem)`, 1): `h1` das rotas internas,
-  do detalhe de projeto e das páginas de mensagem.
-- **Title** (300, `clamp(2rem, 4.6vw, 3.6rem)`, 1,02): `h2` das estações da home.
-- **Title de ficha** (400, `clamp(1.6rem, 3vw, 2.4rem)`, 1,1): nome do projeto
-  na ficha.
-- **Title de roadmap** (400, `clamp(1.4rem, 2.6vw, 1.9rem)`, 1,15): a mesma voz
-  da ficha um degrau abaixo, no nome de cada entrada do roadmap.
-- **Title de estrutura** (300, `clamp(1.5rem, 3vw, 2.25rem)`): `h2` do painel
-  “Ver estrutura” da abertura.
-- **Title de chamada** (300, `clamp(1.5rem, 3vw, 2.1rem)`): `h2` da chamada ao
-  currículo no rodapé do registro de projeto.
-- **Title de seção** (300, 1.5rem): `h2` das seções do estudo de caso e do
-  currículo; também a sigla do índice de reserva das fichas.
-- **Subtitle** (300, 1.25rem): abertura de “Sobre”, cargo no currículo; em 400
-  no título do registro de CI e no nome do projeto vizinho do rodapé do
-  registro.
-- **Lead** (300, 1.125rem): descrição do hero e abertura das rotas, em
-  `--ink-2`, com medida de 34–40rem.
-- **Body** (300, 1.0625rem, 1,65): texto corrido; `strong` em 500.
-- **Body pequeno** (300, 0.95rem): conteúdo secundário de leitura — registro de
-  campo, notas de estrutura, listas de competências e de stack, evidência da
-  ficha, notas de código privado, estado vazio, rodapé e registro das páginas
-  de mensagem.
-- **Nota** (300, 0.875rem): notas de proveniência sob uma ação (evidência do
-  hero, nota do registro de CI).
-- **Navegação** (300, 0.9rem; 0.85rem até 640px): links do cabeçalho.
-- **Label** (Martian Mono 400, `--type-notation` 0.8125rem, algarismos
-  tabulares): rótulos de campo, cotas, legenda, leitura de coordenadas, pipeline.
-- **Label compacto** (Martian Mono 400, `--type-notation-compact` 0.75rem):
-  chips e linha de direitos autorais do rodapé.
+- **Display:** nome pessoal, no papel `display`; duas linhas, “Nunes.” com recuo de 0.55em e
+  ponto decorativo. O nome acessível continua completo, sem o ponto.
+- **Headline:** títulos de seção, no papel `headline`; traço leve e linhas equilibradas.
+- **Title:** nomes de projetos, no papel `title`; diferenciados do corpo pela escala.
+- **Callout:** chamada de contato, no papel `callout`; a escala maior encerra a leitura sem
+  impor essa composição às demais rotas.
+- **Lead:** posicionamento, no papel `lead`; o estágio “em formação” permanece explícito.
+- **Body:** leitura principal, no papel `body`; corpo menor de descrições usa `body-small`,
+  com medida observada de 40ch nos projetos e 42ch no texto de apresentação.
+- **Nav / Action:** navegação em 300 e links de ação em 400, nos papéis `nav` e `action`.
+- **Label:** metadados, tecnologias, legenda e rodapé; texto comum, sem caixa-alta compulsória.
 
-Títulos usam `text-wrap: balance`; parágrafos, `text-wrap: pretty`.
+Os títulos usam `text-wrap: balance`. Até 760px, a navegação compacta usa 0.8125rem. As
+variações locais de chamada e do primeiro viewport pertencem ao brief; não impõem a mesma
+composição a todas as rotas.
 
-### Named Rules
+**The Uma Voz Rule.** Geologica atende nome, títulos, corpo, navegação e metadados. Martian Mono não é uma voz obrigatória da direção nova.
 
-**A Regra da Notação.** Mono só para notação, dados e código — nunca para corpo
-ou títulos.
-
-**A Regra da Cota Abaixo.** Nenhum eyebrow ou kicker acima de títulos; a cota
-mono vem **abaixo** do `h1` e carrega dado real (contagem, slug, código HTTP).
+O HTML independente carrega Geologica pelo Google Fonts e tem fallback. **Na produção, servir
+a fonte localmente pelo mecanismo `next/font` já existente**; a URL externa do protótipo não
+é requisito nem dependência da aplicação. Esta etapa não altera a configuração de fontes,
+nem os testes de carregamento que ainda descrevem o sistema anterior.
 
 ## Layout
 
-### Os dois eixos
+O contêiner observado limita a largura a `spacing.content-width`, centraliza a página e usa
+`spacing.gutter` para as margens fluidas. Filetes e intervalos verticais estabelecem o ritmo,
+sem enquadrar cada unidade. A grade recorrente é assimétrica (1.3fr / 1fr), com intervalo
+`spacing.column-gap`; o projeto que acompanha um diagrama inverte a proporção. Isso é
+vocabulário de composição, não uma grade obrigatória para todas as rotas.
 
-**Eixo de leitura**: a margem esquerda do container (`--content-width`,
-`--gutter`), onde começam cabeçalho, `h1`, corpo e rodapé em todas as rotas.
+Seções usam `spacing.section-space`; linhas de projetos, `spacing.project-space`, com ajustes
+nas extremidades. Textos longos mantêm medidas de leitura, sem esticar parágrafos para ocupar
+o contêiner. Cabeçalhos, metadados, grupos de links e rodapé quebram linha naturalmente.
 
-**Coluna de consulta**: `--consulta` à direita, separada por `--consulta-gap`. É
-onde assentam os registros em notação — o registro de campo e a legenda do hero
-(`.hero__record`), os campos do 404 (`.message-page__record`), a procedência do
-índice visual da ficha (`.project-detail__visual-index-sources`) e o bloco de
-contato do rodapé.
+Até 760px, as composições de duas colunas se empilham, o cabeçalho assume direção vertical e
+a navegação distribui os links na largura disponível. O diagrama passa a uma coluna até
+1050px, com etapas em ordem e conectores reposicionados. Preservar leitura, zoom, ordem de
+foco e ausência de perda de conteúdo nas larguras estreitas. Esses limiares são os observados
+no protótipo; adaptações de outras rotas devem responder ao conteúdo real sob a especificação.
 
-As composições de corpo + consulta usam `flex-wrap` (corpo `flex: 1 1 28rem`,
-consulta `flex: 0 0 var(--consulta)` com `margin-left: auto`): quando não cabem
-lado a lado, a consulta desce para baixo do corpo sem media query própria. Abaixo
-de 900px os eixos colapsam em um só.
-
-**A Regra da Coluna de Consulta.** A coluna tem uma largura só, para o mesmo
-tipo de dado estar sempre no mesmo lugar; a regressão E2E confere x e largura
-iguais entre essas rotas.
-
-### Estações da home
-
-Depois do hero, a home é uma sequência de estações com cabeçalho em duas colunas
-(`.station__head`, `1fr 1.25fr`) e respiro vertical generoso
-(`clamp(4.5rem, 12vh, 8rem)`):
-
-1. **Terreno levantado** — fichas de projetos implementados em destaque
-   (`ProjectCard`) e o registro de integração contínua.
-2. **Competências comprovadas nesta plataforma** — `perfil.competenciasPorArea`
-   em grade de 4/2/1 colunas, com a nota que mantém backend e cloud no roadmap.
-3. **Terreno ainda não levantado** — só a contagem de escopo planejado e o link
-   para `/roadmap`, em moldura tracejada e hachurada. A home não lista itens
-   planejados (FR-004/FR-004b/SC-008).
-
-### Escassez assumida
-
-**A Regra da Escassez Assumida.** O acervo tem uma ficha implementada, e o
-layout declara isso:
-
-- Uma ficha única ocupa a grade inteira em vez de fingir duas colunas.
-- Em `.project-detail__content`, o último campo ímpar ocupa a linha inteira e
-  perde o filete vertical; a paridade é contada a partir de
-  `.project-detail__wide`.
-- Nenhum vazio é preenchido com placeholder, métrica ou ficha inventada.
-
-### Responsivo
-
-Breakpoints em 900px (eixos colapsam, grades de competência vão a 2 colunas,
-campo do terreno reposicionado) e 640px (uma coluna, cabeçalho absoluto com
-rótulos compactos, ações das fichas em largura integral, `--header-space`
-maior). A suíte E2E verifica ausência de rolagem horizontal em 320, 768 e
-1280px, título e descrição do hero acima de 720px de altura em 1280px, geometria
-dos CTAs em 320px, proporção 5:3 das fichas, coluna de consulta alinhada entre
-rotas e texto a 200% sem perda.
+O cabeçalho do protótipo participa do fluxo normal, sem posição fixa ou fundo em degradê.
+O deslocamento para âncoras reserva 2rem no topo. A ordem exata de seções, a posição do
+primeiro projeto e os exemplos fictícios ficam no brief da superfície.
 
 ## Elevation & Depth
 
-O sistema é plano: nenhuma superfície tem sombra. A profundidade vem de três
-fontes — a hierarquia de isolinhas (fina, intermediária, mestra), a paralaxe das
-três camadas do terreno no hero e o contraste tonal entre terreno e prancheta. O
-único degradê é funcional: o cabeçalho fixo vai de `--ground` (55%) a
-transparente para manter a navegação legível sobre o conteúdo que rola por
-baixo. O botão “Ver estrutura” assenta sobre um véu do próprio terreno
-(`rgba(12, 15, 14, 0.6)`) para não perder leitura sobre as curvas.
+O sistema é plano: não usa sombras, degradês nem relevo por terreno. A única mudança de
+plano é tonal, em `surface`, para explicar um fluxo ou revelar contexto em `details`.
+Filetes, tipografia e espaço distinguem unidades sem fabricar camadas decorativas.
 
-**A Regra do Relevo por Isolinha.** Zero `box-shadow`. Se um elemento precisa se
-destacar, ganha filete, posição ou peso de texto — nunca sombra simulada.
+**The Linha Aberta Rule.** Organizar trabalho por texto, filetes e espaço. Reservar a superfície tonal a contexto revelado e diagramas; não cercar cada projeto com um cartão decorativo.
+
+Não há paralaxe, varredura, lente, curva de terreno ou efeito ligado ao ponteiro. A única
+transição do protótipo é `color 160ms ease-out` em links; `prefers-reduced-motion: reduce`
+a remove. Mudanças de layout e a abertura nativa de `details` permanecem imediatas.
 
 ## Shapes
 
-- **Canto vivo em tudo.** Zero `border-radius`: botões, chips, fichas, imagens,
-  molduras e o painel de estrutura são retângulos.
-- **Marco**: triângulo de contorno (`M6 1 11 11H1Z` em 12×12, traço 1.3 em
-  `--flag`, sem preenchimento). É a única figura do sistema e identifica trabalho
-  implementado; a legenda usa a mesma forma.
-- **Tracejado e hachura** significam escopo planejado: moldura
-  `1px dashed var(--line-index)` com hachura diagonal a 135° em 7% de `--ink-3`.
-- **Selo de estado**: quadrado de 7px; pausado e arquivado usam só contorno.
-- **Isolinhas** usam `vector-effect: non-scaling-stroke`, para manter a espessura
-  ao escalar.
+Superfícies e áreas de conteúdo têm cantos retos, sem cápsulas. A exceção recorrente é o
+ponto circular de autoria (`rounded.point`): aparece como pontuação tipográfica no nome e
+na assinatura; como marca de 5px nos rótulos de projeto real e nos títulos de decisões.
+O ponto de texto não deve receber dimensões artificiais de marcador.
 
-**A Regra do Canto Vivo.** Nenhum canto arredondado, em nenhum componente novo.
+Filetes de 1px separam linhas abertas; os exemplos fictícios do protótipo usam tracejado e
+rótulo explícito, sem converter esse recurso local em regra para o roadmap. Ícones são SVG
+lineares, sem preenchimento; setas de link usam traço `currentColor` de 1.5 e terminais retos.
+Não são imagens raster nem fontes de ícones.
 
 ## Components
 
-### Buttons
+### Assinatura e nome
 
-Ação é texto com filete, não pílula: o traço de base do levantamento.
-
-- **Shape:** sem caixa (`{rounded.none}`); um filete `--line-index` de 1px na
-  base, desenhado por dois gradientes de 1px em `background` (não decoração).
-  Altura mínima de 44px.
-- **Seta:** desenhada por máscara SVG em `::after` — `→` para avançar, `↗` para
-  `target="_blank"`, `↓` para `download`. `button.button` não leva seta.
-- **Primary** (`.button--primary`): texto em `--flag-ink`. Uma por tela, e só
-  quando leva a evidência.
-- **Secondary** (`.button`): texto em `--ink`.
-- **Hover / Focus:** o filete é preenchido em `currentColor` da esquerda para a
-  direita (0,6 s em `--ease-out`) e a seta avança 0.3em no hover; no foco, além
-  do preenchimento, o anel âmbar.
-- **Alternância “Ver estrutura”** (`.survey__toggle`): o único botão com
-  contorno — retângulo `--line-index` em mono sobre o véu do terreno; no hover a
-  borda clareia para `--ink-2`; aberto (`aria-expanded="true"`), inverte para
-  terreno sobre `--flag` (em cores forçadas, `HighlightText` sobre `Highlight`).
-
-### Chips
-
-- **Style:** retângulos mono compactos com contorno `--line` e texto `--ink-2`
-  (`.chip-list`), só para stack de trabalho implementado.
-- **State:** não interativos. Tecnologia pretendida no roadmap usa
-  `.roadmap-stack`, nunca `.chip-list`.
-
-### Selo de estado
-
-Cada status de projeto mantém uma marca legível sem cor. Em repouso, quadrado de
-7px em `--flag` antes do rótulo; pausado e arquivado passam o texto a `--ink-2`
-e o quadrado a contorno `--ink-3`. Em cores forçadas, o quadrado é substituído
-por glifos — `✓` concluído, `▶` em andamento, `‖` pausado, `▣` arquivado —
-escritos como `content: "✓" / ""`, para ficarem visíveis e fora do nome
-acessível. Pausado e arquivado também se distinguem por borda tracejada e
-pontilhada. Toda `<ul>` com `list-style: none` leva `role="list"`.
-
-### Fichas e roadmap: duas superfícies, nunca uma
-
-**A Regra das Duas Superfícies.** O leitor nunca deve precisar do texto para
-saber se vê entrega ou intenção.
-
-- **Ficha** (`/projetos`, só software implementado, `real: true`): grade
-  `1fr 1.25fr` com imagem à esquerda (5:3, fundo `--ground-2`, contorno `--line`),
-  marco laranja antes do título (`ProjectMark`, decorativo), selo de estado,
-  campos de problema e competências em caderneta mono (`9rem 1fr`, filetes
-  `--line-fine`), chips de stack e ações. Fichas separadas por filete `--line`;
-  a grade abre com filete `--line-index`.
-- **Entrada de roadmap** (`/roadmap`, `.roadmap-entry`): moldura tracejada e
-  hachurada, sem imagem, sem marco, sem selo, sem link de detalhe e sem
-  competências.
-- **Detalhe** (`/projetos/[slug]`): abre com o marco no `h1` (0.5em), a cota
-  `Ficha · slug`, o índice visual 5:3 com a procedência na coluna de consulta e
-  os campos do estudo de caso em duas colunas.
+A assinatura pequena do cabeçalho é um link em Geologica 400, sem sublinhado e com alvo
+mínimo de 44px. O nome em destaque usa o papel `display`, quebra em duas linhas e desloca
+“Nunes.” em 0.55em. Ambos repetem o ponto laranja; `aria-hidden="true"` remove a pontuação
+decorativa do nome acessível “Jefferson Nunes”. A assinatura reconhecível não obriga toda
+rota a repetir o hero da home.
 
 ### Navigation
 
-- **Cabeçalho** fixo, com degradê de `--ground` para transparente e
-  `pointer-events: none` no fundo (só os links capturam clique). `--header-space`
-  reserva a altura e alimenta `scroll-padding-top`. Assinatura em 500 à
-  esquerda; links em 0.9rem `--ink-2`, alvo de 44px.
-- **Estados:** a rota atual fica em `--ink` com sublinhado permanente; o hover
-  clareia para `--ink` e desenha o sublinhado por `scaleX` a partir da esquerda;
-  o link do currículo fica em `--flag-ink`.
-- **Mobile (≤640px):** `position: absolute`, assinatura numa faixa própria e
-  rótulos compactos “Plano” e “CV”.
-- **Prefetch:** a navegação global mantém o prefetch do Next.js para destinos
-  diferentes da rota atual; a rota aberta usa `prefetch={false}` e o rodapé não
-  repete as antecipações do cabeçalho.
-- **Skip link** `.skip-link` → `#main-content`: terreno sobre marfim, em 500; o
-  `<main>` tem `tabIndex={-1}` e não exibe anel quando recebe foco programático.
-- **Rodapé** em grade `1fr var(--consulta)`: navegação à esquerda, contato na
-  coluna de consulta sob filete `--line-index`, direitos autorais em mono
-  compacto `--ink-3`.
+Navegação horizontal flexível, em `muted`; currículo e hover em `accent`, sem movimento ou
+sublinhado animado. O HTML usa âncoras reais e mantém o currículo acessível por link.
+Até 760px, cabeçalho e navegação se reorganizam sem menu novo. Estados de rota atual e
+integração Next.js serão definidos na migração conforme as rotas e acessibilidade existentes;
+o protótipo não implementa um estado de rota atual.
 
-### Abertura da home (componente assinatura)
+### Links de ação e foco
 
-`SurveyOpening` (componente cliente) desenha o terreno atrás do hero.
+Ações são links de texto com SVG de seta quando pertinente, sublinhado legível e intervalo
+de 0.75rem entre texto e ícone. A variante padrão usa `ink`; a destacada, `accent`. O hover
+altera somente a cor. Navegação, ações e `summary` têm altura mínima de 44px. O foco visível
+usa contorno sólido de 2px em `focus`, afastado 5px, e `Highlight` em cores forçadas.
 
-- **Desenho**: `div.survey__drawing` com três `<svg>` empilhados — isolinhas
-  finas (`--line-fine`, 1), intermediárias (`--line`, 1) e mestras
-  (`--line-index`, 1.4) —, cada um com um único `<path>`. As coordenadas são
-  geradas no navegador por função determinística, em fatias de ~8 ms para não
-  bloquear a thread principal, e ficam em cache entre navegações. Nada disso vai
-  ao HTML nem ao payload RSC; o desenho é `aria-hidden`. O texto do hero é
-  servido estático e não espera o terreno.
-- **Varredura inicial**: quando o desenho existe (`data-desenhado`), uma máscara
-  linear anima a propriedade registrada `@property --scan` de 0% a 108% em 3,2 s,
-  velocidade constante, como uma plotadora.
-- **Paralaxe**: `pointermove` passivo, aceito só para `pointerType === "mouse"`
-  com `(hover: hover) and (pointer: fine)`. Cada evento só guarda a posição; um
-  único `requestAnimationFrame` lê as medidas e depois escreve `translate3d` em
-  cada `<svg>` com profundidade distinta. `pointerleave` e mudanças de mídia
-  restauram as camadas (transição de 1,4 s em `--ease-out`). `will-change` só
-  existe onde a paralaxe acontece.
-- **Leitura de coordenadas**: `.survey__readout` mostra
-  `ilustrativo · E … N … cota …` sob o ponteiro, `aria-hidden` e oculta em
-  dispositivos sem hover ou com ponteiro grosso. O rótulo “ilustrativo” é
-  obrigatório: as coordenadas não medem nada.
-- **Registro de campo** (`dl.field-record`): rótulo mono `--ink-3` à esquerda,
-  valor tabular alinhado à direita, na coluna de consulta.
-- **Legenda** (`ul.map-legend`, `role="list"`): marco = trabalho implementado;
-  tracejado = escopo planejado; isolinhas = terreno ilustrativo.
-- **Ver estrutura**: botão de divulgação com `aria-expanded` e
-  `aria-controls="estrutura"`; o rótulo alterna entre “Ver estrutura” e “Ocultar
-  estrutura”. Revela `section#estrutura` (“O que sustenta a superfície”), texto
-  puro com contagens derivadas de `content/` por `lib/content.ts`. Ao abrir, o
-  painel é trazido à vista (`scrollIntoView` `nearest`); Escape fecha e devolve o
-  foco ao botão.
+O link de salto, oculto fora de foco, aparece como texto escuro sobre marfim e aponta para
+o `main` com `tabindex="-1"`. Nome de link, alvo e ordem do documento devem permitir uso
+completo por teclado. Nenhuma informação essencial depende de hover ou `title`.
 
-**A Regra da Única Resposta ao Ponteiro.** O único movimento ligado ao ponteiro é
-o deslocamento das camadas do terreno; hover comum de link (sublinhado, seta) é
-permitido.
+### Projeto textual
 
-### Travessia e pipeline
+O projeto é uma linha editorial aberta: título, rótulo “Projeto real”, natureza e estágio,
+descrição, stack, evidência e limitações. Metadados e grupos de links quebram linha. A marca
+laranja acompanha o rótulo textual; a cor sozinha não distingue trabalho entregue de intenção.
 
-- **Travessia** (`.traverse`): fio vertical `--line-fine` à esquerda das
-  estações; um traço `--flag` cresce com a rolagem (`animation-timeline:
-scroll(root)`), sem JavaScript.
-- **Pipeline de CI** (`.pipeline`): as etapas de `lib/ci.ts` — testadas contra a
-  ordem real de `.github/workflows/ci.yml` em `tests/unit/ci.test.ts` — acendem em
-  ordem por view timeline. A nota ao lado diz que a animação é ilustrativa, não
-  execução ao vivo. Sem suporte a timelines, tudo aparece aceso.
+Na referência aprovada, **Nana Silva permanece textual**, em validação, com link real para
+o site de validação e nota de repositório privado. Não há imagem, captura, legenda de captura
+ou link de PNG. A exceção de apresentação está formalizada em **FR-006a** da especificação;
+os demais projetos continuam sujeitos a FR-006. Isso não autoriza retirar os arquivos de imagem referenciados pelo schema
+de conteúdo nem eliminar estudos de caso completos. A aprovação visual tampouco muda o
+estado de lançamento do projeto ou as competências comprovadas.
 
-**Movimento reduzido** (`prefers-reduced-motion: reduce`): sem máscara nem
-varredura, sem paralaxe (o JavaScript não escreve `transform`), sem travessia
-animada, sem transições de deslocamento em navegação e setas, rolagem
-instantânea. Ficam as curvas estáticas e as mudanças de cor de hover e foco. Os
-dois casos têm E2E em `tests/e2e/home.spec.ts`.
+### Detalhes de decisão
 
-### Índices visuais de projeto
+`details` e `summary` nativos revelam escolha e limite sem JavaScript. O marcador de
+`summary` usa `accent`; texto em repouso usa `muted` e passa a `ink` no hover ou quando
+aberto. O painel usa `surface` e `spacing.detail-padding`, com duas colunas que se empilham
+até 760px. Títulos internos em 400 e pontos decorativos ajudam a leitura, sem substituir o
+conteúdo. Preservar abertura e fechamento por teclado, foco e estado nativos.
 
-`public/images/projects/*.svg` (1200×720, proporção 5:3) são **índices visuais
-desenhados**, não capturas de tela, e cada um declara isso no `<desc>`. Usam a
-paleta fixa do site, sem media query de esquema: fundo `--ground-2`, cruzes de
-grade `--line-fine`, isolinhas `--line` e mestras `--line-index` em anéis
-irregulares gerados por semente do slug, notação `--ink-3`, título `--ink` e
-subtítulo `--ink-2`. Só o projeto implementado leva o marco laranja no cume; os
-de escopo planejado têm isolinhas tracejadas e nenhum marco. Os quatro planejados
-existem porque a validação de build exige o arquivo, mas não são renderizados em
-`/roadmap`.
+A primeira pessoa descreve somente decisões sustentadas pelas fontes reais. Resumos em
+`details` complementam a consulta; não substituem os campos de estudo de caso aprovados
+na especificação.
 
-Na página, o índice é decorativo (`alt=""`), porque o título ao lado já o
-identifica. A regressão confere o pixel de fundo `[18, 22, 21]` nos esquemas
-claro e escuro do sistema.
+### Diagrama semântico de publicação
 
-### Ícone e Open Graph
+`figure` com `figcaption`, superfície tonal e três etapas em **`ol role="list"`**: Conteúdo
+(JSON versionado), Validação (campos e evidências) e Publicação (páginas estáticas). O papel
+explícito preserva semântica de lista ao retirar os marcadores. Toda lista sem marcador
+mantém `role="list"`.
 
-`app/icon.tsx`: marco laranja (`--flag`, contorno) sobre `--ground`.
-`lib/og-image.tsx` renderiza 1200×630 na mesma paleta: marfim sobre terreno,
-filetes `--line-index`/`--line`, descrição em `--ink-2`, linha de índice em
-`--ink-3` e “Em formação” em `--flag-ink`. Usa as fontes padrão do runtime; o
-cartão não carrega webfont.
-
-### Páginas de mensagem
-
-404 e erro (`.message-page`): título na voz Headline, cota mono
-(`HTTP 404 · Registro inexistente`), ação de retorno e, no 404, o registro em
-`dl` na coluna de consulta.
+Os ícones e conectores são SVG decorativos com `aria-hidden="true"`; o texto carrega o
+significado. A legenda identifica um esquema simplificado do build. Não é monitor de CI
+nem execução ao vivo. A composição horizontal passa a vertical até 1050px; nada anima as
+etapas. O diagrama é HTML/SVG, sem raster publicado na referência atual.
 
 ## Do's and Don'ts
 
 ### Do:
 
-- **Do** reservar `--flag`/`--flag-ink` para trabalho implementado e para a ação
-  que leva a ele, com uma única `.button--primary` por tela.
-- **Do** usar `--line-index` sempre que apagar o filete apagar o objeto, e
-  `--line-fine`/`--line` só como pauta.
-- **Do** assentar registros em notação na coluna de consulta (`--consulta`),
-  com rótulo mono `--ink-3` e valor tabular.
-- **Do** rotular como “ilustrativo” qualquer coordenada, curva ou animação que
-  não meça nada.
-- **Do** manter alvo mínimo de 44px em ações e links de navegação, e o anel de
-  foco âmbar de 2px afastado 4px.
-- **Do** agrupar leituras de ponteiro em um único `requestAnimationFrame` e
-  desligar varredura, paralaxe e travessia sob `prefers-reduced-motion`.
-- **Do** dar a todo estado uma marca legível sem cor (glifo, borda tracejada ou
-  pontilhada) e `role="list"` a toda lista sem marcador.
+- **Do** usar os tokens do frontmatter e a mesma Geologica leve em toda a hierarquia.
+- **Do** preservar o nome acessível “Jefferson Nunes” e esconder o ponto decorativo da tecnologia assistiva.
+- **Do** declarar estágio, limitações, procedência e caráter simplificado de cada evidência.
+- **Do** manter alvos de pelo menos 44px, foco visível, operação por teclado e listas sem marcador com `role="list"`.
+- **Do** preservar WCAG 2.1 A/AA, cores forçadas, movimento reduzido e legibilidade no empilhamento responsivo.
+- **Do** servir Geologica localmente na produção com o mecanismo `next/font` existente.
 
 ### Don't:
 
-- **Don't** usar lente, raio-X, máscara sob o cursor ou efeito que mude o
-  aspecto da página ao passar o mouse; hover comum de link (sublinhado, seta) é
-  permitido.
-- **Don't** pôr eyebrow ou kicker acima de títulos; a cota mono vem **abaixo**
-  do `h1` e carrega dado real (contagem, slug, código HTTP).
-- **Don't** usar gradiente decorativo, texto em gradiente, sombra ou canto
-  arredondado.
-- **Don't** usar borda lateral colorida como acento.
-- **Don't** usar mono para corpo ou títulos — só para notação, dados e código.
-- **Don't** aplicar laranja em escopo planejado.
-- **Don't** inventar métrica, resultado ou evidência em conteúdo ou imagem; as
-  coordenadas do terreno são rotuladas como ilustrativas.
-- **Don't** renderizar projeto não implementado como ficha, nem deixar
-  `/projetos/<slug>` resolver para escopo planejado.
-- **Don't** usar `title` como portador de informação essencial.
+- **Don't** reintroduzir terreno, curvas, paralaxe, varredura, lente ou movimento complexo.
+- **Don't** usar sombra, gradiente decorativo, cápsulas ou cartões contornados para ornamentar projetos.
+- **Don't** apresentar Nana Silva com captura, prévia de imagem ou link de PNG; preservar o estado de validação e o link real.
+- **Don't** tratar o diagrama de build como execução ao vivo ou inventar verificação, métrica ou resultado.
+- **Don't** promover Acervo, Intervalo, a ordem dos projetos ou a composição exata da home a regra global ou dado a migrar.
+- **Don't** remover imagens exigidas pelo schema de conteúdo nem reduzir estudos de caso, competências, rotas ou roadmap por causa desta aprovação visual.
+- **Don't** assumir que a aprovação documental já migrou ou publicou a aplicação, nem usar `title` como portador de informação essencial.

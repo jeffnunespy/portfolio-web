@@ -330,6 +330,9 @@ não substituem inspeção humana, leitor de tela real e preview/canário. Detal
 
 ## Phase 15: Migração visual — Levantamento e sondagem
 
+**Histórico:** esta fase foi entregue. A direção oficial passou a Minimalismo escuro;
+a nova migração está registrada separadamente na fase 17.
+
 Direção aprovada pelo proprietário em 2026-10-23 (versão sem lente, com movimento das curvas),
 registrada em `docs/referencias-visuais/candidato-levantamento-sondagem.md`. Divergências com a
 composição aprovada e com a regressão existente estão na emenda de direção visual de `plan.md`.
@@ -341,3 +344,36 @@ composição aprovada e com a regressão existente estão na emenda de direção
 - [X] T096 [US1] [US2] Redesenhar as fichas SVG de `public/images/projects/`, o ícone e a imagem de compartilhamento na paleta noturna, preservando a proporção 5:3 e os arquivos exigidos pela validação
 - [X] T097 Ajustar a regressão afetada (orçamento tipográfico, cor da ficha) com força equivalente e cobrir “Ver estrutura”, Escape e movimento reduzido em E2E
 - [X] T098 Executar formato, lint, tipos, unitários, build, E2E funcional/a11y e inspeção visual em 1280, 390 e 320 px; atualizar `DESIGN.md` com o sistema implementado e `docs/ACTIVE_CONTEXT.md`
+- [X] T099 [US1] Renomear o botão de divulgação da abertura para “Ver comprovação”/“Ocultar comprovação”, registrando a divergência em `plan.md` antes do código, e atualizar o E2E, `DESIGN.md` e `docs/ACTIVE_CONTEXT.md`
+
+---
+
+## Phase 16: Conteúdo — catálogo Nana Silva
+
+- [X] T100 [US1] [US2] Incluir o estudo de caso Nana Silva com conteúdo apoiado no relatório técnico de 2026-10-22 e créditos confirmados pelo proprietário, URL principal de validação, índice SVG ilustrativo, perfil/PDF coerentes e verificações de navegação entre fichas, metadados, responsividade e acessibilidade per FR-004/FR-004a/FR-006/FR-011a/FR-012 e Constituição I/V/VIII/X
+
+**Resultado**: ficha estática `/projetos/nana-silva` gerada, dois projetos implementados no acervo,
+44 unitários e 73 E2E aprovados; formato, lint e tipos sem falhas. Perfil/PDF sincronizados, revisão
+de conteúdo e auditoria constitucional concluídas. Evidências e limites em `docs/ACTIVE_CONTEXT.md`.
+
+---
+
+## Phase 17: Visual oficial — Minimalismo escuro
+
+Aprovação do proprietário em 2026-10-23: `docs/referencias-visuais/prototipo-minimalista-escuro.html`,
+versão final sem prévia de Nana Silva. A emenda vigente de `plan.md` registra as adaptações
+necessárias aos contratos de `spec.md`. Os exemplos fictícios do protótipo não são conteúdo da
+aplicação. A aprovação não declara migração ou publicação como entregues.
+
+- [X] T101 Registrar a aprovação oficial em `DESIGN.md`, sidecar, `PRODUCT.md`, `docs/ACTIVE_CONTEXT.md`, referência e spec/plan/tasks; preservar o sistema anterior como histórico e validar formato, links, consistência entre artefatos e conformidade constitucional antes de concluir esta tarefa documental
+- [ ] T102 [US1] [US3] Migrar a moldura global e a home para o visual oficial, preservando navegação por rotas, nome, posicionamento e competências na primeira dobra, comprovações reais, currículo e contatos; retirar a linguagem topográfica/efeitos da abertura sem perder informação requerida, servir Geologica localmente e validar a fatia com testes funcionais/a11y e inspeção responsiva per FR-001–FR-004, FR-015–FR-024 e SC-001/SC-005/SC-006; depende de T101
+- [ ] T103 [US2] Adaptar catálogo e fichas de projeto ao novo sistema, preservando dados, status/natureza, decisões, limites, links, navegação entre fichas, metadados e imagens exigidas pelo modelo; aplicar FR-006a verificando Nana Silva em validação, sem prévia na interface e com campo/arquivo/metadados de imagem preservados, mantendo a exibição exigida por FR-006 nos demais projetos; não copiar ficção do protótipo; validar fluxos, teclado, axe e responsividade dessa fatia per FR-004–FR-013b, FR-020–FR-024 e SC-002/SC-004/SC-006; depende de T102
+- [ ] T104 [US3] [US4] Aplicar o sistema a `/roadmap`, `/sobre`, `/curriculo` e estados 404/erro, preservando a separação do planejamento, trajetória/formação, PDF, ações de recuperação e metadados; validar cada rota com testes funcionais/a11y e inspeção em desktop/celular per FR-014–FR-022, FR-025, FR-029 e SC-003/SC-005/SC-006/SC-008; depende de T102
+- [ ] T105 Executar formato, lint, tipos, unitários, build, E2E funcional/a11y e orçamento de fontes; inspecionar todas as rotas em 1280, 768, 390 e 320px, confirmar contraste/foco/movimento reduzido, atualizar documentação com a implementação efetiva e concluir a revisão de regressões; registrar separadamente as inspeções ainda pendentes de T055, sem deploy automático; depende de T103 e T104
+
+**Resultado de T101**: aprovação oficial registrada; YAML/JSON, sete cores do protótipo e sete
+componentes do sidecar conferidos; 37 links locais em 11 documentos sem destinos ausentes;
+Prettier, detector nativo e `git diff --check` aprovados. O hash do HTML sem comentários
+permaneceu idêntico ao da versão aprovada. Revisões de spec e constituição encerraram o conflito
+de exibição por meio de FR-006a. T102–T105 e T055 continuam pendentes; não houve migração
+das rotas nem publicação nesta etapa.

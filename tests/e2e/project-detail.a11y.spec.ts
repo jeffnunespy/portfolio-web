@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
+import { getProjetosImplementados } from "../../lib/content";
 
 test("@a11y US2 - detalhe de projeto sem violações automáticas WCAG 2.1 A/AA", async ({ page }) => {
   await page.goto("/projetos/plataforma-portfolio");
@@ -17,18 +18,20 @@ test("@a11y - roadmap sem violações automáticas WCAG 2.1 A/AA", async ({ page
   expect(results.violations).toEqual([]);
 });
 
-test("@a11y US2 - rodapé da ficha mantém nome e ordem de foco coerentes", async ({ page }) => {
-  await page.goto("/projetos/plataforma-portfolio");
+for (const projeto of getProjetosImplementados()) {
+  test(`@a11y US2 - rodapé de ${projeto.slug} mantém a ordem de foco entre fichas e currículo`, async ({
+    page,
+  }) => {
+    await page.goto(`/projetos/${projeto.slug}`);
 
-  const allProjectsLink = page.getByRole("link", { name: "← Todas as fichas" });
-  const resumeLink = page.getByRole("link", { name: "Ver currículo" });
-
-  // Com uma única ficha implementada não há vizinhos: o rodapé omite a navegação
-  // inteira em vez de renderizar links mortos, e o foco vai direto ao currículo.
-  await expect(
-    page.getByRole("navigation", { name: "Navegação entre fichas de projeto" }),
-  ).toHaveCount(0);
-  await allProjectsLink.focus();
-  await page.keyboard.press("Tab");
-  await expect(resumeLink).toBeFocused();
-});
+    const rodape = page.locator(".project-record-footer");
+    const links = rodape.getByRole("link");
+    await expect(links.first()).toHaveAccessibleName("← Todas as fichas");
+    await expect(links.last()).toHaveAccessibleName("Ver currículo");
+    await links.first().focus();
+    for (const link of (await links.all()).slice(1)) {
+      await page.keyboard.press("Tab");
+      await expect(link).toBeFocused();
+    }
+  });
+}

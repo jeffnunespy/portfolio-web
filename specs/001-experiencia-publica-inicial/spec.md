@@ -47,6 +47,20 @@
 
 - Q: Como corrigir a falta de identidade e de conteúdo curricular no destino final da avaliação? → A: Exibir "Jefferson Nunes" como `<h1>` em `/curriculo`, incluir formação datada e trajetória técnica e manter o nome visível acima da dobra em todas as rotas públicas.
 
+### Session 2026-10-23 — visual oficial
+
+- O proprietário aprovou **Minimalismo escuro** como novo visual oficial, na versão final de
+  `docs/referencias-visuais/prototipo-minimalista-escuro.html`, após definir “sem prévia” para
+  Nana Silva. Registro: `docs/referencias-visuais/direcao-minimalista-escura.md`.
+- A direção substitui **Levantamento e sondagem**. A aprovação define identidade e linguagem
+  visual. Os requisitos e critérios de sucesso permanecem vigentes com a exceção de exibição
+  de imagem de Nana Silva, autorizada por “sem prévia” e formalizada em FR-006a.
+- Na migração, preservar posicionamento e competências na home (FR-001–FR-003/SC-001),
+  navegação por rotas, estudos de caso, currículo e separação entre implementação e roadmap.
+  Acervo e Intervalo são ficção do protótipo (FR-026), não conteúdo a publicar na aplicação.
+- A migração das rotas ainda está pendente. Validação do protótipo não conclui a migração nem
+  as inspeções de publicação de T055.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Avaliar o posicionamento profissional na página inicial (Priority: P1)
@@ -149,6 +163,7 @@ Um gestor técnico ou colaborador em potencial acessa a página Sobre para enten
 **Projetos em destaque**
 
 - **FR-006**: Cada projeto implementado em destaque DEVE exibir título, resumo, problema tratado, status, categoria, natureza (autoral/acadêmico/colaborativo/profissional), tecnologias ou áreas técnicas, imagem de apresentação e principais competências demonstradas. A natureza DEVE estar visível tanto no card de projeto (página inicial/listagem) quanto na página de detalhe do projeto.
+- **FR-006a**: Exceção visual aprovada em 2026-10-23: a apresentação de Nana Silva DEVE ser textual, sem imagem ou captura de prévia, legenda de captura ou link para PNG. Essa exceção dispensa a exibição de imagem em seus cartões de destaque/listagem e preserva os demais campos e ações de FR-006 a FR-009a e FR-012. O campo `imagemApresentacao`, seu arquivo e os metadados associados permanecem obrigatórios e validados; a exceção de apresentação não autoriza removê-los do modelo ou do disco. A regra geral de exibição de FR-006 continua válida para os demais projetos.
 - **FR-007**: Cada projeto implementado em destaque DEVE fornecer um link para sua página resumida de detalhes.
 - **FR-008**: Cada projeto em destaque DEVE exibir link de demonstração quando existente, e link de repositório quando o código for público.
 - **FR-009**: Quando o código de um projeto não estiver disponível publicamente, o sistema DEVE exibir uma indicação explícita dessa indisponibilidade, em vez de omitir a informação silenciosamente ou exibir um link inválido.

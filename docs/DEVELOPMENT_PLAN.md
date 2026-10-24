@@ -22,12 +22,22 @@
 - Fase 14: conteúdo e PDF confirmados, revisão de integridade concluída e dependências de produção
   corrigidas por T090 dentro das faixas existentes no manifesto. T091 inclui os rótulos compactos
   da navegação em seus nomes acessíveis, preservando o layout e cobrindo mobile/desktop.
+- Fase 15: sistema Levantamento e sondagem aplicado às rotas e verificado; T099 ajusta o rótulo
+  para “Ver comprovação”, preservando conteúdo e comportamento.
+- Fase 16: catálogo Nana Silva incluído como projeto profissional real, em validação, com perfil,
+  PDF e regressões ajustados para dois projetos implementados.
+- Fase 17: Minimalismo escuro aprovado como novo visual oficial na versão sem prévia de Nana.
+  T101 conclui o registro e a consistência documental; T102–T105 mantêm pendente a migração das
+  rotas, incluindo a adaptação da home a SC-001 e a exceção visual FR-006a.
 
 ## Estado atual
 
-Gates reexecutados em Node.js 24.19.0 em 2026-10-23: instalação limpa, auditoria de produção com
-zero vulnerabilidades, formatação, lint, tipos, 43 testes Vitest, build Turbopack/Next.js 16.4.2 e
-64 testes Playwright (43 funcionais + 21 de acessibilidade) passaram. O PDF possui uma página e
-reflete os dados confirmados do perfil. A promoção depende das inspeções humanas e do
-preview/canário de T055, além do CI no commit candidato. Resultados e limites estão em
-`docs/ACTIVE_CONTEXT.md`.
+Gates reexecutados em 2026-10-23: auditoria de produção com zero vulnerabilidades, formatação,
+lint, tipos, 44 testes Vitest, build de produção e 73 testes Playwright, incluindo fluxos e
+acessibilidade, passaram. O PDF possui uma página e reflete os dados confirmados do perfil.
+
+O visual oficial está implementado no protótipo; a aplicação ainda usa Levantamento e sondagem.
+A revisão de PR identificou uma lacuna herdada em SC-001: os testes atuais não comprovam as
+competências por área na primeira dobra. A correção e sua verificação estão explícitas em T102.
+A promoção depende das inspeções humanas e do preview/canário de T055, além do CI no commit
+candidato. Resultados e limites estão em `docs/ACTIVE_CONTEXT.md`.

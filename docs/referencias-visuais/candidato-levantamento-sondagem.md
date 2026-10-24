@@ -1,12 +1,14 @@
-# Direção aprovada — Levantamento e sondagem
+# Direção anterior — Levantamento e sondagem
 
-**Status: aprovado pelo proprietário em 2026-10-23.**
+**Status: histórico. Aprovada em 2026-10-23 e posteriormente substituída pela direção
+[Minimalismo escuro](direcao-minimalista-escura.md), declarada novo visual oficial na mesma data.**
 
 ## Decisão do proprietário
 
 O proprietário aprovou a versão **sem lente**, com o movimento das curvas
-preservado, e solicitou o registro com a mensagem “aprovado, registra”. Essa é a
-referência escolhida para o redesign do portfólio.
+preservado, e solicitou o registro com a mensagem “aprovado, registra”. Essa foi a
+referência escolhida para a migração anterior do portfólio. O registro abaixo é histórico;
+a nova identidade e seus limites estão na decisão de Minimalismo escuro.
 
 Referência aprovada:
 [prototipo-levantamento-sondagem.html](prototipo-levantamento-sondagem.html).

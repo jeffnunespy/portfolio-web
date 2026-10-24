@@ -1,10 +1,11 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
+import { getProjetosImplementados } from "../../lib/content";
 
 const publicRoutes = [
   "/",
   "/projetos",
-  "/projetos/plataforma-portfolio",
+  ...getProjetosImplementados().map((projeto) => `/projetos/${projeto.slug}`),
   "/roadmap",
   "/sobre",
   "/curriculo",

@@ -6,12 +6,81 @@ Experiência Pública Inicial do Portfólio (`001-experiencia-publica-inicial`).
 
 ## Status
 
-Implementação das fases 1–15 entregue, exceto pelas inspeções de publicação de T055. A fase 15
-(T092–T098) migrou todas as rotas para a direção visual **Levantamento e sondagem**.
+Implementação das fases 1–16 entregue, exceto pelas inspeções de publicação de T055. A fase 15
+(T092–T099) migrou todas as rotas para a direção visual **Levantamento e sondagem**.
+Em 2026-10-23, o proprietário aprovou **Minimalismo escuro** como o novo visual oficial,
+na versão final **sem prévia de Nana Silva**. O sistema está implementado no protótipo;
+a migração das rotas Next.js está pendente na fase 17. `DESIGN.md` passa a orientar o novo
+visual, e a implementação anterior fica registrada como histórico.
 Em 2026-10-23, o proprietário confirmou o perfil atual e o estudo de caso da plataforma e autorizou
 a geração do PDF. A publicação continua bloqueada pelas inspeções manuais/de preview.
 
-## Direção visual aprovada — 2026-10-23
+## Visual oficial — Minimalismo escuro (2026-10-23)
+
+- Aprovação explícita: “aprovado como novo visual oficial do projeto”. Registro em
+  [`direcao-minimalista-escura.md`](referencias-visuais/direcao-minimalista-escura.md).
+- Referência: [`prototipo-minimalista-escuro.html`](referencias-visuais/prototipo-minimalista-escuro.html),
+  após a orientação “sem prévia”. Tema escuro, Geologica leve, linhas abertas, assinatura
+  “Nunes.” com ponto laranja, decisões em primeira pessoa e diagrama semântico da plataforma.
+  Nana Silva fica textual; não reintroduzir a captura. Não há paralaxe, terreno ou varredura.
+- `DESIGN.md` e seu sidecar passam a registrar a direção oficial. O sistema das rotas ainda
+  em código está preservado em
+  [`design-levantamento-sondagem.md`](referencias-visuais/design-levantamento-sondagem.md).
+- Perfil, fontes de conteúdo, validação, rotas, currículo e competências continuam sob a spec.
+  Acervo e Intervalo são ficção do protótipo e não serão migrados para a aplicação.
+- FR-006a formaliza a exceção de exibição já aprovada para Nana Silva: apresentação sem
+  imagem, preservando campo, arquivo, metadados e demais campos/ações. FR-006 continua
+  exigindo a exibição de imagem nos demais projetos.
+- A composição deve ser adaptada para preservar FR-001–FR-003/SC-001, a navegação por rotas,
+  os estudos de caso completos e a separação entre implementação e roadmap.
+- Evidência do protótipo sem prévia: quatro larguras (320/390/768/1280), zero overflow/axe/erros,
+  detalhes nativos, teclado, offline sem JavaScript, movimento reduzido e cores forçadas;
+  revisão final `ship`. Relatório em `.impeccable/review/prototipo-minimalista-sem-previa/`.
+- Esta etapa registra a decisão e prepara as tarefas; nenhuma rota foi migrada e o site
+  não foi publicado. T055 permanece aberta e T102–T105 registram a migração pendente.
+- T101 concluída após validação documental: YAML/JSON, sete cores e sete componentes,
+  37 links locais em 11 documentos, Prettier, detector nativo e diff sem falhas. O HTML fora
+  dos comentários permanece idêntico ao aprovado. Revisões de spec e constituição confirmaram
+  a resolução da exceção visual FR-006a.
+
+## Nana Silva — conteúdo profissional (T100, 2026-10-23)
+
+- O proprietário solicitou incluir o projeto e confirmou desenvolvimento completo, natureza
+  profissional e solução para uma necessidade real. A fonte técnica é o relatório
+  `relatorio-tecnico-portfolio-catalogo-nana-silva-2026-10-22.md`, fornecido na Área de Trabalho;
+  ele foi consultado, sem copiar o relatório integral ou arquivos privados do projeto para cá.
+- `content/projects/nana-silva.json`: estudo de caso real e em destaque, categoria Web, natureza
+  profissional, responsabilidade integral, quatro decisões técnicas, stack, funcionalidades,
+  limitações e próximos passos. O status permanece "Em andamento" porque a publicação é de
+  validação e o relatório registra verificações operacionais pendentes.
+- Link principal `https://nana-silva-validacao.pages.dev/`, sem fragmento: HTTP 200 e HTML com título
+  "Portfólio · Nana Silva", artista e seção de flashes conferidos. A consulta de metadados confirmou
+  repositório privado; a ficha usa `linkRepositorio: "privado"` sem divulgar seu endereço.
+- Índice ilustrativo `public/images/projects/nana-silva.svg` no sistema visual existente, sem fotos
+  de clientes nem captura simulada da aplicação. `content/profile.json` passou de "é esta
+  plataforma" para "inclui esta plataforma", preservando as competências e o posicionamento.
+  `public/curriculo.pdf` foi sincronizado: uma página, 30 textos do perfil e três links conferidos
+  com pypdf, além de renderização e inspeção visual.
+- A segunda ficha expôs expectativas de ficha única nos testes. Foram preservadas as verificações
+  de posição, limites, destinos, ordem de foco, largura dos cards e ações mobile, agora aplicadas a
+  todas as fichas. A primeira suíte completa teve 72/73 por seletor singular no teste de ação em
+  320px; o teste passou após percorrer todos os cards, e a repetição integral aprovou 73/73.
+- Validação executada: `npm run format:check`, `npm run lint`, `npm run typecheck`, 44 unitários em
+  oito arquivos e `npx playwright test --workers=2` (73 testes, incluindo axe, teclado, metadados,
+  PDF, navegação e responsividade). O webServer do Playwright executou o build de produção; o
+  manifesto de pré-renderização contém ambas as fichas e seus cartões Open Graph. Após a última
+  alteração de testes, ESLint localizado, tipos e Prettier localizado também passaram.
+- Inspeção visual local do detalhe e rodapé em 1280/320px e das duas fichas na home; sem alteração
+  de layout. `content-integrity` não encontrou inconsistências. O agente constitucional ficou
+  indisponível por limite de uso; a auditoria foi realizada manualmente conforme suas instruções,
+  com constituição, requisitos, plano, tarefa e diff revisados, sem violações no escopo.
+- Nenhuma dependência adicionada. Mudanças preexistentes de AGENTS, direção visual e rótulo
+  "Ver comprovação" foram preservadas. Sem commit, push ou deploy; T055 continua aberta.
+
+## Histórico — direção Levantamento e sondagem aprovada em 2026-10-23
+
+Substituída como direção oficial por **Minimalismo escuro**, registrado acima. O texto desta
+seção descreve a aprovação anterior e a migração já entregue na fase 15.
 
 O proprietário aprovou **Levantamento e sondagem**, na versão **sem lente**, e
 solicitou o registro da decisão. A referência aprovada é
@@ -25,9 +94,9 @@ Decisão completa em
 [`candidato-levantamento-sondagem.md`](referencias-visuais/candidato-levantamento-sondagem.md);
 escopo e verificações do protótipo em
 [`exemplo-interativo.md`](referencias-visuais/exemplo-interativo.md).
-A migração foi implementada em 2026-10-23 (fase 15, abaixo); `DESIGN.md` agora
-descreve o sistema efetivamente construído, e a gramática **A Ficha de Catálogo**
-deixa de valer.
+A migração foi implementada em 2026-10-23 (fase 15, abaixo). Seu sistema está preservado em
+`referencias-visuais/design-levantamento-sondagem.md`; a gramática **A Ficha de Catálogo**
+foi substituída naquela entrega. O `DESIGN.md` atual já registra a nova direção oficial.
 
 ## Migração visual — Levantamento e sondagem (fase 15, 2026-10-23)
 
@@ -55,6 +124,9 @@ deixa de valer.
   `test:e2e:functional` (47 testes) e `test:e2e:a11y` (21 testes) aprovados. Inspeção visual em
   1280, 390 e 320px de todas as rotas, sem rolagem horizontal; rodada de correção ajustou o marco
   da legenda e as isolinhas das fichas SVG. Sem commit, push ou deploy.
+- T099: o botão de divulgação da abertura passa de “Ver estrutura” a “Ver comprovação”/“Ocultar
+  comprovação” (divergência 4 da emenda de `plan.md`): ao lado da legenda, “estrutura” lia como
+  camada do mapa. Título do painel, `id="estrutura"`, teclado e Escape inalterados.
 
 ## Execução Speckit — 2026-10-23
 
@@ -308,7 +380,8 @@ verificação registrada abaixo:
 
 ## Pendências e riscos conhecidos
 
-- `plataforma-portfolio` é hoje o único projeto implementado e não tem `linkDemonstracao`. O
+- `plataforma-portfolio` não tem `linkDemonstracao`. O catálogo Nana Silva agora é a segunda
+  implementação, com endereço público de validação. Para a própria plataforma, o
   repositório está público em `https://github.com/jeffnunespy/portfolio-web`, verificado sem
   autenticação em 2026-09-04; a ficha agora oferece acesso direto ao código. Publicar a URL de
   produção permanece como a próxima evidência externa de maior efeito no valor da peça.

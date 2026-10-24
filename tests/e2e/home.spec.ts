@@ -119,11 +119,11 @@ test("US1 - navegação por tabulação sem tabindex positivo", async ({ page })
   }
 });
 
-test("US1 - Ver estrutura abre o painel textual e Escape devolve o foco", async ({ page }) => {
+test("US1 - Ver comprovação abre o painel textual e Escape devolve o foco", async ({ page }) => {
   await page.goto("/");
 
   const painel = page.locator("#estrutura");
-  const abrir = page.getByRole("button", { name: "Ver estrutura" });
+  const abrir = page.getByRole("button", { name: "Ver comprovação" });
   await expect(abrir).toHaveAttribute("aria-expanded", "false");
   await expect(abrir).toHaveAttribute("aria-controls", "estrutura");
   await expect(painel).toBeHidden();
@@ -131,7 +131,7 @@ test("US1 - Ver estrutura abre o painel textual e Escape devolve o foco", async 
   await abrir.focus();
   await page.keyboard.press("Enter");
 
-  const ocultar = page.getByRole("button", { name: "Ocultar estrutura" });
+  const ocultar = page.getByRole("button", { name: "Ocultar comprovação" });
   await expect(ocultar).toHaveAttribute("aria-expanded", "true");
   await expect(painel).toBeVisible();
   await expect(
@@ -141,7 +141,7 @@ test("US1 - Ver estrutura abre o painel textual e Escape devolve o foco", async 
 
   await page.keyboard.press("Escape");
   await expect(painel).toBeHidden();
-  await expect(page.getByRole("button", { name: "Ver estrutura" })).toBeFocused();
+  await expect(page.getByRole("button", { name: "Ver comprovação" })).toBeFocused();
 });
 
 test("US1 - curvas acompanham o mouse sem alterar a página", async ({ page }) => {

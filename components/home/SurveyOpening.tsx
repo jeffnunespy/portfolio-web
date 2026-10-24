@@ -345,7 +345,7 @@ export default function SurveyOpening({
                 aria-controls="estrutura"
                 onClick={() => setAberto((valor) => !valor)}
               >
-                {aberto ? "Ocultar estrutura" : "Ver estrutura"}
+                {aberto ? "Ocultar comprovação" : "Ver comprovação"}
               </button>
             </div>
           </div>
