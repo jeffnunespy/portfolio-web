@@ -4,6 +4,12 @@ on:
   push:
   pull_request:
 
+# Nenhuma etapa escreve no repositório nem usa secrets: o token só precisa ler
+# o código. O upload de artefatos e o cache usam o token de runtime do Actions,
+# que não depende deste bloco.
+permissions:
+  contents: read
+
 jobs:
   quality:
     # Imagem fixa: `playwright install --with-deps` instala bibliotecas do
@@ -13,8 +19,14 @@ jobs:
       # Origem de validação dos metadados; build e E2E precisam usar a mesma.
       NEXT_PUBLIC_SITE_URL: https://portfolio.example
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
+      # Actions fixadas por SHA do commit da release (tag no comentário); o
+      # Dependabot (ecossistema github-actions) atualiza SHA e comentário juntos.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # Nada depois do checkout usa git autenticado; sem isto o token
+          # ficaria gravado em .git/config até o fim do job.
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version-file: .nvmrc
           cache: npm
@@ -25,6 +37,13 @@ jobs:
           echo "node: $(node -v) · npm: $(npm -v)"
           echo "playwright: $(npx playwright --version)"
       - run: npm audit --omit=dev --audit-level=high
+      # Visibilidade, não gate: árvore completa (inclui desenvolvimento, que roda
+      # no build e no CI mas não vai para o site) e todas as severidades. Um
+      # achado vira aviso no resumo da execução; o bloqueio é só o passo acima.
+      - name: Auditoria completa (informativa)
+        run: |
+          npm audit --include=dev --audit-level=low || \
+            echo "::warning title=npm audit (informativo)::A árvore completa tem vulnerabilidades ou a consulta falhou. Veja o log desta etapa."
       - run: npm run format:check
       - run: npm run lint
       - run: npm run typecheck
@@ -40,7 +59,7 @@ jobs:
       - run: npm run test:e2e:a11y
         env:
           E2E_BUILD_EXISTENTE: "1"
-      - uses: actions/upload-artifact@v7
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: ${{ !cancelled() }}
         with:
           name: e2e-funcional
@@ -48,7 +67,7 @@ jobs:
             playwright-report/funcional/
             test-results/funcional/
           retention-days: 14
-      - uses: actions/upload-artifact@v7
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: ${{ !cancelled() }}
         with:
           name: e2e-a11y

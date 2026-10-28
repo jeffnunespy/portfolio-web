@@ -104,6 +104,8 @@ Build estático preparado para deploy em Vercel.
 
 ## Documentação
 
+- `CONTRIBUTING.md` — fluxo de pull request e regras de proteção da `master`
+- `.github/SECURITY.md` — como relatar vulnerabilidades
 - `docs/PROJECT.md` — visão geral do projeto
 - `docs/DEVELOPMENT_PLAN.md` — plano de desenvolvimento
 - `docs/ACTIVE_CONTEXT.md` — contexto ativo da implementação
