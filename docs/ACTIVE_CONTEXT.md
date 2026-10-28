@@ -15,6 +15,26 @@ com validação local concluída. `DESIGN.md` orienta o visual; a implementaçã
 Em 2026-10-23, o proprietário confirmou o perfil atual e o estudo de caso da plataforma e autorizou
 a geração do PDF. A publicação continua bloqueada pelas inspeções manuais/de preview.
 
+## Auditoria 02 — Follow-up do runtime Node.js (2026-10-28)
+
+- AUD02-E5-001 implementado e validado localmente em clone isolado da `master`
+  `1572d3603951097bde6191673cb8ce03d4222201`, sem modificar o diretório original.
+- `.nvmrc` fixa Node 24.22.2 (npm 11.19.1); `engines.node` e a raiz do lock exigem
+  `^24.22.1`, primeiro patch corrigido para as oito CVEs. `engines.npm >=11.16.0`,
+  `engine-strict`, `allowScripts` e `strict-allow-scripts` permanecem inalterados.
+- Nenhuma dependência foi atualizada: as 523 entradas do lockfile foram preservadas.
+  O workflow continua lendo `.nvmrc`, sem alteração de actions, permissões ou gates.
+- Instalação limpa, audits completo/produção (zero), 439 assinaturas, 124 attestations,
+  tipos, lint, 93 unitários, build com 18 entradas estáticas/SSG, 84 funcionais e 27 a11y
+  aprovados com o novo runtime. Formatação global e revisão do diff também aprovadas.
+- Node 24.19.0 recusado com `EBADENGINE`, sem `node_modules`; fixtures confirmam execução
+  somente do script autorizado e recusa de script não revisado. Headers/CSP preservados;
+  500 genérico de URLs malformadas e aviso de cache/NUL continuam limitações conhecidas.
+- Adendo: [auditoria-02-followup-node-runtime.md](audits/auditoria-02-followup-node-runtime.md).
+  Pronto para revisão local; commit, push, PR, merge e CI remoto da candidata dependem de
+  autorização futura. A Auditoria 02 não está formalmente encerrada; T055 e hospedagem seguem pendentes.
+- As seções de auditorias anteriores abaixo mantêm seus ambientes e resultados históricos.
+
 ## Auditoria 02 — Etapa 3: dependências e supply chain (2026-10-28)
 
 - Executada sobre a `master` remota (`7fc04b4`) num clone isolado. Registro em

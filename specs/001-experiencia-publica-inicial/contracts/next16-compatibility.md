@@ -21,9 +21,12 @@ tabulação, breakpoints de 320/768/1280px e requisitos WCAG 2.1 AA permanecem v
 
 ## Contrato de build e runtime
 
-- Runtime padronizado: Node.js 24 LTS; nunca abaixo de 24.15.0, piso de `jsdom@30` na linha 24
-  (o Next.js 16 sozinho aceitaria 20.9.0). A mesma versão principal DEVE valer para ambiente local
-  (`.nvmrc`), `engines` do manifesto, CI, Vercel e documentação.
+- Runtime padronizado: Node.js 24 LTS; piso de segurança 24.22.1 (`engines.node` `^24.22.1`),
+  sucedido pelo patch fixado 24.22.2 em `.nvmrc` para desenvolvimento/CI (AUD02-E5-001).
+  O antigo piso técnico 24.15.0 de `jsdom@30` não satisfaz o piso de segurança atual.
+  npm >=11.16.0, `engine-strict` e a política estrita de scripts permanecem obrigatórios.
+  A mesma versão principal DEVE valer para ambiente local, manifesto, CI, Vercel e documentação;
+  o patch efetivo da hospedagem deve ser confirmado antes da publicação.
 - Modelo de entrega: Next.js hospedado na Vercel com páginas pré-renderizadas em build time.
   `output: "export"` NÃO é usado nesta fase.
 - Build de aceite: `next build` com Turbopack, sem configuração Webpack customizada.

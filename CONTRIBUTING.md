@@ -60,6 +60,8 @@ ou de ser fechado.
   próprio PR (ver "Scripts de instalação" no README).
 - `EBADENGINE` com `"npm":">=11.16.0"` indica npm antigo, que ignoraria `allowScripts`.
   Atualize o npm; não contorne com `--engine-strict=false`.
+- `EBADENGINE` com `"node":"^24.22.1"` indica runtime fora da linha/piso corrigido.
+  Use `nvm use` antes de instalar: `.nvmrc` fixa Node 24.22.2 com npm 11.19.1, também lido pelo CI.
 
 ## Conflitos de merge
 
