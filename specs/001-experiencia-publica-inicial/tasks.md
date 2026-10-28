@@ -366,14 +366,131 @@ necessárias aos contratos de `spec.md`. Os exemplos fictícios do protótipo n�
 aplicação. A aprovação não declara migração ou publicação como entregues.
 
 - [X] T101 Registrar a aprovação oficial em `DESIGN.md`, sidecar, `PRODUCT.md`, `docs/ACTIVE_CONTEXT.md`, referência e spec/plan/tasks; preservar o sistema anterior como histórico e validar formato, links, consistência entre artefatos e conformidade constitucional antes de concluir esta tarefa documental
-- [ ] T102 [US1] [US3] Migrar a moldura global e a home para o visual oficial, preservando navegação por rotas, nome, posicionamento e competências na primeira dobra, comprovações reais, currículo e contatos; retirar a linguagem topográfica/efeitos da abertura sem perder informação requerida, servir Geologica localmente e validar a fatia com testes funcionais/a11y e inspeção responsiva per FR-001–FR-004, FR-015–FR-024 e SC-001/SC-005/SC-006; depende de T101
-- [ ] T103 [US2] Adaptar catálogo e fichas de projeto ao novo sistema, preservando dados, status/natureza, decisões, limites, links, navegação entre fichas, metadados e imagens exigidas pelo modelo; aplicar FR-006a verificando Nana Silva em validação, sem prévia na interface e com campo/arquivo/metadados de imagem preservados, mantendo a exibição exigida por FR-006 nos demais projetos; não copiar ficção do protótipo; validar fluxos, teclado, axe e responsividade dessa fatia per FR-004–FR-013b, FR-020–FR-024 e SC-002/SC-004/SC-006; depende de T102
-- [ ] T104 [US3] [US4] Aplicar o sistema a `/roadmap`, `/sobre`, `/curriculo` e estados 404/erro, preservando a separação do planejamento, trajetória/formação, PDF, ações de recuperação e metadados; validar cada rota com testes funcionais/a11y e inspeção em desktop/celular per FR-014–FR-022, FR-025, FR-029 e SC-003/SC-005/SC-006/SC-008; depende de T102
-- [ ] T105 Executar formato, lint, tipos, unitários, build, E2E funcional/a11y e orçamento de fontes; inspecionar todas as rotas em 1280, 768, 390 e 320px, confirmar contraste/foco/movimento reduzido, atualizar documentação com a implementação efetiva e concluir a revisão de regressões; registrar separadamente as inspeções ainda pendentes de T055, sem deploy automático; depende de T103 e T104
+- [X] T102 [US1] [US3] Migrar a moldura global e a home para o visual oficial, preservando navegação por rotas, nome, posicionamento e competências na primeira dobra, comprovações reais, currículo e contatos; retirar a linguagem topográfica/efeitos da abertura sem perder informação requerida, servir Geologica localmente e validar a fatia com testes funcionais/a11y e inspeção responsiva per FR-001–FR-004, FR-015–FR-024 e SC-001/SC-005/SC-006; depende de T101
+- [X] T103 [US2] Adaptar catálogo e fichas de projeto ao novo sistema, preservando dados, status/natureza, decisões, limites, links, navegação entre fichas, metadados e imagens exigidas pelo modelo; aplicar FR-006a verificando Nana Silva em validação, sem prévia na interface e com campo/arquivo/metadados de imagem preservados, mantendo a exibição exigida por FR-006 nos demais projetos; não copiar ficção do protótipo; validar fluxos, teclado, axe e responsividade dessa fatia per FR-004–FR-013b, FR-020–FR-024 e SC-002/SC-004/SC-006; depende de T102
+- [X] T104 [US3] [US4] Aplicar o sistema a `/roadmap`, `/sobre`, `/curriculo` e estados 404/erro, preservando a separação do planejamento, trajetória/formação, PDF, ações de recuperação e metadados; validar cada rota com testes funcionais/a11y e inspeção em desktop/celular per FR-014–FR-022, FR-025, FR-029 e SC-003/SC-005/SC-006/SC-008; depende de T102
+- [X] T105 Executar formato, lint, tipos, unitários, build, E2E funcional/a11y e orçamento de fontes; inspecionar todas as rotas em 1280, 768, 390 e 320px, confirmar contraste/foco/movimento reduzido, atualizar documentação com a implementação efetiva e concluir a revisão de regressões; registrar separadamente as inspeções ainda pendentes de T055, sem deploy automático; depende de T103 e T104
 
 **Resultado de T101**: aprovação oficial registrada; YAML/JSON, sete cores do protótipo e sete
 componentes do sidecar conferidos; 37 links locais em 11 documentos sem destinos ausentes;
 Prettier, detector nativo e `git diff --check` aprovados. O hash do HTML sem comentários
 permaneceu idêntico ao da versão aprovada. Revisões de spec e constituição encerraram o conflito
-de exibição por meio de FR-006a. T102–T105 e T055 continuam pendentes; não houve migração
-das rotas nem publicação nesta etapa.
+de exibição por meio de FR-006a. Na conclusão documental de T101, T102–T105 e T055
+permaneciam pendentes; não havia migração das rotas nem publicação naquela etapa.
+
+**Resultado de T102–T105 — 2026-10-24:** migração local de Minimalismo escuro concluída,
+com os cinco achados do audit tratados. Tipos, lint, 45 unitários, build Turbopack e 75 E2E
+passaram; confirmação de nove rotas em quatro larguras sem overflow, erros de página ou
+violações axe mobile adicionais. Contraste inconclusivo: zero nos nove cenários mobile e
+nos gates de rotas/detalhes abertos. SC-001 confirmado em 1280 × 720; zoom a 200% em
+320/768/1280 e menu 44 × 44 verificados. Revisões de conteúdo, constituição, semântica e
+código sem bloqueadores; evidências em `docs/audits/impeccable-2026-10-24-correcoes.md`.
+T055 continua aberta. Não houve commit, push ou deploy.
+
+---
+
+## Phase 18: Comprovações com acesso direto
+
+- [X] T106 [US1] Vincular as referências de conteúdo, validação, testes e workflow da home aos arquivos/diretórios públicos correspondentes em `jeffnunespy/portfolio-web`, preservando o aviso de que o diagrama/registro de CI não representa execução ao vivo; validar destinos, teclado, funcionamento sem JavaScript, axe com o painel aberto, lint, tipos e formato per FR-019, FR-021, FR-022, FR-024 e Constituição I/V/VII/VIII
+
+**Resultado de T106 — 2026-10-24:** sete destinos confirmados pela API pública do GitHub na
+branch padrão `master`. Tipos, ESLint dos três arquivos TypeScript alterados, Prettier dos
+cinco arquivos da tarefa e `git diff --check` aprovados; 29 unitários de conteúdo/CI e
+16 E2E de home/acessibilidade/metadados passaram, com build de produção. Links alcançáveis
+por teclado e presentes sem JavaScript; axe sem violações com comprovação aberta e fechada.
+Inspeção visual em 1280/390px e medições em 320/390/768/1280px, com texto a 100% e 200%,
+sem overflow ou links cortados. Revisões de conteúdo e constituição sem bloqueadores.
+T055 permanece independente deste ajuste; não houve commit, push ou deploy.
+
+---
+
+## Phase 19: Clareza do ambiente Nana Silva
+
+- [X] T107 [US2] Repetir “Em validação” nos metadados da ficha direta de Nana Silva antes da demonstração, preservando “Em andamento”, os dados e a apresentação textual; validar a primeira tela em 390 × 844 e desktop, regressão funcional, axe, formato, lint e tipos per FR-006a/FR-011/FR-012/FR-013 e Constituição I/V/VII/VIII/X
+
+**Resultado de T107 — 2026-10-24:** rótulo presente na classificação da ficha, antes da
+demonstração e integralmente na primeira tela em 390 × 844 e 1280 × 720. Tipos, ESLint,
+Prettier e `git diff --check` aprovados; 32 unitários de conteúdo/cartão e 22 E2E de
+fichas/acessibilidade/404/metadados passaram, com build de produção. Inspeção visual da
+ficha nas duas larguras, também com texto a 200%, sem overflow horizontal ou erros de
+página; axe sem violações nas duas larguras. Revisões de conteúdo e constituição sem
+bloqueadores. Status, links, dados e apresentação textual preservados, sem dependências
+novas, commit, push ou deploy.
+
+---
+
+## Phase 20: Percurso curto na ficha de projeto
+
+- [X] T108 [US2] Adicionar âncoras discretas Contexto, Minha responsabilidade, Decisões e Limitações após a apresentação inicial das fichas, com destinos focáveis e navegação nativa sem JavaScript; preservar todas as seções e validar teclado, alvos de 44px, refluxo mobile/desktop, axe, formato, lint e tipos per FR-012/FR-013/FR-021/FR-022 e Constituição III/V/VII/VIII
+
+**Resultado de T108 — 2026-10-24:** quatro links nativos após a classificação e antes de
+“Apresentação e fontes”, nas duas fichas. Em Nana, todos ficam na primeira tela em
+390 × 844 px (y479–571), com alvos mínimos de 44 × 44px. Os saltos focam os títulos
+correspondentes, preservando todas as seções, sua ordem e seus textos. Tipos, ESLint,
+Prettier e `git diff --check` aprovados; 45 unitários e 88 E2E passaram, com build de
+produção e cobertura de teclado, destinos e ausência de JavaScript. Inspeção visual em
+390/1280px; medições em 320/390/768/1280px com texto a 100% e 200%, sem overflow ou
+conteúdo cortado. Axe adicional em 390/1280px sem violações e nenhum erro de página;
+detector de layout sem achados e revisão constitucional sem violações. A inspeção
+avulsa precisou executar Chromium fora do sandbox após restrição de inicialização;
+nenhuma alteração na aplicação foi necessária. O aviso preexistente de sidecar do
+design desatualizado permanece sem reparo fora de escopo. T055 segue independente;
+sem dependências novas, commit, push ou deploy.
+
+---
+
+## Phase 21: Medida de leitura
+
+- [X] T109 [US1] [US2] Limitar a prosa extensa dos cartões e fichas de projeto, o apoio do catálogo, a nota de CI e a lista de próximos passos a `min(70ch, 36em)`, calibrando a Geologica para aproximadamente 65–75 caracteres por linha; preservar a composição aberta e as medidas existentes de resumos/introduções; validar desktop/celular, texto a 200%, regressões responsivas, axe, formato, lint e tipos per FR-020/FR-022, SC-006 e Constituição III/V/VII/VIII
+
+**Resultado de T109 — 2026-10-24:** medida compartilhada aplicada apenas à prosa/listas,
+com a composição aberta preservada. Em desktop amplo (1600px), os blocos de projetos chegaram
+a 72 caracteres por linha; apoio do catálogo e nota de CI, 69; “Próximos passos”, 71 em Nana
+e 74 na plataforma. As demais passagens das fichas ficaram em até 75; colunas estreitas e
+textos curtos podem ter menos. Inspeção das quatro rotas em 32 cenários, com fonte carregada,
+320/390/768/1280/1600px e texto a 200% em 320/768/1280px: sem overflow ou erros de página,
+com a última seção mantendo a largura integral. Lint, tipos, 45 unitários, build de produção,
+Prettier, detector tipográfico (`[]`) e `git diff --check` aprovados; confirmação final dos
+88 E2E, incluindo axe e refluxo, aprovada. Revisão constitucional sem bloqueadores.
+
+---
+
+## Phase 22: Percurso de avaliação da home
+
+- [X] T110 [US1] [US2] [US4] Executar as quatro melhorias da crítica Impeccable: salto nativo focável aos destaques, competências dos cartões agrupadas pelas áreas do perfil com ações antecipadas, imagem editorial da plataforma complementar ao diagrama de build e encerramento com contato explícito; preservar dados, campos obrigatórios, SC-001 e a exceção de Nana Silva; validar teclado/sem JavaScript, responsividade/texto a 200%, tipos, lint, unitários, build, E2E/a11y e revisão constitucional/de conteúdo antes de concluir
+
+**Resultado de T110 — 2026-10-27:** quatro melhorias e polimento integrado concluídos.
+Tipos, lint, 46 unitários e 90 E2E (incluindo axe, teclado, ausência de JavaScript, fontes
+e refluxo) passaram, com build de produção pelo servidor de testes. SC-001 confirmado em
+1280 × 720. Inspeção visual em 390/1280px e medições de home/catálogo em 320/390/768/1280px,
+com texto a 100% e 200% (16 cenários), sem overflow, conteúdo cortado ou erros de página,
+incluindo os textos do rodapé. Em 390px, o catálogo começa em y1261 e o primeiro cartão em
+y1431, com acesso direto pela abertura. O agrupamento mantém todas as competências; ações
+antecedem tecnologias e evidências na ordem do documento. Revisões constitucional, de
+conteúdo e semântica sem bloqueadores. O hook não encontrou problemas determinísticos na
+home; o aviso preexistente de sidecar desatualizado não foi reparado fora do escopo. T055
+permanece independente; sem dependências novas, commit, push ou deploy.
+
+Formatação direcionada e `git diff --check` aprovados. A checagem global de Prettier
+apontou três JSONs preexistentes, não alterados nesta tarefa, em
+`docs/referencias-visuais/assets/exploracoes-minimalistas/` (caderno-decisoes, indice-aberto
+e trabalho-abre, com sufixo `.webp.json`). A limitação global está registrada em
+`docs/ACTIVE_CONTEXT.md`; esses arquivos foram preservados fora do escopo.
+
+---
+
+## Phase 23: Preparação para publicação
+
+- [X] T111 Formatar os três JSONs de metadados visuais pendentes preservando os dados; sincronizar apenas o sidecar local com `DESIGN.md` e a implementação; validar formato global, JSON/schema, amostras e ausência de defasagem; registrar roteiro e pendências reais de T055, estado de CI/preview e limites do ambiente sem promover verificações automatizadas a inspeção humana
+
+**Resultado de T111 — 2026-10-27:** Prettier global e `git diff --check` aprovados; dados dos
+três JSONs, `DESIGN.md` e 50 arquivos da aplicação preservados por comparação de hashes.
+Sidecar local sincronizado em schema 2, com nove exemplos e zero achados de defasagem;
+18 cenários em shadow DOM sem overflow ou referências ARIA locais ausentes. Auditoria de
+produção atualizada: zero vulnerabilidades. Revisão constitucional e links locais da
+documentação aprovados. Roteiro em `docs/CHECKLIST_PUBLICACAO.md`, incluindo configuração
+da Vercel ainda não iniciada pelo proprietário. CI do SHA local sem execuções/status;
+as alterações posteriores ainda precisam compor um candidato enviado ao GitHub. T055,
+leitor de tela real, aparelho físico e preview continuam pendentes, sem falsa aprovação.
+Tipos, lint, 46 unitários, build e 90 E2E de T110 não foram repetidos porque nenhum arquivo
+da aplicação mudou. Nenhum commit, push, dependência nova ou deploy foi executado.

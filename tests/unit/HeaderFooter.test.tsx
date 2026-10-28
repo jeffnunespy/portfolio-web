@@ -37,7 +37,7 @@ describe("Footer", () => {
       "href",
       "/curriculo",
     );
-    const contact = screen.getByRole("region", { name: "Contato e perfis" });
+    const contact = screen.getByRole("region", { name: "Vamos conversar." });
     expect(within(contact).getByRole("link", { name: "Ver GitHub" })).toHaveAttribute(
       "href",
       "https://github.com/portfolio",
@@ -46,7 +46,7 @@ describe("Footer", () => {
       "href",
       "https://linkedin.com/in/portfolio",
     );
-    expect(within(contact).getByRole("link", { name: "Contato" })).toHaveAttribute(
+    expect(within(contact).getByRole("link", { name: "Enviar e-mail" })).toHaveAttribute(
       "href",
       "mailto:contato@portfolio.dev",
     );

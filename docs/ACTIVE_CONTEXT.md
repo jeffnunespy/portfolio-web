@@ -6,14 +6,98 @@ Experiência Pública Inicial do Portfólio (`001-experiencia-publica-inicial`).
 
 ## Status
 
-Implementação das fases 1–16 entregue, exceto pelas inspeções de publicação de T055. A fase 15
+Implementação das fases 1–17 entregue, exceto pelas inspeções de publicação de T055. A fase 15
 (T092–T099) migrou todas as rotas para a direção visual **Levantamento e sondagem**.
 Em 2026-10-23, o proprietário aprovou **Minimalismo escuro** como o novo visual oficial,
-na versão final **sem prévia de Nana Silva**. O sistema está implementado no protótipo;
-a migração das rotas Next.js está pendente na fase 17. `DESIGN.md` passa a orientar o novo
-visual, e a implementação anterior fica registrada como histórico.
+na versão final **sem prévia de Nana Silva**. Em 2026-10-24, o proprietário autorizou
+executar em conjunto as correções do audit; T102–T105 aplicaram a direção às rotas,
+com validação local concluída. `DESIGN.md` orienta o visual; a implementação anterior fica como histórico.
 Em 2026-10-23, o proprietário confirmou o perfil atual e o estudo de caso da plataforma e autorizou
 a geração do PDF. A publicação continua bloqueada pelas inspeções manuais/de preview.
+
+## Preparação para publicação — 2026-10-27
+
+- T111 corrige a formatação dos três JSONs de metadados visuais. A comparação dos hashes
+  dos dados serializados confirma equivalência antes/depois, sem alteração dos metadados.
+- `.impeccable/design.json` foi sincronizado com o `DESIGN.md` preservado e o HTML/CSS do
+  build atual: nove exemplos, competências agrupadas, contato atualizado, navegação real,
+  breakpoints de 360/760/1050px e narrativa oficial. A checagem de defasagem/schema retorna
+  zero achados; 18 cenários em shadow DOM (390/1280px) sem overflow ou referências ARIA
+  locais ausentes. O sidecar continua local, sob as exclusões existentes do Git.
+- A comparação de hashes preserva `DESIGN.md` e os 50 arquivos de aplicação, conteúdo,
+  recursos públicos e manifest/lockfile. A evidência de tipos, lint, 46 unitários, build e
+  90 E2E de T110 permanece aplicável; essas suítes não foram repetidas para manutenção
+  documental/JSON sem alteração da aplicação.
+- Auditoria de produção atualizada: `npm audit --omit=dev --audit-level=high` retornou
+  zero vulnerabilidades. A primeira consulta fora do sandbox foi rejeitada automaticamente
+  pelo possível envio de nomes privados. Antes da repetição, a comparação com o lockfile
+  público confirmou todos os 58 nomes de produção e as resoluções oficiais do npm; a
+  nova tentativa foi aprovada. Nenhuma credencial foi consultada ou enviada ao registro.
+- Consulta ao GitHub: nenhum status nem execução de Actions associado ao SHA local
+  `9a901660731ad91d5d03fa33b5a51a52fa852439`. O código atual inclui alterações locais posteriores;
+  o CI precisa validar o futuro commit candidato, não pode ser declarado aprovado pelo estado local.
+- O proprietário informou que ainda não iniciou a configuração da Vercel. Não existe URL
+  de preview fornecida para esta versão. O roteiro de configuração, preview explícito e
+  inspeções humanas está em [CHECKLIST_PUBLICACAO.md](CHECKLIST_PUBLICACAO.md), com referências
+  oficiais e critérios de aceite. A tentativa de abrir a demonstração de Nana pela ferramenta
+  web foi inconclusiva por indisponibilidade da URL nessa ferramenta; não caracteriza link quebrado.
+- T055 permanece aberta: inspeção humana, leitor de tela real, aparelho físico, preview e CI
+  do candidato continuam pendentes. Nenhum commit, push, implantação ou promoção foi executado.
+- T111 concluída após Prettier global, `git diff --check`, links locais e revisão
+  constitucional aprovados. Servidor de validação local encerrado ao fim das verificações.
+
+## Percurso de avaliação da home — 2026-10-27
+
+- T110 executou adapt, layout, distill, clarify e polish autorizados após a crítica da home.
+  “Ver projetos em destaque” salta para um título focável sem JavaScript; a abertura
+  mantém posicionamento e competências completos na primeira tela em 1280 × 720.
+- Cartões da home e do catálogo antecipam as ações e agrupam competências pelas áreas do
+  perfil, preservando itens sem área correspondente. Em 390px, as competências da abertura
+  usam duas colunas e o primeiro cartão começa em y1431 (antes: y1604).
+- A imagem ilustrativa da plataforma agora apresenta contexto, decisões e limitações.
+  O fluxo de publicação fica no diagrama semântico. Nana Silva continua sem prévia.
+- O rodapé termina com “Vamos conversar.” e ação principal “Enviar e-mail”, sem alterar
+  dados de contato, alegar disponibilidade ou remover perfis e navegação.
+- Validação: tipos, lint, 46 unitários e 90 E2E passaram, incluindo axe, teclado, fontes,
+  ausência de JavaScript e refluxo. O Playwright construiu a versão de produção. Inspeção
+  visual em 390/1280px e 16 cenários de home/catálogo em 320/390/768/1280px com texto a
+  100%/200% sem overflow, corte interno (incluindo rodapé) ou erros de página. Revisões
+  constitucional, de conteúdo e semântica sem bloqueadores; polimento encerrado no primeiro
+  lote visual, sem correções adicionais necessárias.
+- Hook da home sem achados determinísticos. Na conclusão de T110, o aviso de `DESIGN.md`
+  mais novo que o sidecar foi registrado fora de escopo; a manutenção de T111 o resolve.
+  T055 continua aberta;
+  nenhum commit, push ou deploy foi executado.
+- A checagem direcionada de Prettier passou. `npm run format:check` global apontou apenas
+  três arquivos preexistentes não alterados nesta tarefa, em
+  `docs/referencias-visuais/assets/exploracoes-minimalistas/`:
+  `caderno-decisoes.webp.json`, `indice-aberto.webp.json` e `trabalho-abre.webp.json`.
+  Foram preservados naquela etapa; a formatação é corrigida em T111, sem mudar os dados.
+
+## Correções integradas do audit — 2026-10-24
+
+- Escopo autorizado: adapt, harden, layout, optimize e polish, aproveitando a migração
+  T102–T105 já especificada. O audit original e suas evidências foram preservados.
+- Autoria e competências compartilham a abertura; a regressão mede todos os itens em
+  1280 × 720 px. O menu mantém cinco rotas e alvos de pelo menos 44 × 44 px.
+- SurveyOpening, terreno, paralaxe, varredura e Martian Mono foram retirados. Geologica
+  continua servida pelo próprio build. Comprovação e decisões usam disclosures nativos;
+  o fluxo ilustrativo da publicação é uma lista HTML/SVG, sem execução aparente de CI.
+- Nana Silva não mostra imagem na home, catálogo ou detalhe; campo, arquivo, metadados,
+  estado de validação, contato para código privado e estudo completo permanecem.
+- Regressões cobrem texto a 200% em 320/768/1280 px, detalhes abertos, tamanho real dos
+  alvos, WCAG 2.1 com todas as tags e contraste inconclusivo. O schema e os dados de
+  conteúdo não foram alterados; nenhum exemplo fictício foi copiado do protótipo.
+- Verificação final: tipos, lint, 45 testes Vitest em 8 arquivos, build Next.js 16.4.2 e
+  75 E2E passaram. Confirmação de 36 cenários (9 rotas × 4 larguras) sem overflow e erros;
+  nove análises axe mobile adicionais sem violações ou contraste inconclusivo. Competências
+  na primeira dobra e zoom a 200% passaram nas regressões. Detector: `[]`, sem supressões novas.
+- Medição local mobile (CPU 4×, 1,6 Mbps/150 ms): LCP de 1.024 para 680 ms, CLS 0, fontes
+  de 35.340 para 24.964 bytes. Permanecem tarefas de hidratação; não foi medido INP de campo.
+- T102–T105 concluídas após os gates; revisões de conteúdo, constituição, semântica e código
+  sem bloqueadores. [Relatório e evidências](audits/impeccable-2026-10-24-correcoes.md).
+  T055, aparelho físico, leitor de tela real e preview/canário continuam fora desta validação.
+  Nenhum commit, push ou deploy foi executado.
 
 ## Visual oficial — Minimalismo escuro (2026-10-23)
 
@@ -23,8 +107,7 @@ a geração do PDF. A publicação continua bloqueada pelas inspeções manuais/
   após a orientação “sem prévia”. Tema escuro, Geologica leve, linhas abertas, assinatura
   “Nunes.” com ponto laranja, decisões em primeira pessoa e diagrama semântico da plataforma.
   Nana Silva fica textual; não reintroduzir a captura. Não há paralaxe, terreno ou varredura.
-- `DESIGN.md` e seu sidecar passam a registrar a direção oficial. O sistema das rotas ainda
-  em código está preservado em
+- `DESIGN.md` e seu sidecar registram a direção oficial. O sistema anterior está preservado em
   [`design-levantamento-sondagem.md`](referencias-visuais/design-levantamento-sondagem.md).
 - Perfil, fontes de conteúdo, validação, rotas, currículo e competências continuam sob a spec.
   Acervo e Intervalo são ficção do protótipo e não serão migrados para a aplicação.
@@ -36,8 +119,8 @@ a geração do PDF. A publicação continua bloqueada pelas inspeções manuais/
 - Evidência do protótipo sem prévia: quatro larguras (320/390/768/1280), zero overflow/axe/erros,
   detalhes nativos, teclado, offline sem JavaScript, movimento reduzido e cores forçadas;
   revisão final `ship`. Relatório em `.impeccable/review/prototipo-minimalista-sem-previa/`.
-- Esta etapa registra a decisão e prepara as tarefas; nenhuma rota foi migrada e o site
-  não foi publicado. T055 permanece aberta e T102–T105 registram a migração pendente.
+- T101 registrou a decisão; a execução local de T102–T105 em 2026-10-24 migra as rotas.
+  O site não foi publicado. T055 permanece aberta.
 - T101 concluída após validação documental: YAML/JSON, sete cores e sete componentes,
   37 links locais em 11 documentos, Prettier, detector nativo e diff sem falhas. O HTML fora
   dos comentários permanece idêntico ao aprovado. Revisões de spec e constituição confirmaram
@@ -178,7 +261,7 @@ foi substituída naquela entrega. O `DESIGN.md` atual já registra a nova direç
 | Zoom e responsividade                              | E2E de texto a 200% e 320/768/1280px aprovado | Pendente                     |
 | Headings, landmarks, alternativas e nomes de links | axe aprovado; revisão estrutural do código    | Pendente no navegador/leitor |
 | Leitor de tela real                                | Não executado                                 | Pendente                     |
-| Preview/canário e links externos                   | URL desta versão não fornecida                | Pendente                     |
+| Preview/canário e links externos                   | Vercel ainda não configurada; URL pendente    | Pendente                     |
 
 A ferramenta de inspeção de UI não disponibilizou navegador nem aplicativo nesta sessão. Testes
 automatizados e revisão de código não foram registrados como inspeção humana. A URL do preview e

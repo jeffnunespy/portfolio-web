@@ -37,7 +37,12 @@ export default function Header({ nome }: { nome: string }) {
           prefetch={pathname === "/" ? false : null}
           aria-label={`${nome} — Início`}
         >
-          {nome}
+          <span>
+            {nome}
+            <span className="signature-period" aria-hidden="true">
+              .
+            </span>
+          </span>
         </Link>
         <nav className="site-nav" aria-label="Navegação principal">
           {ITENS_NAVEGACAO.map(({ href, rotulo, rotuloCompacto, prioritario }) => {

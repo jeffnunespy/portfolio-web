@@ -1,104 +1,89 @@
-import { readdirSync, readFileSync } from "node:fs";
-import path from "node:path";
 import { test, expect } from "@playwright/test";
+import { getPerfil, getProjetosImplementados } from "../../lib/content";
 
-// O hero publica o posicionamento do perfil. Ler o JSON evita fixar uma cópia
-// da string que diverge do conteúdo real a cada edição de content/profile.json.
-const perfil = JSON.parse(
-  readFileSync(path.join(process.cwd(), "content", "profile.json"), "utf8"),
-) as {
-  nome: string;
-  tituloPosicionamento: string;
-  descricaoPosicionamento: string;
-  competenciasPorArea: { area: string }[];
-};
+const perfil = getPerfil();
+const implementados = getProjetosImplementados();
+const destaques = implementados.filter((p) => p.destaque).slice(0, 6);
+const comprovacoesPublicas = [
+  ["Testes E2E com Playwright", "tree/master/tests/e2e"],
+  ["verificações WCAG 2.1 A/AA com axe-core", "blob/master/tests/e2e/home.a11y.spec.ts"],
+  ["content/profile.json", "blob/master/content/profile.json"],
+  ["content/projects/", "tree/master/content/projects"],
+  ["lib/content.ts", "blob/master/lib/content.ts"],
+  ["testes de validação", "blob/master/tests/unit/content.test.ts"],
+  [".github/workflows/ci.yml", "blob/master/.github/workflows/ci.yml"],
+] as const;
 
-// A home destaca apenas projetos implementados: escopo planejado vive em
-// /roadmap. Contar a partir do conteúdo evita fixar um número que muda a cada
-// projeto entregue.
-const projectsDir = path.join(process.cwd(), "content", "projects");
-const projetos = readdirSync(projectsDir)
-  .filter((fileName) => fileName.endsWith(".json"))
-  .map(
-    (fileName) =>
-      JSON.parse(readFileSync(path.join(projectsDir, fileName), "utf8")) as {
-        destaque: boolean;
-        real: boolean;
-      },
-  );
-const totalImplementados = projetos.filter((projeto) => projeto.real).length;
-const destaquesImplementados = projetos.filter(
-  (projeto) => projeto.real && projeto.destaque,
-).length;
-
-test("US1 - posicionamento profissional e competências na home", async ({ page }) => {
+test("US1 - nome, posicionamento e todas as competências estão na primeira dobra", async ({
+  page,
+}) => {
   await page.setViewportSize({ width: 1280, height: 720 });
   await page.goto("/");
-
-  const title = page.getByRole("heading", {
-    level: 1,
-    name: perfil.tituloPosicionamento,
-  });
-  const description = page.getByText(perfil.descricaoPosicionamento);
-
-  await expect(title).toBeVisible();
-  await expect(description).toBeVisible();
-
-  const evidenceLink = page.getByRole("link", { name: "Ver implementação e verificações" });
-  await expect(evidenceLink).toBeVisible();
-  await expect(evidenceLink).toHaveAttribute("href", "/projetos/plataforma-portfolio");
-  await expect(
-    page.getByText(
-      "Fluxos E2E com Playwright e WCAG 2.1 A/AA com axe-core, executados como gates separados no CI.",
-    ),
-  ).toBeVisible();
-
-  const registroImplementados = page.getByText("Projetos implementados").locator("..");
-  await expect(registroImplementados.locator("dd")).toHaveText(String(totalImplementados));
-
-  await expect(
-    page.getByRole("heading", { level: 2, name: "Competências comprovadas nesta plataforma" }),
-  ).toBeVisible();
-  const roadmapDeEstudos = page.getByRole("link", { name: "roadmap de estudos" });
-  await expect(roadmapDeEstudos).toHaveAttribute("href", "/roadmap");
-  await expect(
-    page.getByText(
-      "Tecnologias de backend e cloud, como Python, Django, Docker e Google Cloud Platform, aparecem apenas como estudo no",
-    ),
-  ).toBeVisible();
-
-  // Toda área declarada no perfil precisa aparecer como cabeçalho de competência.
-  for (const { area } of perfil.competenciasPorArea) {
-    await expect(page.getByRole("heading", { level: 3, name: area })).toBeVisible();
+  await page.evaluate(() => document.fonts.ready);
+  await expect(page.getByRole("heading", { level: 1, name: perfil.nome })).toBeVisible();
+  await expect(page.getByText(perfil.tituloPosicionamento, { exact: true })).toBeVisible();
+  await expect(page.getByText(perfil.descricaoPosicionamento, { exact: true })).toBeVisible();
+  for (const { area, competencias } of perfil.competenciasPorArea) {
+    const grupo = page
+      .locator(".competency-card")
+      .filter({ has: page.getByRole("heading", { level: 3, name: area, exact: true }) });
+    await expect(grupo).toBeVisible();
+    for (const competencia of competencias)
+      await expect(grupo.getByText(competencia, { exact: true })).toBeVisible();
   }
+  // toBeVisible sozinho aceita conteúdo fora da viewport. Medir cada item protege SC-001.
+  const foraDaDobra = await page
+    .locator(
+      ".home-name, .home-intro__role, .home-intro__description, .home-competencies h2, .competency-card h3, .competency-card li",
+    )
+    .evaluateAll((elements) =>
+      elements
+        .filter((el) => {
+          const r = el.getBoundingClientRect();
+          return r.top < 0 || r.bottom > innerHeight || r.left < 0 || r.right > innerWidth;
+        })
+        .map((el) => el.textContent),
+    );
+  expect(foraDaDobra).toEqual([]);
+  expect(await page.evaluate(() => scrollY)).toBe(0);
+  const projectsLink = page.getByRole("link", { name: "Ver projetos em destaque" });
+  await expect(projectsLink).toHaveAttribute("href", "#projects-title");
+  await expect(
+    page.getByText(
+      `${implementados.length} projetos implementados, com suas decisões e limitações.`,
+    ),
+  ).toBeVisible();
+  await expect(page.getByRole("link", { name: "roadmap de estudos" })).toHaveAttribute(
+    "href",
+    "/roadmap",
+  );
 
-  const titleBox = await title.boundingBox();
-  const descriptionBox = await description.boundingBox();
-  expect(titleBox && titleBox.y + titleBox.height).toBeLessThanOrEqual(720);
-  expect(descriptionBox && descriptionBox.y + descriptionBox.height).toBeLessThanOrEqual(720);
-
-  const projectCards = page.locator('[data-testid="project-card"]');
-  const count = await projectCards.count();
-  expect(count).toBe(destaquesImplementados);
-
-  for (const card of await projectCards.all()) {
+  const cards = page.getByTestId("project-card");
+  await expect(cards).toHaveCount(destaques.length);
+  for (const projeto of destaques) {
+    const card = cards.filter({
+      has: page.getByRole("heading", { name: projeto.titulo, exact: true }),
+    });
     await expect(card.getByText(/Autoral|Acadêmico|Colaborativo|Profissional/)).toBeVisible();
-    // A ficha de índice é decorativa (alt=""): fica visível, mas fora da árvore
-    // de acessibilidade, para não repetir o título que o cartão já anuncia.
-    const fichaDeIndice = card.locator("img.project-image");
-    await expect(fichaDeIndice).toBeVisible();
-    await expect(fichaDeIndice).toHaveAttribute("alt", "");
+    await expect(
+      card.getByRole("link", { name: `Ver detalhes de ${projeto.titulo}` }),
+    ).toHaveAttribute("href", `/projetos/${projeto.slug}`);
+    const imagem = card.locator("img.project-image");
+    if (projeto.slug === "nana-silva") {
+      await expect(imagem).toHaveCount(0);
+      await expect(card.getByText("Em validação", { exact: true })).toBeVisible();
+    } else {
+      await expect(imagem).toBeVisible();
+      await expect(imagem).toHaveAttribute("alt", "");
+    }
     await expect(card.getByRole("img")).toHaveCount(0);
-    await expect(card.getByRole("link", { name: /Ver detalhes de/ })).toBeVisible();
   }
 });
 
 test("US1 - navegação por tabulação sem tabindex positivo", async ({ page }) => {
   await page.goto("/");
-
   await expect(page.locator('[tabindex]:not([tabindex="0"]):not([tabindex="-1"])')).toHaveCount(0);
-
-  const expectedLabels = [
+  for (const nome of [
     "Pular para o conteúdo principal",
     `${perfil.nome} — Início`,
     "Início",
@@ -106,84 +91,133 @@ test("US1 - navegação por tabulação sem tabindex positivo", async ({ page })
     "Roadmap (Plano)",
     "Sobre",
     "Currículo (CV)",
-  ];
-
-  for (const expectedLabel of expectedLabels) {
+  ]) {
     await page.keyboard.press("Tab");
-    const focusedLabel = await page.evaluate(
-      () =>
-        document.activeElement?.getAttribute("aria-label") ??
-        document.activeElement?.textContent?.trim(),
-    );
-    expect(focusedLabel).toBe(expectedLabel);
+    expect(
+      await page.evaluate(
+        () =>
+          document.activeElement?.getAttribute("aria-label") ??
+          document.activeElement?.textContent?.trim(),
+      ),
+    ).toBe(nome);
   }
 });
 
-test("US1 - Ver comprovação abre o painel textual e Escape devolve o foco", async ({ page }) => {
+test("US1 - comprovação nativa abre e fecha por Enter e Espaço", async ({ page }) => {
   await page.goto("/");
-
-  const painel = page.locator("#estrutura");
-  const abrir = page.getByRole("button", { name: "Ver comprovação" });
-  await expect(abrir).toHaveAttribute("aria-expanded", "false");
-  await expect(abrir).toHaveAttribute("aria-controls", "estrutura");
-  await expect(painel).toBeHidden();
-
-  await abrir.focus();
+  const details = page.locator("#estrutura");
+  const summary = details.locator("summary");
+  const conteudo = details.locator(".structure-notes__inner");
+  await expect(conteudo).toBeHidden();
+  await summary.focus();
   await page.keyboard.press("Enter");
-
-  const ocultar = page.getByRole("button", { name: "Ocultar comprovação" });
-  await expect(ocultar).toHaveAttribute("aria-expanded", "true");
-  await expect(painel).toBeVisible();
-  await expect(
-    painel.getByRole("heading", { level: 2, name: "O que sustenta a superfície" }),
-  ).toBeVisible();
-  await expect(painel.getByText("content/profile.json")).toBeVisible();
-
-  await page.keyboard.press("Escape");
-  await expect(painel).toBeHidden();
-  await expect(page.getByRole("button", { name: "Ver comprovação" })).toBeFocused();
+  await expect(conteudo).toBeVisible();
+  await expect(summary).toBeFocused();
+  await expect(conteudo.getByText("content/profile.json")).toBeVisible();
+  const total = new Set(perfil.competenciasPorArea.flatMap((area) => area.competencias)).size;
+  await expect(conteudo.getByText(new RegExp(`As ${total} competências declaradas`))).toBeVisible();
+  for (const nome of [
+    "content/profile.json",
+    "content/projects/",
+    "lib/content.ts",
+    "testes de validação",
+  ]) {
+    await page.keyboard.press("Tab");
+    await expect(conteudo.getByRole("link", { name: nome, exact: true })).toBeFocused();
+  }
+  await page.keyboard.press("Tab");
+  await expect(page.getByRole("link", { name: ".github/workflows/ci.yml" })).toBeFocused();
+  await summary.focus();
+  await page.keyboard.press("Space");
+  await expect(conteudo).toBeHidden();
+  await expect(summary).toBeFocused();
 });
 
-test("US1 - curvas acompanham o mouse sem alterar a página", async ({ page }) => {
-  await page.setViewportSize({ width: 1280, height: 720 });
-  await page.goto("/");
-  await expect(page.locator(".survey__drawing")).toHaveAttribute("data-desenhado", "");
-
-  const titulo = page.locator(".hero__title");
-  const corAntes = await titulo.evaluate((element) => getComputedStyle(element).color);
-
-  await page.mouse.move(900, 300);
-  await page.mouse.move(980, 360);
-  await expect
-    .poll(() =>
-      page.locator(".survey__layer--index").evaluate((element) => element.style.transform),
-    )
-    .toContain("translate3d");
-
-  // Sem lente nem raio-X: só as camadas do terreno se deslocam.
-  expect(await titulo.evaluate((element) => getComputedStyle(element).color)).toBe(corAntes);
-});
-
-test("US1 - movimento reduzido mostra as curvas sem varredura nem deslocamento", async ({
+test("US1 - comprovações dão acesso direto às fontes públicas sem sugerir execução ao vivo", async ({
   page,
 }) => {
-  await page.emulateMedia({ reducedMotion: "reduce" });
-  await page.setViewportSize({ width: 1280, height: 720 });
   await page.goto("/");
-
-  const desenho = page.locator(".survey__drawing");
-  await expect(desenho).toHaveAttribute("data-desenhado", "");
-  expect(
-    await desenho.evaluate((element) => {
-      const estilo = getComputedStyle(element);
-      return { mascara: estilo.maskImage, animacao: estilo.animationName };
-    }),
-  ).toEqual({ mascara: "none", animacao: "none" });
-
-  await page.mouse.move(900, 300);
-  await page.mouse.move(980, 360);
-  await page.waitForTimeout(100);
-  for (const camada of await page.locator(".survey__layer").all()) {
-    expect(await camada.evaluate((element) => element.style.transform)).toBe("");
+  await page.locator("#estrutura summary").click();
+  const secao = page.locator("section.station").filter({
+    has: page.getByRole("heading", { name: "Da fonte à página.", exact: true }),
+  });
+  for (const [nome, caminho] of comprovacoesPublicas) {
+    const link = secao.getByRole("link", { name: nome, exact: true });
+    await expect(link).toBeVisible();
+    await expect(link).toHaveAttribute(
+      "href",
+      `https://github.com/jeffnunespy/portfolio-web/${caminho}`,
+    );
+    await expect(link).toHaveAttribute("target", "_blank");
+    await expect(link).toHaveAttribute("rel", "noopener noreferrer");
   }
+  await expect(secao.locator("figcaption")).toContainText("Esquema simplificado do build.");
+  await expect(secao.locator(".ci-record")).toContainText(
+    "Este registro descreve o fluxo; não representa uma execução ao vivo.",
+  );
+});
+
+test("US1 - comprovação e projetos permanecem disponíveis sem JavaScript", async ({ browser }) => {
+  const context = await browser.newContext({ javaScriptEnabled: false });
+  const page = await context.newPage();
+  await page.goto("http://localhost:3001/");
+  await page.getByRole("link", { name: "Ver projetos em destaque" }).click();
+  await expect(page.locator("#projects-title")).toBeFocused();
+  await page.locator("#estrutura summary").click();
+  await expect(page.locator("#estrutura .structure-notes__inner")).toBeVisible();
+  for (const [nome, caminho] of comprovacoesPublicas) {
+    const link = page.getByRole("link", { name: nome, exact: true });
+    await expect(link).toBeVisible();
+    await expect(link).toHaveAttribute(
+      "href",
+      `https://github.com/jeffnunespy/portfolio-web/${caminho}`,
+    );
+  }
+  await expect(
+    page.getByRole("list", { name: "Etapas do fluxo de publicação" }).getByRole("listitem"),
+  ).toHaveCount(3);
+  await page.getByRole("link", { name: "Ver detalhes de Plataforma de Portfólio" }).click();
+  await expect(
+    page.getByRole("heading", { level: 1, name: "Plataforma de Portfólio" }),
+  ).toBeVisible();
+  await context.close();
+});
+
+for (const width of [390, 1280]) {
+  test(`US1 - salto aos destaques por teclado permite abrir uma ficha em ${width}px`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width, height: 844 });
+    await page.goto("/");
+    await page.getByRole("link", { name: "Ver projetos em destaque" }).focus();
+    await page.keyboard.press("Enter");
+    const title = page.getByRole("heading", { name: "Trabalho em prática.", exact: true });
+    await expect(title).toBeFocused();
+    await expect(title).toBeInViewport();
+    const primeiroProjeto = destaques[0];
+    await page.keyboard.press("Tab");
+    await page.keyboard.press("Tab");
+    const link = page.getByRole("link", { name: `Ver detalhes de ${primeiroProjeto.titulo}` });
+    await expect(link).toBeFocused();
+    await page.keyboard.press("Enter");
+    await expect(page).toHaveURL(`/projetos/${primeiroProjeto.slug}`);
+    await expect(
+      page.getByRole("heading", { level: 1, name: primeiroProjeto.titulo }),
+    ).toBeVisible();
+  });
+}
+
+test("US1 - movimento reduzido preserva a leitura e elimina transições", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/");
+  await expect(page.getByRole("heading", { level: 1, name: perfil.nome })).toBeVisible();
+  expect(
+    await page
+      .locator("a")
+      .evaluateAll((elements) =>
+        elements.every((el) => getComputedStyle(el).transitionDuration === "0s"),
+      ),
+  ).toBe(true);
+  expect(await page.evaluate(() => document.getAnimations().length)).toBe(0);
+  await expect(page.locator(".survey__drawing")).toHaveCount(0);
 });

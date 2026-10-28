@@ -120,14 +120,14 @@ escolhas técnicas: Geologica leve, marfim sobre fundo escuro, ponto laranja rec
 linhas abertas deixam a evidência e seus limites conduzirem a leitura.
 
 A direção já está implementada no [protótipo de referência](docs/referencias-visuais/prototipo-minimalista-escuro.html),
-na versão final **sem prévia de Nana Silva**. Esta aprovação é documental: as rotas Next.js
-ainda usam o visual anterior e sua migração será uma tarefa posterior. Não houve publicação
-nem migração da aplicação nesta etapa. O frontmatter registra valores extraídos do HTML;
-este texto e o sidecar descrevem sua aplicação e os compromissos que a migração deve preservar.
+na versão final **sem prévia de Nana Silva**. Em 2026-10-24, a execução integrada de
+T102–T105 aplicou essa direção às rotas Next.js, com validação local concluída e registrada em
+`docs/ACTIVE_CONTEXT.md`. Não houve publicação. O frontmatter registra os valores extraídos
+do HTML; as adaptações ao conteúdo e aos requisitos da aplicação estão descritas abaixo.
 
 A [decisão oficial](docs/referencias-visuais/direcao-minimalista-escura.md) registra a autoridade
 da direção. O [sistema anterior](docs/referencias-visuais/design-levantamento-sondagem.md) foi
-preservado como histórico da implementação que continua em código. Composição exata da home,
+preservado como histórico da implementação substituída. Composição exata da home,
 ordem dos projetos e exemplos fictícios pertencem ao documento da referência e ao brief local
 `.impeccable/surfaces/docs-referencias-visuais-prototipo-minimalista-escuro-html.md`,
 não ao sistema global. Rotas, competências, estudos de caso completos e roadmap continuam
@@ -215,8 +215,8 @@ composição a todas as rotas.
 
 O HTML independente carrega Geologica pelo Google Fonts e tem fallback. **Na produção, servir
 a fonte localmente pelo mecanismo `next/font` já existente**; a URL externa do protótipo não
-é requisito nem dependência da aplicação. Esta etapa não altera a configuração de fontes,
-nem os testes de carregamento que ainda descrevem o sistema anterior.
+é requisito nem dependência da aplicação. A aplicação carrega somente Geologica variável,
+no subconjunto latino; os testes mantêm o teto de 100 KiB e exigem uma única fonte.
 
 ## Layout
 
@@ -230,11 +230,28 @@ Seções usam `spacing.section-space`; linhas de projetos, `spacing.project-spac
 nas extremidades. Textos longos mantêm medidas de leitura, sem esticar parágrafos para ocupar
 o contêiner. Cabeçalhos, metadados, grupos de links e rodapé quebram linha naturalmente.
 
+Na aplicação, prosa extensa de projetos, apoio do catálogo, nota de CI e listas de leitura
+das fichas usam `--reading-measure: min(70ch, 36em)`. O segundo teto compensa o zero largo da
+Geologica: 70ch isoladamente ainda produziu linhas de cerca de 100 caracteres na inspeção.
+A medida busca aproximadamente 65–75 caracteres reais. O limite atua no texto, inclusive em
+“Próximos passos”, mantendo seções, filetes, grades e ações abertos na largura disponível.
+Medidas existentes nos resumos e nas introduções são preservadas; no celular, o texto acompanha a coluna.
+
 Até 760px, as composições de duas colunas se empilham, o cabeçalho assume direção vertical e
 a navegação distribui os links na largura disponível. O diagrama passa a uma coluna até
 1050px, com etapas em ordem e conectores reposicionados. Preservar leitura, zoom, ordem de
 foco e ausência de perda de conteúdo nas larguras estreitas. Esses limiares são os observados
 no protótipo; adaptações de outras rotas devem responder ao conteúdo real sob a especificação.
+
+Na home da aplicação, autoria/posicionamento e competências ocupam duas colunas em desktop.
+A descrição integral e os quatro grupos com seus itens precisam caber em 1280 × 720 px (SC-001).
+A abertura usa 2rem no topo e 3rem na base; abaixo de 1050px as duas partes se empilham.
+As competências passam de duas colunas a quatro no intervalo de 761–1050px e voltam a duas
+até 760px, ou uma até 360px. O nome usa `clamp(2.5rem, 12vw, 3.6rem)` no celular para
+preservar o gesto e permitir ampliação sem recorte. Não há altura fixa na abertura.
+Os links do menu reservam pelo menos 44px também na largura, mesmo com rótulo compacto.
+A ação principal da abertura salta para o título focável dos projetos em destaque por
+âncora nativa, inclusive sem JavaScript. O currículo mantém acesso direto ao lado.
 
 O cabeçalho do protótipo participa do fluxo normal, sem posição fixa ou fundo em degradê.
 O deslocamento para âncoras reserva 2rem no topo. A ordem exata de seções, a posição do
@@ -278,8 +295,8 @@ rota a repetir o hero da home.
 
 Navegação horizontal flexível, em `muted`; currículo e hover em `accent`, sem movimento ou
 sublinhado animado. O HTML usa âncoras reais e mantém o currículo acessível por link.
-Até 760px, cabeçalho e navegação se reorganizam sem menu novo. Estados de rota atual e
-integração Next.js serão definidos na migração conforme as rotas e acessibilidade existentes;
+Até 760px, cabeçalho e navegação se reorganizam sem menu novo. Na aplicação, `aria-current="page"` e sublinhado marcam a rota atual; o currículo preserva
+o acento quando não é a rota atual. A integração usa as rotas e o prefetch do Next.js;
 o protótipo não implementa um estado de rota atual.
 
 ### Links de ação e foco
@@ -305,6 +322,12 @@ ou link de PNG. A exceção de apresentação está formalizada em **FR-006a** d
 os demais projetos continuam sujeitos a FR-006. Isso não autoriza retirar os arquivos de imagem referenciados pelo schema
 de conteúdo nem eliminar estudos de caso completos. A aprovação visual tampouco muda o
 estado de lançamento do projeto ou as competências comprovadas.
+
+Nos cartões da aplicação, ações de ficha, demonstração e código precedem tecnologias e
+competências na ordem do documento. As competências usam uma lista de definições agrupada
+pelas áreas existentes no perfil, em duas colunas ou uma até 360px. Competências do projeto
+sem correspondência no perfil permanecem visíveis como “Outras competências”. Nenhuma
+competência é removida ou promovida a evidência por esse agrupamento.
 
 ### Detalhes de decisão
 
@@ -350,3 +373,23 @@ etapas. O diagrama é HTML/SVG, sem raster publicado na referência atual.
 - **Don't** promover Acervo, Intervalo, a ordem dos projetos ou a composição exata da home a regra global ou dado a migrar.
 - **Don't** remover imagens exigidas pelo schema de conteúdo nem reduzir estudos de caso, competências, rotas ou roadmap por causa desta aprovação visual.
 - **Don't** assumir que a aprovação documental já migrou ou publicou a aplicação, nem usar `title` como portador de informação essencial.
+
+## Aplicação e comprovação
+
+`app/globals.css` aplica os sete tokens e os papéis tipográficos; Header, Footer e todas as
+rotas compartilham o mesmo contêiner, sem cabeçalho fixo. As páginas Sobre, currículo,
+roadmap e recuperação usam colunas com mínimo zero e quebra segura de texto; o currículo
+mantém seu PDF. O ícone repete o ponto de autoria. A imagem ilustrativa da plataforma
+é um índice editorial em 5:3 com contexto, decisões e limitações, sem simular uma captura.
+O fluxo de conteúdo, validação e publicação fica concentrado no diagrama semântico.
+
+O rodapé encerra as rotas com “Vamos conversar.” no papel `headline`, texto sobre projetos
+e oportunidades e “Enviar e-mail” como ação principal quando há endereço configurado.
+LinkedIn e GitHub continuam acessíveis, com alternativa textual quando o e-mail não existe.
+
+`BuildEvidence` é um Server Component: diagrama com `ol role="list"` e comprovação em
+`details`/`summary`, ambos presentes no HTML sem hidratação. Enter e Espaço controlam a
+abertura nativa; não há Escape customizado, dependência de mouse ou geração de terreno.
+As fichas de índice também oferecem uma decisão e uma limitação derivadas do JSON, com
+link para o estudo completo. Nana preserva estado em andamento/em validação, código privado
+com contato e os recursos de imagem no modelo, sem mostrar prévia em nenhuma dessas rotas.

@@ -1,10 +1,10 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, type Page } from "@playwright/test";
 import { getProjetosImplementados } from "../../lib/content";
 
 const routes = [
   "/",
   "/projetos",
-  ...getProjetosImplementados().map((projeto) => `/projetos/${projeto.slug}`),
+  ...getProjetosImplementados().map((p) => `/projetos/${p.slug}`),
   "/roadmap",
   "/sobre",
   "/curriculo",
@@ -12,361 +12,205 @@ const routes = [
   "/projetos/slug-inexistente",
 ];
 
-for (const width of [320, 768, 1280]) {
-  test(`páginas públicas não têm rolagem horizontal em ${width}px`, async ({ page }) => {
-    await page.setViewportSize({ width, height: 900 });
+async function expectReflow(page: Page, route: string) {
+  const dimensions = await page.evaluate(() => ({
+    documentWidth: document.documentElement.scrollWidth,
+    bodyWidth: document.body.scrollWidth,
+    viewport: document.documentElement.clientWidth,
+    overflowing: Array.from(
+      document.querySelectorAll(
+        "main h1,main h2,main h3,main p,main a,main li,main dt,main dd,main summary,footer h2,footer p,footer a",
+      ),
+    )
+      .filter((el) => {
+        const r = el.getBoundingClientRect();
+        return r.width > 0 && r.height > 0;
+      })
+      .filter((el) => {
+        const r = el.getBoundingClientRect();
+        return (
+          r.left < -1 ||
+          r.right > innerWidth + 1 ||
+          (el.clientWidth > 0 && el.scrollWidth > el.clientWidth + 1)
+        );
+      })
+      .map((el) => ({ text: el.textContent?.trim().slice(0, 100), className: el.className })),
+  }));
+  expect(dimensions.documentWidth, `documento: ${route}`).toBeLessThanOrEqual(dimensions.viewport);
+  expect(dimensions.bodyWidth, `body: ${route}`).toBeLessThanOrEqual(dimensions.viewport);
+  expect(dimensions.overflowing, `conteúdo cortado: ${route}`).toEqual([]);
+}
 
+for (const width of [320, 390, 768, 1280]) {
+  test(`páginas públicas e navegação cabem em ${width}px com alvos de 44px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 });
     for (const route of routes) {
       await page.goto(route);
-
-      const signature = page.getByRole("banner").getByRole("link", { name: /— Início$/ });
-      await expect(signature, `assinatura visível em ${route}`).toBeVisible();
-      const signatureBox = await signature.boundingBox();
-      expect(signatureBox, `geometria da assinatura em ${route}`).not.toBeNull();
-      expect(signatureBox!.y + signatureBox!.height).toBeLessThanOrEqual(900);
-
-      const dimensions = await page.evaluate(() => ({
-        bodyWidth: document.body.scrollWidth,
-        documentWidth: document.documentElement.scrollWidth,
-        viewportWidth: document.documentElement.clientWidth,
-      }));
-
-      expect(dimensions.bodyWidth, `overflow no body de ${route}`).toBeLessThanOrEqual(
-        dimensions.viewportWidth,
+      await page.evaluate(() => document.fonts.ready);
+      await expectReflow(page, route);
+      const assinatura = page.getByRole("banner").getByRole("link", { name: /— Início$/ });
+      await expect(assinatura).toBeVisible();
+      const box = await assinatura.boundingBox();
+      expect(box!.y + box!.height).toBeLessThanOrEqual(900);
+      const targets = await page.locator(".site-nav a").evaluateAll((elements) =>
+        elements.map((el) => {
+          const r = el.getBoundingClientRect();
+          const hit = document
+            .elementFromPoint(r.x + r.width / 2, r.y + r.height / 2)
+            ?.closest("a");
+          return { width: r.width, height: r.height, correct: hit === el };
+        }),
       );
-      expect(dimensions.documentWidth, `overflow no documento de ${route}`).toBeLessThanOrEqual(
-        dimensions.viewportWidth,
-      );
-      const overflowingText = await page.locator("h1, h2, h3, p, a, li").evaluateAll((elements) =>
-        elements
-          .filter((element) => {
-            const style = window.getComputedStyle(element);
-            return (
-              !element.matches(".skip-link") && element.clientWidth > 0 && style.display !== "none"
-            );
-          })
-          .filter((element) => element.scrollWidth > element.clientWidth + 1)
-          .map((element) => element.textContent?.trim() || element.tagName),
-      );
-      expect(overflowingText, `texto cortado em ${route}`).toEqual([]);
-      await expect(page.locator("main")).toBeVisible();
+      expect(targets).toHaveLength(5);
+      expect(targets.every((t) => t.width >= 44 && t.height >= 44 && t.correct)).toBe(true);
     }
   });
 }
 
-test("composição desktop usa a margem direita e mantém a largura das fichas", async ({ page }) => {
+for (const width of [320, 768, 1280]) {
+  test(`texto a 200% reflui sem perda, inclusive detalhes abertos, em ${width}px`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width, height: 900 });
+    for (const route of routes) {
+      await page.goto(route);
+      await page.evaluate(() => (document.documentElement.style.fontSize = "200%"));
+      await page.evaluate(() => document.fonts.ready);
+      await expectReflow(page, route);
+      await page
+        .locator("details")
+        .evaluateAll((elements) => elements.forEach((el) => el.setAttribute("open", "")));
+      await expectReflow(page, route + " (detalhes abertos)");
+    }
+  });
+}
+
+test("moldura, projetos e estados de recuperação compartilham o contêiner", async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 900 });
-  await page.goto("/");
-
-  const hero = page.locator(".hero");
-  const heroBody = page.locator(".hero__body");
-  const heroRecord = page.locator(".hero__record");
-  const [heroBox, bodyBox, recordBox] = await Promise.all([
-    hero.boundingBox(),
-    heroBody.boundingBox(),
-    heroRecord.boundingBox(),
-  ]);
-
-  expect(heroBox).not.toBeNull();
-  expect(bodyBox).not.toBeNull();
-  expect(recordBox).not.toBeNull();
-  expect(recordBox!.x).toBeGreaterThan(bodyBox!.x + bodyBox!.width);
-  expect(recordBox!.x + recordBox!.width).toBeCloseTo(heroBox!.x + heroBox!.width, 0);
-
-  const projectGrid = page.locator(".project-grid").last();
-  const gridBox = await projectGrid.boundingBox();
-
-  expect(gridBox).not.toBeNull();
-  const cards = projectGrid.locator(".project-card");
-  expect(await cards.count()).toBeGreaterThan(0);
-  for (const card of await cards.all()) {
-    const [cardBox, imageBox, projectBodyBox] = await Promise.all([
-      card.boundingBox(),
-      card.locator(".project-image").boundingBox(),
-      card.locator(".project-card__body").boundingBox(),
-    ]);
-    expect(cardBox).not.toBeNull();
-    expect(imageBox).not.toBeNull();
-    expect(projectBodyBox).not.toBeNull();
-    expect(cardBox!.width).toBeCloseTo(gridBox!.width, 0);
-    expect(imageBox!.x + imageBox!.width).toBeLessThan(projectBodyBox!.x);
+  for (const [route, selector] of [
+    ["/", ".home-intro"],
+    ["/projetos", ".page-section"],
+    ["/projetos/plataforma-portfolio", ".project-detail"],
+    ["/rota-inexistente", ".message-page"],
+    ["/projetos/slug-inexistente", ".message-page"],
+  ]) {
+    await page.goto(route);
+    const header = await page.locator(".site-header__inner").boundingBox();
+    const surface = await page.locator(selector).boundingBox();
+    expect(header).not.toBeNull();
+    expect(surface).not.toBeNull();
+    expect(surface!.x).toBeCloseTo(header!.x, 0);
+    expect(surface!.width).toBeCloseTo(header!.width, 0);
+    await expectReflow(page, route);
   }
 });
 
-test("404 compartilha o eixo global e mantém os campos na margem direita", async ({ page }) => {
-  await page.setViewportSize({ width: 1280, height: 900 });
-  await page.goto("/rota-inexistente");
-
-  const headerInner = page.locator(".site-header__inner");
-  const messagePage = page.locator(".message-page--not-found");
-  const messageBody = page.locator(".message-page__body");
-  const messageRecord = page.locator(".message-page__record");
-  const [headerBox, pageBox, bodyBox, recordBox] = await Promise.all([
-    headerInner.boundingBox(),
-    messagePage.boundingBox(),
-    messageBody.boundingBox(),
-    messageRecord.boundingBox(),
-  ]);
-
-  expect(headerBox).not.toBeNull();
-  expect(pageBox).not.toBeNull();
-  expect(bodyBox).not.toBeNull();
-  expect(recordBox).not.toBeNull();
-  expect(pageBox!.x).toBeCloseTo(headerBox!.x, 0);
-  expect(pageBox!.width).toBeCloseTo(headerBox!.width, 0);
-  expect(recordBox!.x).toBeGreaterThan(bodyBox!.x + bodyBox!.width);
-  expect(recordBox!.x + recordBox!.width).toBeCloseTo(pageBox!.x + pageBox!.width, 0);
-});
-
-/*
-  O eixo de campo é uma medida só em todo o fichário. Sem esta verificação, cada
-  rota volta a inventar a largura da sua margem de consulta — era o estado
-  anterior: 320px no hero e 304px no 404, com o eixo direito saltando entre
-  rotas do mesmo acervo. A asserção compara a posição inicial da coluna, não a
-  largura, porque é o eixo que o leitor percebe ao passar de uma rota a outra.
-*/
-test("a margem de consulta ocupa o mesmo eixo em todas as rotas que a usam", async ({ page }) => {
-  await page.setViewportSize({ width: 1280, height: 900 });
-
-  await page.goto("/");
-  const heroRecord = await page.locator(".hero__record").boundingBox();
-
-  await page.goto("/rota-inexistente");
-  const notFoundRecord = await page.locator(".message-page__record").boundingBox();
-
-  await page.goto("/projetos/plataforma-portfolio");
-  const detailSources = await page.locator(".project-detail__visual-index-sources").boundingBox();
-
-  expect(heroRecord).not.toBeNull();
-  expect(notFoundRecord).not.toBeNull();
-  expect(detailSources).not.toBeNull();
-
-  expect(notFoundRecord!.x).toBeCloseTo(heroRecord!.x, 0);
-  expect(detailSources!.x).toBeCloseTo(heroRecord!.x, 0);
-  expect(notFoundRecord!.width).toBeCloseTo(heroRecord!.width, 0);
-  expect(detailSources!.width).toBeCloseTo(heroRecord!.width, 0);
-});
-
-/*
-  Escassez assumida: com um acervo ímpar de campos, o último não pode ficar
-  sozinho na coluna esquerda com o filete vertical cortando o vazio ao lado.
-*/
-test("o último campo ímpar da ficha ocupa a linha inteira sem filete no vazio", async ({
+test("campos do estudo de caso e sua última seção usam o espaço sem coluna vazia", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto("/projetos/plataforma-portfolio");
-
-  const content = page.locator(".project-detail__content");
-  const sections = content.locator("> section");
-  const total = await sections.count();
-  const last = sections.nth(total - 1);
-
-  const [contentBox, lastBox] = await Promise.all([content.boundingBox(), last.boundingBox()]);
-
-  expect(contentBox).not.toBeNull();
-  expect(lastBox).not.toBeNull();
-
-  const larguraDeColunaUnica = lastBox!.width < contentBox!.width * 0.75;
-
-  if (larguraDeColunaUnica) {
-    // Há um par completo na última linha: o filete pertence à célula da esquerda.
-    return;
-  }
-
-  expect(lastBox!.width).toBeCloseTo(contentBox!.width, 0);
-  await expect(last).toHaveCSS("border-right-width", "0px");
+  const content = await page.locator(".project-detail__content").boundingBox();
+  const last = await page.locator(".project-detail__content > section").last().boundingBox();
+  expect(last!.width).toBeCloseTo(content!.width, 0);
+  expect(last!.x).toBeCloseTo(content!.x, 0);
 });
 
-test("conteúdo longo e sem espaços não rompe fichas ou ações em 320px", async ({ page }) => {
+test("conteúdo longo e sem espaços não rompe projetos, ações ou detalhes em 320px", async ({
+  page,
+}) => {
   await page.setViewportSize({ width: 320, height: 900 });
   await page.goto("/projetos");
-
+  await page
+    .locator("details")
+    .evaluateAll((elements) => elements.forEach((el) => el.setAttribute("open", "")));
   await page.evaluate(() => {
-    const textoExtremo = "Projeto超長內容🚀".repeat(24);
     for (const selector of [
       ".project-card h2",
       ".project-card__summary",
       ".project-card .tag",
       ".project-card .chip-list li",
       ".project-card .button",
+      ".project-card summary",
+      ".detail-content p",
     ]) {
-      const element = document.querySelector(selector);
-      if (element) {
-        element.textContent = textoExtremo;
-      }
+      const el = document.querySelector(selector);
+      if (el) el.textContent = "Projeto超長內容🚀".repeat(24);
     }
   });
-
-  const dimensions = await page.evaluate(() => ({
-    bodyWidth: document.body.scrollWidth,
-    documentWidth: document.documentElement.scrollWidth,
-    viewportWidth: document.documentElement.clientWidth,
-    overflowingElements: Array.from(
-      document.querySelectorAll(
-        ".project-card h2, .project-card__summary, .project-card .tag, .project-card .chip-list li, .project-card .button",
-      ),
-    )
-      .filter((element) => element.scrollWidth > element.clientWidth + 1)
-      .map((element) => element.className || element.tagName),
-  }));
-
-  expect(dimensions.bodyWidth).toBeLessThanOrEqual(dimensions.viewportWidth);
-  expect(dimensions.documentWidth).toBeLessThanOrEqual(dimensions.viewportWidth);
-  expect(dimensions.overflowingElements).toEqual([]);
+  await expectReflow(page, "/projetos (conteúdo extremo)");
 });
 
 test("títulos e stack longa não rompem as entradas do roadmap em 320px", async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 900 });
   await page.goto("/roadmap");
-
-  await page.locator(".roadmap-entry h2").evaluateAll((elements) => {
-    for (const element of elements) {
-      element.textContent = "ProjetoComTítuloExtremamenteLongoESemEspaços".repeat(8);
-    }
-  });
   await page
-    .locator(".roadmap-stack__group li")
-    .first()
-    .evaluate((element) => {
-      element.textContent = "TecnologiaPlanejadaComNomeExtremamenteLongoESemEspaços".repeat(8);
-    });
-
-  const dimensions = await page.evaluate(() => ({
-    documentWidth: document.documentElement.scrollWidth,
-    viewportWidth: document.documentElement.clientWidth,
-    overflowingElements: Array.from(
-      document.querySelectorAll(
-        ".roadmap-entry h2, .roadmap-entry p, .roadmap-stack__group dt, .roadmap-stack__group li",
+    .locator(".roadmap-entry h2, .roadmap-stack__group li")
+    .evaluateAll((elements) =>
+      elements.forEach(
+        (el) =>
+          (el.textContent = "TecnologiaPlanejadaComNomeExtremamenteLongoESemEspaços".repeat(8)),
       ),
-    )
-      .filter((element) => element.scrollWidth > element.clientWidth + 1)
-      .map((element) => element.textContent?.trim() || element.tagName),
-  }));
-
-  expect(dimensions.documentWidth).toBeLessThanOrEqual(dimensions.viewportWidth);
-  expect(dimensions.overflowingElements).toEqual([]);
+    );
+  await expectReflow(page, "/roadmap (conteúdo extremo)");
 });
 
-test("navegação prioriza Início e Projetos e permanece compacta em 320px", async ({ page }) => {
+test("navegação preserva prioridade e rótulos compactos em 320px", async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 900 });
   await page.goto("/");
-
-  const navigation = page.getByRole("navigation", { name: "Navegação principal" });
-  const dimensions = await navigation.evaluate((element) => ({
-    height: element.getBoundingClientRect().height,
-    scrollWidth: element.scrollWidth,
-    clientWidth: element.clientWidth,
-  }));
-
-  expect(dimensions.height).toBeLessThanOrEqual(48);
-  expect(dimensions.scrollWidth).toBeLessThanOrEqual(dimensions.clientWidth);
-  await expect(navigation.getByRole("link", { name: "Início" })).toHaveClass(
+  const nav = page.getByRole("navigation", { name: "Navegação principal" });
+  await expect(nav.getByRole("link", { name: "Início", exact: true })).toHaveClass(
     /site-nav__item--primary/,
   );
-  await expect(navigation.getByRole("link", { name: "Projetos" })).toHaveClass(
+  await expect(nav.getByRole("link", { name: "Projetos", exact: true })).toHaveClass(
     /site-nav__item--primary/,
   );
-  await expect(navigation.getByRole("link", { name: "Currículo" })).toHaveClass(
+  await expect(nav.getByRole("link", { name: "Currículo" })).toHaveClass(
     /site-nav__item--secondary/,
   );
+  const rect = await nav.boundingBox();
+  expect(rect!.height).toBeLessThanOrEqual(48);
 });
 
-test("ação principal da ficha permanece legível e ocupa a coluna em 320px", async ({ page }) => {
+test("ações de projeto e implementação são legíveis e ocupam a coluna no celular", async ({
+  page,
+}) => {
   await page.setViewportSize({ width: 320, height: 900 });
   await page.goto("/");
-
-  const cards = page.locator(".project-card__body");
-  expect(await cards.count()).toBeGreaterThan(0);
-  for (const card of await cards.all()) {
-    const action = card.getByRole("link", { name: /ver detalhes/i });
-    const [cardBox, actionBox] = await Promise.all([card.boundingBox(), action.boundingBox()]);
-
-    expect(cardBox).not.toBeNull();
-    expect(actionBox).not.toBeNull();
-    expect(actionBox!.width).toBeGreaterThanOrEqual(cardBox!.width - 1);
-    expect(actionBox!.height).toBeLessThanOrEqual(72);
+  for (const container of [
+    page.locator(".home-intro__identity"),
+    ...(await page.locator(".project-card__proof").all()),
+  ]) {
+    const action = container.locator(".button--primary").first();
+    const [parent, box] = await Promise.all([container.boundingBox(), action.boundingBox()]);
+    expect(box!.width).toBeGreaterThanOrEqual(parent!.width - 1);
+    expect(box!.height).toBeLessThanOrEqual(72);
   }
 });
 
-test("ação de implementação permanece dominante e legível em 320px", async ({ page }) => {
-  await page.setViewportSize({ width: 320, height: 900 });
-  await page.goto("/");
-
-  const hero = page.locator(".hero");
-  const action = page.getByRole("link", { name: "Ver implementação e verificações" });
-  const [heroBox, actionBox] = await Promise.all([hero.boundingBox(), action.boundingBox()]);
-
-  expect(heroBox).not.toBeNull();
-  expect(actionBox).not.toBeNull();
-  expect(actionBox!.width).toBeGreaterThanOrEqual(heroBox!.width - 1);
-  expect(actionBox!.height).toBeLessThanOrEqual(72);
-});
-
-test("ficha ilustrada preserva a proporção 5:3 sem corte", async ({ page }) => {
+test("imagem dos demais projetos mantém a proporção 5:3 sem recorte", async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto("/projetos/plataforma-portfolio");
-
-  const imageBox = await page
-    .locator(".project-detail__visual-index > .project-image")
-    .boundingBox();
-
-  expect(imageBox).not.toBeNull();
-  expect(imageBox!.width / imageBox!.height).toBeCloseTo(5 / 3, 2);
+  const box = await page.locator(".project-detail__visual-index > .project-image").boundingBox();
+  expect(box!.width / box!.height).toBeCloseTo(5 / 3, 2);
 });
 
-test("texto ampliado a 200% reflui sem corte em todas as rotas públicas", async ({ page }) => {
-  await page.setViewportSize({ width: 1280, height: 900 });
-
-  for (const route of routes) {
-    await page.goto(route);
-    await page.evaluate(() => {
-      document.documentElement.style.fontSize = "200%";
-    });
-
-    const dimensions = await page.evaluate(() => ({
-      documentWidth: document.documentElement.scrollWidth,
-      viewportWidth: document.documentElement.clientWidth,
-      overflowingText: Array.from(document.querySelectorAll("h1, h2, h3, p, a, li"))
-        .filter((element) => {
-          const style = window.getComputedStyle(element);
-          return (
-            !element.matches(".skip-link") && element.clientWidth > 0 && style.display !== "none"
-          );
-        })
-        .filter((element) => element.scrollWidth > element.clientWidth + 1)
-        .map((element) => element.textContent?.trim() || element.tagName),
-    }));
-
-    expect(dimensions.documentWidth, `refluxo em ${route}`).toBeLessThanOrEqual(
-      dimensions.viewportWidth,
-    );
-    expect(dimensions.overflowingText, `texto cortado em ${route}`).toEqual([]);
-  }
-});
-
-// O site tem um único tema noturno: a ficha ilustrada precisa usar o mesmo
-// terreno (#121615) qualquer que seja a preferência de esquema do sistema.
 for (const colorScheme of ["light", "dark"] as const) {
-  test(`ficha ilustrada usa o terreno noturno com esquema ${colorScheme}`, async ({ page }) => {
+  test(`imagem de projeto preserva o tema noturno com preferência ${colorScheme}`, async ({
+    page,
+  }) => {
     await page.emulateMedia({ colorScheme });
     await page.goto("/projetos/plataforma-portfolio");
-
     const image = page.locator(".project-detail__visual-index > .project-image");
     await expect(image).toHaveJSProperty("complete", true);
-
-    const backgroundPixel = await image.evaluate((element) => {
-      const imageElement = element as HTMLImageElement;
+    const pixel = await image.evaluate((el) => {
       const canvas = document.createElement("canvas");
       canvas.width = 120;
       canvas.height = 72;
-      const context = canvas.getContext("2d");
-      if (!context) return null;
-
-      context.drawImage(imageElement, 0, 0, canvas.width, canvas.height);
-      return Array.from(context.getImageData(1, 1, 1, 1).data.slice(0, 3));
+      const ctx = canvas.getContext("2d")!;
+      ctx.drawImage(el as HTMLImageElement, 0, 0, 120, 72);
+      return Array.from(ctx.getImageData(1, 1, 1, 1).data.slice(0, 3));
     });
-
-    expect(backgroundPixel).toEqual([18, 22, 21]);
+    expect(pixel).toEqual([18, 22, 21]);
   });
 }

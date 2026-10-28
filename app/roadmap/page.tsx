@@ -67,7 +67,7 @@ export default function RoadmapPage() {
   return (
     <section className="page-section page-intro" aria-labelledby="roadmap-title">
       <h1 id="roadmap-title">Roadmap</h1>
-      <p className="page-intro__cota">
+      <p className="page-intro__meta">
         Escopo planejado · {planejados.length} {planejados.length === 1 ? "entrada" : "entradas"}
       </p>
       <p className="page-intro__lead">

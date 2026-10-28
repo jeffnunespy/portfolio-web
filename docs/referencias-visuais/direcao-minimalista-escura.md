@@ -14,11 +14,12 @@ Sistema global: [`DESIGN.md`](../../DESIGN.md).
 Composição e validação da referência:
 [`prototipo-minimalista-escuro.md`](prototipo-minimalista-escuro.md).
 
-O novo visual está construído e verificado no protótipo HTML. A aplicação Next.js ainda usa
-o sistema anterior. A migração das rotas está planejada na fase 17 de
-[`tasks.md`](../../specs/001-experiencia-publica-inicial/tasks.md), com decisões em
-[`plan.md`](../../specs/001-experiencia-publica-inicial/plan.md). A aprovação não registra
-migração, commit, push, deploy ou publicação como executados.
+O novo visual foi construído e verificado no protótipo HTML. Em 2026-10-24, a execução
+integrada de T102–T105 aplica a direção às rotas Next.js, conforme a fase 17 de
+[`tasks.md`](../../specs/001-experiencia-publica-inicial/tasks.md) e as decisões em
+[`plan.md`](../../specs/001-experiencia-publica-inicial/plan.md). A validação da aplicação é
+registrada separadamente em [`correções do audit`](../audits/impeccable-2026-10-24-correcoes.md).
+A aprovação original e esta migração local não registram commit, push, deploy ou publicação.
 
 ## Identidade aprovada
 
@@ -70,7 +71,7 @@ verificados. Prettier, `git diff --check` e detector nativo passaram.
 
 A revisão independente final retornou **`ship`**, sem correções materiais. As evidências
 estão em `.impeccable/review/prototipo-minimalista-sem-previa/`. Esses resultados pertencem
-ao protótipo; os gates da aplicação serão repetidos durante a migração. T055, relativo às
+ao protótipo; os gates da aplicação foram repetidos na migração local. T055, relativo às
 inspeções humanas/de publicação, continua pendente.
 
 ## Histórico

@@ -1,23 +1,15 @@
 import type { Metadata } from "next";
-import { Geologica, Martian_Mono } from "next/font/google";
+import { Geologica } from "next/font/google";
 import "./globals.css";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import { getPerfil } from "../lib/content";
 import { SITE_LOCALE, SITE_NAME, SITE_URL } from "../lib/site";
 
-// Geologica variável cobre todos os pesos do texto em um único arquivo; a
-// Martian Mono só aparece em legendas e notação técnica, por isso um peso.
+// Uma fonte variável, servida pelo próprio site, cobre toda a direção visual.
 const geologica = Geologica({
   subsets: ["latin"],
   variable: "--font-sans",
-  display: "swap",
-});
-
-const martianMono = Martian_Mono({
-  subsets: ["latin"],
-  weight: "400",
-  variable: "--font-mono",
   display: "swap",
 });
 
@@ -56,11 +48,7 @@ export default function RootLayout({
   const perfil = getPerfil();
 
   return (
-    <html
-      lang="pt-BR"
-      data-scroll-behavior="smooth"
-      className={`${geologica.variable} ${martianMono.variable}`}
-    >
+    <html lang="pt-BR" className={geologica.variable}>
       <body>
         {/* O sistema visual — tese, paleta, tipografia e bans — está em DESIGN.md. */}
         <a href="#main-content" className="skip-link">

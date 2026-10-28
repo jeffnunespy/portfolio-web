@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import ProjectCard from "../../components/project/ProjectCard";
-import { getProjetosImplementados, getRoadmap } from "../../lib/content";
+import { getPerfil, getProjetosImplementados, getRoadmap } from "../../lib/content";
 
 const descricao =
   "Estudos de caso com contexto, decisões técnicas, responsabilidades e limitações.";
@@ -19,6 +19,7 @@ export const metadata: Metadata = {
 
 export default function ProjectsPage() {
   const projetos = getProjetosImplementados();
+  const perfil = getPerfil();
   const planejados = getRoadmap();
 
   return (
@@ -30,7 +31,7 @@ export default function ProjectsPage() {
         real e anuncia a existência do roadmap acima da dobra, sem precisar
         de um segundo CTA.
       */}
-      <p className="page-intro__cota">
+      <p className="page-intro__meta">
         {projetos.length} {projetos.length === 1 ? "implementado" : "implementados"}
         {planejados.length > 0 ? ` · ${planejados.length} planejados` : ""}
       </p>
@@ -42,7 +43,12 @@ export default function ProjectsPage() {
       {projetos.length > 0 ? (
         <div className="project-grid">
           {projetos.map((projeto) => (
-            <ProjectCard key={projeto.slug} projeto={projeto} />
+            <ProjectCard
+              key={projeto.slug}
+              projeto={projeto}
+              contatoEmail={perfil.contato.valor}
+              competenciasPorArea={perfil.competenciasPorArea}
+            />
           ))}
         </div>
       ) : (

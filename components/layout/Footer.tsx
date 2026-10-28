@@ -44,20 +44,26 @@ export default function Footer({ nome, linkGithub, linkLinkedin, contatoEmail }:
           </Link>
         </nav>
         <section className="footer-contact" aria-labelledby="footer-contact-title">
-          <h2 id="footer-contact-title">Contato e perfis</h2>
-          <p>Para conversar sobre oportunidades, use um dos perfis abaixo.</p>
+          <h2 id="footer-contact-title">Vamos conversar.</h2>
+          <p>
+            {podeContatar
+              ? "Para conversar sobre os projetos ou oportunidades, envie um e-mail ou fale pelo LinkedIn."
+              : "Conheça o código no GitHub ou converse pelo LinkedIn."}
+          </p>
           <div className="footer-contact__actions">
-            <a href={linkGithub} target="_blank" rel="noopener noreferrer">
-              Ver GitHub
-            </a>
-            <a href={linkLinkedin} target="_blank" rel="noopener noreferrer">
-              Falar pelo LinkedIn
-            </a>
             {podeContatar ? (
-              <a href={`mailto:${contatoEmail}`}>Contato</a>
+              <a className="button button--primary" href={`mailto:${contatoEmail}`}>
+                Enviar e-mail
+              </a>
             ) : (
               <span className="muted-label">E-mail em configuração</span>
             )}
+            <a href={linkLinkedin} target="_blank" rel="noopener noreferrer">
+              Falar pelo LinkedIn
+            </a>
+            <a href={linkGithub} target="_blank" rel="noopener noreferrer">
+              Ver GitHub
+            </a>
           </div>
         </section>
         <p>

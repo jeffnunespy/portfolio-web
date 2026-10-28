@@ -1,0 +1,673 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta
+      name="description"
+      content="Três composições experimentais para o portfólio de Jefferson Nunes, mantendo a identidade minimalista escura."
+    />
+    <title>Três leituras — explorações minimalistas</title>
+    <link
+      rel="preload"
+      href="assets/exploracoes-minimalistas/geologica-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <style>
+      @font-face {
+        font-family: Geologica;
+        font-style: normal;
+        font-weight: 100 900;
+        font-display: swap;
+        src: url("assets/exploracoes-minimalistas/geologica-latin.woff2") format("woff2");
+      }
+
+      @font-face {
+        font-family: Geologica;
+        font-style: normal;
+        font-weight: 100 900;
+        font-display: swap;
+        src: url("assets/exploracoes-minimalistas/geologica-latin-ext.woff2") format("woff2");
+        unicode-range:
+          U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329,
+          U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113,
+          U+2C60-2C7F, U+A720-A7FF;
+      }
+
+      :root {
+        color-scheme: dark;
+        --ground: #0c0f0e;
+        --surface: #121615;
+        --ink: #e7e4da;
+        --muted: #a9aea6;
+        --line: #34403a;
+        --accent: #ff9a6b;
+        --focus: #f2c46b;
+        --gutter: clamp(1.25rem, 5vw, 5rem);
+        font-family: Geologica, "Segoe UI", sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        background: var(--ground);
+        scroll-padding-top: 2rem;
+        scrollbar-color: var(--line) var(--ground);
+      }
+      body {
+        margin: 0;
+        color: var(--ink);
+        background: var(--ground);
+        font-size: 1.0625rem;
+        font-weight: 300;
+        line-height: 1.7;
+        -webkit-font-smoothing: antialiased;
+      }
+      ::selection {
+        background: var(--accent);
+        color: var(--ground);
+      }
+      :focus-visible {
+        outline: 2px solid var(--focus);
+        outline-offset: 5px;
+      }
+      a {
+        color: inherit;
+        text-decoration-thickness: 1px;
+        text-underline-offset: 0.3em;
+        transition: color 160ms ease-out;
+        touch-action: manipulation;
+      }
+      a:hover {
+        color: var(--accent);
+      }
+      img {
+        display: block;
+        max-width: 100%;
+        height: auto;
+      }
+      svg {
+        width: 1rem;
+        height: 1rem;
+        flex: 0 0 auto;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 1.5;
+        stroke-linecap: square;
+      }
+      h1,
+      h2,
+      p,
+      figure {
+        margin: 0;
+      }
+      h1,
+      h2 {
+        font-weight: 200;
+        letter-spacing: -0.025em;
+        text-wrap: balance;
+      }
+      [hidden] {
+        display: none !important;
+      }
+      .shell {
+        width: min(100%, 88rem);
+        margin-inline: auto;
+        padding-inline: var(--gutter);
+      }
+      .skip-link {
+        position: absolute;
+        z-index: 2;
+        top: 1rem;
+        left: var(--gutter);
+        padding: 0.75rem 1rem;
+        color: var(--ground);
+        background: var(--ink);
+        transform: translateY(-200%);
+      }
+      .skip-link:focus {
+        transform: translateY(0);
+      }
+      .skip-link:hover {
+        color: var(--ground);
+      }
+      .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 0.5rem 2rem;
+        min-height: 6rem;
+        padding-block: 1rem;
+        font-size: 0.875rem;
+      }
+      .signature {
+        display: inline-flex;
+        align-items: center;
+        min-height: 44px;
+        text-decoration: none;
+        font-weight: 400;
+      }
+      .period {
+        color: var(--accent);
+      }
+      .reference-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        min-height: 44px;
+        color: var(--muted);
+      }
+      .intro {
+        display: grid;
+        grid-template-columns: 1.5fr 1fr;
+        align-items: end;
+        gap: 2rem 4rem;
+        padding-block: clamp(2.5rem, 6vw, 5rem) clamp(2.5rem, 5vw, 4rem);
+      }
+      h1 {
+        max-width: 12ch;
+        font-size: clamp(2.5rem, 5.5vw, 4.75rem);
+        line-height: 1.1;
+      }
+      .intro-copy {
+        max-width: 42ch;
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+      .intro-copy p + p {
+        margin-top: 1rem;
+      }
+      .intro-copy strong {
+        color: var(--ink);
+        font-weight: 400;
+      }
+      .candidates {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 2rem;
+        padding-bottom: 2.75rem;
+      }
+      .candidate-link {
+        display: block;
+        min-height: 44px;
+        padding-block: 1rem 1.25rem;
+        border-bottom: 1px solid var(--line);
+        text-decoration: none;
+      }
+      .candidate-link[aria-selected="true"] {
+        color: var(--accent);
+        border-color: var(--accent);
+      }
+      .candidate-name {
+        display: block;
+        font-size: 1.25rem;
+        font-weight: 300;
+        line-height: 1.5;
+      }
+      .candidate-description {
+        display: block;
+        margin-top: 0.5rem;
+        color: var(--muted);
+        font-size: 0.875rem;
+        line-height: 1.7;
+      }
+      .proposal {
+        scroll-margin-top: 2rem;
+        padding-bottom: 3rem;
+      }
+      .proposal + .proposal {
+        margin-top: 3rem;
+        border-top: 1px solid var(--line);
+        padding-top: 3rem;
+      }
+      .has-tabs .proposal + .proposal {
+        margin-top: 0;
+        border-top: 0;
+        padding-top: 0;
+      }
+      .proposal-header {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        align-items: start;
+        gap: 1.5rem 4rem;
+        padding-bottom: 2rem;
+      }
+      h2 {
+        font-size: clamp(2rem, 3.8vw, 2.5rem);
+        line-height: 1.2;
+      }
+      .proposal-summary {
+        max-width: 56ch;
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+      .proposal-summary strong {
+        color: var(--ink);
+        font-weight: 400;
+      }
+      .preview-link {
+        display: block;
+        background: var(--surface);
+      }
+      .preview-link img {
+        width: 100%;
+      }
+      figcaption {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 0.75rem 2rem;
+        padding-top: 1.25rem;
+        color: var(--muted);
+        font-size: 0.8125rem;
+      }
+      .expand-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        min-height: 44px;
+        color: var(--accent);
+      }
+      .notes {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 2rem;
+        margin: 2rem 0 0;
+      }
+      .notes dt {
+        margin-bottom: 0.5rem;
+        font-size: 0.875rem;
+        font-weight: 400;
+      }
+      .notes dd {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.875rem;
+      }
+      .footer {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 0.75rem 2rem;
+        padding-block: 2rem;
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 0.8125rem;
+      }
+      .footer a {
+        display: inline-flex;
+        align-items: center;
+        min-height: 44px;
+      }
+      .image-note {
+        max-width: 75ch;
+        padding-block: 1.5rem 3rem;
+        color: var(--muted);
+        font-size: 0.8125rem;
+      }
+
+      @media (max-width: 760px) {
+        .intro,
+        .proposal-header {
+          grid-template-columns: 1fr;
+          gap: 1.5rem;
+        }
+        .intro-copy {
+          max-width: 58ch;
+        }
+        .candidates {
+          grid-template-columns: 1fr;
+          gap: 0;
+          padding-bottom: 2rem;
+        }
+        .candidate-link {
+          padding-block: 0.875rem;
+        }
+        .candidate-name {
+          font-size: 1.0625rem;
+        }
+        .candidate-description {
+          margin-top: 0.25rem;
+        }
+        .notes {
+          grid-template-columns: 1fr;
+          gap: 1.5rem;
+        }
+        .proposal-header {
+          padding-bottom: 1.5rem;
+        }
+        .proposal {
+          padding-bottom: 1.5rem;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        a {
+          transition: none;
+        }
+      }
+      @media (forced-colors: active) {
+        .candidate-link[aria-selected="true"] {
+          color: LinkText;
+          border-color: Highlight;
+        }
+        :focus-visible {
+          outline-color: Highlight;
+        }
+      }
+      @media print {
+        [role="tabpanel"][hidden] {
+          display: block !important;
+        }
+        .skip-link,
+        .candidates {
+          display: none;
+        }
+        .proposal {
+          break-inside: avoid;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!--
+      THESIS: Comparar três composições da mesma identidade; nenhuma substitui o visual oficial.
+      OWN-WORLD: Geologica leve, fundo #0c0f0e, marfim #e7e4da, laranja #ff9a6b, filetes e espaço aberto.
+      STORY: O proprietário alterna entre três estudos, lê as diferenças e amplia a prévia que deseja explorar.
+      FIRST VIEWPORT: Abertura tipográfica em duas colunas; três seletores de igual destaque; prévia grande abaixo.
+      FORM: Galeria de comparação pedida pelo usuário, contendo os candidatos 5, 7 e 6; seed c1a67725.
+      FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance
+    -->
+    <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+    <div class="shell" id="inicio">
+      <header class="header">
+        <a class="signature" href="#inicio" aria-label="Jefferson Nunes — início da comparação"
+          >Jefferson Nunes<span class="period" aria-hidden="true">.</span></a
+        >
+        <a class="reference-link" href="prototipo-minimalista-escuro.html"
+          >Ver referência oficial<svg viewBox="0 0 20 20" aria-hidden="true">
+            <path d="M4 16 16 4M4 4h12v12" /></svg
+        ></a>
+      </header>
+      <main id="conteudo">
+        <div class="intro">
+          <h1>O mesmo minimalismo. Outras leituras<span class="period">.</span></h1>
+          <div class="intro-copy">
+            <p>
+              Três estudos de composição para a página inicial. A mesma paleta, a mesma tipografia e
+              um jeito diferente de apresentar o trabalho.
+            </p>
+            <p>
+              <strong>Uma exploração independente.</strong> O visual oficial permanece como está.
+            </p>
+          </div>
+        </div>
+
+        <nav class="candidates" aria-label="Explorar as três composições">
+          <a class="candidate-link" id="seletor-trabalho" href="#trabalho-abre"
+            ><span class="candidate-name">O trabalho abre</span
+            ><span class="candidate-description">O projeto chega antes da apresentação.</span></a
+          >
+          <a class="candidate-link" id="seletor-indice" href="#indice-aberto"
+            ><span class="candidate-name">Índice aberto</span
+            ><span class="candidate-description"
+              >Identidade à esquerda, projetos para explorar.</span
+            ></a
+          >
+          <a class="candidate-link" id="seletor-caderno" href="#caderno-decisoes"
+            ><span class="candidate-name">Caderno de decisões</span
+            ><span class="candidate-description">Uma escolha técnica conduz a leitura.</span></a
+          >
+        </nav>
+
+        <section class="proposal" id="trabalho-abre" aria-labelledby="titulo-trabalho">
+          <div class="proposal-header">
+            <h2 id="titulo-trabalho">O trabalho abre</h2>
+            <p class="proposal-summary">
+              A plataforma ocupa o centro da primeira dobra.
+              <strong>O projeto é a apresentação</strong>; o nome e o posicionamento acompanham a
+              leitura pela margem.
+            </p>
+          </div>
+          <figure>
+            <a
+              class="preview-link"
+              href="assets/exploracoes-minimalistas/trabalho-abre.webp"
+              target="_blank"
+              rel="noopener"
+              aria-label="Ampliar a prévia de O trabalho abre, em nova aba"
+              ><img
+                src="assets/exploracoes-minimalistas/trabalho-abre.webp"
+                width="1505"
+                height="1045"
+                alt="Composição O trabalho abre: nome pequeno no cabeçalho, posicionamento na margem e o título Plataforma de Portfólio em grande escala, seguido de Nana Silva."
+                fetchpriority="high"
+            /></a>
+            <figcaption>
+              <span>Composição com foco no trabalho e na evidência.</span
+              ><a
+                class="expand-link"
+                href="assets/exploracoes-minimalistas/trabalho-abre.webp"
+                target="_blank"
+                rel="noopener"
+                aria-label="Abrir prévia ampliada de O trabalho abre, em nova aba"
+                >Abrir prévia ampliada<svg viewBox="0 0 20 20" aria-hidden="true">
+                  <path d="M4 16 16 4M4 4h12v12" /></svg
+              ></a>
+            </figcaption>
+          </figure>
+          <dl class="notes">
+            <div>
+              <dt>O que muda</dt>
+              <dd>
+                O nome deixa de dominar a abertura. O primeiro projeto ganha escala e prioridade.
+              </dd>
+            </div>
+            <div>
+              <dt>Como se lê</dt>
+              <dd>
+                Projeto, contexto, escolha técnica e estudo de caso. A leitura continua em Nana
+                Silva.
+              </dd>
+            </div>
+            <div>
+              <dt>Ponto de atenção</dt>
+              <dd>A identidade pessoal fica mais discreta do que na versão oficial.</dd>
+            </div>
+          </dl>
+        </section>
+
+        <section class="proposal" id="indice-aberto" aria-labelledby="titulo-indice">
+          <div class="proposal-header">
+            <h2 id="titulo-indice">Índice aberto</h2>
+            <p class="proposal-summary">
+              O nome ancora uma coluna lateral. Ao lado,
+              <strong>os projetos formam o índice</strong>, com contexto e decisões revelados na
+              própria linha.
+            </p>
+          </div>
+          <figure>
+            <a
+              class="preview-link"
+              href="assets/exploracoes-minimalistas/indice-aberto.webp"
+              target="_blank"
+              rel="noopener"
+              aria-label="Ampliar a prévia de Índice aberto, em nova aba"
+              ><img
+                src="assets/exploracoes-minimalistas/indice-aberto.webp"
+                width="1505"
+                height="1045"
+                alt="Composição Índice aberto: Jefferson Nunes em uma coluna à esquerda; à direita, Plataforma de Portfólio expandida e Nana Silva em uma linha recolhida."
+                loading="lazy"
+            /></a>
+            <figcaption>
+              <span>Composição com foco na exploração dos projetos.</span
+              ><a
+                class="expand-link"
+                href="assets/exploracoes-minimalistas/indice-aberto.webp"
+                target="_blank"
+                rel="noopener"
+                aria-label="Abrir prévia ampliada de Índice aberto, em nova aba"
+                >Abrir prévia ampliada<svg viewBox="0 0 20 20" aria-hidden="true">
+                  <path d="M4 16 16 4M4 4h12v12" /></svg
+              ></a>
+            </figcaption>
+          </figure>
+          <dl class="notes">
+            <div>
+              <dt>O que muda</dt>
+              <dd>
+                Apresentação e projetos dividem a tela. O índice substitui a sequência de seções.
+              </dd>
+            </div>
+            <div>
+              <dt>Como se lê</dt>
+              <dd>
+                A pessoa escolhe um projeto e consulta contexto, tecnologias e decisões no mesmo
+                lugar.
+              </dd>
+            </div>
+            <div>
+              <dt>Ponto de atenção</dt>
+              <dd>Parte do conteúdo dependeria da abertura de cada projeto na versão navegável.</dd>
+            </div>
+          </dl>
+        </section>
+
+        <section class="proposal" id="caderno-decisoes" aria-labelledby="titulo-caderno">
+          <div class="proposal-header">
+            <h2 id="titulo-caderno">Caderno de decisões</h2>
+            <p class="proposal-summary">
+              Uma escolha real da plataforma conduz a abertura:
+              <strong>validar antes de publicar</strong>. Os projetos aparecem como contexto para o
+              raciocínio.
+            </p>
+          </div>
+          <figure>
+            <a
+              class="preview-link"
+              href="assets/exploracoes-minimalistas/caderno-decisoes.webp"
+              target="_blank"
+              rel="noopener"
+              aria-label="Ampliar a prévia de Caderno de decisões, em nova aba"
+              ><img
+                src="assets/exploracoes-minimalistas/caderno-decisoes.webp"
+                width="1505"
+                height="1045"
+                alt="Composição Caderno de decisões: a frase Validar antes de publicar domina a abertura, com uma explicação da validação de conteúdo e os dois projetos abaixo."
+                loading="lazy"
+            /></a>
+            <figcaption>
+              <span>Composição com foco no raciocínio por trás da implementação.</span
+              ><a
+                class="expand-link"
+                href="assets/exploracoes-minimalistas/caderno-decisoes.webp"
+                target="_blank"
+                rel="noopener"
+                aria-label="Abrir prévia ampliada de Caderno de decisões, em nova aba"
+                >Abrir prévia ampliada<svg viewBox="0 0 20 20" aria-hidden="true">
+                  <path d="M4 16 16 4M4 4h12v12" /></svg
+              ></a>
+            </figcaption>
+          </figure>
+          <dl class="notes">
+            <div>
+              <dt>O que muda</dt>
+              <dd>Uma decisão documentada assume o papel de título principal da página.</dd>
+            </div>
+            <div>
+              <dt>Como se lê</dt>
+              <dd>
+                Escolha, motivo, autor e projetos. A composição se aproxima de uma nota de trabalho.
+              </dd>
+            </div>
+            <div>
+              <dt>Ponto de atenção</dt>
+              <dd>A abordagem editorial exige mais leitura antes de chegar aos estudos de caso.</dd>
+            </div>
+          </dl>
+        </section>
+
+        <p class="image-note">
+          Prévias visuais geradas com IA para comparar composição. Os links e controles desenhados
+          nas imagens são ilustrativos; cada prévia abre em tamanho maior. Nenhum candidato foi
+          escolhido como novo visual.
+        </p>
+      </main>
+      <footer class="footer">
+        <p>
+          Jefferson Nunes<span class="period" aria-hidden="true">.</span> Explorações minimalistas.
+        </p>
+        <a href="#inicio">Voltar ao início</a>
+      </footer>
+    </div>
+    <script>
+      (() => {
+        const navigation = document.querySelector(".candidates");
+        const links = Array.from(navigation.querySelectorAll("a"));
+        const panels = links.map((link) => document.getElementById(link.hash.slice(1)));
+        document.body.classList.add("has-tabs");
+        navigation.setAttribute("role", "tablist");
+        links.forEach((link, index) => {
+          link.setAttribute("role", "tab");
+          link.setAttribute("aria-controls", panels[index].id);
+          panels[index].setAttribute("role", "tabpanel");
+          panels[index].setAttribute("aria-labelledby", link.id);
+          panels[index].tabIndex = 0;
+        });
+
+        function activate(index) {
+          links.forEach((link, item) => {
+            const selected = item === index;
+            link.setAttribute("aria-selected", String(selected));
+            link.tabIndex = selected ? 0 : -1;
+            panels[item].hidden = !selected;
+          });
+        }
+
+        function fromHash() {
+          const index = links.findIndex((link) => link.hash === window.location.hash);
+          activate(index < 0 ? 0 : index);
+        }
+
+        links.forEach((link, index) => {
+          link.addEventListener("click", (event) => {
+            if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+            event.preventDefault();
+            activate(index);
+            try {
+              window.history.replaceState(null, "", link.hash);
+            } catch {
+              /* file:// may restrict History; tab navigation remains functional. */
+            }
+          });
+          link.addEventListener("keydown", (event) => {
+            const targets = {
+              ArrowRight: (index + 1) % links.length,
+              ArrowLeft: (index - 1 + links.length) % links.length,
+              Home: 0,
+              End: links.length - 1,
+            };
+            if (event.key in targets) {
+              event.preventDefault();
+              links[targets[event.key]].click();
+              links[targets[event.key]].focus();
+            } else if (event.key === " ") {
+              event.preventDefault();
+              link.click();
+            }
+          });
+        });
+        window.addEventListener("hashchange", fromHash);
+        fromHash();
+      })();
+    </script>
+  </body>
+</html>

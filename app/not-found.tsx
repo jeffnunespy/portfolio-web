@@ -17,7 +17,7 @@ export default function NotFound() {
       <div className="message-page__layout">
         <div className="message-page__body">
           <h1>Página não encontrada</h1>
-          <p className="page-intro__cota">HTTP 404 · Registro inexistente</p>
+          <p className="page-intro__meta">HTTP 404 · Registro inexistente</p>
           <p>A página que você procura não existe ou foi removida.</p>
           <Link className="button button--primary" href="/">
             Voltar para a página inicial
