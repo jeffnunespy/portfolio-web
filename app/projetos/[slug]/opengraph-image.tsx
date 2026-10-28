@@ -5,6 +5,7 @@ import { OG_CONTENT_TYPE, OG_SIZE, renderOgImage, truncar } from "../../../lib/o
 export const size = OG_SIZE;
 export const contentType = OG_CONTENT_TYPE;
 export const alt = "Estudo de caso do portfólio";
+export const dynamicParams = false;
 
 export function generateStaticParams() {
   return getProjetosImplementados().map((projeto) => ({ slug: projeto.slug }));

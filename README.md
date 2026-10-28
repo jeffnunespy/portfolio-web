@@ -33,6 +33,7 @@ instala as dependências do sistema (pede privilégio de administrador). O CI us
 Mesma sequência dos gates do CI (`.github/workflows/ci.yml`):
 
 ```bash
+export NEXT_PUBLIC_SITE_URL=https://portfolio.example # origem reservada apenas para testes
 npm audit --omit=dev --audit-level=high
 npm run format:check   # prettier
 npm run lint           # eslint
@@ -121,8 +122,21 @@ Antes, rode os demais gates da seção Verificações. Confirme que nada escuta 
 ## Build
 
 ```bash
-npm run build
+NEXT_PUBLIC_SITE_URL=http://localhost:3000 npm run build # produção local via HTTP
+npm run start
 ```
+
+Em produção hospedada, `NEXT_PUBLIC_SITE_URL` é obrigatória e deve conter a origem HTTPS
+confirmada, sem credenciais, caminho, query ou fragmento. O build falha se a configuração for
+inválida ou estiver ausente; não usa localhost nem `VERCEL_URL` como domínio de produção.
+Desenvolvimento/teste sem configuração usa `http://localhost:3000`. Um preview declarado por
+`VERCEL_ENV=preview` pode usar `VERCEL_URL` válida em `*.vercel.app` quando a origem explícita
+estiver ausente. HTTP explícito é permitido somente em loopback para testes locais; deployments
+Vercel de produção/preview recusam loopback. URLs de exemplo acima não são domínio de produção.
+
+Os headers e a CSP são configurados em `next.config.js`, sem Proxy e preservando SSG. A CSP
+é aplicada em `next build/start`, inclusive previews; em `next dev` ela é omitida para o HMR.
+Decisões, exceções e verificações: [Auditoria 02 — Etapa 4](docs/audits/auditoria-02-etapa4-next-http.md).
 
 ## Deploy
 

@@ -86,8 +86,14 @@ A Vercel suporta Node.js 24.x e respeita a versão principal declarada no manife
 
 3. Conferir as configurações da tabela no painel. No ambiente Preview, deixar
    `NEXT_PUBLIC_SITE_URL` sem um domínio definitivo forçado e confirmar a exposição de
-   `VERCEL_URL`: `lib/site.ts` usa essa variável para compor metadados do preview.
-   Na preparação de produção, definir `NEXT_PUBLIC_SITE_URL` com a URL final confirmada.
+   `VERCEL_ENV=preview` e `VERCEL_URL`: `lib/site.ts` só aceita esse fallback no preview
+   declarado e valida o hostname `*.vercel.app`.
+   Na preparação de produção, definir `NEXT_PUBLIC_SITE_URL` com a origem HTTPS final
+   confirmada, sem credenciais, caminho, query ou fragmento. Produção sem origem explícita
+   falha no build; não usa host de preview ou localhost silenciosamente. Loopback é permitido
+   apenas para execução local, nunca em deployments Vercel de produção/preview.
+   Conferir os headers na hospedagem: HSTS, domínio, subdomínios e proteção de previews
+   permanecem pendentes de verificação; a auditoria local não comprova esses controles.
    [Variáveis de sistema](https://vercel.com/docs/environment-variables/system-environment-variables).
 4. Depois da revisão do candidato e da autorização de implantação, criar explicitamente
    o ambiente de teste:
