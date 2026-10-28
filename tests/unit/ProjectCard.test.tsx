@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import ProjectCard from "../../components/project/ProjectCard";
 import type { ProjetoImplementado } from "../../lib/types";
@@ -30,6 +30,50 @@ const projeto: ProjetoImplementado = {
 };
 
 describe("ProjectCard", () => {
+  it("agrupa competências por área sem perder evidências fora do perfil", () => {
+    const { container } = render(
+      <ProjectCard
+        projeto={{
+          ...projeto,
+          competenciasDemonstradas: ["Node.js", "Testes automatizados", "Astro"],
+        }}
+        competenciasPorArea={[
+          { area: "Qualidade", competencias: ["Testes automatizados", "Acessibilidade"] },
+          { area: "Operação", competencias: ["Node.js"] },
+        ]}
+      />,
+    );
+    const grupos = container.querySelectorAll(".project-card__competencies > div");
+    expect(Array.from(grupos, (grupo) => grupo.querySelector("dt")?.textContent)).toEqual([
+      "Qualidade",
+      "Operação",
+      "Outras competências",
+    ]);
+    for (const competencia of ["Node.js", "Testes automatizados", "Astro"]) {
+      expect(within(container).getByText(competencia, { exact: true })).toBeInTheDocument();
+    }
+    expect(screen.queryByText("Acessibilidade")).not.toBeInTheDocument();
+  });
+  it("preserva os dados e o acesso ao código de Nana sem renderizar prévia (FR-006a)", () => {
+    const { container } = render(
+      <ProjectCard
+        projeto={{
+          ...projeto,
+          slug: "nana-silva",
+          titulo: "Nana Silva",
+          linkRepositorio: "privado",
+        }}
+        contatoEmail="contato@portfolio.dev"
+      />,
+    );
+    expect(container.querySelector("img")).toBeNull();
+    expect(screen.getByRole("heading", { name: "Nana Silva" })).toBeInTheDocument();
+    expect(screen.getByText("Em validação")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Solicitar acesso ao código" })).toHaveAttribute(
+      "href",
+      "mailto:contato@portfolio.dev?subject=Acesso ao código do projeto",
+    );
+  });
   it("exibe os campos obrigatórios e links públicos disponíveis", () => {
     const { container } = render(
       <ProjectCard

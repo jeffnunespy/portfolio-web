@@ -18,7 +18,7 @@ export default function ErrorPage({ error, retry }: ErrorPageProps) {
   return (
     <section className="message-page" aria-labelledby="error-title">
       <h1 id="error-title">Não foi possível exibir esta página</h1>
-      {error.digest ? <p className="page-intro__cota">Ref. {error.digest}</p> : null}
+      {error.digest ? <p className="page-intro__meta">Ref. {error.digest}</p> : null}
       <p role="alert">
         Tente carregar o conteúdo novamente. Se o problema continuar, volte à página inicial e
         escolha outro caminho.

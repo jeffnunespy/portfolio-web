@@ -98,9 +98,9 @@ Tema escuro, Geologica leve, composição aberta, assinatura “Nunes.” com po
 interações simples definem a identidade. Nana Silva aparece em texto, sem prévia de imagem.
 Terreno, curvas e animações da direção anterior deixam de orientar o projeto.
 
-`DESIGN.md` registra o sistema oficial construído no protótipo. As rotas Next.js continuam
-temporariamente em **Levantamento e sondagem**, cuja migração está pendente na fase 17 de
-`tasks.md`. Os exemplos fictícios do HTML continuam exclusivos da demonstração visual;
+`DESIGN.md` registra o sistema oficial construído no protótipo e aplicado às rotas na
+execução de T102–T105 em 2026-10-24, com validação local em `docs/ACTIVE_CONTEXT.md`.
+Os exemplos fictícios do HTML continuam exclusivos da demonstração visual;
 aprovar o visual não os transforma em conteúdo ou evidência do portfólio.
 
 Voz: sóbria, específica e verificável. O tom da constituição e dos estudos de caso evita superlativo

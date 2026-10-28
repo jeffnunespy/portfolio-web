@@ -305,9 +305,11 @@ function validateProjetosCollection(projetos: Projeto[]): void {
     slugs.add(projeto.slug);
   }
 
-  const destaques = projetos.filter((projeto) => projeto.destaque);
+  // O teto de 6 vale para a vitrine da home, que só exibe projeto implementado;
+  // escopo planejado marcado como destaque não aparece ali e não consome o limite.
+  const destaques = projetos.filter((projeto) => projeto.real && projeto.destaque);
   if (destaques.length > 6) {
-    throw validationError("não pode haver mais de 6 projetos marcados como destaque.");
+    throw validationError("não pode haver mais de 6 projetos reais marcados como destaque.");
   }
 }
 

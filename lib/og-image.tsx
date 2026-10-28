@@ -12,9 +12,7 @@ interface OgImageParams {
   descricao?: string;
 }
 
-// Gera o PNG de preview em tempo de build, na paleta noturna de levantamento
-// de app/globals.css: marfim sobre terreno escuro, filetes de curva de nível,
-// zero raio e laranja só no estado "em formação".
+// Preview estático no mesmo sistema noturno, com texto e filetes abertos.
 // Usa apenas as fontes padrão do runtime — o cartão não carrega webfont.
 export function renderOgImage({ indice, titulo, descricao }: OgImageParams): ImageResponse {
   return new ImageResponse(
@@ -28,7 +26,6 @@ export function renderOgImage({ indice, titulo, descricao }: OgImageParams): Ima
         padding: "64px 72px",
         background: "#0c0f0e",
         color: "#e7e4da",
-        border: "3px solid #34403a",
       }}
     >
       <div
@@ -36,12 +33,10 @@ export function renderOgImage({ indice, titulo, descricao }: OgImageParams): Ima
           display: "flex",
           justifyContent: "space-between",
           alignItems: "flex-end",
-          borderBottom: "2px solid #5b6862",
+          borderBottom: "1px solid #34403a",
           paddingBottom: 20,
           fontSize: 24,
-          letterSpacing: 4,
-          textTransform: "uppercase",
-          color: "#7f877f",
+          color: "#a9aea6",
         }}
       >
         <div>{indice}</div>
@@ -63,9 +58,7 @@ export function renderOgImage({ indice, titulo, descricao }: OgImageParams): Ima
           borderTop: "1px solid #34403a",
           paddingTop: 20,
           fontSize: 25,
-          letterSpacing: 3,
-          textTransform: "uppercase",
-          color: "#7f877f",
+          color: "#a9aea6",
         }}
       >
         <div>{SITE_NAME}</div>

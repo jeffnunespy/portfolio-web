@@ -17,8 +17,11 @@ for (const route of publicRoutes) {
   test(`@a11y ${route} não possui violações WCAG 2.1 A/AA`, async ({ page }) => {
     await page.goto(route);
 
-    const results = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze();
+    const results = await new AxeBuilder({ page })
+      .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
+      .analyze();
     expect(results.violations).toEqual([]);
+    expect(results.incomplete.filter((item) => item.id === "color-contrast")).toEqual([]);
   });
 }
 
@@ -60,6 +63,7 @@ test("@a11y todas as rotas permitem percorrer os controles por teclado sem armad
 }) => {
   const seletorInterativo = [
     "a[href]",
+    "summary",
     "button:not([disabled])",
     "input:not([disabled])",
     "select:not([disabled])",
@@ -75,7 +79,7 @@ test("@a11y todas as rotas permitem percorrer os controles por teclado sem armad
       .locator("nextjs-portal")
       .evaluateAll((portals) => portals.forEach((portal) => portal.remove()));
 
-    const interativos = page.locator(seletorInterativo);
+    const interativos = page.locator(`:is(${seletorInterativo}):visible`);
     const total = await interativos.count();
     expect(total, `controles interativos em ${route}`).toBeGreaterThan(0);
 
@@ -95,3 +99,18 @@ test("@a11y todas as rotas permitem percorrer os controles por teclado sem armad
     }
   }
 });
+
+for (const width of [320, 1280]) {
+  test(`@a11y detalhes abertos preservam semântica e contraste em ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/");
+    await page
+      .locator("details")
+      .evaluateAll((elements) => elements.forEach((el) => el.setAttribute("open", "")));
+    const results = await new AxeBuilder({ page })
+      .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
+      .analyze();
+    expect(results.violations).toEqual([]);
+    expect(results.incomplete.filter((item) => item.id === "color-contrast")).toEqual([]);
+  });
+}

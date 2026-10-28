@@ -27,15 +27,15 @@ npm run test:e2e -- tests/e2e/home.spec.ts         # um arquivo
 npm run test:e2e -- -g "texto do teste"            # um teste
 ```
 
-`test:e2e` sobe seu próprio servidor via `webServer` (`npm run build && PORT=3001 npm run start`) e reutiliza um servidor já rodando na 3001 fora do CI. Vitest exclui `tests/e2e/**`.
+`test:e2e` sobe seu próprio servidor via `webServer` (`npm run build && PORT=3001 npm run start`) e falha se a 3001 já estiver ocupada. `E2E_BUILD_EXISTENTE=1` serve o `.next/` já gerado sem recompilar (usado no CI); `E2E_REUTILIZAR_SERVIDOR=1` reaproveita um servidor aberto, só para iteração local — não vale como aceite. Relatórios ficam em `playwright-report/<grupo>/` e `test-results/<grupo>/`. Os metadados são testados contra `NEXT_PUBLIC_SITE_URL=https://portfolio.example`. Vitest exclui `tests/e2e/**` e falha quando não encontra testes.
 
 `next lint` não existe mais no Next.js 16 — para lintar arquivos específicos use `npx eslint <arquivos>`.
 
-**Gates do CI** (`.github/workflows/ci.yml`, Node 24): `npm ci` → `npm audit --omit=dev --audit-level=high` → `format:check` → `lint` → `typecheck` → `test -- --run` → `build` → `test:e2e:functional` → `test:e2e:a11y`. Rode o mesmo conjunto antes de considerar uma tarefa concluída.
+**Gates do CI** (`.github/workflows/ci.yml`, Node de `.nvmrc`): `npm ci` → `npm audit --omit=dev --audit-level=high` → `format:check` → `lint` → `typecheck` → `test -- --run` → `build` → `test:e2e:functional` → `test:e2e:a11y`. Rode o mesmo conjunto antes de considerar uma tarefa concluída.
 
 ## Arquitetura
 
-Site estático Next.js 16 (App Router) + React 19 + TypeScript, sobre Node.js 24 (`.nvmrc`, `engines.node`), sem backend, sem banco e sem autenticação nesta fase. Deploy alvo: Vercel.
+Site estático Next.js 16 (App Router) + React 19 + TypeScript, sobre Node.js `^24.15.0` (`engines.node`, com `engine-strict` em `.npmrc`; versão validada em `.nvmrc`), sem backend, sem banco e sem autenticação nesta fase. Deploy alvo: Vercel.
 
 **Conteúdo como fonte de dados.** Não há CMS nem API: todo o conteúdo vive em JSON versionado em `content/` — `profile.json` (perfil) e `content/projects/*.json` (um estudo de caso por arquivo). `lib/content.ts` lê esses arquivos com `fs` em tempo de build e é o único ponto de acesso ao conteúdo; `lib/types.ts` define os tipos correspondentes.
 
@@ -47,7 +47,7 @@ Site estático Next.js 16 (App Router) + React 19 + TypeScript, sobre Node.js 24
 - `linkDemonstracao` e `linkRepositorio` precisam ser URLs HTTPS válidas — `linkRepositorio` aceita também o literal `"privado"` (FR-009a); `linkGithub`/`linkLinkedin` são HTTPS obrigatórios e `contato.valor` precisa ter formato de e-mail;
 - `imagemApresentacao` e `linkCurriculo` precisam ser caminhos absolutos e o arquivo tem de existir de fato em `public/`;
 - `decisoesRelevantes` com pelo menos 2 itens, cada um com `titulo` e `descricao` não vazios;
-- no máximo 6 projetos com `destaque: true`, e ao menos um projeto publicado;
+- no máximo 6 projetos reais (`real: true`) com `destaque: true` — escopo planejado não consome o teto — e ao menos um projeto publicado;
 - **toda** competência declarada em `perfil.competenciasPorArea` precisa aparecer em `competenciasDemonstradas` de algum projeto (FR-024/SC-007 — princípio constitucional "evidências acima de afirmações").
 
 Consequência prática: adicionar uma competência ao perfil sem projeto que a comprove faz `npm run build` falhar. Não contorne removendo a validação — ajuste o conteúdo. Ao alterar o schema, atualize `lib/types.ts`, as listas `REQUIRED_*` em `lib/content.ts`, todos os JSONs existentes e `tests/unit/content.test.ts` juntos.

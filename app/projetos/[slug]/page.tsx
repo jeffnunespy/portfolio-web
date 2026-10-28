@@ -63,18 +63,38 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           <ProjectMark />
           {projeto.titulo}
         </h1>
-        <p className="page-intro__cota">Ficha · {projeto.slug}</p>
+        <p className="page-intro__meta">Ficha · {projeto.slug}</p>
         <p className="project-detail__lead">{projeto.resumo}</p>
         <div className="project-card__meta" role="group" aria-label="Classificação do projeto">
           <ProjectStatusBadge status={projeto.status} />
           <span className="tag">{projeto.categoria}</span>
           <span className="tag">{NATUREZA_LABEL[projeto.natureza]}</span>
+          {projeto.slug === "nana-silva" ? <span>Em validação</span> : null}
         </div>
+        <nav className="project-detail__nav" aria-label="Nesta ficha">
+          <ul role="list">
+            <li>
+              <a href="#contexto">Contexto</a>
+            </li>
+            <li>
+              <a href="#minha-responsabilidade">Minha responsabilidade</a>
+            </li>
+            <li>
+              <a href="#decisoes">Decisões</a>
+            </li>
+            <li>
+              <a href="#limitacoes">Limitações</a>
+            </li>
+          </ul>
+        </nav>
       </header>
 
-      <section className="project-detail__visual-index" aria-labelledby="visual-index-title">
-        <h2 id="visual-index-title">Índice visual do registro</h2>
-        <ProjectImage src={projeto.imagemApresentacao} />
+      <section
+        className={`project-detail__visual-index${projeto.slug === "nana-silva" ? " project-detail__visual-index--textual" : ""}`}
+        aria-labelledby="visual-index-title"
+      >
+        <h2 id="visual-index-title">Apresentação e fontes</h2>
+        {projeto.slug !== "nana-silva" ? <ProjectImage src={projeto.imagemApresentacao} /> : null}
         <div className="project-detail__visual-index-sources">
           <p className="muted-label">Fonte e verificação</p>
           <EvidenceLink
@@ -88,7 +108,9 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
       <div className="project-detail__content">
         <section>
-          <h2>Contexto</h2>
+          <h2 id="contexto" tabIndex={-1}>
+            Contexto
+          </h2>
           <p>{projeto.contexto}</p>
           <p>
             <strong>Problema tratado:</strong> {projeto.problemaTratado}
@@ -110,12 +132,16 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         </section>
 
         <section>
-          <h2>Minha responsabilidade</h2>
+          <h2 id="minha-responsabilidade" tabIndex={-1}>
+            Minha responsabilidade
+          </h2>
           <p>{projeto.responsabilidadeProprietario}</p>
         </section>
 
         <section className="project-detail__wide">
-          <h2>Decisões relevantes</h2>
+          <h2 id="decisoes" tabIndex={-1}>
+            Decisões relevantes
+          </h2>
           <div className="decision-grid">
             {projeto.decisoesRelevantes.map((decisao) => (
               <article className="decision-card" data-testid="decision-card" key={decisao.titulo}>
@@ -136,7 +162,9 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         </section>
 
         <section>
-          <h2>Limitações conhecidas</h2>
+          <h2 id="limitacoes" tabIndex={-1}>
+            Limitações conhecidas
+          </h2>
           <ul role="list">
             {projeto.limitacoesConhecidas.map((limitacao) => (
               <li key={limitacao}>{limitacao}</li>

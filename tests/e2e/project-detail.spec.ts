@@ -3,6 +3,66 @@ import { getProjetosImplementados, getRoadmap } from "../../lib/content";
 
 const projetosPlanejados = getRoadmap();
 const projetosImplementados = getProjetosImplementados();
+const atalhosFicha = [
+  ["Contexto", "contexto"],
+  ["Minha responsabilidade", "minha-responsabilidade"],
+  ["Decisões", "decisoes"],
+  ["Limitações", "limitacoes"],
+] as const;
+
+for (const width of [320, 390, 1280]) {
+  for (const projeto of projetosImplementados) {
+    test(`US2 - atalhos da apresentação levam às seções de ${projeto.slug} em ${width}px`, async ({
+      page,
+    }) => {
+      await page.setViewportSize({ width, height: 844 });
+      await page.goto(`/projetos/${projeto.slug}`);
+
+      const nav = page.getByRole("navigation", { name: "Nesta ficha" });
+      await expect(nav.getByRole("link")).toHaveText(atalhosFicha.map(([rotulo]) => rotulo));
+      const navBox = await nav.boundingBox();
+      const fontesBox = await page.locator(".project-detail__visual-index").boundingBox();
+      expect(navBox!.y + navBox!.height).toBeLessThanOrEqual(fontesBox!.y);
+      if (projeto.slug === "nana-silva") {
+        await expect(nav).toBeInViewport({ ratio: 1 });
+      }
+
+      for (const [rotulo, id] of atalhosFicha) {
+        const link = nav.getByRole("link", { name: rotulo, exact: true });
+        await expect(link).toHaveAttribute("href", `#${id}`);
+        const box = await link.boundingBox();
+        expect(box!.width).toBeGreaterThanOrEqual(44);
+        expect(box!.height).toBeGreaterThanOrEqual(44);
+        await link.click();
+        await expect(page).toHaveURL(new RegExp(`/projetos/${projeto.slug}#${id}$`));
+        await expect(page.locator(`h2#${id}`)).toBeInViewport({ ratio: 1 });
+        await expect(page.locator(`h2#${id}`)).toBeFocused();
+      }
+    });
+  }
+}
+
+test.describe("atalhos da ficha sem JavaScript", () => {
+  test.use({ javaScriptEnabled: false });
+
+  for (const projeto of projetosImplementados) {
+    test(`US2 - teclado alcança e ativa os quatro atalhos de ${projeto.slug}`, async ({ page }) => {
+      await page.setViewportSize({ width: 390, height: 844 });
+      await page.goto(`/projetos/${projeto.slug}`);
+      const links = page.getByRole("navigation", { name: "Nesta ficha" }).getByRole("link");
+
+      for (const [index, [, id]] of atalhosFicha.entries()) {
+        await links.first().focus();
+        for (let step = 0; step < index; step++) await page.keyboard.press("Tab");
+        await expect(links.nth(index)).toBeFocused();
+        await page.keyboard.press("Enter");
+        await expect(page).toHaveURL(new RegExp(`/projetos/${projeto.slug}#${id}$`));
+        await expect(page.locator(`h2#${id}`)).toBeInViewport({ ratio: 1 });
+        await expect(page.locator(`h2#${id}`)).toBeFocused();
+      }
+    });
+  }
+});
 
 test("US2 - abre um projeto pela home e exibe todas as seções obrigatórias", async ({ page }) => {
   await page.goto("/");
@@ -22,7 +82,7 @@ test("US2 - abre um projeto pela home e exibe todas as seções obrigatórias", 
     "Stack",
     "Limitações conhecidas",
     "Próximos passos",
-    "Índice visual do registro",
+    "Apresentação e fontes",
   ]) {
     await expect(page.getByRole("heading", { name: section })).toBeVisible();
   }
@@ -142,11 +202,48 @@ for (const [index, projeto] of projetosImplementados.entries()) {
   });
 }
 
+for (const viewport of [
+  { width: 390, height: 844 },
+  { width: 1280, height: 720 },
+]) {
+  test(`US2 - ficha direta de Nana informa validação antes da demonstração em ${viewport.width}px`, async ({
+    page,
+  }) => {
+    await page.setViewportSize(viewport);
+    await page.goto("/projetos/nana-silva");
+
+    const classificacao = page.getByRole("group", { name: "Classificação do projeto" });
+    const validacao = classificacao.getByText("Em validação", { exact: true });
+    await expect(classificacao.getByText("Em andamento", { exact: true })).toBeInViewport({
+      ratio: 1,
+    });
+    await expect(validacao).toBeInViewport({ ratio: 1 });
+
+    const demonstracao = page.getByRole("link", { name: "Abrir demonstração" });
+    const validacaoBox = await validacao.boundingBox();
+    const demonstracaoBox = await demonstracao.boundingBox();
+    expect(validacaoBox).not.toBeNull();
+    expect(demonstracaoBox).not.toBeNull();
+    expect(validacaoBox!.y + validacaoBox!.height).toBeLessThan(demonstracaoBox!.y);
+  });
+}
+
 test("US2 - Nana Silva aparece no catálogo e oferece acesso ao site publicado", async ({
   page,
 }) => {
   await page.goto("/projetos");
   await expect(page.getByRole("link", { name: "Ver detalhes de Nana Silva" })).toBeVisible();
+  for (const route of ["/", "/projetos"]) {
+    await page.goto(route);
+    const card = page
+      .getByTestId("project-card")
+      .filter({ has: page.getByRole("heading", { name: "Nana Silva", exact: true }) });
+    await expect(card.locator("img")).toHaveCount(0);
+    await expect(card.getByRole("link", { name: "Solicitar acesso ao código" })).toHaveAttribute(
+      "href",
+      /^mailto:/,
+    );
+  }
 
   await page.goto("/");
   await page.getByRole("link", { name: "Ver detalhes de Nana Silva" }).click();
@@ -165,9 +262,15 @@ test("US2 - Nana Silva aparece no catálogo e oferece acesso ao site publicado",
   );
   await expect(page.getByRole("link", { name: "Ver código-fonte" })).toHaveCount(0);
 
-  const imagem = page.locator("img.project-image");
-  await expect(imagem).toBeVisible();
-  await expect
-    .poll(() => imagem.evaluate((element) => (element as HTMLImageElement).naturalWidth))
-    .toBeGreaterThan(0);
+  await expect(page.locator("img.project-image")).toHaveCount(0);
+  const nana = projetosImplementados.find((projeto) => projeto.slug === "nana-silva")!;
+  expect(nana.imagemApresentacao).toBeTruthy();
+  const recurso = await page.request.get(nana.imagemApresentacao);
+  expect(recurso.ok()).toBe(true);
+  const og = page.locator('meta[property="og:image"]').first();
+  await expect(og).toHaveAttribute("content", /nana-silva/);
+  const ogResponse = await page.request.get(
+    (await og.getAttribute("content"))!.replace(/^https?:\/\/[^/]+/, ""),
+  );
+  expect(ogResponse.ok()).toBe(true);
 });

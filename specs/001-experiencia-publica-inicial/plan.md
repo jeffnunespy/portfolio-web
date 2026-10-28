@@ -32,6 +32,59 @@ confirmou desenvolvimento completo e natureza profissional. O endereço principa
 evidência pública; a consulta de metadados do repositório confirmou visibilidade privada, representada
 por `linkRepositorio: "privado"`, sem divulgar seu endereço no estudo de caso.
 
+### Clareza do ambiente Nana Silva (2026-10-24)
+
+Correção P2 solicitada: repetir “Em validação” na classificação da ficha direta, antes do
+acesso à demonstração, reutilizando o rótulo do cartão. Preservar o status “Em andamento”,
+os dados, os links e a apresentação textual aprovada (FR-006a/FR-011/FR-012/FR-013).
+T107 cobre a informação na primeira tela em 390 × 844 e desktop, com regressão funcional,
+acessibilidade e inspeção visual; não há alteração de requisitos ou de modelo.
+
+### Percurso curto na ficha de projeto (2026-10-24)
+
+Correção P2 solicitada: oferecer quatro âncoras discretas junto à apresentação — Contexto,
+Minha responsabilidade, Decisões e Limitações — para acessar diretamente os trechos exigidos
+por FR-012. T108 adiciona navegação nativa após a classificação e antes de “Apresentação e
+fontes”, com quebra de linha no celular, alvos de 44px e destinos focáveis por teclado.
+Preservar todas as seções, sua ordem e seus textos; aplicar no template compartilhado das
+fichas. Validar destinos, teclado, uso sem JavaScript, responsividade e acessibilidade,
+sem dependências ou alteração do modelo de conteúdo.
+
+### Medida de leitura — ajuste P2 (2026-10-24)
+
+O proprietário solicitou limitar a aproximadamente 65–75ch os blocos extensos dos projetos,
+o apoio do catálogo, a nota de CI e “Próximos passos”. T109 aplica uma medida compartilhada
+`min(70ch, 36em)` somente à prosa e às listas de leitura afetadas. A inspeção com Geologica
+mostrou que o zero largo faz 70ch isoladamente produzir cerca de 100 caracteres por linha;
+o segundo teto calibra a leitura para aproximadamente 65–75 caracteres reais. Preservar a
+largura das seções, filetes, grades, títulos e ações, além das medidas existentes de resumos
+e introduções.
+Não há alteração de requisitos, conteúdo, fontes ou dependências. Validar com a fonte carregada,
+desktop amplo, celular, texto a 200%, regressões responsivas e acessibilidade das rotas afetadas.
+
+### Percurso de avaliação da home — Impeccable (2026-10-27)
+
+O proprietário autorizou executar as quatro melhorias da crítica da home e o polimento
+integrado. T110 acrescenta um salto nativo aos destaques, agrupa as competências dos cartões
+pelas áreas existentes no perfil e antecipa suas ações, substitui a imagem ilustrativa da
+plataforma por um índice editorial complementar ao diagrama de build, e reforça o contato
+no rodapé com ação explícita de e-mail. O agrupamento preserva competências sem área
+correspondente, sem alterar JSON, validação ou evidência declarada.
+
+Preservar SC-001 em 1280 × 720, todos os campos de FR-006, a exceção de Nana Silva em
+FR-006a, a navegação e a separação do roadmap. Validar salto/foco sem JavaScript, dados
+agrupados, ordem de leitura, celular/tablet/desktop e texto a 200%, além de tipos, lint,
+unitários, build e E2E/a11y. Nenhuma alteração de requisitos, dependências ou publicação.
+
+### Preparação para publicação — manutenção (2026-10-27)
+
+T111 corrige somente a formatação dos três JSONs de metadados visuais e sincroniza o sidecar
+local com `DESIGN.md` e os componentes atuais, sem reescrever o sistema aprovado. Conferir
+equivalência dos dados antes/depois, validade dos exemplos e ausência do aviso de defasagem.
+Preparar e registrar um roteiro executável de T055, separando testes automatizados da
+inspeção humana, e consultar o CI do SHA candidato e a existência de preview. A tarefa de
+manutenção não encerra T055 sem evidência humana nem autoriza commit, push ou produção.
+
 ### Visual oficial — Minimalismo escuro (2026-10-23)
 
 O proprietário aprovou o HTML final **sem prévia de Nana Silva** como novo visual oficial.
@@ -188,7 +241,8 @@ mini-framework de validação — critério registrado em [research.md](./resear
 Referência oficial: `docs/referencias-visuais/prototipo-minimalista-escuro.html`, na versão
 sem captura de Nana Silva. Tokens e componentes em `DESIGN.md`; composição da home no documento
 adjacente e no brief da superfície. O registro desta decisão é a tarefa T101; T102–T105
-continuam pendentes. Nenhuma implementação ou publicação é declarada por esta emenda.
+foram executadas e validadas localmente em 2026-10-24, conforme o relatório de correções do
+audit. A emenda original registrou a aprovação; a execução está documentada abaixo, sem publicação.
 
 - **Arquitetura e dados:** preservar Next.js 16, React 19, TypeScript, CSS puro, geração
   estática, metadados, `lib/content.ts`, JSONs e validação de evidências. Nenhuma dependência,
@@ -222,6 +276,44 @@ continuam pendentes. Nenhuma implementação ou publicação é declarada por es
 
 **Limite operacional:** a aprovação do visual não autoriza deploy. T055 continua aberta até
 as inspeções humanas/de preview serem efetivamente concluídas.
+
+#### Comprovações com acesso direto — 2026-10-24
+
+Correção P2 solicitada pelo proprietário após a crítica da home: transformar as referências
+de conteúdo, validação, testes e workflow em links para os caminhos públicos correspondentes
+de `jeffnunespy/portfolio-web`, na branch `master`. Preservar o painel nativo, a composição e
+o aviso de que o esquema/registro de CI não representa execução ao vivo. Não há alteração de
+requisitos, dados, dependências ou integração com o estado de execução do GitHub Actions.
+T106 cobre links, ordem de teclado, funcionamento sem JavaScript e axe com o painel aberto.
+
+#### Execução integrada após auditoria — 2026-10-24
+
+O proprietário autorizou executar juntos adapt, harden, layout, optimize e polish após o
+relatório `docs/audits/impeccable-2026-10-24.md`. A implementação segue T102–T105, sem alterar
+requisitos: nome/posicionamento e competências compartilham a abertura em duas colunas, com
+empilhamento em telas estreitas. SC-001 será medido em 1280 × 720 px para a descrição, as quatro
+áreas e todos os seus itens. Não se reduz nem se inventa conteúdo para caber na dobra.
+
+- Substituir SurveyOpening e sua computação por HTML estático, diagrama semântico e
+  `details`/`summary` nativos. O controle de comprovação mantém informação e pode abrir/fechar
+  com Enter/Espaço mesmo sem JavaScript; o Escape customizado do painel anterior deixa de
+  integrar a interação, pois não pertence ao contrato de um disclosure nativo.
+- Medir os cinco links do menu em ambos os eixos (mínimo 44px), preservando ordem, nomes
+  acessíveis e o estado da rota atual. Cabeçalho no fluxo normal, sem degradê nem recorte.
+- Cobrir 320/768/1280 px com texto a 200%, incluindo grades internas, textos e detalhes
+  abertos. Não usar corte ou ocultação de conteúdo para eliminar o overflow.
+- Incluir `wcag21a`/`wcag21aa` nos quatro pontos axe. Conferir também resultados inconclusivos
+  de contraste; os fundos sólidos da direção nova removem a dependência dos antigos degradês.
+- Retirar somente a prévia de Nana Silva na interface (FR-006a), mantendo campo, arquivo,
+  metadados, limites e demonstração de validação. Os demais projetos preservam imagem e fallback.
+- Atualizar regressões da direção anterior com força equivalente: fonte Geologica única,
+  orçamento original de 100 KiB, ausência de terreno/paralaxe, comprovação nativa e alinhamento
+  ao contêiner. Medições de CPU antes/depois permanecem ensaio de laboratório, sem tempos
+  instáveis como gate de CI.
+
+As fontes factuais continuam sendo `content/` e os contratos aprovados; Acervo e Intervalo
+permanecem exclusivos do protótipo. A auditoria original será preservada como registro anterior
+às correções. T055 não será concluída por testes automatizados ou capturas do agente.
 
 ### Histórico — emenda Levantamento e sondagem (2026-10-23)
 

@@ -3,8 +3,7 @@ import { ImageResponse } from "next/og";
 export const size = { width: 32, height: 32 };
 export const contentType = "image/png";
 
-// Mesmo marco de trabalho implementado da legenda (components/project/ProjectMark.tsx),
-// em laranja sobre o terreno noturno.
+// Ponto de autoria da assinatura, na paleta oficial.
 export default function Icon() {
   return new ImageResponse(
     <div
@@ -18,13 +17,7 @@ export default function Icon() {
       }}
     >
       <svg width="22" height="22" viewBox="0 0 12 12">
-        <path
-          d="M6 1 11 11H1Z"
-          fill="none"
-          stroke="#e8703f"
-          strokeWidth="1.5"
-          strokeLinejoin="round"
-        />
+        <circle cx="6" cy="6" r="3" fill="#ff9a6b" />
       </svg>
     </div>,
     size,

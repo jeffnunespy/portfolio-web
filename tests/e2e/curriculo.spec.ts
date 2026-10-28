@@ -57,7 +57,7 @@ for (const route of [
     );
 
     const footer = page.getByRole("contentinfo");
-    const contact = footer.getByRole("region", { name: "Contato e perfis" });
+    const contact = footer.getByRole("region", { name: "Vamos conversar." });
     await expect(contact.getByRole("link", { name: "Ver GitHub" })).toHaveAttribute(
       "href",
       /^https:\/\//,
@@ -68,10 +68,9 @@ for (const route of [
     );
 
     if (emailConfigurado) {
-      await expect(contact.getByRole("link", { name: "Contato", exact: true })).toHaveAttribute(
-        "href",
-        /^mailto:/,
-      );
+      await expect(
+        contact.getByRole("link", { name: "Enviar e-mail", exact: true }),
+      ).toHaveAttribute("href", /^mailto:/);
     } else {
       await expect(contact.getByText("E-mail em configuração")).toBeVisible();
       await expect(footer.locator('a[href^="mailto:"]')).toHaveCount(0);

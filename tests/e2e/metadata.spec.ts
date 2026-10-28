@@ -1,7 +1,8 @@
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import { test, expect } from "@playwright/test";
-import { getProjetosImplementados } from "../../lib/content";
+import { getProjetosImplementados, getRoadmap } from "../../lib/content";
+import { SITE_URL } from "../../lib/site";
 
 const perfil = JSON.parse(
   readFileSync(path.join(process.cwd(), "content", "profile.json"), "utf8"),
@@ -26,6 +27,11 @@ const pages = [
     title: literal(projeto.titulo),
     description: literal(projeto.resumo),
   })),
+  {
+    route: "/roadmap",
+    title: /Roadmap/,
+    description: /escopo planejado/i,
+  },
   {
     route: "/sobre",
     title: /Sobre/,
@@ -59,3 +65,79 @@ for (const expected of pages) {
     );
   });
 }
+
+// A origem esperada é a mesma que o build resolve em lib/site.ts; o
+// playwright.config.ts fixa NEXT_PUBLIC_SITE_URL em uma URL de validação, então
+// um build feito com outra origem (ou com o fallback local) falha aqui.
+const absoluta = (rota: string) => new URL(rota, SITE_URL).toString().replace(/\/$/, "");
+
+const indexaveis = [
+  { route: "/", ogImage: true },
+  { route: "/projetos", ogImage: true },
+  ...getProjetosImplementados().map((projeto) => ({
+    route: `/projetos/${projeto.slug}`,
+    ogImage: true,
+  })),
+  // /roadmap ainda não tem imagem Open Graph própria; fica para a auditoria de SEO.
+  { route: "/roadmap", ogImage: false },
+  { route: "/sobre", ogImage: true },
+  { route: "/curriculo", ogImage: true },
+];
+
+for (const { route, ogImage } of indexaveis) {
+  test(`canonical e Open Graph absolutos na origem configurada em ${route}`, async ({ page }) => {
+    await page.goto(route);
+
+    const canonical = await page.locator('link[rel="canonical"]').getAttribute("href");
+    expect(canonical?.replace(/\/$/, "")).toBe(absoluta(route));
+    const ogUrl = await page.locator('meta[property="og:url"]').getAttribute("content");
+    expect(ogUrl?.replace(/\/$/, "")).toBe(absoluta(route));
+
+    if (ogImage) {
+      const imagem = await page
+        .locator('meta[property="og:image"]')
+        .first()
+        .getAttribute("content");
+      const url = new URL(imagem!);
+      expect(url.origin).toBe(new URL(SITE_URL).origin);
+      const resposta = await page.request.get(url.pathname + url.search);
+      expect(resposta.ok()).toBe(true);
+      expect(resposta.headers()["content-type"]).toContain("image/png");
+    }
+  });
+}
+
+test("sitemap lista exatamente as rotas públicas na origem configurada", async ({ request }) => {
+  const resposta = await request.get("/sitemap.xml");
+  expect(resposta.ok()).toBe(true);
+  const locs = [...(await resposta.text()).matchAll(/<loc>([^<]+)<\/loc>/g)].map(([, loc]) => loc);
+
+  const esperadas = [
+    "/",
+    "/projetos",
+    "/roadmap",
+    "/sobre",
+    "/curriculo",
+    ...getProjetosImplementados().map((projeto) => `/projetos/${projeto.slug}`),
+  ].map((rota) => new URL(rota, SITE_URL).toString());
+  expect([...locs].sort()).toEqual([...esperadas].sort());
+
+  // Escopo planejado não é página própria e não pode aparecer como ficha.
+  for (const planejado of getRoadmap()) {
+    expect(locs.some((loc) => loc.includes(planejado.slug))).toBe(false);
+  }
+  for (const loc of locs) {
+    const pagina = await request.get(new URL(loc).pathname);
+    expect(pagina.status(), loc).toBe(200);
+  }
+});
+
+test("robots permite indexação e aponta o sitemap da origem configurada", async ({ request }) => {
+  const resposta = await request.get("/robots.txt");
+  expect(resposta.ok()).toBe(true);
+  const texto = await resposta.text();
+
+  expect(texto).toMatch(/^User-Agent: \*$/m);
+  expect(texto).toMatch(/^Allow: \/$/m);
+  expect(texto).toContain(`Sitemap: ${new URL("/sitemap.xml", SITE_URL).toString()}`);
+});

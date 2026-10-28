@@ -6,20 +6,53 @@ on:
 
 jobs:
   quality:
-    runs-on: ubuntu-latest
+    # Imagem fixa: `playwright install --with-deps` instala bibliotecas do
+    # sistema conforme a distribuição, e ubuntu-latest a trocaria sem aviso.
+    runs-on: ubuntu-24.04
+    env:
+      # Origem de validação dos metadados; build e E2E precisam usar a mesma.
+      NEXT_PUBLIC_SITE_URL: https://portfolio.example
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
         with:
-          node-version: 24
+          node-version-file: .nvmrc
           cache: npm
       - run: npm ci
+      - name: Versões do ambiente
+        run: |
+          echo "runner: $ImageOS $ImageVersion ($(lsb_release -ds))"
+          echo "node: $(node -v) · npm: $(npm -v)"
+          echo "playwright: $(npx playwright --version)"
       - run: npm audit --omit=dev --audit-level=high
       - run: npm run format:check
       - run: npm run lint
       - run: npm run typecheck
       - run: npm test -- --run
       - run: npm run build
+      - name: Identificar artefato
+        run: echo "commit $GITHUB_SHA · BUILD_ID $(cat .next/BUILD_ID)"
       - run: npx playwright install --with-deps chromium
+      # Os E2E servem o artefato do passo de build acima, sem recompilar.
       - run: npm run test:e2e:functional
+        env:
+          E2E_BUILD_EXISTENTE: "1"
       - run: npm run test:e2e:a11y
+        env:
+          E2E_BUILD_EXISTENTE: "1"
+      - uses: actions/upload-artifact@v7
+        if: ${{ !cancelled() }}
+        with:
+          name: e2e-funcional
+          path: |
+            playwright-report/funcional/
+            test-results/funcional/
+          retention-days: 14
+      - uses: actions/upload-artifact@v7
+        if: ${{ !cancelled() }}
+        with:
+          name: e2e-a11y
+          path: |
+            playwright-report/a11y/
+            test-results/a11y/
+          retention-days: 14

@@ -33,9 +33,8 @@ test("home evita trabalho redundante sem perder navegação cliente imediata", a
   expect(requisicoesRsc.filter((pathname) => pathname === "/")).toHaveLength(0);
   expect(requisicoesRsc).toContain("/curriculo");
 
-  // O orçamento tipográfico da primeira visita é: Geologica variável (texto e
-  // títulos) e Martian Mono 400 (notação), ambas no subconjunto latino.
-  expect(fontes.size).toBe(2);
+  // Geologica variável cobre texto, títulos e notação no subconjunto latino.
+  expect(fontes.size).toBe(1);
   expect(
     (await Promise.all(tamanhosDasFontes)).reduce((total, bytes) => total + bytes, 0),
   ).toBeLessThanOrEqual(100 * 1024);
