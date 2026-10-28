@@ -31,8 +31,9 @@ a geração do PDF. A publicação continua bloqueada pelas inspeções manuais/
   somente do script autorizado e recusa de script não revisado. Headers/CSP preservados;
   500 genérico de URLs malformadas e aviso de cache/NUL continuam limitações conhecidas.
 - Adendo: [auditoria-02-followup-node-runtime.md](audits/auditoria-02-followup-node-runtime.md).
-  Pronto para revisão local; commit, push, PR, merge e CI remoto da candidata dependem de
-  autorização futura. A Auditoria 02 não está formalmente encerrada; T055 e hospedagem seguem pendentes.
+  Correção validada localmente e registrada no commit
+  `b0ced5a29df9dd0269272e079c9575369a900d12`. Push, PR, merge, deploy e CI remoto
+  ainda não ocorreram. A Auditoria 02 não está formalmente encerrada; T055 e hospedagem seguem pendentes.
 - As seções de auditorias anteriores abaixo mantêm seus ambientes e resultados históricos.
 
 ## Auditoria 02 — Etapa 3: dependências e supply chain (2026-10-28)

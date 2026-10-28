@@ -16,8 +16,9 @@ global e `git diff --check` também aprovados. Não foram alteradas resoluções
 código de aplicação, testes, headers ou políticas de CI.
 
 **Classificação do follow-up: CORRIGIDA E VALIDADA LOCALMENTE.** A correção não está
-incorporada à master. Commit, push, PR, merge e validação remota permanecem pendentes de
-autorização; a Auditoria 02 **não está formalmente encerrada**.
+incorporada à master. O commit local `b0ced5a29df9dd0269272e079c9575369a900d12` foi
+criado após a validação. Push, PR, merge, deploy e validação remota ainda não ocorreram;
+a Auditoria 02 **não está formalmente encerrada**.
 
 Este é o adendo à condição registrada no relatório final da Etapa 5. Os relatórios
 [da Etapa 3](auditoria-02-etapa3-dependencias.md) e
@@ -268,6 +269,9 @@ Os logs e fixtures ficam fora do repositório versionado.
 
 ## 11. Integração e verificações remotas pendentes
 
+O registro abaixo descreve as pendências no momento da validação, antes da criação do
+commit local. A atualização posterior está logo após a mensagem preparada.
+
 1. Revisão e autorização do proprietário para criar o commit; nenhum commit foi criado.
 2. Após autorização separada, push/PR pela branch isolada, sem alterar a branch original.
 3. CI do PR no commit candidato: confirmar Node 24.22.2, npm 11.19.1 e todos os gates.
@@ -282,6 +286,13 @@ Mensagem de commit preparada, sem executá-la:
 ```text
 fix(security): atualizar Node.js para versão corrigida
 ```
+
+**Atualização pós-commit (2026-10-28):** a correção validada localmente foi registrada no
+commit `b0ced5a29df9dd0269272e079c9575369a900d12`, com pai
+`1572d3603951097bde6191673cb8ce03d4222201` e tree
+`1fa07a35cde484ce856f0292337b5b0c730ab326`. A mensagem preparada acima foi usada.
+Push, PR, merge e deploy ainda não ocorreram. Permanecem pendentes a validação remota,
+as inspeções de publicação e a decisão de encerramento formal da Auditoria 02.
 
 A reversão deve ser deliberada e avaliada como segurança: voltar à 24.19.0 reintroduz a
 pendência conhecida. Não recomendar rollback automático para runtime vulnerável apenas
@@ -299,5 +310,5 @@ Evidências principais no diretório externo indicado na seção 2:
 - resumos dos relatórios funcional/a11y, `e2e-build-identity.json` e `http-regression.json`;
 - `final-review.json`, comparação final do original e `manifesto-evidencias.sha256`.
 
-**CORRIGIDA E VALIDADA LOCALMENTE — candidata pronta para revisão e autorização de commit.**
-Integração e validação remota ainda pendentes. Não declarar a Auditoria 02 formalmente encerrada.
+**CORRIGIDA, VALIDADA LOCALMENTE E REGISTRADA EM COMMIT LOCAL.** Integração e validação
+remota ainda pendentes. Não declarar a Auditoria 02 formalmente encerrada.
