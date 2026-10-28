@@ -119,25 +119,37 @@ renomeado ou tem seu tipo alterado. Duas coisas mudam:
 
 ### Matriz de validação em build time
 
-Estado atual de `lib/content.ts` e cobertura alvo:
+Estado de `lib/content.ts` revisado na Auditoria 01 (2026-10-28) e cobertura alvo. A coluna
+"Hoje" registra o código; as anteriores ("Não") ficaram no histórico do Git.
 
-| Regra                                                            | Requisito       | Hoje | Alvo |
-| ---------------------------------------------------------------- | --------------- | ---- | ---- |
-| Campos obrigatórios de Projeto presentes e não vazios            | FR-006, FR-011a | Sim  | Sim  |
-| Campos obrigatórios de Perfil presentes e não vazios             | FR-011a         | Sim  | Sim  |
-| Mínimo de 2 decisões relevantes por projeto                      | FR-012          | Sim  | Sim  |
-| Competência sem projeto que a referencie                         | FR-024, SC-007  | Sim  | Sim  |
-| Tipo esperado de cada campo (não apenas presença)                | FR-006          | Não  | Sim  |
-| Unicidade e formato do slug entre projetos                       | FR-013a         | Não  | Sim  |
-| `status` pertencente ao conjunto fechado                         | FR-011          | Não  | Sim  |
-| `natureza` pertencente ao conjunto fechado                       | FR-010          | Não  | Sim  |
-| `categoria` com valor válido                                     | FR-006          | Não  | Sim  |
-| Formato de URL em links de demonstração/repositório              | FR-008          | Não  | Sim  |
-| Formato de URL/`mailto:` em currículo, GitHub, LinkedIn, contato | FR-015–FR-017   | Não  | Sim  |
-| Imagem de apresentação referenciada existe                       | FR-006          | Não  | Sim  |
-| Coerência de link opcional (ausente / `"privado"` / URL)         | FR-009, FR-009a | Não  | Sim  |
-| Teto de 6 projetos em destaque                                   | FR-004          | Não  | Sim  |
-| Competência demonstrada referenciando projeto existente          | FR-024          | Não  | Sim  |
+| Regra                                                            | Requisito       | Hoje     | Alvo |
+| ---------------------------------------------------------------- | --------------- | -------- | ---- |
+| Campos obrigatórios de Projeto presentes e não vazios            | FR-006, FR-011a | Sim      | Sim  |
+| Campos obrigatórios de Perfil presentes e não vazios             | FR-011a         | Sim      | Sim  |
+| Mínimo de 2 decisões relevantes por projeto                      | FR-012          | Sim      | Sim  |
+| Competência sem projeto que a referencie                         | FR-024, SC-007  | Sim (¹)  | Sim  |
+| Tipo esperado de cada campo (não apenas presença)                | FR-006          | Sim      | Sim  |
+| Unicidade e formato do slug entre projetos                       | FR-013a         | Sim      | Sim  |
+| `status` pertencente ao conjunto fechado                         | FR-011          | Sim      | Sim  |
+| `natureza` pertencente ao conjunto fechado                       | FR-010          | Sim      | Sim  |
+| `categoria` com valor válido                                     | FR-006          | Sim      | Sim  |
+| Formato de URL em links de demonstração/repositório              | FR-008          | Sim      | Sim  |
+| Formato de URL/`mailto:` em currículo, GitHub, LinkedIn, contato | FR-015–FR-017   | Sim (²)  | Sim  |
+| Imagem de apresentação referenciada existe                       | FR-006          | Sim      | Sim  |
+| Coerência de link opcional (ausente / `"privado"` / URL)         | FR-009, FR-009a | Sim      | Sim  |
+| Teto de 6 projetos em destaque                                   | FR-004          | Sim (³)  | Sim  |
+| Competência demonstrada referenciando projeto existente          | FR-024          | Sim (¹)  | Sim  |
+
+(¹) Só projeto com `real: true` conta como evidência; escopo planejado não sustenta competência.
+
+(²) GitHub e LinkedIn exigem HTTPS; `contato.valor` exige formato de e-mail. `linkCurriculo`,
+quando declarado, precisa ser caminho absoluto de arquivo existente em `public/`, mas o schema o
+aceita ausente (`lib/types.ts`), enquanto a tabela de `PerfilProfissional` acima e FR-015 o tratam
+como obrigatório. Divergência registrada na Auditoria 01 e pendente de decisão do proprietário; o
+conteúdo atual declara `/curriculo.pdf` e cumpre o requisito.
+
+(³) Conta somente projetos com `real: true` e `destaque: true`, porque a vitrine da home só exibe
+projeto implementado. Até a Auditoria 01 o código contava também o escopo planejado.
 
 Cada linha marcada como "Não -> Sim" recebe um teste unitário cobrindo o caso inválido, de modo que
 a regra seja verificável e não apenas declarada.

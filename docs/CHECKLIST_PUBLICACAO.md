@@ -60,7 +60,7 @@ configurado em `package.json` e o runtime em `engines.node`/`.nvmrc`.
 | Repositório      | `jeffnunespy/portfolio-web`                                   |
 | Framework Preset | Next.js                                                       |
 | Root Directory   | Raiz do repositório (`./`)                                    |
-| Node.js Version  | 24.x, em acordo com `package.json`, `.nvmrc` e CI             |
+| Node.js Version  | 24.x (`engines.node` `^24.15.0`; `.nvmrc` e CI em 24.19.0)    |
 | Install Command  | `npm ci`                                                      |
 | Build Command    | `npm run build`                                               |
 | Output Directory | Padrão do preset Next.js; sem override para `public` ou `out` |

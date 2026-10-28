@@ -21,8 +21,9 @@ tabulação, breakpoints de 320/768/1280px e requisitos WCAG 2.1 AA permanecem v
 
 ## Contrato de build e runtime
 
-- Runtime padronizado: Node.js 24 LTS; nunca abaixo de 20.9.0. A mesma versão principal DEVE valer
-  para ambiente local (`.nvmrc`), `engines` do manifesto, CI, Vercel e documentação.
+- Runtime padronizado: Node.js 24 LTS; nunca abaixo de 24.15.0, piso de `jsdom@30` na linha 24
+  (o Next.js 16 sozinho aceitaria 20.9.0). A mesma versão principal DEVE valer para ambiente local
+  (`.nvmrc`), `engines` do manifesto, CI, Vercel e documentação.
 - Modelo de entrega: Next.js hospedado na Vercel com páginas pré-renderizadas em build time.
   `output: "export"` NÃO é usado nesta fase.
 - Build de aceite: `next build` com Turbopack, sem configuração Webpack customizada.
@@ -63,7 +64,8 @@ npm ci
 ```
 
 - A instalação usa `npm ci` a partir do `package-lock.json` versionado — nunca `npm install`.
-- O runner fixa Node.js 24 LTS, a mesma versão do ambiente local e da Vercel.
+- O runner usa a versão exata de `.nvmrc` (`node-version-file`), a mesma do ambiente local, e a
+  imagem fixa `ubuntu-24.04`; a Vercel segue a versão principal de `engines.node`.
 - Nenhum gate pode ser marcado como `continue-on-error` para "destravar" um PR.
 
 ## Contrato de validação de conteúdo

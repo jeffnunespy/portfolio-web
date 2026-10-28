@@ -5,7 +5,8 @@ estão em [data-model.md](./data-model.md) e as decisões técnicas em [research
 
 ## Pré-requisitos
 
-- Node.js 24 LTS (o Next.js 16 exige no mínimo 20.9.0)
+- Node.js `^24.15.0` (piso de `jsdom@30`; o Next.js 16 sozinho aceitaria 20.9.0), na versão de
+  `.nvmrc`
 - Conteúdo mínimo em `content/profile.json` e ao menos 1 arquivo em `content/projects/` válido
   conforme [data-model.md](./data-model.md)
 
@@ -39,7 +40,7 @@ npm run test:e2e
 
 Resultados esperados:
 
-- Node.js 24.x e instalação reproduzível pelo lockfile;
+- Node.js `^24.15.0` (versão de `.nvmrc`) e instalação reproduzível pelo lockfile;
 - `next` e `eslint-config-next` em 16.3.1, `postcss >= 8.5.23` e `nanoid >= 3.3.18`;
 - zero vulnerabilidades críticas ou altas em dependências de produção;
 - zero erros de formatação, lint, tipos, unitários, build ou E2E;
@@ -77,7 +78,7 @@ git push   # ou abrir pull request
 ```
 
 **Resultado esperado**: o workflow executa `npm ci`, lint, typecheck, unitários, build, E2E e
-acessibilidade nesta ordem, em Node.js 24, e reprova o PR se qualquer etapa falhar. Nenhum gate
+acessibilidade nesta ordem, na versão de Node de `.nvmrc`, e reprova o PR se qualquer etapa falhar. Nenhum gate
 marcado como `continue-on-error`.
 
 ### Validação de conteúdo
@@ -92,7 +93,7 @@ npm test -- --run
 **Resultado esperado**: o build falha com mensagem identificando arquivo e campo diante de campo
 obrigatório ausente, tipo inesperado, slug duplicado ou malformado, `status`/`natureza`/`categoria`
 fora do conjunto permitido, URL inválida, imagem inexistente, competência sem projeto que a sustente
-ou mais de 6 projetos em destaque.
+ou mais de 6 projetos reais em destaque (escopo planejado não consome o teto).
 
 ### Acessibilidade — verificações manuais
 

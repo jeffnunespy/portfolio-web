@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "engines": {
-    "node": "24.x"
+    "node": "^24.15.0"
   },
   "scripts": {
     "dev": "next dev",
@@ -14,8 +14,8 @@
     "format:check": "prettier --check .",
     "test": "vitest",
     "test:e2e": "playwright test",
-    "test:e2e:functional": "playwright test --grep-invert @a11y",
-    "test:e2e:a11y": "playwright test --grep @a11y"
+    "test:e2e:functional": "E2E_GRUPO=funcional playwright test --grep-invert @a11y",
+    "test:e2e:a11y": "E2E_GRUPO=a11y playwright test --grep @a11y"
   },
   "dependencies": {
     "next": "^16.3.4",

@@ -15,6 +15,18 @@ com validação local concluída. `DESIGN.md` orienta o visual; a implementaçã
 Em 2026-10-23, o proprietário confirmou o perfil atual e o estudo de caso da plataforma e autorizou
 a geração do PDF. A publicação continua bloqueada pelas inspeções manuais/de preview.
 
+## Auditoria 01 — integridade e reprodutibilidade (2026-10-28)
+
+- Os 13 achados (AUD01-001 a 013) foram corrigidos e validados numa cópia isolada do estado
+  local. Registro completo em `docs/audits/auditoria-01-integridade-reprodutibilidade.md`.
+- Mudanças de comportamento: o teto de 6 destaques conta só projetos reais; Node `^24.15.0`
+  com `engine-strict`; o CI compila uma vez e os E2E servem esse build
+  (`E2E_BUILD_EXISTENTE=1`); a porta 3001 só é reaproveitada por opt-in
+  (`E2E_REUTILIZAR_SERVIDOR=1`); suíte unitária vazia falha; relatórios E2E separados por
+  suíte; metadados validados contra a origem `https://portfolio.example`.
+- Pendências: commit do estado atual (AUD01-001, depende de autorização); decisão sobre
+  `linkCurriculo` obrigatório × opcional; primeira execução do workflow alterado no GitHub.
+
 ## Preparação para publicação — 2026-10-27
 
 - T111 corrige a formatação dos três JSONs de metadados visuais. A comparação dos hashes

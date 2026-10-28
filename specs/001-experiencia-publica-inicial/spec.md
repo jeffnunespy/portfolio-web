@@ -4,7 +4,8 @@
 
 **Created**: 2026-08-06
 
-**Status**: Draft
+**Status**: Implementada; publicação pendente das inspeções manuais de T055 (ver
+`docs/ACTIVE_CONTEXT.md`)
 
 **Input**: User description: "Criar a primeira experiência pública utilizável de uma plataforma profissional de portfólio para um desenvolvedor full-stack em formação, com foco em backend e engenharia de software. Objetivo: permitir que recrutadores, gestores técnicos e desenvolvedores avaliadores entendam o posicionamento profissional do proprietário, conheçam projetos selecionados e encontrem formas de consultar seu currículo, código e contato. Inclui página inicial, apresentação profissional, competências, projetos em destaque, página resumida de projeto, página Sobre, currículo, links de GitHub/LinkedIn e contato. Sem área administrativa, sem cadastro de visitantes, sem interações sociais."
 

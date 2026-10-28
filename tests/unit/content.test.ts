@@ -233,17 +233,66 @@ describe("lib/content", () => {
       expect(() => getProjetos()).toThrow(/slug duplicado/);
     });
 
-    it("getProjetos rejeita mais de seis destaques", async () => {
-      const projetos = Object.fromEntries(
-        Array.from({ length: 7 }, (_, index) => [
-          `projeto-${index}.json`,
-          buildProjeto({ slug: `projeto-${index}`, destaque: true }),
-        ]),
-      );
-      mockFileSystem(buildPerfil(), projetos);
+    describe("teto de 6 destaques conta só projetos reais", () => {
+      // Monta `reais` projetos implementados e `planejados` de escopo planejado,
+      // todos com destaque, mais um real sem destaque que sustenta a competência
+      // do perfil mesmo quando nenhum real é destacado.
+      function mockDestaques(reais: number, planejados: number) {
+        const projetos: Record<string, Partial<Projeto>> = {
+          "base.json": buildProjeto({ slug: "base", destaque: false, real: true }),
+        };
+        for (let index = 0; index < reais; index++) {
+          projetos[`real-${index}.json`] = buildProjeto({
+            slug: `real-${index}`,
+            destaque: true,
+            real: true,
+          });
+        }
+        for (let index = 0; index < planejados; index++) {
+          projetos[`planejado-${index}.json`] = buildProjeto({
+            slug: `planejado-${index}`,
+            destaque: true,
+            real: false,
+          });
+        }
+        mockFileSystem(buildPerfil(), projetos);
+      }
 
-      const { getProjetos } = await import("../../lib/content");
-      expect(() => getProjetos()).toThrow(/mais de 6 projetos marcados como destaque/);
+      it("aceita 2 reais e 4 planejados destacados", async () => {
+        mockDestaques(2, 4);
+        const { getProjetos } = await import("../../lib/content");
+        expect(getProjetos().filter((p) => p.destaque)).toHaveLength(6);
+      });
+
+      it("aceita 6 reais destacados", async () => {
+        mockDestaques(6, 0);
+        const { getProjetos } = await import("../../lib/content");
+        expect(getProjetos().filter((p) => p.real && p.destaque)).toHaveLength(6);
+      });
+
+      it("rejeita 7 reais destacados", async () => {
+        mockDestaques(7, 0);
+        const { getProjetos } = await import("../../lib/content");
+        expect(() => getProjetos()).toThrow(/mais de 6 projetos reais marcados como destaque/);
+      });
+
+      it("planejados destacados além do teto não consomem o limite", async () => {
+        mockDestaques(6, 3);
+        const { getProjetos } = await import("../../lib/content");
+        expect(getProjetos().filter((p) => p.destaque)).toHaveLength(9);
+      });
+
+      it("planejados não completam o teto quando há 7 reais", async () => {
+        mockDestaques(7, 3);
+        const { getProjetos } = await import("../../lib/content");
+        expect(() => getProjetos()).toThrow(/mais de 6 projetos reais marcados como destaque/);
+      });
+
+      it("aceita nenhum real destacado", async () => {
+        mockDestaques(0, 7);
+        const { getProjetosImplementados } = await import("../../lib/content");
+        expect(getProjetosImplementados().filter((p) => p.destaque)).toHaveLength(0);
+      });
     });
 
     it("getPerfil rejeita URLs e contato inválidos", async () => {
