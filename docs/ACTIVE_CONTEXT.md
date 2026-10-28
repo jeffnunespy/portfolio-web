@@ -15,6 +15,20 @@ com validação local concluída. `DESIGN.md` orienta o visual; a implementaçã
 Em 2026-10-23, o proprietário confirmou o perfil atual e o estudo de caso da plataforma e autorizou
 a geração do PDF. A publicação continua bloqueada pelas inspeções manuais/de preview.
 
+## Auditoria 02 — Etapa 3: dependências e supply chain (2026-10-28)
+
+- Executada sobre a `master` remota (`7fc04b4`) num clone isolado. Registro em
+  `docs/audits/auditoria-02-etapa3-dependencias.md`.
+- Faixas mínimas elevadas para excluir versões com advisory: `next` e `eslint-config-next`
+  `^16.4.2`, `vitest` `^4.1.12`. Resolução do lockfile inalterada.
+- `allowScripts` + `strict-allow-scripts`: `postinstall` de `unrs-resolver` negado, `fsevents`
+  liberado. Dependabot com `cooldown` de 7 dias e grupos `react`, `next` e `desenvolvimento`.
+- `engines.npm` `>=11.16.0`: npm 11.15 ou anterior ignora `allowScripts` em silêncio; com
+  `engine-strict` ele agora é recusado com `EBADENGINE`. Node 24.15–24.17 exige atualizar o npm.
+- Pendências: PRs #23–#27 do Dependabot exigem decisão humana; restringir Actions a
+  `selected` + SHA obrigatório depende do proprietário; confirmar o npm do Dependabot e da
+  Vercel; push, PR e CI remoto não executados.
+
 ## Auditoria 01 — integridade e reprodutibilidade (2026-10-28)
 
 - Os 13 achados (AUD01-001 a 013) foram corrigidos e validados numa cópia isolada do estado
@@ -496,12 +510,11 @@ verificação registrada abaixo:
   bloqueio de publicação por esse arquivo ausente.
 - T055 continua como o bloqueio de publicação: inspeção humana de teclado/foco/zoom, leitor de
   tela real, links e preview/canário não concluídos. CI remoto não foi executado nesta sessão.
-- `npm ci` reportou 10 alertas ao incluir dependências de desenvolvimento (2 moderados e 8 altos).
-  A auditoria de produção após T090 retorna zero; a modernização do ferramental de desenvolvimento
-  não foi ampliada nesta entrega.
+- Em 2026-10-28 (Auditoria 02, Etapa 3), `npm audit` completo e de produção retornaram zero
+  vulnerabilidades, e as assinaturas de registry dos 439 pacotes foram verificadas.
 - `npm ci` emite avisos de peer dependency porque plugins transitivos do `eslint-config-next` ainda
-  declaram suporte até ESLint 9; o lint em ESLint 10.8.1 passa. Também houve aviso de script
-  pendente de `unrs-resolver`; nenhuma permissão de scripts foi ampliada, e os gates passaram.
+  declaram suporte até ESLint 9; o lint em ESLint 10.13.0 passa. O `postinstall` de
+  `unrs-resolver` agora está negado em `allowScripts`; npm < 11.16 é recusado por `engines`.
 
 ## Próximos passos
 

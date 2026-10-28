@@ -52,6 +52,32 @@ instalação e o lint funcionam. O `fixupConfigRules` de `@eslint/compat` em `es
 adapta as regras, e `tests/unit/eslint-plugins.test.ts` garante que regras dos três plugins
 continuam reportando. Remover a exceção quando os plugins declararem ESLint 10.
 
+### Scripts de instalação
+
+`allowScripts` em `package.json` lista quais dependências podem executar scripts de instalação,
+e `strict-allow-scripts=true` em `.npmrc` faz o `npm ci` falhar (`ESTRICTALLOWSCRIPTS`) quando
+surge um script fora da lista. Decisões atuais:
+
+- `unrs-resolver` (`postinstall`) está negado. O binding nativo já chega como dependência
+  opcional pelo lockfile; o script só tentaria baixá-lo de novo, sem verificar integridade.
+  Lint, testes e build passam sem ele.
+- `fsevents` (`install`, só macOS) está liberado nas versões 2.3.2 e 2.3.3, como antes.
+
+Se uma atualização trouxer um script novo, revise o pacote e registre a decisão com
+`npm approve-scripts <pacote>` ou `npm deny-scripts <pacote>`; não use
+`--dangerously-allow-all-scripts` nem remova a opção estrita.
+
+**npm 11.16.0 ou superior é obrigatório.** As versões 11.15 e anteriores não conhecem
+`allowScripts`: avisam apenas `Unknown project config "strict-allow-scripts"` e executam todos os
+scripts, inclusive os negados, com instalação bem-sucedida. Por isso `engines.npm` é
+`>=11.16.0` e, com `engine-strict=true`, um npm antigo recusa `npm ci`, `npm install` e
+`--package-lock-only` com `EBADENGINE` antes de criar `node_modules`. O Node 24.15–24.17 traz
+npm 11.13; nessas versões, atualize o npm ou use Node 24.18+ (`.nvmrc` fixa 24.19.0, com npm
+11.17.0, que é o que o CI usa). Confira com `npm -v`.
+
+Limitações: `--engine-strict=false` na linha de comando desliga a recusa, e `npm rebuild` com npm
+antigo sobre um `node_modules` existente executa os scripts negados sem checar `engines`.
+
 ## Testes E2E
 
 ```bash

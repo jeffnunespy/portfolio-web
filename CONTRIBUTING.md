@@ -51,6 +51,16 @@ alerta. Eles seguem as mesmas regras: só entram com o `quality` aprovado e depo
 sem merge automático. Um PR com CI falhando indica incompatibilidade real e precisa de correção
 ou de ser fechado.
 
+- PRs de versão só propõem releases publicadas há pelo menos 7 dias (`cooldown`); os de
+  segurança não esperam.
+- `react`/`react-dom`/tipos e `next`/`eslint-config-next` chegam sempre juntos, cada conjunto
+  num único PR. Minors e patches de desenvolvimento vêm agrupados; majors vêm um por PR.
+- Se o `npm ci` falhar com `ESTRICTALLOWSCRIPTS`, a atualização trouxe um script de instalação
+  novo. Leia o script, decida e registre com `npm approve-scripts` ou `npm deny-scripts` no
+  próprio PR (ver "Scripts de instalação" no README).
+- `EBADENGINE` com `"npm":">=11.16.0"` indica npm antigo, que ignoraria `allowScripts`.
+  Atualize o npm; não contorne com `--engine-strict=false`.
+
 ## Conflitos de merge
 
 Resolva na branch do PR (`git fetch origin && git merge origin/master`, ou rebase da branch de
