@@ -4,10 +4,11 @@ Experiência pública inicial do portfólio, entregue como site estático com Ne
 
 ## Requisitos
 
-- Node.js `^24.15.0` (`engines.node`). O piso vem de `jsdom@30`, que exige 24.15.0 na linha 24.
-  A versão validada fica em `.nvmrc` (24.19.0) e é a mesma usada pelo CI.
-- npm: o que acompanha essa versão do Node (11.x). `.npmrc` liga `engine-strict`, então `npm ci`
-  falha em Node fora da faixa em vez de só avisar.
+- Node.js `^24.22.1` (`engines.node`), piso de segurança do AUD02-E5-001. A versão fixada
+  em `.nvmrc` é 24.22.2 e também é lida pelo CI; versões anteriores ao piso e Node 26
+  são recusados por `engine-strict`.
+- npm `>=11.16.0`; o Node 24.22.2 inclui npm 11.19.1. `.npmrc` liga `engine-strict`, então
+  `npm ci` falha em Node/npm fora dos requisitos em vez de só avisar.
 - Acesso a `fonts.googleapis.com` e `fonts.gstatic.com` no primeiro build: `next/font/google`
   baixa a Geologica em tempo de build e a serve pelo próprio site. Um build sem rede e sem
   `.next/cache` falha; com o cache aquecido, o build funciona offline. Em runtime não há
@@ -72,9 +73,9 @@ Se uma atualização trouxer um script novo, revise o pacote e registre a decis�
 `allowScripts`: avisam apenas `Unknown project config "strict-allow-scripts"` e executam todos os
 scripts, inclusive os negados, com instalação bem-sucedida. Por isso `engines.npm` é
 `>=11.16.0` e, com `engine-strict=true`, um npm antigo recusa `npm ci`, `npm install` e
-`--package-lock-only` com `EBADENGINE` antes de criar `node_modules`. O Node 24.15–24.17 traz
-npm 11.13; nessas versões, atualize o npm ou use Node 24.18+ (`.nvmrc` fixa 24.19.0, com npm
-11.17.0, que é o que o CI usa). Confira com `npm -v`.
+`--package-lock-only` com `EBADENGINE` antes de criar `node_modules`. Atualizar somente o npm
+não torna um Node anterior a 24.22.1 suportado: use a versão de `.nvmrc` (24.22.2, com npm
+11.19.1). Confira `node -v` e `npm -v` antes da instalação.
 
 Limitações: `--engine-strict=false` na linha de comando desliga a recusa, e `npm rebuild` com npm
 antigo sobre um `node_modules` existente executa os scripts negados sem checar `engines`.
@@ -146,6 +147,7 @@ Build estático preparado para deploy em Vercel.
 
 - `CONTRIBUTING.md` — fluxo de pull request e regras de proteção da `master`
 - `.github/SECURITY.md` — como relatar vulnerabilidades
+- `docs/audits/auditoria-02-followup-node-runtime.md` — correção do runtime e validação local
 - `docs/PROJECT.md` — visão geral do projeto
 - `docs/DEVELOPMENT_PLAN.md` — plano de desenvolvimento
 - `docs/ACTIVE_CONTEXT.md` — contexto ativo da implementação
