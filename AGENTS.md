@@ -27,6 +27,28 @@
 - Não alterar arquivos fora do escopo sem necessidade demonstrável.
 - Não executar comandos destrutivos sem autorização explícita.
 
+## Estado da publicação — sessão de 2026-10-29
+
+Registro inicial da sessão; a seção de verificação operacional posterior abaixo atualiza a configuração e as evidências.
+
+- Projeto Vercel criado e vinculado: `jeff-0a6e/portfolio-web`.
+- Conexão com GitHub `jeffnunespy/portfolio-web` concluída pelo proprietário no painel.
+- URL de produção: https://portfolio-web-three-zeta.vercel.app.
+- Deployment da sessão: https://portfolio-a6yvbpbxy-jeff-0a6e.vercel.app.
+- O log fornecido pelo proprietário registra build, TypeScript e geração de 18 páginas concluídos, com estado `Ready`. O proprietário confirmou que o site abriu normalmente. O agente não conseguiu acessar a URL deste ambiente; isso não equivale a uma inspeção completa das rotas, recursos ou acessibilidade.
+- T055 permanece pendente: abertura do site e build hospedado não substituem inspeções humanas, preview aprovado e CI do commit candidato. Não registrar novos testes ou gates como aprovados sem evidência.
+- `docs/CHECKLIST_PUBLICACAO.md` e registros anteriores ainda descrevem a Vercel como não configurada; esse estado histórico foi superado pela publicação desta sessão.
+
+### Aprendizados operacionais da Vercel
+
+- O projeto usa Next.js com pré-renderização, sem `output: "export"`. Preservar o preset Next.js, diretório raiz `./` e saída padrão; não configurar `public` ou `out` como saída. O comando de build detectado foi `next build`.
+- A integração Git exigiu primeiro adicionar GitHub em configurações pessoais da Vercel → Authentication. Depois, conectar o repositório em projeto → Settings → Git. A falha nessa integração não impediu a criação do projeto; reutilizar o projeto existente.
+- A CLI 65.8.0 avisou que `--target` está obsoleto e indicou `--environment`. Nesta sessão, `vercel deploy --target=preview` terminou explicitamente em produção e recebeu o alias público. A causa dessa seleção de ambiente não foi determinada; não assumir que esse comando gera preview.
+- Para novos previews, usar `rtk proxy npx vercel deploy --environment=preview`, conferindo antes a ajuda da versão instalada e depois o ambiente no painel/log. O comando foi executado nesta sessão: preview `Ready` em https://portfolio-bxwwi5lbi-jeff-0a6e.vercel.app, ambiente confirmado por `vercel inspect` e HTML com HTTP 200 via CLI autenticada. Publicação em produção continua exigindo autorização explícita.
+- A CLI criou `.env.local` com `VERCEL_OIDC_TOKEN`; `.env.local` e `.vercel/` estão ignorados pelo Git. Não divulgar nem versionar credenciais.
+- O build remoto usou Next.js 16.4.2 e emitiu avisos de peers do ESLint 10, `cache-dir` e script de instalação de `unrs-resolver`. Foram avisos, sem falha de build; isso não comprova aprovação do lint, auditoria ou demais gates do CI.
+- Ao preparar produção, conferir `NEXT_PUBLIC_SITE_URL` com a URL pública escolhida; sua configuração não foi confirmada nesta sessão. `lib/site.ts` também usa `VERCEL_URL` como fallback hospedado.
+
 ## Critério de conclusão
 
 Uma tarefa somente está concluída quando:
@@ -87,3 +109,11 @@ This version has breaking changes — APIs, conventions, and file structure may 
 This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
 
 <!-- END:nextjs-agent-rules -->
+
+## Verificação operacional posterior — 2026-10-29
+
+- Projeto Vercel alinhado a Node 24.x e instalação `npm ci`; branch de produção confirmada como `master`.
+- `NEXT_PUBLIC_SITE_URL` definida em Production como `https://portfolio-web-three-zeta.vercel.app`; aguarda novo build de produção para substituir a URL específica nos metadados publicados.
+- Gates locais aprovados: formatação, lint, tipos, 53 unitários, build, 73 E2E funcionais e 27 E2E de acessibilidade; auditoria npm de produção sem vulnerabilidades.
+- Produção verificada automaticamente: sete rotas com 200, duas 404, PDF/imagem/ícone com 200, nove páginas sem violações axe e sem overflow em 390/1280px. Inspeções humanas de T055 continuam pendentes.
+- Registros detalhados e limites da validação em `docs/ACTIVE_CONTEXT.md` e `docs/CHECKLIST_PUBLICACAO.md`. Explorações visuais não rastreadas preservadas fora do commit operacional.
