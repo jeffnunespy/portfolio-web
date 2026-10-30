@@ -34,7 +34,14 @@ Experiência Pública Inicial do Portfólio (`001-experiencia-publica-inicial`).
   são alternativas não aprovadas, sem alteração da aplicação; revisão editorial separada.
 - T055 continua aberta para inspeção humana de teclado, leitor de tela, zoom real de 200%,
   celular físico e aceite do preview. Nenhuma promoção adicional de produção foi feita.
-  O CI do commit candidato será consultado após o push autorizado nesta sessão.
+  O commit operacional `c485b575f18023f1a7265ffd227ffa66e7bd4f41` foi enviado à branch
+  de trabalho e seu [CI completo passou](https://github.com/jeffnunespy/portfolio-web/actions/runs/40994639862).
+- O push desse SHA gerou automaticamente outro preview `Ready`, com identidade confirmada
+  pelos metadados da Vercel: https://portfolio-9741psd5w-jeff-0a6e.vercel.app.
+  Nesse artefato, sete rotas retornaram 200, duas inexistentes retornaram 404 e PDF,
+  imagem e ícone retornaram 200 via CLI autenticada. Sitemap com sete URLs usando a
+  origem do próprio preview. O commit posterior apenas registra essas evidências;
+  não altera a aplicação nem inclui as explorações visuais locais.
 
 Implementação das fases 1–17 entregue, exceto pelas inspeções de publicação de T055. A fase 15
 (T092–T099) migrou todas as rotas para a direção visual **Levantamento e sondagem**.

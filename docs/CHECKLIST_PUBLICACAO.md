@@ -31,7 +31,12 @@ Os gates locais e verificações automatizadas hospedadas estão registrados em
 [ACTIVE_CONTEXT.md](ACTIVE_CONTEXT.md). T055 permanece aberta: inspeções humanas de
 teclado/leitor, zoom real e celular físico e aceite do preview ainda são necessários.
 LinkedIn bloqueou a automação (999); três links GitHub receberam 429.
-O CI do candidato será acompanhado após o push autorizado nesta sessão.
+O commit `c485b575f18023f1a7265ffd227ffa66e7bd4f41` foi enviado à branch de trabalho
+e seu [CI completo passou](https://github.com/jeffnunespy/portfolio-web/actions/runs/40994639862).
+O push gerou o preview https://portfolio-9741psd5w-jeff-0a6e.vercel.app, confirmado
+como `Ready` e vinculado a esse SHA nos metadados da Vercel. Acesso autenticado:
+sete rotas 200, duas 404 e PDF/imagem/ícone 200; sitemap com sete URLs do próprio preview.
+Esses resultados automatizados não encerram as inspeções humanas de T055.
 
 | Campo                                   | Registro em 2026-10-27                                      |
 | --------------------------------------- | ----------------------------------------------------------- |
