@@ -19,19 +19,19 @@ export default function ProjectImage({
 }: ProjectImageProps) {
   return (
     <figure className="project-image">
+      <figcaption className="project-image__caption">
+        <a className="text-link" href={descriptionHref}>
+          {descriptionLabel}
+        </a>
+        <p>
+          Prévia ilustrativa. Se a prévia não aparecer, a descrição do projeto continua disponível.
+        </p>
+      </figcaption>
       <div
         className="project-image__surface"
         aria-hidden="true"
         style={{ backgroundImage: src ? `url(${JSON.stringify(src)})` : undefined }}
       />
-      <figcaption className="project-image__caption">
-        <p>
-          Prévia ilustrativa. Se a prévia não aparecer, a descrição do projeto continua disponível.
-        </p>
-        <a className="text-link" href={descriptionHref}>
-          {descriptionLabel}
-        </a>
-      </figcaption>
     </figure>
   );
 }

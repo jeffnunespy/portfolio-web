@@ -1,7 +1,7 @@
 import { createServer, type ServerResponse } from "node:http";
 import { once } from "node:events";
 
-export type ImageMode = "valid" | "transparent" | "network" | "404" | "invalid";
+export type ImageMode = "valid" | "transparent" | "network" | "404" | "500" | "invalid";
 export const imagePath = "/images/projects/plataforma-portfolio.svg";
 
 function barrier() {
@@ -46,8 +46,8 @@ export async function imageServer(mode: ImageMode, cache = false) {
           response.destroy();
           return;
         }
-        if (mode === "404" || mode === "invalid" || mode === "transparent") {
-          response.statusCode = mode === "404" ? 404 : 200;
+        if (mode === "404" || mode === "500" || mode === "invalid" || mode === "transparent") {
+          response.statusCode = mode === "404" ? 404 : mode === "500" ? 500 : 200;
           response.setHeader("Content-Type", mode === "404" ? "text/plain" : "image/svg+xml");
           response.setHeader(
             "Cache-Control",

@@ -57,7 +57,7 @@ async function neutral(page: Page) {
 
 for (const width of [390, 1280]) {
   for (const phase of ["before", "after", "nojs"] as const) {
-    for (const mode of ["valid", "transparent", "network", "404", "invalid"] as const) {
+    for (const mode of ["valid", "transparent", "network", "404", "500", "invalid"] as const) {
       test(`AUD03-001 ${width}px ${phase} ${mode}`, async ({ browser }, info) => {
         const server = await imageServer(mode);
         const context = await browser.newContext({

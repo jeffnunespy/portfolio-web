@@ -508,7 +508,7 @@ button.button::after {
   background-repeat: no-repeat;
 }
 .project-image__caption {
-  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
   color: var(--muted);
   font-size: 0.875rem;
   line-height: 1.6;
