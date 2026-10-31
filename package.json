@@ -19,7 +19,7 @@
     "test:e2e:a11y": "E2E_GRUPO=a11y playwright test --grep @a11y"
   },
   "dependencies": {
-    "next": "^16.4.2",
+    "next": "^16.4.3",
     "react": "^19.2.8",
     "react-dom": "^19.2.8"
   },
