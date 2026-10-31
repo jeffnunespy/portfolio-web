@@ -146,6 +146,25 @@ Um gestor técnico ou colaborador em potencial acessa a página Sobre para enten
 - O que acontece quando um projeto ainda não tem imagem de apresentação disponível no momento da publicação? Pelo mesmo motivo (FR-011a), esse projeto NÃO DEVE ser publicado até que a imagem esteja disponível — o campo é obrigatório (FR-006), não há espaço reservado publicado sem conteúdo real.
 - O que acontece quando um item existe apenas como plano? Ele DEVE aparecer somente em `/roadmap`, com linguagem de intenção e sem imagem, status, competências demonstradas ou página de detalhe que o façam parecer entregue.
 
+### AUD03-001 — Tratamento visual de imagens e recursos indisponíveis
+
+Para imagens decorativas, ou imagens cujo conteúdo informativo esteja integralmente representado por conteúdo textual acessível, admite-se uma apresentação visual neutra e permanente durante o carregamento e em situações de indisponibilidade.
+
+Essa apresentação deverá:
+
+1. Preservar a estabilidade visual do espaço reservado à imagem.
+2. Não indicar falsamente uma falha durante o carregamento de um recurso válido.
+3. Disponibilizar orientação textual permanente e acesso funcional à descrição do conteúdo, independentemente da execução de JavaScript.
+4. Preservar a navegação por teclado, a ordem de foco e a acessibilidade.
+5. Manter comportamento consistente nos navegadores oficialmente suportados.
+6. Não depender de alterações que enfraqueçam as políticas de segurança existentes.
+
+Não será obrigatória a apresentação de uma mensagem visual específica de erro para imagens abrangidas por essa regra, desde que a alternativa neutra e o acesso ao conteúdo textual estejam disponíveis.
+
+Imagens que transmitam informações não reproduzidas em texto deverão receber tratamento específico, preservando seu conteúdo informativo.
+
+Esta alteração não dispensa a validação do comportamento com JavaScript habilitado, incluindo carregamento, falha, renderização no servidor e hidratação.
+
 ## Requirements *(mandatory)*
 
 ### Functional Requirements

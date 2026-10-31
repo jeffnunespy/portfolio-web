@@ -66,7 +66,8 @@ describe("ProjectCard", () => {
         contatoEmail="contato@portfolio.dev"
       />,
     );
-    expect(container.querySelector("img")).toBeNull();
+    expect(container.querySelector(".project-image")).toBeNull();
+    expect(screen.queryByRole("link", { name: /Ler descrição de Nana/ })).toBeNull();
     expect(screen.getByRole("heading", { name: "Nana Silva" })).toBeInTheDocument();
     expect(screen.getByText("Em validação")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Solicitar acesso ao código" })).toHaveAttribute(
@@ -89,11 +90,12 @@ describe("ProjectCard", () => {
     expect(screen.getByText("Um problema concreto.")).toBeInTheDocument();
     expect(screen.getByText("Autoral")).toBeInTheDocument();
     expect(screen.getByText("Node.js")).toBeInTheDocument();
-    // A ficha de índice é decorativa (alt=""): renderiza, mas não entra na
-    // árvore de acessibilidade, para não repetir o título que o cartão anuncia.
-    const fichaDeIndice = container.querySelector("img.project-image");
-    expect(fichaDeIndice).toHaveAttribute("src", projeto.imagemApresentacao);
-    expect(fichaDeIndice).toHaveAttribute("alt", "");
+    const fichaDeIndice = container.querySelector(".project-image__surface");
+    expect(fichaDeIndice).toHaveStyle({ backgroundImage: `url("${projeto.imagemApresentacao}")` });
+    expect(fichaDeIndice).toHaveAttribute("aria-hidden", "true");
+    expect(
+      screen.getByRole("link", { name: `Ler descrição de ${projeto.titulo}` }),
+    ).toHaveAttribute("href", `/projetos/${projeto.slug}#contexto`);
     expect(screen.queryByRole("img")).toBeNull();
     expect(screen.getByRole("link", { name: "Ver demonstração" })).toHaveAttribute(
       "href",

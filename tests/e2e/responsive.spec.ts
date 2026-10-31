@@ -191,7 +191,9 @@ test("ações de projeto e implementação são legíveis e ocupam a coluna no c
 test("imagem dos demais projetos mantém a proporção 5:3 sem recorte", async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto("/projetos/plataforma-portfolio");
-  const box = await page.locator(".project-detail__visual-index > .project-image").boundingBox();
+  const box = await page
+    .locator(".project-detail__visual-index .project-image__surface")
+    .boundingBox();
   expect(box!.width / box!.height).toBeCloseTo(5 / 3, 2);
 });
 
@@ -201,14 +203,19 @@ for (const colorScheme of ["light", "dark"] as const) {
   }) => {
     await page.emulateMedia({ colorScheme });
     await page.goto("/projetos/plataforma-portfolio");
-    const image = page.locator(".project-detail__visual-index > .project-image");
-    await expect(image).toHaveJSProperty("complete", true);
-    const pixel = await image.evaluate((el) => {
+    const image = page.locator(".project-detail__visual-index .project-image__surface");
+    // A pintura efetiva do fundo é coberta na regressão AUD03-001. Aqui,
+    // preserva-se a verificação da paleta do recurso referenciado pelo CSS.
+    const pixel = await image.evaluate(async (el) => {
+      const resource = new Image();
+      const background = getComputedStyle(el).backgroundImage;
+      resource.src = background.slice(5, -2);
+      await resource.decode();
       const canvas = document.createElement("canvas");
       canvas.width = 120;
       canvas.height = 72;
       const ctx = canvas.getContext("2d")!;
-      ctx.drawImage(el as HTMLImageElement, 0, 0, 120, 72);
+      ctx.drawImage(resource, 0, 0, 120, 72);
       return Array.from(ctx.getImageData(1, 1, 1, 1).data.slice(0, 3));
     });
     expect(pixel).toEqual([18, 22, 21]);
