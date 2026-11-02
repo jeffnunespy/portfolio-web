@@ -5,8 +5,6 @@ import { ETAPAS_INTEGRACAO_CONTINUA } from "../lib/ci";
 import ProjectCard from "../components/project/ProjectCard";
 import BuildEvidence from "../components/home/BuildEvidence";
 
-const REPOSITORIO_PLATAFORMA = "https://github.com/jeffnunespy/portfolio-web";
-
 export function generateMetadata(): Metadata {
   const perfil = getPerfil();
   return {
@@ -108,23 +106,14 @@ export default function Home() {
       <section className="station" aria-labelledby="build-title">
         <div className="station__head">
           <h2 id="build-title">Da fonte à página.</h2>
+          {/*
+            O repositório desta plataforma é privado (FR-009a): os arquivos são
+            nomeados, não linkados — para um visitante anônimo, o GitHub responde
+            404. O acesso ao código segue pelo pedido do cartão e da ficha.
+          */}
           <p>
-            <a
-              href={`${REPOSITORIO_PLATAFORMA}/tree/master/tests/e2e`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Testes E2E com Playwright
-            </a>{" "}
-            e{" "}
-            <a
-              href={`${REPOSITORIO_PLATAFORMA}/blob/master/tests/e2e/home.a11y.spec.ts`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              verificações WCAG 2.1 A/AA com axe-core
-            </a>
-            , executados separadamente na integração contínua.
+            Testes E2E com Playwright e verificações WCAG 2.1 A/AA com axe-core, executados
+            separadamente na integração contínua.
           </p>
         </div>
         <BuildEvidence>
@@ -133,45 +122,16 @@ export default function Home() {
             <div>
               <dt>Conteúdo rastreável</dt>
               <dd>
-                Nome, posicionamento e competências vêm de{" "}
-                <a
-                  href={`${REPOSITORIO_PLATAFORMA}/blob/master/content/profile.json`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <code>content/profile.json</code>
-                </a>
-                ; cada projeto, de um arquivo em{" "}
-                <a
-                  href={`${REPOSITORIO_PLATAFORMA}/tree/master/content/projects`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <code>content/projects/</code>
-                </a>
-                . Não há CMS nem banco.
+                Nome, posicionamento e competências vêm de <code>content/profile.json</code>; cada
+                projeto, de um arquivo em <code>content/projects/</code>. Não há CMS nem banco.
               </dd>
             </div>
             <div>
               <dt>Validação antes de publicar</dt>
               <dd>
-                <a
-                  href={`${REPOSITORIO_PLATAFORMA}/blob/master/lib/content.ts`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <code>lib/content.ts</code>
-                </a>{" "}
-                verifica o conteúdo em tempo de build. Campo obrigatório ausente, link inválido ou
-                imagem inexistente interrompe a publicação. Confira os{" "}
-                <a
-                  href={`${REPOSITORIO_PLATAFORMA}/blob/master/tests/unit/content.test.ts`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  testes de validação
-                </a>
-                .
+                <code>lib/content.ts</code> verifica o conteúdo em tempo de build. Campo obrigatório
+                ausente, link em formato inválido ou imagem inexistente interrompe a publicação. Os
+                testes de validação ficam em <code>tests/unit/content.test.ts</code>.
               </dd>
             </div>
             <div>
@@ -192,15 +152,8 @@ export default function Home() {
             ))}
           </ol>
           <p>
-            Ordem configurada em{" "}
-            <a
-              href={`${REPOSITORIO_PLATAFORMA}/blob/master/.github/workflows/ci.yml`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <code>.github/workflows/ci.yml</code>
-            </a>
-            . Este registro descreve o fluxo; não representa uma execução ao vivo.
+            Ordem configurada em <code>.github/workflows/ci.yml</code>. Este registro descreve o
+            fluxo; não representa uma execução ao vivo.
           </p>
         </div>
       </section>
