@@ -28,7 +28,7 @@ export default defineConfig({
   testDir: "./tests/e2e",
   outputDir: `test-results/${grupo}`,
   // No CI o Playwright embute por padrão o diff do PR no relatório HTML, que é
-  // publicado como artefato do repositório público. O diff já está no PR e
+  // publicado como artefato do repositório. O diff já está no PR e
   // manteria por toda a retenção qualquer conteúdo removido depois; o commit
   // (hash, branch, links) continua no relatório.
   captureGitInfo: { commit: true, diff: false },
