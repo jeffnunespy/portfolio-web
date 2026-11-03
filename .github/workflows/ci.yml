@@ -1,8 +1,22 @@
 name: CI
 
+# Cada commit é validado uma vez. `push` em qualquer branch repetia o job de
+# todo commit de PR, que o `pull_request` já valida combinado com a base.
+# - pull_request (qualquer base): o check `quality` do PR;
+# - push na master: revalida o merge, porque o PR pode entrar desatualizado;
+# - workflow_dispatch: execução manual de uma branch sem PR.
 on:
-  push:
   pull_request:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+# Um commit novo no PR cancela a execução obsoleta do mesmo PR. Push na master e
+# execuções manuais ficam num grupo por execução e nunca são cancelados: cada
+# merge mantém a própria validação.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.pull_request.number) || format('run-{0}', github.run_id) }}
+  cancel-in-progress: true
 
 # Nenhuma etapa escreve no repositório nem usa secrets: o token só precisa ler
 # o código. O upload de artefatos e o cache usam o token de runtime do Actions,
@@ -49,8 +63,17 @@ jobs:
       - run: npm run typecheck
       - run: npm test -- --run
       - run: npm run build
+      # No pull_request, GITHUB_SHA é o merge temporário com a base; o head do PR
+      # é o commit que a revisão e a autorização de merge citam. O resumo da
+      # execução guarda a mesma identificação para reaproveitar como evidência.
       - name: Identificar artefato
-        run: echo "commit $GITHUB_SHA · BUILD_ID $(cat .next/BUILD_ID)"
+        env:
+          HEAD_PR: ${{ github.event.pull_request.head.sha }}
+          BASE_PR: ${{ github.event.pull_request.base.sha }}
+        run: |
+          id="evento $GITHUB_EVENT_NAME · ref $GITHUB_REF · commit $GITHUB_SHA · head ${HEAD_PR:--} · base ${BASE_PR:--} · BUILD_ID $(cat .next/BUILD_ID)"
+          echo "$id"
+          echo "$id" >> "$GITHUB_STEP_SUMMARY"
       - run: npx playwright install --with-deps chromium
       # Os E2E servem o artefato do passo de build acima, sem recompilar.
       - run: npm run test:e2e:functional
