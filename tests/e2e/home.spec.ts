@@ -1,17 +1,22 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, type Page } from "@playwright/test";
 import { getPerfil, getProjetosImplementados } from "../../lib/content";
 
 const perfil = getPerfil();
 const implementados = getProjetosImplementados();
 const destaques = implementados.filter((p) => p.destaque).slice(0, 6);
-const comprovacoesPublicas = [
-  ["Testes E2E com Playwright", "tree/master/tests/e2e"],
-  ["verificações WCAG 2.1 A/AA com axe-core", "blob/master/tests/e2e/home.a11y.spec.ts"],
-  ["content/profile.json", "blob/master/content/profile.json"],
-  ["content/projects/", "tree/master/content/projects"],
-  ["lib/content.ts", "blob/master/lib/content.ts"],
-  ["testes de validação", "blob/master/tests/unit/content.test.ts"],
-  [".github/workflows/ci.yml", "blob/master/.github/workflows/ci.yml"],
+// O repositório da plataforma é privado (FR-009a): a seção nomeia as fontes
+// em texto, e nenhuma delas pode voltar a ser link para um destino que o
+// visitante anônimo recebe como 404.
+const fontesDescritas = [
+  "Testes E2E com Playwright",
+  "verificações WCAG 2.1 A/AA com axe-core",
+] as const;
+const arquivosNomeados = [
+  "content/profile.json",
+  "content/projects/",
+  "lib/content.ts",
+  "tests/unit/content.test.ts",
+  ".github/workflows/ci.yml",
 ] as const;
 
 test("US1 - nome, posicionamento e todas as competências estão na primeira dobra", async ({
@@ -122,40 +127,47 @@ test("US1 - comprovação nativa abre e fecha por Enter e Espaço", async ({ pag
   await expect(conteudo.getByText("content/profile.json")).toBeVisible();
   const total = new Set(perfil.competenciasPorArea.flatMap((area) => area.competencias)).size;
   await expect(conteudo.getByText(new RegExp(`As ${total} competências declaradas`))).toBeVisible();
-  for (const nome of [
-    "content/profile.json",
-    "content/projects/",
-    "lib/content.ts",
-    "testes de validação",
-  ]) {
-    await page.keyboard.press("Tab");
-    await expect(conteudo.getByRole("link", { name: nome, exact: true })).toBeFocused();
-  }
+  // As fontes são texto, não destinos: o Tab seguinte ao resumo sai da seção
+  // em vez de parar em links para o repositório privado.
   await page.keyboard.press("Tab");
-  await expect(page.getByRole("link", { name: ".github/workflows/ci.yml" })).toBeFocused();
+  const foco = await page.evaluate(() => ({
+    tag: document.activeElement?.tagName,
+    naSecao: Boolean(document.activeElement?.closest('[aria-labelledby="build-title"]')),
+  }));
+  expect(foco).toEqual({ tag: "A", naSecao: false });
   await summary.focus();
   await page.keyboard.press("Space");
   await expect(conteudo).toBeHidden();
   await expect(summary).toBeFocused();
 });
 
-test("US1 - comprovações dão acesso direto às fontes públicas sem sugerir execução ao vivo", async ({
+async function conferirFontesDescritas(page: Page) {
+  const secao = page.locator("section.station").filter({
+    has: page.getByRole("heading", { name: "Da fonte à página.", exact: true }),
+  });
+  for (const fonte of fontesDescritas) {
+    await expect(secao.getByText(fonte)).toBeVisible();
+  }
+  for (const arquivo of arquivosNomeados) {
+    const codigo = secao.locator("code").filter({ hasText: arquivo });
+    await expect(codigo).toHaveText([arquivo]);
+    await expect(codigo).toBeVisible();
+  }
+  // Texto descritivo não se apresenta como destino: a seção não tem nenhum
+  // link, e a página inteira nenhum href para o repositório privado.
+  await expect(secao.getByRole("link")).toHaveCount(0);
+  await expect(page.locator('a[href*="github.com/jeffnunespy/portfolio-web"]')).toHaveCount(0);
+  return secao;
+}
+
+test("US1 - comprovações nomeiam as fontes sem link ao repositório privado nem execução ao vivo", async ({
   page,
 }) => {
   await page.goto("/");
   await page.locator("#estrutura summary").click();
-  const secao = page.locator("section.station").filter({
-    has: page.getByRole("heading", { name: "Da fonte à página.", exact: true }),
-  });
-  for (const [nome, caminho] of comprovacoesPublicas) {
-    const link = secao.getByRole("link", { name: nome, exact: true });
-    await expect(link).toBeVisible();
-    await expect(link).toHaveAttribute(
-      "href",
-      `https://github.com/jeffnunespy/portfolio-web/${caminho}`,
-    );
-    await expect(link).toHaveAttribute("target", "_blank");
-    await expect(link).toHaveAttribute("rel", "noopener noreferrer");
+  const secao = await conferirFontesDescritas(page);
+  for (const titulo of ["O que sustenta esta plataforma", "Integração contínua desta plataforma"]) {
+    await expect(secao.getByRole("heading", { level: 3, name: titulo, exact: true })).toBeVisible();
   }
   await expect(secao.locator("figcaption")).toContainText("Esquema simplificado do build.");
   await expect(secao.locator(".ci-record")).toContainText(
@@ -171,14 +183,7 @@ test("US1 - comprovação e projetos permanecem disponíveis sem JavaScript", as
   await expect(page.locator("#projects-title")).toBeFocused();
   await page.locator("#estrutura summary").click();
   await expect(page.locator("#estrutura .structure-notes__inner")).toBeVisible();
-  for (const [nome, caminho] of comprovacoesPublicas) {
-    const link = page.getByRole("link", { name: nome, exact: true });
-    await expect(link).toBeVisible();
-    await expect(link).toHaveAttribute(
-      "href",
-      `https://github.com/jeffnunespy/portfolio-web/${caminho}`,
-    );
-  }
+  await conferirFontesDescritas(page);
   await expect(
     page.getByRole("list", { name: "Etapas do fluxo de publicação" }).getByRole("listitem"),
   ).toHaveCount(3);

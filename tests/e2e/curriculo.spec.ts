@@ -15,6 +15,7 @@ const perfil = JSON.parse(
   nome: string;
   contato: { valor: string };
   formacao: { periodo: string; titulo: string; descricao: string }[];
+  linkGithub: string;
   linkLinkedin: string;
   tituloPosicionamento: string;
   trajetoria: { periodo: string; titulo: string; descricao: string }[];
@@ -149,4 +150,13 @@ test("US3 - o meio de contato do currículo acompanha o estado do perfil", async
     await expect(contatos.getByText("E-mail em configuração")).toBeVisible();
     await expect(contatos.locator('a[href^="mailto:"]')).toHaveCount(0);
   }
+
+  // O GitHub é apresentado como perfil, sem prometer acesso a código.
+  const secao = page.getByRole("region", { name: "Contato e perfis" });
+  await expect(secao.getByText(/perfil no GitHub\.$/)).toBeVisible();
+  await expect(secao.getByText(/código/i)).toHaveCount(0);
+  await expect(secao.getByRole("link", { name: "Ver GitHub" })).toHaveAttribute(
+    "href",
+    perfil.linkGithub,
+  );
 });

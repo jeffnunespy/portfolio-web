@@ -1,6 +1,7 @@
 import { test, expect } from "@playwright/test";
-import { getProjetosImplementados, getRoadmap } from "../../lib/content";
+import { getPerfil, getProjetosImplementados, getRoadmap } from "../../lib/content";
 
+const perfil = getPerfil();
 const projetosPlanejados = getRoadmap();
 const projetosImplementados = getProjetosImplementados();
 const atalhosFicha = [
@@ -92,15 +93,17 @@ test("US2 - abre um projeto pela home e exibe todas as seções obrigatórias", 
   await expect(page.getByText("Tailwind CSS", { exact: true })).toHaveCount(0);
   await expect(page.getByText("Estrutura de conteúdo", { exact: true })).toHaveCount(0);
 
-  // Esta ficha descreve o próprio repositório, que é público: o índice visual
-  // aponta direto para o código, não para o perfil que serve de consolação
-  // quando não há destino verificável.
+  // Esta ficha descreve o próprio repositório, que é privado (FR-009a): o
+  // índice visual declara a condição do código e o caminho de acesso, sem
+  // link de código nem o perfil no lugar dele.
   const indiceVisual = page.locator(".project-detail__visual-index");
   await expect(indiceVisual.getByText("Fonte e verificação", { exact: true })).toBeVisible();
-  await expect(indiceVisual.getByRole("link", { name: "Ver código-fonte" })).toBeVisible();
+  await expect(indiceVisual.getByText(/O código-fonte deste projeto é privado/)).toBeVisible();
   await expect(
-    indiceVisual.getByRole("link", { name: "Ver perfil público no GitHub" }),
-  ).toHaveCount(0);
+    indiceVisual.getByRole("link", { name: "Solicitar acesso ao código" }),
+  ).toBeVisible();
+  await expect(indiceVisual.getByRole("link", { name: "Ver código-fonte" })).toHaveCount(0);
+  await expect(indiceVisual.getByRole("link", { name: /GitHub/ })).toHaveCount(0);
 });
 
 test("US2 - projeto planejado não resolve como ficha e vive no roadmap", async ({ page }) => {
@@ -138,23 +141,40 @@ test("US2 - projeto planejado não resolve como ficha e vive no roadmap", async 
   await expect(page.getByRole("link", { name: "Ver código-fonte" })).toHaveCount(0);
 });
 
-test("US2 - rota direta expõe o código-fonte público como evidência", async ({ page }) => {
+test("US2 - rota direta declara o código privado e oferece o pedido de acesso", async ({
+  page,
+}) => {
   await page.goto("/projetos/plataforma-portfolio");
 
   await expect(
     page.getByRole("heading", { level: 1, name: "Plataforma de Portfólio" }),
   ).toBeVisible();
-  const codigoFonte = page.getByRole("link", { name: "Ver código-fonte" });
-  await expect(codigoFonte).toBeVisible();
-  await expect(codigoFonte).toHaveAttribute("href", "https://github.com/jeffnunespy/portfolio-web");
-  await expect(codigoFonte).toHaveAttribute("target", "_blank");
-  await expect(codigoFonte).toHaveAttribute("rel", "noopener noreferrer");
-  await expect(page.getByRole("link", { name: "Solicitar acesso ao código" })).toHaveCount(0);
+  const fontes = page.locator(".project-detail__visual-index-sources");
   await expect(
-    page.locator('.project-detail__visual-index-sources a[href^="mailto:"]'),
-  ).toHaveCount(0);
-  await expect(page.getByText(/O código-fonte deste projeto é privado/)).toHaveCount(0);
+    fontes.getByText(
+      "O código-fonte deste projeto é privado e pode ser disponibilizado para avaliação mediante solicitação.",
+    ),
+  ).toBeVisible();
+  const pedido = fontes.getByRole("link", { name: "Solicitar acesso ao código" });
+  await expect(pedido).toHaveAttribute(
+    "href",
+    `mailto:${perfil.contato.valor}?subject=Acesso ao código do projeto`,
+  );
+  // Nenhum destino de código: nem o rótulo, nem um href para o repositório.
+  await expect(page.getByRole("link", { name: "Ver código-fonte" })).toHaveCount(0);
+  await expect(page.locator('a[href*="github.com/jeffnunespy/portfolio-web"]')).toHaveCount(0);
+  // O perfil não aparece como substituto do código: o pedido de acesso é a
+  // única ação da região, sem duplicata.
+  await expect(fontes.locator('a[href*="github.com"]')).toHaveCount(0);
+  await expect(fontes.getByRole("link")).toHaveCount(1);
   await expect(page.getByText("Solicitações pelo LinkedIn, no rodapé desta página")).toHaveCount(0);
+  // O perfil continua no rodapé global, como destino institucional.
+  const perfilRodape = page
+    .getByRole("contentinfo")
+    .getByRole("link", { name: "Ver GitHub", exact: true });
+  await expect(perfilRodape).toHaveAttribute("href", perfil.linkGithub);
+  await expect(perfilRodape).toHaveAttribute("target", "_blank");
+  await expect(perfilRodape).toHaveAttribute("rel", "noopener noreferrer");
 });
 
 test("US2 - rodapé da ficha permite retomar o catálogo e abrir o currículo", async ({ page }) => {

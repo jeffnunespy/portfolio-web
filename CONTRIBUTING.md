@@ -28,15 +28,17 @@ As demais branches não têm regras.
 5. Faça o commit.
 6. Envie a branch: `git push -u origin <branch>`.
 7. Abra o pull request para `master`.
-8. Aguarde o workflow `CI`. Ele roda nos eventos `push` e `pull_request`, então o check `quality`
-   aparece duas vezes no PR: a execução de `push` testa o commit da branch, e a de
-   `pull_request`, o resultado da combinação com a `master`. Espere as duas aprovadas.
+8. Aguarde o workflow `CI`. No PR ele roda uma vez por commit, no evento `pull_request`, sobre a
+   combinação com a `master`; um commit novo cancela a execução anterior do mesmo PR. Push em
+   branch sem PR não dispara o CI: use **Run workflow** (`workflow_dispatch`) na aba Actions.
+   PR com conflito não recebe o check até o conflito ser resolvido.
 9. Confira o resultado do `quality` e, em caso de falha, os artefatos `e2e-funcional` e `e2e-a11y`.
 10. Revise o diff do PR.
 11. Faça o merge somente quando o GitHub indicar que as regras foram atendidas.
 
 Como a `master` pode avançar sem que o PR seja atualizado, o CI do evento `push` na `master`
-valida de novo o resultado combinado depois do merge.
+valida de novo o resultado combinado depois do merge. Nível de risco, revisão e evidências de
+cada PR seguem [`docs/audits/PROCESSO.md`](docs/audits/PROCESSO.md).
 
 ## Falhas no CI
 

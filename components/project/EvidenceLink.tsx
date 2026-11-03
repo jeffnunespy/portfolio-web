@@ -48,18 +48,21 @@ export default function EvidenceLink({
       ) : null}
 
       {/*
-        Sem demonstração nem repositório público, o perfil no GitHub é a única
-        evidência verificável que existe — então ele lidera, como ação, em vez
-        de aparecer como consolação depois das ressalvas.
+        O perfil no GitHub só aparece quando o projeto não tem demonstração nem
+        repositório informado, antes da nota "Código não disponível
+        publicamente". Ele leva à página do proprietário, não a um código, e o
+        rótulo diz isso. Repositório público tem o próprio link; repositório
+        privado tem o pedido de acesso, e o perfil ao lado dele sugeriria um
+        caminho para o código que o perfil não oferece.
       */}
-      {!temDestinoDireto && linkGithub ? (
+      {!linkDemonstracao && repositorio === "indisponivel" && linkGithub ? (
         <a
           className="button button--secondary"
           href={linkGithub}
           target="_blank"
           rel="noopener noreferrer"
         >
-          Ver perfil público no GitHub
+          Ver perfil no GitHub
         </a>
       ) : null}
 
