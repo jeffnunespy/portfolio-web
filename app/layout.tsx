@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geologica } from "next/font/google";
 import "./globals.css";
+import FragmentHistory from "../components/layout/FragmentHistory";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import { getPerfil } from "../lib/content";
@@ -64,6 +65,7 @@ export default function RootLayout({
           linkLinkedin={perfil.linkLinkedin}
           contatoEmail={perfil.contato.valor}
         />
+        <FragmentHistory />
       </body>
     </html>
   );
