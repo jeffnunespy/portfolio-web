@@ -40,7 +40,13 @@ export default function ProjectCard({
       className={`project-card${textual ? " project-card--textual" : ""}`}
       data-testid="project-card"
     >
-      {!textual ? <ProjectImage src={projeto.imagemApresentacao} /> : null}
+      {!textual ? (
+        <ProjectImage
+          src={projeto.imagemApresentacao}
+          descriptionHref={`/projetos/${projeto.slug}#contexto`}
+          descriptionLabel={`Ler descrição de ${projeto.titulo}`}
+        />
+      ) : null}
       <div className="project-card__body">
         <div className="project-card__story">
           <div className="project-card__meta" role="group" aria-label="Classificação do projeto">

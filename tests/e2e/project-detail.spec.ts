@@ -282,7 +282,8 @@ test("US2 - Nana Silva aparece no catálogo e oferece acesso ao site publicado",
   );
   await expect(page.getByRole("link", { name: "Ver código-fonte" })).toHaveCount(0);
 
-  await expect(page.locator("img.project-image")).toHaveCount(0);
+  await expect(page.locator(".project-image")).toHaveCount(0);
+  await expect(page.getByRole("link", { name: /Ler descrição de Nana/ })).toHaveCount(0);
   const nana = projetosImplementados.find((projeto) => projeto.slug === "nana-silva")!;
   expect(nana.imagemApresentacao).toBeTruthy();
   const recurso = await page.request.get(nana.imagemApresentacao);

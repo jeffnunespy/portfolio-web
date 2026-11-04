@@ -73,13 +73,19 @@ test("US1 - nome, posicionamento e todas as competências estão na primeira dob
     await expect(
       card.getByRole("link", { name: `Ver detalhes de ${projeto.titulo}` }),
     ).toHaveAttribute("href", `/projetos/${projeto.slug}`);
-    const imagem = card.locator("img.project-image");
+    const imagem = card.locator(".project-image__surface");
     if (projeto.slug === "nana-silva") {
-      await expect(imagem).toHaveCount(0);
+      await expect(card.locator(".project-image")).toHaveCount(0);
       await expect(card.getByText("Em validação", { exact: true })).toBeVisible();
     } else {
       await expect(imagem).toBeVisible();
-      await expect(imagem).toHaveAttribute("alt", "");
+      await expect(imagem).toHaveAttribute("aria-hidden", "true");
+      expect(await imagem.evaluate((el) => (el as HTMLElement).style.backgroundImage)).toContain(
+        projeto.imagemApresentacao,
+      );
+      await expect(
+        card.getByRole("link", { name: `Ler descrição de ${projeto.titulo}` }),
+      ).toHaveAttribute("href", `/projetos/${projeto.slug}#contexto`);
     }
     await expect(card.getByRole("img")).toHaveCount(0);
   }
