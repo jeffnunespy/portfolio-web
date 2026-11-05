@@ -7,6 +7,37 @@ do agente são evidências complementares.
 
 ## Versão a validar
 
+### Atualização operacional — 2026-10-29
+
+O site já está publicado em https://portfolio-web-three-zeta.vercel.app e o proprietário
+confirmou abertura normal. A tabela de 2026-10-27 abaixo é histórica. Projeto Vercel
+`jeff-0a6e/portfolio-web` conectado ao GitHub, branch de produção `master`, Node 24.x e
+instalação `npm ci`. `NEXT_PUBLIC_SITE_URL` foi definida em Production com essa URL;
+precisa de um novo build de produção para atualizar canonical/OG/sitemap já publicados.
+
+Preview confirmado como `Ready` no ambiente `preview`:
+https://portfolio-bxwwi5lbi-jeff-0a6e.vercel.app. HTML com 200 via CLI autenticada,
+mantendo a proteção de acesso. O comando validado nesta sessão é:
+
+```sh
+rtk proxy npx vercel deploy --environment=preview
+```
+
+Na CLI 65.8.0, `--target` emitiu aviso de obsolescência. O primeiro deployment com
+`--environment=preview` acabou em produção; a causa não foi determinada. Conferir sempre
+o ambiente no log e em `vercel inspect`.
+
+Os gates locais e verificações automatizadas hospedadas estão registrados em
+[ACTIVE_CONTEXT.md](ACTIVE_CONTEXT.md). T055 permanece aberta: inspeções humanas de
+teclado/leitor, zoom real e celular físico e aceite do preview ainda são necessários.
+LinkedIn bloqueou a automação (999); três links GitHub receberam 429.
+O commit `c485b575f18023f1a7265ffd227ffa66e7bd4f41` foi enviado à branch de trabalho
+e seu [CI completo passou](https://github.com/jeffnunespy/portfolio-web/actions/runs/40994639862).
+O push gerou o preview https://portfolio-9741psd5w-jeff-0a6e.vercel.app, confirmado
+como `Ready` e vinculado a esse SHA nos metadados da Vercel. Acesso autenticado:
+sete rotas 200, duas 404 e PDF/imagem/ícone 200; sitemap com sete URLs do próprio preview.
+Esses resultados automatizados não encerram as inspeções humanas de T055.
+
 | Campo                                   | Registro em 2026-10-27                                      |
 | --------------------------------------- | ----------------------------------------------------------- |
 | Branch local                            | `docs/visual-oficial-minimalismo-escuro`                    |
@@ -101,11 +132,11 @@ na linha 24 e npm >=11.16.0. A seleção 24.x no painel não comprova o patch de
    o ambiente de teste:
 
    ```sh
-   rtk proxy npx vercel deploy --target=preview
+   rtk proxy npx vercel deploy --environment=preview
    ```
 
    Conferir no painel o ambiente **Preview** e copiar a URL do deployment específico.
-   O parâmetro `--target` seleciona o ambiente de destino.
+   O parâmetro `--environment` seleciona o ambiente de destino na CLI 65.8.0.
    [Referência de deploy](https://vercel.com/docs/cli/deploy).
 
 5. Conectar o repositório GitHub ao projeto para os próximos previews. Definir conscientemente
@@ -114,7 +145,7 @@ na linha 24 e npm >=11.16.0. A seleção 24.x no painel não comprova o patch de
    antes de acionar Deploy. [Integração Git](https://vercel.com/docs/git).
 
 Não é necessário adicionar `vercel.json`, secrets de backend ou um framework novo para essa
-configuração. Uma URL de preview ainda não foi criada nem validada nesta sessão.
+configuração. O preview criado e a validação autenticada estão registrados na atualização de 2026-10-29 acima.
 
 ## Validação do preview e do CI
 
@@ -130,7 +161,7 @@ configuração. Uma URL de preview ainda não foi criada nem validada nesta sess
 | Pendente | CI do candidato          | Workflow CI aprovado no SHA com todas as alterações, sem gates ignorados.                                                                                             |
 
 O workflow atual dispara por push e pull request. Commit e push precisam abranger o diff revisado
-e estar autorizados; não foram executados nesta sessão. A aprovação de build da Vercel é distinta
+e estar autorizados; nesta sessão o proprietário autorizou sua execução. A aprovação de build da Vercel é distinta
 do workflow de qualidade do GitHub.
 
 ## Encerramento

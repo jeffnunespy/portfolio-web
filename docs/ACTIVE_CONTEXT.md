@@ -6,6 +6,43 @@ Experiência Pública Inicial do Portfólio (`001-experiencia-publica-inicial`).
 
 ## Status
 
+### Publicação e verificação operacional — 2026-10-29
+
+- Site publicado em https://portfolio-web-three-zeta.vercel.app; abertura confirmada pelo proprietário.
+  Este registro supera o estado histórico de hospedagem não configurada abaixo.
+- Projeto `jeff-0a6e/portfolio-web` conectado ao GitHub; produção em `master`, trabalho em
+  `docs/visual-oficial-minimalismo-escuro`. Node do projeto corrigido de 26.x para 24.x,
+  instalação fixada em `npm ci` e `NEXT_PUBLIC_SITE_URL` configurada somente em Production
+  com a URL estável acima. Metadados do deployment anterior ainda usam sua URL específica;
+  a variável só terá efeito em novo build de produção.
+- Preview criado com CLI 65.8.0 e `--environment=preview`:
+  https://portfolio-bxwwi5lbi-jeff-0a6e.vercel.app — `Ready`, ambiente `preview` confirmado
+  por `vercel inspect`; HTML retornou 200 pela CLI autenticada. Proteção Vercel preservada.
+  A CLI gerou uma credencial de bypass para essa requisição; o valor não foi divulgado.
+- Gates locais: formatação, lint, tipos, 53 unitários, build, 73 E2E funcionais e 27 E2E
+  de acessibilidade aprovados. `npm audit --omit=dev --audit-level=high`: zero vulnerabilidades.
+  O build exigiu rede para Google Fonts; a primeira execução no sandbox falhou por esse motivo.
+- Produção: sete rotas públicas com HTTP 200, duas rotas inexistentes com 404; ícone,
+  imagem da plataforma e currículo PDF com 200. Axe WCAG 2.1 A/AA sem violações nas nove
+  páginas; sem overflow em 390/1280px, sem exceções de página; primeiro Tab focou o salto
+  para `#main-content`. Isso é evidência automatizada, não inspeção humana.
+- Links externos: Nana Silva e links consultados do GitHub retornaram 200, exceto três
+  arquivos que receberam 429 (limite de requisições), cuja existência em `master` foi
+  confirmada pela API do GitHub. LinkedIn retornou 999 à automação;
+  acesso humano ainda precisa ser conferido. Esses bloqueios não provam links quebrados.
+- Explorações visuais não rastreadas foram preservadas fora do commit operacional:
+  são alternativas não aprovadas, sem alteração da aplicação; revisão editorial separada.
+- T055 continua aberta para inspeção humana de teclado, leitor de tela, zoom real de 200%,
+  celular físico e aceite do preview. Nenhuma promoção adicional de produção foi feita.
+  O commit operacional `c485b575f18023f1a7265ffd227ffa66e7bd4f41` foi enviado à branch
+  de trabalho e seu [CI completo passou](https://github.com/jeffnunespy/portfolio-web/actions/runs/40994639862).
+- O push desse SHA gerou automaticamente outro preview `Ready`, com identidade confirmada
+  pelos metadados da Vercel: https://portfolio-9741psd5w-jeff-0a6e.vercel.app.
+  Nesse artefato, sete rotas retornaram 200, duas inexistentes retornaram 404 e PDF,
+  imagem e ícone retornaram 200 via CLI autenticada. Sitemap com sete URLs usando a
+  origem do próprio preview. O commit posterior apenas registra essas evidências;
+  não altera a aplicação nem inclui as explorações visuais locais.
+
 Implementação das fases 1–17 entregue, exceto pelas inspeções de publicação de T055. A fase 15
 (T092–T099) migrou todas as rotas para a direção visual **Levantamento e sondagem**.
 Em 2026-10-23, o proprietário aprovou **Minimalismo escuro** como o novo visual oficial,

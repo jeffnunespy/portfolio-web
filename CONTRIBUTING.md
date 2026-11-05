@@ -89,3 +89,94 @@ quebrado de um jeito que nenhum PR consegue passar. Nesse caso, a exceção prec
 Use `git revert <commit>` numa branch nova e abra um PR; para um merge commit, use
 `git revert -m 1 <merge>`. Nunca reescreva o histórico da `master`: force push é bloqueado
 justamente para isso.
+
+## Antes de começar
+
+O repositório é **dirigido por especificação**. A ordem de precedência é
+[`.specify/memory/constitution.md`](.specify/memory/constitution.md) >
+[`specs/001-experiencia-publica-inicial/`](specs/001-experiencia-publica-inicial/) (`spec.md`,
+`plan.md`, `tasks.md`) > sugestões de ferramentas ou agentes.
+
+> [!IMPORTANT]
+> Requisitos aprovados não mudam durante a implementação. Se uma mudança contradiz a spec, abra
+> uma issue descrevendo a divergência antes de escrever código.
+
+Toda alteração parte de uma tarefa em `tasks.md`, marcada como concluída só depois de validada.
+Quando o estado da feature avançar, atualize [`docs/ACTIVE_CONTEXT.md`](docs/ACTIVE_CONTEXT.md).
+Ao participar, você concorda em seguir o [Código de conduta](.github/CODE_OF_CONDUCT.md).
+
+| Tipo                  | Como proceder                                                                    |
+| --------------------- | -------------------------------------------------------------------------------- |
+| 🐛 Bug                | Issue com passos para reproduzir, resultado esperado e resultado obtido.         |
+| ♿ Acessibilidade     | Informe a tecnologia assistiva, o navegador e o trecho da página afetado.        |
+| ✏️ Texto e ortografia | PR direto é bem-vindo; mantenha o português com acentuação completa.             |
+| 💡 Melhoria           | Abra uma issue antes, para alinhar com a spec e a constituição.                  |
+| 🔒 Vulnerabilidade    | **Não abra issue pública.** Siga a [política de segurança](.github/SECURITY.md). |
+
+## Padrões do projeto
+
+### Idioma
+
+Domínio, tipos, campos JSON, mensagens de erro e documentação estão em **português**. Novas
+interfaces e propriedades seguem o vocabulário existente (`Projeto`, `PerfilProfissional`,
+`competenciasDemonstradas`, …) — não traduza para inglês.
+
+### Código
+
+- **TypeScript estrito.** Tipos do domínio ficam em `lib/types.ts`.
+- **Conteúdo só via `lib/content.ts`.** Rotas e componentes não leem arquivos diretamente.
+- **CSS puro** em `app/globals.css`, seguindo os tokens e regras do [`DESIGN.md`](DESIGN.md). Não
+  adicione frameworks de estilo.
+- **Simplicidade proporcional.** Prefira a solução mais simples que atenda ao requisito atual.
+- **Dependências** só com justificativa registrada no PR: cada uma amplia a superfície de ataque
+  e o custo de manutenção.
+- **Formatação** pelo Prettier (`.prettierrc`: aspas duplas, ponto e vírgula, 100 colunas).
+
+### Testes
+
+- Mudanças em validação de conteúdo exigem casos em `tests/unit/content.test.ts`.
+- Mudanças visíveis em páginas exigem cobertura E2E em `tests/e2e/`; páginas novas precisam de
+  um `*.a11y.spec.ts` com axe-core.
+- `E2E_REUTILIZAR_SERVIDOR=1` agiliza a iteração local, mas não vale como aceite.
+
+### Acessibilidade
+
+O alvo é **WCAG 2.1 AA**. Além do axe, confira manualmente a navegação completa por teclado com
+foco visível, a hierarquia de cabeçalhos, textos de link que façam sentido fora de contexto,
+alternativas textuais significativas, o modo de cores forçadas e a largura de 390 px sem rolagem
+horizontal.
+
+## Conteúdo de projetos
+
+Os estudos de caso vivem em `content/projects/<slug>.json` e são validados no build.
+
+> [!CAUTION]
+> **Não invente métricas, resultados ou evidências.** Tudo o que for declarado precisa ser
+> verificável por um link, um teste ou um artefato. O que ainda é intenção aparece como escopo
+> planejado, nunca como entrega.
+
+Se o build falhar por validação, **ajuste o conteúdo**, nunca a validação. As regras estão no
+[README](README.md#validação-que-quebra-o-build-intencional). Ao mudar o schema, atualize juntos
+`lib/types.ts`, as listas `REQUIRED_*` de `lib/content.ts`, todos os JSONs e
+`tests/unit/content.test.ts`.
+
+## Commits
+
+Use [Conventional Commits](https://www.conventionalcommits.org/pt-br/), com descrição em
+português no imperativo:
+
+```text
+feat(projetos): exibir decisões relevantes no estudo de caso
+fix(build): corrigir validação de links de repositório privado
+docs: registrar evidências do preview
+chore(deps): atualizar dependências de teste
+```
+
+A descrição do PR segue o [modelo](.github/pull_request_template.md): problema, escopo, risco,
+testes, evidências, ressalvas, parecer e gates de merge.
+
+## Uso de inteligência artificial
+
+Assistentes de IA podem ser usados com responsabilidade (princípio X da constituição): toda
+saída gerada é revisada por uma pessoa, passa pelos mesmos gates e é de responsabilidade de quem
+a submete. Não use IA para produzir evidências, métricas ou resultados que não existam.
