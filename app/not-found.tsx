@@ -13,7 +13,7 @@ export default function NotFound() {
   const planejados = getRoadmap();
 
   return (
-    <section className="message-page message-page--not-found">
+    <section className="message-page message-page--not-found" data-generic-not-found>
       <div className="message-page__layout">
         <div className="message-page__body">
           <h1>Página não encontrada</h1>

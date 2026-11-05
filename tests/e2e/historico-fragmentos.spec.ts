@@ -1,4 +1,4 @@
-import { test, expect, type Browser, type Page } from "@playwright/test";
+import { test, expect, type Browser, type Page, type Request } from "@playwright/test";
 
 // F1 (AUD03): depois de navegar por fragmento, Voltar/Avançar precisam manter
 // URL e conteúdo coerentes. Cada passo compara título, h1 e item atual da
@@ -72,7 +72,7 @@ async function pularParaConteudo(page: Page) {
 
 // Aciona o skip link no HTML pré-renderizado, com os chunks retidos: a entrada
 // de "/" fica sem estado. Devolve a função que libera os chunks.
-async function pularAntesDaHidratacao(page: Page) {
+async function pularAntesDaHidratacao(page: Page, rota = "/") {
   let liberar!: () => void;
   let retidos = 0;
   const portao = new Promise<void>((resolve) => (liberar = resolve));
@@ -81,7 +81,7 @@ async function pularAntesDaHidratacao(page: Page) {
     await portao;
     await rota.continue();
   });
-  await page.goto("/", { waitUntil: "domcontentloaded" });
+  await page.goto(rota, { waitUntil: "domcontentloaded" });
   await pularParaConteudo(page);
   // Garante que o skip link agiu de fato antes da hidratação.
   expect(retidos).toBeGreaterThan(0);
@@ -156,6 +156,313 @@ test("F1 - skip link: Voltar e Avançar mantêm URL e conteúdo coerentes", asyn
   await page.goBack();
   await page.goBack();
   await esperarRota(page, browser, "/");
+});
+
+// A1: a 404 genérica usa o fallback de documento do Next. A recuperação deve
+// distinguir entradas nulas e não nulas sem recarregar fragmentos na própria
+// 404 nem substituir a F1 nas rotas válidas.
+async function esperar404Generica(page: Page, url: string) {
+  await expect(page).toHaveURL((u) => u.pathname + u.hash === url);
+  await expect(page.locator("h1")).toHaveText("Página não encontrada");
+  await expect(page).toHaveTitle("Página não encontrada | Portfólio");
+  await expect(page.locator("main")).toContainText("A página que você procura não existe");
+  await expect(
+    page.getByRole("navigation", { name: "Navegação principal" }).locator("[aria-current]"),
+  ).toHaveCount(0);
+  await hidratar(page);
+}
+
+async function observarA1(page: Page) {
+  const documentos: { url: string; status: number }[] = [];
+  const requisicoesRsc: string[] = [];
+  const eventos: unknown[] = [];
+  const erros: string[] = [];
+  page.on("response", (resposta) => {
+    if (resposta.request().resourceType() === "document") {
+      documentos.push({ url: resposta.url(), status: resposta.status() });
+    }
+  });
+  page.on("pageerror", (erro) => erros.push(erro.message));
+  page.on("request", (requisicao) => {
+    if (requisicao.headers()["rsc"]) requisicoesRsc.push(requisicao.url());
+  });
+  // O router às vezes aborta a leitura do corpo da RSC já respondida: conta as
+  // requisições encerradas, com ou sem falha.
+  const rscEncerradas: string[] = [];
+  const encerrarRsc = (requisicao: Request) => {
+    if (requisicao.headers()["rsc"]) rscEncerradas.push(new URL(requisicao.url()).pathname);
+  };
+  page.on("requestfinished", encerrarRsc);
+  page.on("requestfailed", encerrarRsc);
+  await page.exposeFunction("registrarHistoricoA1", (evento: unknown) => eventos.push(evento));
+  await page.addInitScript(() => {
+    const janela = window as unknown as Window & {
+      documentoA1?: string;
+      registrarHistoricoA1: (evento: unknown) => Promise<void>;
+    };
+    janela.documentoA1 = crypto.randomUUID();
+    window.addEventListener("popstate", (evento) => {
+      void janela.registrarHistoricoA1({
+        url: location.href,
+        estado: evento.state,
+        titulo: document.title,
+        h1: document.querySelector("h1")?.textContent,
+      });
+    });
+  });
+  const documento = () =>
+    page.evaluate(() => (window as Window & { documentoA1?: string }).documentoA1);
+  const conferirEstabilidade = async () => {
+    await page.waitForLoadState("networkidle");
+    const quantidade = documentos.length;
+    const quantidadeRsc = requisicoesRsc.length;
+    await page.waitForTimeout(700);
+    expect(documentos).toHaveLength(quantidade);
+    expect(requisicoesRsc).toHaveLength(quantidadeRsc);
+    expect(erros).toEqual([]);
+  };
+  const registrar = async () => {
+    await test.info().attach("historico-a1", {
+      body: JSON.stringify({ documentos, requisicoesRsc, eventos, erros }, null, 2),
+      contentType: "application/json",
+    });
+  };
+  const rscEncerradasDe = (rota: string) => rscEncerradas.filter((p) => p === rota).length;
+  return { documentos, documento, conferirEstabilidade, registrar, rscEncerradasDe };
+}
+
+for (const entrada of ["skip", "hash direto", "location.hash", "pré-hidratação"] as const) {
+  test(`A1 - 404 genérica: ${entrada}, Voltar/Avançar e recuperação estável`, async ({ page }) => {
+    const observacao = await observarA1(page);
+    const rota = "/rota-inexistente";
+    const url = rota + "#main-content";
+    if (entrada === "pré-hidratação") {
+      const liberar = await pularAntesDaHidratacao(page, rota);
+      liberar();
+      await hidratar(page);
+    } else {
+      await abrir(page, entrada === "hash direto" ? url : rota);
+      if (entrada === "skip") await pularParaConteudo(page);
+      if (entrada === "location.hash") {
+        await page.evaluate(() => {
+          location.hash = "main-content";
+        });
+        await expect(page.locator("main")).toBeFocused();
+      }
+    }
+    await expect(page).toHaveURL((u) => u.pathname + u.hash === url);
+    // A guarda anterior não cobria hash direto/pré-hidratação, que já têm estado.
+    expect(await page.evaluate(() => history.state === null)).toBe(
+      entrada === "skip" || entrada === "location.hash",
+    );
+    const inicial = await observacao.documento();
+    const entradas = await page.evaluate(() => history.length);
+    await observacao.conferirEstabilidade();
+    expect(observacao.documentos).toHaveLength(1);
+    expect(observacao.documentos[0].status).toBe(404);
+
+    await page
+      .getByRole("navigation", { name: "Navegação principal" })
+      .getByRole("link", { name: "Sobre", exact: true })
+      .focus();
+    await page.keyboard.press("Enter");
+    await expect(page.locator("h1")).toHaveText("Sobre");
+    await expect(page).toHaveTitle("Sobre | Portfólio");
+    expect(await observacao.documento()).toBe(inicial);
+
+    await page.goBack();
+    await esperar404Generica(page, url);
+    expect(await observacao.documento()).not.toBe(inicial);
+    expect(await page.evaluate(() => history.length)).toBe(entradas + 1);
+    expect(observacao.documentos).toHaveLength(2);
+    expect(observacao.documentos[1].status).toBe(404);
+    // A recarga pode restaurar BODY (histórico salvo antes da hidratação) ou
+    // MAIN (abertura do hash), como nos controles nativos da mesma 404.
+    const foco = await page.evaluate(() => ({
+      tag: document.activeElement?.tagName,
+      id: document.activeElement?.id,
+    }));
+    expect([
+      { tag: "MAIN", id: "main-content" },
+      { tag: "BODY", id: "" },
+    ]).toContainEqual(foco);
+    // Na 404 confirmada, o skip link também passa pelo F1: o popstate nulo faz o
+    // router pedir a RSC da própria rota, e o fallback do Next para a resposta
+    // 404 repete a navegação para o fragmento, que devolve o foco a `main`. O
+    // popstate dessa repetição pede a RSC mais uma vez e a cadeia para. Anterior
+    // ao A1, ela é assíncrona: o Tab só é verificável depois que termina.
+    const rscAntesDoSkip = observacao.rscEncerradasDe(rota);
+    await pularParaConteudoFocado(page);
+    await expect.poll(() => observacao.rscEncerradasDe(rota) - rscAntesDoSkip).toBe(2);
+    await page.keyboard.press("Tab");
+    const voltarParaInicio = page.getByRole("link", { name: "Voltar para a página inicial" });
+    await expect(voltarParaInicio).toBeFocused();
+    await observacao.conferirEstabilidade();
+    await expect(voltarParaInicio).toBeFocused();
+
+    await page.goForward();
+    await expect(page).toHaveURL(/\/sobre$/);
+    await expect(page.locator("h1")).toHaveText("Sobre");
+    await page.goBack();
+    await esperar404Generica(page, url);
+    await observacao.conferirEstabilidade();
+    expect(await page.evaluate(() => history.length)).toBe(entradas + 1);
+    const resposta = await page.reload();
+    expect(resposta?.status()).toBe(404);
+    await esperar404Generica(page, url);
+    await navegar(page, "Projetos");
+    await expect(page.locator("h1")).toHaveText("Projetos");
+    await page.goBack();
+    await esperar404Generica(page, url);
+    await observacao.conferirEstabilidade();
+    await observacao.registrar();
+  });
+}
+
+test("A1 - fragmentos na própria 404 são nativos e não recarregam", async ({ page }) => {
+  const observacao = await observarA1(page);
+  await abrir(page, "/rota-inexistente");
+  const inicial = await observacao.documento();
+  await pularParaConteudo(page);
+  await page.evaluate(() => {
+    location.hash = "outro-fragmento";
+  });
+  await expect(page).toHaveURL(/#outro-fragmento$/);
+  await page.goBack();
+  await esperar404GenericaSemEstado(page, "/rota-inexistente#main-content");
+  await page.goForward();
+  await esperar404GenericaSemEstado(page, "/rota-inexistente#outro-fragmento");
+  await observacao.conferirEstabilidade();
+  expect(await observacao.documento()).toBe(inicial);
+  expect(observacao.documentos).toHaveLength(1);
+  await observacao.registrar();
+});
+
+// As entradas nativas da própria 404 permanecem nulas por contrato.
+async function esperar404GenericaSemEstado(page: Page, url: string) {
+  await expect(page).toHaveURL((u) => u.pathname + u.hash === url);
+  await expect(page.locator("h1")).toHaveText("Página não encontrada");
+  await expect(page).toHaveTitle("Página não encontrada | Portfólio");
+}
+
+test("A1 - 404 sem hash e 404 de projeto preservam URL, conteúdo e HTTP 404", async ({
+  page,
+  browser,
+}) => {
+  for (const rota of ["/rota-inexistente", "/projetos/slug-inexistente"]) {
+    expect((await page.goto(rota))?.status()).toBe(404);
+    await hidratar(page);
+    if (rota.startsWith("/projetos")) await pularParaConteudo(page);
+    const url = rota + (rota.startsWith("/projetos") ? "#main-content" : "");
+    await navegar(page, "Sobre");
+    await esperarRota(page, browser, "/sobre");
+    await page.goBack();
+    await esperarRota(page, browser, url);
+    await page.goForward();
+    await esperarRota(page, browser, "/sobre");
+    await page.goBack();
+    await esperarRota(page, browser, url);
+  }
+});
+
+test("A1/F4 - Ler descrição nas três superfícies mantém a F1 e o teclado", async ({
+  page,
+  browser,
+}) => {
+  const ficha = "/projetos/plataforma-portfolio";
+  for (const rota of ["/", "/projetos", ficha]) {
+    await abrir(page, rota);
+    const descricao = page.getByRole("link", { name: "Ler descrição" });
+    await descricao.focus();
+    await page.keyboard.press("Enter");
+    await esperarRota(page, browser, ficha + "#contexto");
+    await expect(page.locator("#contexto")).toBeFocused();
+    // A legenda usa <a> nativo: vindo do card, muda de documento por contrato.
+    // O trecho de histórico da F1 começa na ficha, após essa navegação.
+    const conferir = await vigiar(page);
+    await navegar(page, "Sobre");
+    await esperarRota(page, browser, "/sobre");
+    await page.goBack();
+    await esperarRota(page, browser, ficha + "#contexto");
+    await page.goForward();
+    await esperarRota(page, browser, "/sobre");
+    await conferir();
+  }
+});
+
+test("A1 - Voltar da 404 com Sobre pendente não classifica Sobre como 404", async ({
+  page,
+  browser,
+}) => {
+  let liberarSobre!: () => void;
+  const portao = new Promise<void>((resolve) => (liberarSobre = resolve));
+  let retidas = 0;
+  await page.route(
+    (url) => url.pathname === "/sobre",
+    async (rota) => {
+      if (rota.request().resourceType() === "document") return rota.continue();
+      retidas++;
+      await portao;
+      await rota.continue().catch(() => {});
+    },
+  );
+  const liberar = await pularAntesDaHidratacao(page, "/rota-inexistente");
+  liberar();
+  await hidratar(page);
+  await navegar(page, "Sobre");
+  await expect.poll(() => retidas).toBeGreaterThan(0);
+  await expect(page.locator("h1")).toHaveText("Página não encontrada");
+  await page.goBack();
+  liberarSobre();
+  await esperar404Generica(page, "/rota-inexistente");
+  await navegar(page, "Sobre");
+  await esperarRota(page, browser, "/sobre");
+  const conferir = await vigiar(page);
+  await pularParaConteudoFocado(page);
+  await navegar(page, "Projetos");
+  await esperarRota(page, browser, "/projetos");
+  await page.goBack();
+  await esperarRota(page, browser, "/sobre#main-content");
+  await conferir();
+});
+
+async function pularParaConteudoFocado(page: Page) {
+  await page.locator("a.skip-link").focus();
+  await page.keyboard.press("Enter");
+  await expect(page.locator("main#main-content")).toBeFocused();
+}
+
+test("A1 - Voltar entre fragmentos da 404 cancela Sobre pendente", async ({ page }) => {
+  let liberarSobre!: () => void;
+  const portao = new Promise<void>((resolve) => (liberarSobre = resolve));
+  let retidas = 0;
+  await page.route(
+    (url) => url.pathname === "/sobre",
+    async (rota) => {
+      if (rota.request().resourceType() === "document") return rota.continue();
+      retidas++;
+      await portao;
+      await rota.continue().catch(() => {});
+    },
+  );
+  await abrir(page, "/rota-inexistente");
+  await pularParaConteudo(page);
+  await page.evaluate(() => {
+    location.hash = "outro-fragmento";
+  });
+  await expect(page).toHaveURL(/#outro-fragmento$/);
+  await navegar(page, "Sobre");
+  await expect.poll(() => retidas).toBeGreaterThan(0);
+  await expect(page.locator("h1")).toHaveText("Página não encontrada");
+  await page.goBack();
+  await esperar404GenericaSemEstado(page, "/rota-inexistente#main-content");
+  liberarSobre();
+  await page.waitForLoadState("networkidle");
+  await esperar404GenericaSemEstado(page, "/rota-inexistente#main-content");
+  await page.goForward();
+  await esperar404GenericaSemEstado(page, "/rota-inexistente#outro-fragmento");
+  await page.goBack();
+  await esperar404GenericaSemEstado(page, "/rota-inexistente#main-content");
 });
 
 test("F1 - âncora da home: Voltar da ficha retorna aos projetos em destaque", async ({
