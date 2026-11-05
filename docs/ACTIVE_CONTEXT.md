@@ -52,6 +52,95 @@ com validação local concluída. `DESIGN.md` orienta o visual; a implementaçã
 Em 2026-10-23, o proprietário confirmou o perfil atual e o estudo de caso da plataforma e autorizou
 a geração do PDF. A publicação continua bloqueada pelas inspeções manuais/de preview.
 
+## Auditoria 03 — Links para o repositório privado (2026-11-02)
+
+- **Decisão do proprietário:** `jeffnunespy/portfolio-web` continua privado. Sem sessão, o
+  repositório responde 404 e o perfil `jeffnunespy` mostra zero repositórios públicos. O site
+  levava a esse repositório pelo cartão, pela ficha da Plataforma e pelas sete referências da
+  home: o visitante recebia 404 no lugar da evidência prometida (FR-009/FR-009a).
+- **Comportamento aplicado (T112, candidata local):**
+  - a ficha usa `"linkRepositorio": "privado"`;
+  - os cartões em `/` e `/projetos` mostram "Código privado" e "Solicitar acesso ao código"
+    (`mailto:` com assunto, sem formulário nem API);
+  - em "Fonte e verificação", a ficha da Plataforma oferece só o pedido de acesso, sem o perfil
+    do GitHub, que não substitui o código. O perfil continua no rodapé de todas as rotas;
+  - as sete referências da home seguem como nomes de arquivo em texto, sem link. O texto "link
+    em formato inválido" foi mantido, porque a validação confere só o formato;
+  - o currículo descreve o GitHub como "perfil no GitHub.";
+  - LinkedIn e a demonstração da Nana Silva não mudaram.
+- **Guarda de regressão:** `tests/e2e/links-externos.ts` classifica cada `a[href]` depois de
+  resolvê-lo contra a página. São tratados como repositório:
+  - `github.com` e `www.github.com`, inclusive em URLs relativas ao protocolo, com maiúsculas,
+    `.git` ou ponto final no host, e em links profundos;
+  - `raw.githubusercontent.com`, `raw.github.com`, `codeload.github.com` e
+    `api.github.com/repos/…`.
+
+  `tests/e2e/repository-links.spec.ts` varre as rotas com e sem JavaScript e confere o status
+  HTTP e ao menos um perfil por rota. Só aceita repositório que esteja em
+  `REPOSITORIOS_PUBLICOS`, lista hoje vazia.
+
+- **Validação local** (Node 24.22.2, build `QnDf_xKXJLdaY5NUzvW4k`, 18 páginas):
+  - audit de produção com 0 vulnerabilidades; formatação, lint e tipos aprovados;
+  - 120 unitários, 104 E2E funcionais e 27 a11y em Chromium;
+  - 77 testes afetados também em Firefox, com configuração local fora do CI. WebKit/Safari não
+    foram testados.
+- **Testes negativos** (clone isolado, duas rodadas): cada reintrodução falha pelo motivo
+  esperado:
+  - link original;
+  - só o JSON;
+  - link na home com `github.com`, `www.`, `//`, link profundo e `codeload`;
+  - perfil de volta na ficha;
+  - texto antigo do currículo.
+
+  O teste anterior aprovava `www.` e `//`; o atual reprova os dois. Um repositório público
+  incluído na allowlist passa na varredura.
+
+- **Compatibilidade com o PR #36 (F4, `84072cc`):** o patch aplica sem conflito. Os resultados
+  estão no relatório da auditoria.
+- **Estado:** sem commit, push, PR ou deploy. Production ainda mostra os links antigos. T112
+  continua aberta até a revisão independente e a publicação autorizada. T055 e AUD03-001
+  continuam abertos.
+- **Pendências do proprietário:**
+  - o "auditável" em `content/profile.json` e em `PRODUCT.md`, com código privado;
+  - o fallback "Conheça o código no GitHub", de `Footer.tsx`, que hoje não é renderizado;
+  - `.github/SECURITY.md`, que aponta para os advisories de um repositório privado;
+  - a alternativa de texto para "link em formato inválido".
+
+## Auditoria 02 — Follow-up do runtime Node.js (2026-10-28)
+
+- AUD02-E5-001 implementado e validado localmente em clone isolado da `master`
+  `1572d3603951097bde6191673cb8ce03d4222201`, sem modificar o diretório original.
+- `.nvmrc` fixa Node 24.22.2 (npm 11.19.1); `engines.node` e a raiz do lock exigem
+  `^24.22.1`, primeiro patch corrigido para as oito CVEs. `engines.npm >=11.16.0`,
+  `engine-strict`, `allowScripts` e `strict-allow-scripts` permanecem inalterados.
+- Nenhuma dependência foi atualizada: as 523 entradas do lockfile foram preservadas.
+  O workflow continua lendo `.nvmrc`, sem alteração de actions, permissões ou gates.
+- Instalação limpa, audits completo/produção (zero), 439 assinaturas, 124 attestations,
+  tipos, lint, 93 unitários, build com 18 entradas estáticas/SSG, 84 funcionais e 27 a11y
+  aprovados com o novo runtime. Formatação global e revisão do diff também aprovadas.
+- Node 24.19.0 recusado com `EBADENGINE`, sem `node_modules`; fixtures confirmam execução
+  somente do script autorizado e recusa de script não revisado. Headers/CSP preservados;
+  500 genérico de URLs malformadas e aviso de cache/NUL continuam limitações conhecidas.
+- Adendo: [auditoria-02-followup-node-runtime.md](audits/auditoria-02-followup-node-runtime.md).
+  Correção validada localmente e registrada no commit
+  `b0ced5a29df9dd0269272e079c9575369a900d12`. Push, PR, merge, deploy e CI remoto
+  ainda não ocorreram. A Auditoria 02 não está formalmente encerrada; T055 e hospedagem seguem pendentes.
+- As seções de auditorias anteriores abaixo mantêm seus ambientes e resultados históricos.
+
+## Auditoria 02 — Etapa 3: dependências e supply chain (2026-10-28)
+
+- Executada sobre a `master` remota (`7fc04b4`) num clone isolado. Registro em
+  `docs/audits/auditoria-02-etapa3-dependencias.md`.
+- Faixas mínimas elevadas para excluir versões com advisory: `next` e `eslint-config-next`
+  `^16.4.2`, `vitest` `^4.1.12`. Resolução do lockfile inalterada.
+- `allowScripts` + `strict-allow-scripts`: `postinstall` de `unrs-resolver` negado, `fsevents`
+  liberado. Dependabot com `cooldown` de 7 dias e grupos `react`, `next` e `desenvolvimento`.
+- `engines.npm` `>=11.16.0`: npm 11.15 ou anterior ignora `allowScripts` em silêncio; com
+  `engine-strict` ele agora é recusado com `EBADENGINE`. Node 24.15–24.17 exige atualizar o npm.
+- Pendências: PRs #23–#27 do Dependabot exigem decisão humana; restringir Actions a
+  `selected` + SHA obrigatório depende do proprietário; confirmar o npm do Dependabot e da
+  Vercel; push, PR e CI remoto não executados.
+
 ## Auditoria 01 — integridade e reprodutibilidade (2026-10-28)
 
 - Os 13 achados (AUD01-001 a 013) foram corrigidos e validados numa cópia isolada do estado
@@ -523,9 +612,11 @@ verificação registrada abaixo:
 ## Pendências e riscos conhecidos
 
 - `plataforma-portfolio` não tem `linkDemonstracao`. O catálogo Nana Silva agora é a segunda
-  implementação, com endereço público de validação. Para a própria plataforma, o
-  repositório está público em `https://github.com/jeffnunespy/portfolio-web`, verificado sem
-  autenticação em 2026-09-04; a ficha agora oferece acesso direto ao código. Publicar a URL de
+  implementação, com endereço público de validação. O repositório da própria plataforma,
+  `jeffnunespy/portfolio-web`, é privado por decisão do proprietário (Auditoria 03,
+  2026-11-02). O registro de 2026-09-04, que o dava como público, foi superado. Na candidata
+  local de T112, a ficha declara o código privado e oferece o pedido de acesso; a versão
+  publicada ainda tem os links antigos até essa correção ser integrada. Publicar a URL de
   produção permanece como a próxima evidência externa de maior efeito no valor da peça.
 - Perfil e estudo de caso confirmados pelo proprietário em 2026-10-23; PDF definitivo gerado e
   consistente. As pendências anteriores de identidade, e-mail e currículo foram encerradas.
@@ -533,12 +624,11 @@ verificação registrada abaixo:
   bloqueio de publicação por esse arquivo ausente.
 - T055 continua como o bloqueio de publicação: inspeção humana de teclado/foco/zoom, leitor de
   tela real, links e preview/canário não concluídos. CI remoto não foi executado nesta sessão.
-- `npm ci` reportou 10 alertas ao incluir dependências de desenvolvimento (2 moderados e 8 altos).
-  A auditoria de produção após T090 retorna zero; a modernização do ferramental de desenvolvimento
-  não foi ampliada nesta entrega.
+- Em 2026-10-28 (Auditoria 02, Etapa 3), `npm audit` completo e de produção retornaram zero
+  vulnerabilidades, e as assinaturas de registry dos 439 pacotes foram verificadas.
 - `npm ci` emite avisos de peer dependency porque plugins transitivos do `eslint-config-next` ainda
-  declaram suporte até ESLint 9; o lint em ESLint 10.8.1 passa. Também houve aviso de script
-  pendente de `unrs-resolver`; nenhuma permissão de scripts foi ampliada, e os gates passaram.
+  declaram suporte até ESLint 9; o lint em ESLint 10.13.0 passa. O `postinstall` de
+  `unrs-resolver` agora está negado em `allowScripts`; npm < 11.16 é recusado por `engines`.
 
 ## Próximos passos
 

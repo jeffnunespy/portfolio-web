@@ -1,88 +1,52 @@
 # Política de segurança
 
-A segurança e a privacidade fazem parte do projeto desde o início (princípio VI da
-[constituição](../.specify/memory/constitution.md)). Agradeço a quem dedica tempo a relatar
-problemas de forma responsável.
+## Escopo
 
-## Superfície do projeto
+Este repositório contém o código-fonte de um portfólio profissional público: um site estático em
+Next.js, sem autenticação, banco de dados, formulários ou coleta de dados de visitantes. O
+conteúdo vem de arquivos JSON versionados e é validado no build.
 
-Nesta fase, o portfólio é um site pré-renderizado com Next.js, publicado na Vercel:
-
-- **sem backend dinâmico**, banco de dados ou API própria;
-- **sem autenticação** nem área administrativa;
-- **sem coleta de dados de navegação** nem dependências externas em runtime;
-- conteúdo versionado em JSON e validado em tempo de build.
-
-Ainda assim, problemas podem existir — por exemplo, em cabeçalhos HTTP, dependências,
-configuração de publicação, links externos ou vazamento acidental de informações no
-repositório.
+Estão no escopo o código deste repositório, a configuração do build e o pipeline de integração
+contínua (`.github/workflows/`). Serviços de terceiros e os projetos externos citados no
+portfólio estão fora do escopo; relate problemas neles diretamente aos responsáveis.
 
 ## Versões suportadas
 
-| Versão                                  | Suporte                |
-| --------------------------------------- | ---------------------- |
-| `master` (publicada em produção)        | ✅ Correções aplicadas |
-| Branches de trabalho e previews antigos | ❌ Sem suporte         |
+Só existe uma versão mantida: a da branch `master`, que é a publicada. Correções de segurança
+entram nela; não há versões anteriores com suporte.
 
 ## Como relatar uma vulnerabilidade
 
-> [!WARNING]
-> **Não abra issues, discussões ou pull requests públicos** para relatar vulnerabilidades.
+Use o relato privado do GitHub: na aba **Security** do repositório, clique em
+**Report a vulnerability**
+([link direto](https://github.com/jeffnunespy/portfolio-web/security/advisories/new)).
+O relato fica visível só para quem o enviou e para o mantenedor.
 
-Envie um e-mail para **jeffnunesxavier@gmail.com** com o assunto
-`[SEGURANÇA] portfolio-web`.
+Não publique a vulnerabilidade em issues, discussões, pull requests ou outros canais públicos
+antes que ela seja analisada e, se for o caso, corrigida.
 
-Inclua, sempre que possível:
+## O que incluir
 
-- descrição do problema e impacto esperado;
-- URL, rota ou arquivo afetado;
-- passos para reproduzir ou prova de conceito mínima;
-- versão (commit, deployment ou data) em que o problema foi observado;
-- sugestão de correção, se houver.
+Quando aplicável:
 
-## O que esperar
+- descrição do problema e componente afetado (arquivo, rota ou etapa do pipeline);
+- condições necessárias para que ele ocorra;
+- impacto esperado;
+- passos de reprodução seguros, executáveis localmente;
+- evidências pertinentes (logs, capturas, trechos de código);
+- sugestão de mitigação, se houver.
 
-| Etapa                      | Prazo alvo         |
-| -------------------------- | ------------------ |
-| Confirmação de recebimento | até 5 dias úteis   |
-| Avaliação inicial          | até 10 dias úteis  |
-| Correção ou mitigação      | conforme gravidade |
+Teste apenas contra uma cópia local do projeto. Não explore sistemas de terceiros nem a
+hospedagem do site, e não acesse ou altere dados que não sejam seus.
 
-Os prazos são metas de um projeto mantido por uma pessoa, não garantias contratuais. Você
-será informado sobre o andamento e, se quiser, receberá crédito no registro da correção.
+## Informações sensíveis
 
-## Escopo
+Envie evidências sensíveis (credenciais encontradas, dados pessoais, detalhes de exploração)
+somente pelo relato privado. Se encontrar um segredo exposto, informe onde ele está, sem copiar o
+valor.
 
-**Dentro do escopo:**
+## Tratamento
 
-- o código deste repositório e o workflow de CI;
-- o site publicado em https://portfolio-web-three-zeta.vercel.app;
-- dependências declaradas em `package.json` com impacto real no site.
-
-**Fora do escopo:**
-
-- vulnerabilidades da própria plataforma Vercel ou do GitHub (relate aos respectivos
-  programas);
-- ataques de negação de serviço, engenharia social ou testes físicos;
-- relatórios automatizados sem demonstração de impacto;
-- ausência de boas práticas sem cenário de exploração concreto.
-
-## Diretrizes para pesquisa
-
-Ao investigar, por favor:
-
-- não acesse, modifique nem destrua dados de terceiros;
-- não degrade a disponibilidade do site (sem varreduras agressivas ou carga excessiva);
-- dê tempo razoável para correção antes de qualquer divulgação pública.
-
-Pesquisa conduzida de boa-fé e dentro destas diretrizes não será tratada como abuso.
-
-## Práticas adotadas
-
-- `npm audit --omit=dev --audit-level=high` como gate obrigatório do CI;
-- Dependabot semanal para dependências npm e GitHub Actions;
-- instalação reproduzível com `npm ci` e `engine-strict`;
-- `.env*` e `.vercel/` fora do controle de versão;
-- avaliação de segurança futura planejada em
-  [`docs/PLANO_AVALIACAO_SEGURANCA.md`](../docs/PLANO_AVALIACAO_SEGURANCA.md) (OWASP ZAP,
-  WSTG e Nuclei).
+Cada relato é avaliado e priorizado conforme a gravidade e o impacto. O andamento é comunicado
+pelo próprio relato privado. Quando a correção é publicada, o advisory pode ser divulgado com
+crédito a quem relatou, se a pessoa quiser. Não há programa de recompensas.

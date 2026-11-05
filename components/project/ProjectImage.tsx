@@ -1,45 +1,37 @@
-"use client";
-
-import { useState } from "react";
-
 export interface ProjectImageProps {
   src: string;
+  descriptionHref: string;
+  descriptionLabel: string;
 }
 
 /**
- * Ficha de índice desenhada do projeto (`public/images/projects/*.svg`).
+ * Ficha de índice decorativa: repete informação presente no texto do projeto.
+ * Somente a superfície sai da árvore acessível; legenda e ação são legíveis.
+ * Imagens com informação exclusiva exigem outro tratamento, não este componente.
  *
- * A imagem é decorativa por decisão de design: conforme DESIGN.md, ela não é
- * captura de aplicação nem carrega informação ausente do texto — repete a
- * identificação que o título e os metadados adjacentes já dão. Por isso vai com
- * `alt=""` e sai da árvore de acessibilidade, em vez de duplicar o nome da ficha
- * no leitor de tela. Se algum dia essas imagens passarem a transmitir dado
- * próprio (uma captura real, um diagrama), o alternativo precisa descrever esse
- * dado — não voltar a repetir o título.
+ * Não há estado React para reconciliar: o navegador apresenta carregamento,
+ * cache e decodificação sem depender de eventos anteriores à hidratação.
  */
-export default function ProjectImage({ src }: ProjectImageProps) {
-  const [failedSrc, setFailedSrc] = useState<string | null>(null);
-
-  if (!src || failedSrc === src) {
-    // O estado de falha também é decorativo: nada se perde para quem não vê a
-    // moldura, porque a ficha inteira permanece legível em texto.
-    return (
-      <div className="project-image project-image--fallback" aria-hidden="true">
-        <span>&lt;/&gt;</span>
-        <small>Imagem indisponível</small>
-      </div>
-    );
-  }
-
+export default function ProjectImage({
+  src,
+  descriptionHref,
+  descriptionLabel,
+}: ProjectImageProps) {
   return (
-    // A imagem é conteúdo versionado; onError garante um estado alternativo em falhas de rede/runtime.
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
-      className="project-image"
-      src={src}
-      alt=""
-      loading="lazy"
-      onError={() => setFailedSrc(src)}
-    />
+    <figure className="project-image">
+      <figcaption className="project-image__caption">
+        <a className="text-link" href={descriptionHref}>
+          {descriptionLabel}
+        </a>
+        <p>
+          Prévia ilustrativa. Se a prévia não aparecer, a descrição do projeto continua disponível.
+        </p>
+      </figcaption>
+      <div
+        className="project-image__surface"
+        aria-hidden="true"
+        style={{ backgroundImage: src ? `url(${JSON.stringify(src)})` : undefined }}
+      />
+    </figure>
   );
 }

@@ -497,21 +497,26 @@ button.button::after {
   font-size: 0.875rem;
 }
 .project-image {
+  min-width: 0;
+}
+.project-image__surface {
   width: 100%;
-  height: auto;
   aspect-ratio: 5 / 3;
-  object-fit: contain;
-  background: var(--surface);
+  background-color: var(--surface);
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
 }
-.project-image--fallback {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+.project-image__caption {
+  margin-bottom: 0.75rem;
   color: var(--muted);
+  font-size: 0.875rem;
+  line-height: 1.6;
 }
-.project-image--fallback small {
-  font-size: 0.8125rem;
+.project-image__caption .text-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
 }
 summary {
   width: fit-content;

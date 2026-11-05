@@ -8,7 +8,7 @@ Conteúdo validado em tempo de build, testes automatizados, acessibilidade WCAG 
 integração contínua — do requisito ao deploy.
 
 [![CI](https://github.com/jeffnunespy/portfolio-web/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/jeffnunespy/portfolio-web/actions/workflows/ci.yml)
-![Node.js](https://img.shields.io/badge/Node.js-24.19-5FA04E?logo=nodedotjs&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-24.22-5FA04E?logo=nodedotjs&logoColor=white)
 ![Next.js](https://img.shields.io/badge/Next.js-16-000000?logo=nextdotjs&logoColor=white)
 ![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)
@@ -19,7 +19,7 @@ integração contínua — do requisito ao deploy.
 [**🌐 Ver o site publicado**](https://portfolio-web-three-zeta.vercel.app) ·
 [Especificação](specs/001-experiencia-publica-inicial/spec.md) ·
 [Constituição](.specify/memory/constitution.md) ·
-[Como contribuir](.github/CONTRIBUTING.md) ·
+[Como contribuir](CONTRIBUTING.md) ·
 [Segurança](.github/SECURITY.md)
 
 </div>
@@ -38,9 +38,10 @@ integração contínua — do requisito ao deploy.
 - [Requisitos](#requisitos)
 - [Setup](#setup)
 - [Scripts](#scripts)
-- [Verificações (gates do CI)](#verificações-gates-do-ci)
+- [Verificações](#verificações)
 - [Testes E2E](#testes-e2e)
 - [Reprodução isolada](#reprodução-isolada)
+- [Build e segurança HTTP](#build-e-segurança-http)
 - [Deploy](#deploy)
 - [Processo de desenvolvimento](#processo-de-desenvolvimento)
 - [Documentação](#documentação)
@@ -74,21 +75,22 @@ separar com clareza **o que já está implementado** do que ainda é **escopo pl
 | 🔍 **SEO**            | `generateMetadata` por rota, Open Graph gerado, `sitemap.xml` e `robots.txt` a partir da URL pública configurada.             |
 | 🎨 **Design**         | Sistema visual "Minimalismo escuro" em CSS puro, sem framework, documentado em [`DESIGN.md`](DESIGN.md).                      |
 | 🔁 **CI/CD**          | GitHub Actions com auditoria npm, formatação, lint, tipos, testes, build e E2E; Dependabot semanal; deploy na Vercel.         |
-| 🔒 **Privacidade**    | Sem coleta de dados de navegação, sem área administrativa e sem dependência externa em runtime.                               |
+| 🔒 **Segurança**      | Headers HTTP e CSP em `next.config.js`, scripts de instalação controlados por `allowScripts`, actions fixadas por SHA.        |
+| 🕶️ **Privacidade**    | Sem coleta de dados de navegação, sem área administrativa e sem dependência externa em runtime.                               |
 
 ## Stack
 
-| Camada           | Tecnologia                                                              |
-| ---------------- | ----------------------------------------------------------------------- |
-| Runtime          | Node.js `^24.15.0` (validado em `24.19.0`, via `.nvmrc`)                |
-| Framework        | Next.js 16 (App Router, build com Turbopack) + React 19                 |
-| Linguagem        | TypeScript 5 (`strict`)                                                 |
-| Estilos          | CSS puro em `app/globals.css`; fonte Geologica via `next/font/google`   |
-| Testes unitários | Vitest 4 + Testing Library + jsdom                                      |
-| Testes E2E       | Playwright (Chromium) + `@axe-core/playwright`                          |
-| Qualidade        | ESLint 10 (flat config, `next/core-web-vitals` + TypeScript) + Prettier |
-| Automação        | GitHub Actions + Dependabot                                             |
-| Hospedagem       | Vercel                                                                  |
+| Camada           | Tecnologia                                                               |
+| ---------------- | ------------------------------------------------------------------------ |
+| Runtime          | Node.js `^24.22.1` (fixado em `24.22.2`, via `.nvmrc`) e npm `>=11.16.0` |
+| Framework        | Next.js 16 (App Router, build com Turbopack) + React 19                  |
+| Linguagem        | TypeScript 5 (`strict`)                                                  |
+| Estilos          | CSS puro em `app/globals.css`; fonte Geologica via `next/font/google`    |
+| Testes unitários | Vitest 4 + Testing Library + jsdom                                       |
+| Testes E2E       | Playwright (Chromium) + `@axe-core/playwright`                           |
+| Qualidade        | ESLint 10 (flat config, `next/core-web-vitals` + TypeScript) + Prettier  |
+| Automação        | GitHub Actions + Dependabot                                              |
+| Hospedagem       | Vercel                                                                   |
 
 ## Arquitetura
 
@@ -179,7 +181,7 @@ Para criar ou editar um projeto, siga o fluxo da skill local
 .
 ├── app/                    # Rotas do App Router, metadados, sitemap, robots, OG e estilos globais
 ├── components/
-│   ├── layout/             # Header, Footer, evidências do build
+│   ├── layout/             # Header, Footer, evidências do build, histórico de fragmentos
 │   └── project/            # Card, imagem, status, links de evidência, rodapé do registro
 ├── content/                # Conteúdo versionado (perfil e projetos)
 ├── lib/                    # content.ts (validação), types.ts, site.ts, labels.ts, og-image.tsx
@@ -189,16 +191,19 @@ Para criar ou editar um projeto, siga o fluxo da skill local
 │   └── e2e/                # Playwright; *.a11y.spec.ts usam axe-core
 ├── specs/                  # Especificação, plano, tarefas e contratos (spec-kit)
 ├── docs/                   # Contexto ativo, plano, checklist de publicação e auditorias
-├── .github/                # CI, Dependabot e documentos da comunidade
+├── .github/                # CI, Dependabot, modelo de PR, segurança e código de conduta
+├── CONTRIBUTING.md         # Fluxo de contribuição
 ├── DESIGN.md               # Sistema visual "Minimalismo escuro"
 └── PRODUCT.md              # Visão de produto
 ```
 
 ## Requisitos
 
-- **Node.js `^24.15.0`** (`engines.node`). O piso vem de `jsdom@30`, que exige 24.15.0 na linha 24. A versão validada fica em `.nvmrc` (24.19.0) e é a mesma usada pelo CI.
-- **npm** que acompanha essa versão do Node (11.x). `.npmrc` liga `engine-strict`, então
-  `npm ci` falha em Node fora da faixa em vez de só avisar.
+- **Node.js `^24.22.1`** (`engines.node`), piso de segurança do AUD02-E5-001. A versão fixada
+  em `.nvmrc` é 24.22.2 e também é lida pelo CI; versões anteriores ao piso e Node 26 são
+  recusadas por `engine-strict`.
+- **npm `>=11.16.0`**; o Node 24.22.2 inclui npm 11.19.1. `.npmrc` liga `engine-strict`, então
+  `npm ci` falha em Node/npm fora dos requisitos em vez de só avisar.
 - **Rede no primeiro build** para `fonts.googleapis.com` e `fonts.gstatic.com`: `next/font/google`
   baixa a Geologica em tempo de build e a serve pelo próprio site. Um build sem rede e sem
   `.next/cache` falha; com o cache aquecido, o build funciona offline. Em runtime não há
@@ -247,10 +252,16 @@ npm run test:e2e -- -g "texto do teste"
 > `next lint` não existe mais no Next.js 16. Para lintar arquivos específicos, use
 > `npx eslint <arquivos>`.
 
-## Verificações (gates do CI)
+## Verificações
 
-O workflow [`.github/workflows/ci.yml`](.github/workflows/ci.yml) roda em todo push e pull
-request, em `ubuntu-24.04` e com o Node de `.nvmrc`:
+O workflow [`.github/workflows/ci.yml`](.github/workflows/ci.yml) roda o job `quality` em
+`ubuntu-24.04`, com o Node de `.nvmrc`, actions fixadas por SHA e permissão só de leitura:
+
+- em todo **pull request** — é o check exigido pela proteção da `master`;
+- em **push na `master`**, para revalidar o resultado combinado depois do merge;
+- **manualmente** (`workflow_dispatch`), para uma branch sem PR.
+
+Etapas:
 
 ```mermaid
 flowchart LR
@@ -261,6 +272,7 @@ flowchart LR
 Rode a mesma sequência localmente antes de considerar uma tarefa concluída:
 
 ```bash
+export NEXT_PUBLIC_SITE_URL=https://portfolio.example # origem reservada apenas para testes
 npm audit --omit=dev --audit-level=high
 npm run format:check   # prettier
 npm run lint           # eslint
@@ -287,6 +299,32 @@ adapta as regras, e `tests/unit/eslint-plugins.test.ts` garante que regras dos t
 continuam reportando. Remover a exceção quando os plugins declararem ESLint 10.
 
 </details>
+
+### Scripts de instalação
+
+`allowScripts` em `package.json` lista quais dependências podem executar scripts de instalação,
+e `strict-allow-scripts=true` em `.npmrc` faz o `npm ci` falhar (`ESTRICTALLOWSCRIPTS`) quando
+surge um script fora da lista. Decisões atuais:
+
+- `unrs-resolver` (`postinstall`) está negado. O binding nativo já chega como dependência
+  opcional pelo lockfile; o script só tentaria baixá-lo de novo, sem verificar integridade.
+  Lint, testes e build passam sem ele.
+- `fsevents` (`install`, só macOS) está liberado nas versões 2.3.2 e 2.3.3, como antes.
+
+Se uma atualização trouxer um script novo, revise o pacote e registre a decisão com
+`npm approve-scripts <pacote>` ou `npm deny-scripts <pacote>`; não use
+`--dangerously-allow-all-scripts` nem remova a opção estrita.
+
+**npm 11.16.0 ou superior é obrigatório.** As versões 11.15 e anteriores não conhecem
+`allowScripts`: avisam apenas `Unknown project config "strict-allow-scripts"` e executam todos os
+scripts, inclusive os negados, com instalação bem-sucedida. Por isso `engines.npm` é
+`>=11.16.0` e, com `engine-strict=true`, um npm antigo recusa `npm ci`, `npm install` e
+`--package-lock-only` com `EBADENGINE` antes de criar `node_modules`. Atualizar somente o npm
+não torna um Node anterior a 24.22.1 suportado: use a versão de `.nvmrc` (24.22.2, com npm
+11.19.1). Confira `node -v` e `npm -v` antes da instalação.
+
+Limitações: `--engine-strict=false` na linha de comando desliga a recusa, e `npm rebuild` com npm
+antigo sobre um `node_modules` existente executa os scripts negados sem checar `engines`.
 
 ## Testes E2E
 
@@ -326,8 +364,27 @@ E2E_BUILD_EXISTENTE=1 npm run test:e2e:functional
 E2E_BUILD_EXISTENTE=1 npm run test:e2e:a11y
 ```
 
-Antes, rode os demais gates da seção [Verificações](#verificações-gates-do-ci). Confirme que
-nada escuta na porta 3001.
+Antes, rode os demais gates da seção [Verificações](#verificações). Confirme que nada
+escuta na porta 3001.
+
+## Build e segurança HTTP
+
+```bash
+NEXT_PUBLIC_SITE_URL=http://localhost:3000 npm run build # produção local via HTTP
+npm run start
+```
+
+Em produção hospedada, `NEXT_PUBLIC_SITE_URL` é obrigatória e deve conter a origem HTTPS
+confirmada, sem credenciais, caminho, query ou fragmento. O build falha se a configuração for
+inválida ou estiver ausente; não usa localhost nem `VERCEL_URL` como domínio de produção.
+Desenvolvimento/teste sem configuração usa `http://localhost:3000`. Um preview declarado por
+`VERCEL_ENV=preview` pode usar `VERCEL_URL` válida em `*.vercel.app` quando a origem explícita
+estiver ausente. HTTP explícito é permitido somente em loopback para testes locais; deployments
+Vercel de produção/preview recusam loopback. URLs de exemplo acima não são domínio de produção.
+
+Os headers e a CSP são configurados em `next.config.js`, sem Proxy e preservando SSG. A CSP
+é aplicada em `next build/start`, inclusive previews; em `next dev` ela é omitida para o HMR.
+Decisões, exceções e verificações: [Auditoria 02 — Etapa 4](docs/audits/auditoria-02-etapa4-next-http.md).
 
 ## Deploy
 
@@ -337,8 +394,7 @@ O site é publicado na **Vercel** a partir da branch `master`:
 - **Configuração:** Framework Preset Next.js, raiz `./`, saída padrão (não usar `public` nem
   `out`), Node 24.x e instalação com `npm ci`.
 - **URL pública:** `NEXT_PUBLIC_SITE_URL` define a origem de canonical, Open Graph, sitemap e
-  robots. Sem ela, `lib/site.ts` usa `VERCEL_URL` (previews) e, por fim,
-  `http://localhost:3000`.
+  robots, e é obrigatória em produção (ver [Build e segurança HTTP](#build-e-segurança-http)).
 - **Preview:** `npx vercel deploy --environment=preview`. Confirme o ambiente no painel ou com
   `vercel inspect` antes de tratar o deploy como preview.
 
@@ -385,21 +441,28 @@ Na prática:
 
 ## Documentação
 
-| Documento                                                                          | Conteúdo                                               |
-| ---------------------------------------------------------------------------------- | ------------------------------------------------------ |
-| [`docs/PROJECT.md`](docs/PROJECT.md)                                               | Visão geral do projeto                                 |
-| [`docs/DEVELOPMENT_PLAN.md`](docs/DEVELOPMENT_PLAN.md)                             | Plano de desenvolvimento                               |
-| [`docs/ACTIVE_CONTEXT.md`](docs/ACTIVE_CONTEXT.md)                                 | Contexto ativo da implementação                        |
-| [`docs/CHECKLIST_PUBLICACAO.md`](docs/CHECKLIST_PUBLICACAO.md)                     | Roteiro e evidências de publicação                     |
-| [`docs/PLANO_AVALIACAO_SEGURANCA.md`](docs/PLANO_AVALIACAO_SEGURANCA.md)           | Adoção futura de ZAP, WSTG e Nuclei                    |
-| [`docs/audits/`](docs/audits/)                                                     | Auditorias de reprodutibilidade, design e dependências |
-| [`DESIGN.md`](DESIGN.md)                                                           | Sistema visual "Minimalismo escuro"                    |
-| [`PRODUCT.md`](PRODUCT.md)                                                         | Visão de produto                                       |
-| [`specs/001-experiencia-publica-inicial/`](specs/001-experiencia-publica-inicial/) | Especificação, plano, tarefas, contratos e checklists  |
+| Documento                                                                                                | Conteúdo                                               |
+| -------------------------------------------------------------------------------------------------------- | ------------------------------------------------------ |
+| [`CONTRIBUTING.md`](CONTRIBUTING.md)                                                                     | Fluxo de pull request e regras de proteção da `master` |
+| [`.github/SECURITY.md`](.github/SECURITY.md)                                                             | Como relatar vulnerabilidades                          |
+| [`docs/audits/PROCESSO.md`](docs/audits/PROCESSO.md)                                                     | Níveis de risco, gates e autorização de merge          |
+| [`docs/audits/STATUS.md`](docs/audits/STATUS.md)                                                         | Estado das auditorias e pendências abertas             |
+| [`docs/audits/auditoria-02-etapa4-next-http.md`](docs/audits/auditoria-02-etapa4-next-http.md)           | Headers HTTP e CSP: decisões, exceções e verificações  |
+| [`docs/audits/auditoria-02-followup-node-runtime.md`](docs/audits/auditoria-02-followup-node-runtime.md) | Correção do runtime Node.js e validação local          |
+| [`docs/PROJECT.md`](docs/PROJECT.md)                                                                     | Visão geral do projeto                                 |
+| [`docs/DEVELOPMENT_PLAN.md`](docs/DEVELOPMENT_PLAN.md)                                                   | Plano de desenvolvimento                               |
+| [`docs/ACTIVE_CONTEXT.md`](docs/ACTIVE_CONTEXT.md)                                                       | Contexto ativo da implementação                        |
+| [`docs/CHECKLIST_PUBLICACAO.md`](docs/CHECKLIST_PUBLICACAO.md)                                           | Roteiro e evidências de publicação                     |
+| [`docs/PLANO_AVALIACAO_SEGURANCA.md`](docs/PLANO_AVALIACAO_SEGURANCA.md)                                 | Adoção futura de ZAP, WSTG e Nuclei                    |
+| [`docs/audits/`](docs/audits/)                                                                           | Auditorias de reprodutibilidade, design e dependências |
+| [`DESIGN.md`](DESIGN.md)                                                                                 | Sistema visual "Minimalismo escuro"                    |
+| [`PRODUCT.md`](PRODUCT.md)                                                                               | Visão de produto                                       |
+| [`specs/001-experiencia-publica-inicial/`](specs/001-experiencia-publica-inicial/)                       | Especificação, plano, tarefas, contratos e checklists  |
 
 ## Contribuição, conduta e segurança
 
-- 🤝 [**Como contribuir**](.github/CONTRIBUTING.md) — fluxo de trabalho, padrões e checklist de PR.
+- 🤝 [**Como contribuir**](CONTRIBUTING.md) — fluxo de pull request, proteção da `master` e padrões do
+  projeto.
 - 📜 [**Código de conduta**](.github/CODE_OF_CONDUCT.md) — expectativas de convivência no projeto.
 - 🔒 [**Política de segurança**](.github/SECURITY.md) — como relatar vulnerabilidades com
   responsabilidade.

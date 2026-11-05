@@ -5,7 +5,33 @@ updates:
     schedule:
       interval: weekly
     open-pull-requests-limit: 5
+    # Só propõe versões publicadas há pelo menos 7 dias: pacote comprometido
+    # costuma ser retirado do registry antes disso. Não atrasa atualizações de
+    # segurança, que o Dependabot abre fora deste bloco.
+    cooldown:
+      default-days: 7
+    # Um PR por grupo. Uma dependência entra no primeiro grupo que casar.
+    groups:
+      # react e react-dom exigem a mesma versão exata; separados, o CI quebra.
+      react:
+        patterns:
+          - react
+          - react-dom
+          - "@types/react"
+          - "@types/react-dom"
+      next:
+        patterns:
+          - next
+          - eslint-config-next
+      # Majors de desenvolvimento ficam fora do grupo: cada um pede revisão própria.
+      desenvolvimento:
+        dependency-type: development
+        update-types:
+          - minor
+          - patch
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: weekly
+    cooldown:
+      default-days: 7

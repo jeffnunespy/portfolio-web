@@ -103,8 +103,8 @@ export default function ResumePage() {
         <h2 id="resume-links">Contato e perfis</h2>
         <p>
           {podeContatar
-            ? "Contato por e-mail ou LinkedIn; código e atividade no GitHub."
-            : "Contato pelo LinkedIn; código e atividade no GitHub."}
+            ? "Contato por e-mail ou LinkedIn; perfil no GitHub."
+            : "Contato pelo LinkedIn; perfil no GitHub."}
         </p>
         {/*
           Os destinos que existem vêm primeiro; a ausência de e-mail fecha a

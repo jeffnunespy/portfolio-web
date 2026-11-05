@@ -402,6 +402,12 @@ Inspeção visual em 1280/390px e medições em 320/390/768/1280px, com texto a 
 sem overflow ou links cortados. Revisões de conteúdo e constituição sem bloqueadores.
 T055 permanece independente deste ajuste; não houve commit, push ou deploy.
 
+**Nota posterior — 2026-11-02 (Auditoria 03):** T106 foi concluída quando o repositório
+era público, e o registro acima continua válido para aquela data. Depois, o repositório
+passou a ser privado, e o proprietário decidiu mantê-lo assim: os sete destinos passaram a
+responder 404 a visitantes anônimos. O destino público de T106 foi superado por essa decisão
+de produto, e não por falha da tarefa. A correção está em T112.
+
 ---
 
 ## Phase 19: Clareza do ambiente Nana Silva
@@ -494,3 +500,15 @@ as alterações posteriores ainda precisam compor um candidato enviado ao GitHub
 leitor de tela real, aparelho físico e preview continuam pendentes, sem falsa aprovação.
 Tipos, lint, 46 unitários, build e 90 E2E de T110 não foram repetidos porque nenhum arquivo
 da aplicação mudou. Nenhum commit, push, dependência nova ou deploy foi executado.
+
+---
+
+## Phase 24: Repositório privado (Auditoria 03)
+
+- [ ] T112 [US1] [US2] Retirar do site os links para o repositório privado `jeffnunespy/portfolio-web` (decisão do proprietário: manter privado). Cartões e ficha da Plataforma declaram o código privado e oferecem o pedido de acesso por `mailto:`, sem o perfil do GitHub como substituto do código em "Fonte e verificação". As sete referências da home continuam como texto, sem link, e o currículo não promete código no GitHub. Adicionar guarda de regressão para links de repositório, cobrindo `github.com`, `www.github.com`, URLs relativas ao protocolo, links profundos e hosts de arquivos/pacote do repositório. Validar com e sem JavaScript, com testes negativos, axe e os gates do CI em Chromium, e repetir os testes afetados em Firefox (configuração local, fora do CI), per FR-008, FR-009, FR-009a, contrato de conteúdo publicado e Constituição I/V/X. Supera o destino público de T106
+
+**Registro parcial de T112 — 2026-11-02:** implementada e validada localmente numa candidata
+isolada (branch `fix/aud03-private-repository-links`, base `3704e4e`), com os resultados em
+`docs/ACTIVE_CONTEXT.md`. A tarefa continua aberta até a revisão independente, o commit e a
+verificação em preview autorizados pelo proprietário. Não houve commit, push, PR ou deploy.
+T055 e AUD03-001 continuam abertos.

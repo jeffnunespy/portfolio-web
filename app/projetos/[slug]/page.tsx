@@ -94,7 +94,13 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         aria-labelledby="visual-index-title"
       >
         <h2 id="visual-index-title">Apresentação e fontes</h2>
-        {projeto.slug !== "nana-silva" ? <ProjectImage src={projeto.imagemApresentacao} /> : null}
+        {projeto.slug !== "nana-silva" ? (
+          <ProjectImage
+            src={projeto.imagemApresentacao}
+            descriptionHref="#contexto"
+            descriptionLabel={`Ler descrição de ${projeto.titulo}`}
+          />
+        ) : null}
         <div className="project-detail__visual-index-sources">
           <p className="muted-label">Fonte e verificação</p>
           <EvidenceLink

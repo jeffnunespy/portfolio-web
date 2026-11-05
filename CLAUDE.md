@@ -35,7 +35,7 @@ npm run test:e2e -- -g "texto do teste"            # um teste
 
 ## Arquitetura
 
-Site Next.js 16 com pré-renderização (App Router, sem exportação estática para `out`) + React 19 + TypeScript, sobre Node.js `^24.15.0` (`engines.node`, com `engine-strict` em `.npmrc`; versão validada em `.nvmrc`), sem backend, sem banco e sem autenticação nesta fase. Publicado na Vercel; detalhes abaixo.
+Site Next.js 16 com pré-renderização (App Router, sem exportação estática para `out`) + React 19 + TypeScript, sobre Node.js `^24.22.1` (`engines.node`, piso de segurança com `engine-strict` em `.npmrc`; `.nvmrc` fixa 24.22.2), sem backend, sem banco e sem autenticação nesta fase. Publicado na Vercel; detalhes abaixo.
 
 **Conteúdo como fonte de dados.** Não há CMS nem API: todo o conteúdo vive em JSON versionado em `content/` — `profile.json` (perfil) e `content/projects/*.json` (um estudo de caso por arquivo). `lib/content.ts` lê esses arquivos com `fs` em tempo de build e é o único ponto de acesso ao conteúdo; `lib/types.ts` define os tipos correspondentes.
 

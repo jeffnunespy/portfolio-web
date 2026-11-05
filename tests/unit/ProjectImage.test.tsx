@@ -1,37 +1,57 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
+import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import ProjectImage from "../../components/project/ProjectImage";
 
+const description = { descriptionHref: "#contexto", descriptionLabel: "Ler descrição do projeto" };
+
 describe("ProjectImage", () => {
-  it("marca a imagem como decorativa, sem duplicar o título da ficha", () => {
-    const { container } = render(<ProjectImage src="/imagem.svg" />);
-
-    const img = container.querySelector("img");
-    expect(img).toHaveAttribute("alt", "");
-    // alt="" tira a imagem da árvore de acessibilidade: nenhum papel img exposto.
+  it("mantém somente a superfície decorativa fora da árvore acessível", () => {
+    const { container } = render(<ProjectImage src="/imagem.svg" {...description} />);
+    const surface = container.querySelector(".project-image__surface");
+    expect(surface).toHaveAttribute("aria-hidden", "true");
+    expect(surface).toHaveStyle({ backgroundImage: 'url("/imagem.svg")' });
+    expect(container.querySelector("img")).toBeNull();
     expect(screen.queryByRole("img")).toBeNull();
-  });
-
-  it("substitui uma imagem com falha por um estado visual sem ruído para leitor de tela", () => {
-    const { container } = render(<ProjectImage src="/imagem-indisponivel.svg" />);
-
-    const img = container.querySelector("img");
-    expect(img).not.toBeNull();
-    fireEvent.error(img!);
-
-    expect(screen.getByText("Imagem indisponível")).toBeInTheDocument();
-    expect(screen.getByText("Imagem indisponível").closest("div")).toHaveAttribute(
+    expect(screen.getByRole("link", { name: description.descriptionLabel })).toHaveAttribute(
+      "href",
+      "#contexto",
+    );
+    expect(screen.getByText(/Se a prévia não aparecer/).closest("figcaption")).not.toHaveAttribute(
       "aria-hidden",
-      "true",
     );
   });
 
-  it("tenta carregar novamente quando a origem da imagem muda", () => {
-    const { container, rerender } = render(<ProjectImage src="/primeira-imagem.svg" />);
+  it.each(["", "/imagem-inexistente.svg"])(
+    "preserva orientação e ação sem classificar %s como erro",
+    (src) => {
+      const { container } = render(<ProjectImage src={src} {...description} />);
+      expect(container.querySelector(".project-image__surface")).toBeInTheDocument();
+      expect(screen.getByText(/Se a prévia não aparecer/)).toBeInTheDocument();
+      expect(screen.getByRole("link")).toHaveAttribute("href", "#contexto");
+      expect(screen.queryByText("Imagem indisponível")).toBeNull();
+    },
+  );
 
-    fireEvent.error(container.querySelector("img")!);
-    rerender(<ProjectImage src="/segunda-imagem.svg" />);
+  it("atualiza A→B→A sem conservar falha de uma origem anterior", () => {
+    const { container, rerender } = render(<ProjectImage src="/a.svg" {...description} />);
+    rerender(<ProjectImage src="/b.svg" {...description} />);
+    expect(container.querySelector(".project-image__surface")).toHaveStyle({
+      backgroundImage: 'url("/b.svg")',
+    });
+    rerender(<ProjectImage src="/a.svg" {...description} />);
+    expect(container.querySelector(".project-image__surface")).toHaveStyle({
+      backgroundImage: 'url("/a.svg")',
+    });
+    expect(screen.queryByText("Imagem indisponível")).toBeNull();
+  });
 
-    expect(container.querySelector("img")).toHaveAttribute("src", "/segunda-imagem.svg");
+  it("entrega orientação e link no HTML do servidor, sem depender de evento ou script", () => {
+    const html = renderToStaticMarkup(<ProjectImage src="/imagem.svg" {...description} />);
+    const doc = new DOMParser().parseFromString(html, "text/html");
+    expect(doc.querySelector("figcaption")?.textContent).toContain("Se a prévia não aparecer");
+    expect(doc.querySelector("a")?.getAttribute("href")).toBe("#contexto");
+    expect(doc.querySelector("script")).toBeNull();
+    expect(doc.querySelector("img")).toBeNull();
   });
 });

@@ -5,8 +5,8 @@ estão em [data-model.md](./data-model.md) e as decisões técnicas em [research
 
 ## Pré-requisitos
 
-- Node.js `^24.15.0` (piso de `jsdom@30`; o Next.js 16 sozinho aceitaria 20.9.0), na versão de
-  `.nvmrc`
+- Node.js `^24.22.1` (piso de segurança do AUD02-E5-001), usando a versão de `.nvmrc`
+  (24.22.2, com npm 11.19.1). npm >=11.16.0 e a política estrita de scripts permanecem obrigatórios.
 - Conteúdo mínimo em `content/profile.json` e ao menos 1 arquivo em `content/projects/` válido
   conforme [data-model.md](./data-model.md)
 
@@ -40,7 +40,7 @@ npm run test:e2e
 
 Resultados esperados:
 
-- Node.js `^24.15.0` (versão de `.nvmrc`) e instalação reproduzível pelo lockfile;
+- Node.js `^24.22.1` (versão fixada de `.nvmrc`: 24.22.2) e instalação reproduzível pelo lockfile;
 - `next` e `eslint-config-next` em 16.3.1, `postcss >= 8.5.23` e `nanoid >= 3.3.18`;
 - zero vulnerabilidades críticas ou altas em dependências de produção;
 - zero erros de formatação, lint, tipos, unitários, build ou E2E;

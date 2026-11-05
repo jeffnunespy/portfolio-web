@@ -1,4 +1,4 @@
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { defineConfig, devices } from "@playwright/test";
 
 // Cada suíte (funcional, a11y ou completo, via E2E_GRUPO nos scripts) grava
@@ -27,14 +27,31 @@ const reutilizarServidor = !process.env.CI && process.env.E2E_REUTILIZAR_SERVIDO
 export default defineConfig({
   testDir: "./tests/e2e",
   outputDir: `test-results/${grupo}`,
+  // No CI o Playwright embute por padrão o diff do PR no relatório HTML, que é
+  // publicado como artefato do repositório. O diff já está no PR e
+  // manteria por toda a retenção qualquer conteúdo removido depois; o commit
+  // (hash, branch, links) continua no relatório.
+  captureGitInfo: { commit: true, diff: false },
+  // Liga o relatório ao build servido. Sem E2E_BUILD_EXISTENTE o build roda
+  // depois de carregar esta configuração, e o BUILD_ID ainda não existe.
+  metadata: usarBuildExistente ? { buildId: readFileSync(".next/BUILD_ID", "utf8").trim() } : {},
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
-  reporter: [["list"], ["html", { outputFolder: `playwright-report/${grupo}` }]],
+  // No CI, `github` anota falhas e testes instáveis (aprovados só na repetição)
+  // no resumo da execução: retry deixa de passar despercebido no check verde.
+  reporter: [
+    ["list"],
+    ...(process.env.CI ? [["github"] as const] : []),
+    ["html", { outputFolder: `playwright-report/${grupo}` }],
+  ],
   use: {
     baseURL: "http://localhost:3001",
-    trace: "on-first-retry",
+    // Grava a primeira tentativa e guarda o trace só se ela falhar: preserva a
+    // falha original de um teste instável e funciona também com --retries=0.
+    // "on-first-retry" guardava a repetição, que num instável costuma passar.
+    trace: "retain-on-first-failure",
   },
   projects: [
     {
