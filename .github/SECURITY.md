@@ -29,10 +29,8 @@ repositório.
 > [!WARNING]
 > **Não abra issues, discussões ou pull requests públicos** para relatar vulnerabilidades.
 
-1. **Preferencial:** use o relato privado do GitHub em
-   [**Security → Report a vulnerability**](https://github.com/jeffnunespy/portfolio-web/security/advisories/new).
-2. **Alternativa:** envie um e-mail para **jeffnunesxavier@gmail.com** com o assunto
-   `[SEGURANÇA] portfolio-web`.
+Envie um e-mail para **jeffnunesxavier@gmail.com** com o assunto
+`[SEGURANÇA] portfolio-web`.
 
 Inclua, sempre que possível:
 
