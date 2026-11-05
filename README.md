@@ -14,6 +14,7 @@ integração contínua — do requisito ao deploy.
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)
 ![WCAG 2.1 AA](https://img.shields.io/badge/WCAG-2.1_AA-ff9a6b)
 ![Vercel](https://img.shields.io/badge/deploy-Vercel-000000?logo=vercel&logoColor=white)
+[![Licença: MIT (código)](https://img.shields.io/badge/licen%C3%A7a-MIT_%28c%C3%B3digo%29-34403a)](LICENSE)
 
 [**🌐 Ver o site publicado**](https://portfolio-web-three-zeta.vercel.app) ·
 [Especificação](specs/001-experiencia-publica-inicial/spec.md) ·
@@ -44,6 +45,7 @@ integração contínua — do requisito ao deploy.
 - [Processo de desenvolvimento](#processo-de-desenvolvimento)
 - [Documentação](#documentação)
 - [Contribuição, conduta e segurança](#contribuição-conduta-e-segurança)
+- [Licença](#licença)
 
 ---
 
@@ -401,6 +403,12 @@ Na prática:
 - 📜 [**Código de conduta**](.github/CODE_OF_CONDUCT.md) — expectativas de convivência no projeto.
 - 🔒 [**Política de segurança**](.github/SECURITY.md) — como relatar vulnerabilidades com
   responsabilidade.
+
+## Licença
+
+O **código-fonte** está sob a [licença MIT](LICENSE). O **conteúdo pessoal** — `content/`,
+`public/curriculo.pdf` e `public/images/` — não está coberto por ela: permanece com todos os
+direitos reservados e não pode ser reutilizado sem autorização.
 
 ---
 
