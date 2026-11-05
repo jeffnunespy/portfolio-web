@@ -14,6 +14,11 @@ interface ProjectPageProps {
   }>;
 }
 
+// O catálogo é fechado e versionado: ficha nova exige novo build. Slug fora dele
+// vai direto à 404 genérica, cuja UI já vem no HTML (o `notFound()` dentro de
+// uma página dinâmica entrega um shell sem corpo, útil só com JavaScript).
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return getProjetosImplementados().map((projeto) => ({ slug: projeto.slug }));
 }

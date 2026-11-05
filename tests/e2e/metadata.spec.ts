@@ -49,8 +49,8 @@ const pages = [
   },
   {
     route: "/projetos/slug-inexistente",
-    title: /Projeto não encontrado/,
-    description: /projeto solicitado não está disponível/i,
+    title: /Página não encontrada/,
+    description: /página solicitada não está disponível/i,
   },
 ];
 

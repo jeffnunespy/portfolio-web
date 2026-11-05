@@ -22,6 +22,9 @@ export default function NotFound() {
           <Link className="button button--primary" href="/">
             Voltar para a página inicial
           </Link>
+          <Link className="button button--secondary" href="/projetos">
+            Ver todos os projetos
+          </Link>
         </div>
         <dl className="message-page__record">
           <div>
