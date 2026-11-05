@@ -58,3 +58,12 @@ após o audit técnico. A implementação segue a direção aprovada sem alterar
 conteúdo factual. O código remove efeitos topográficos, aplica a composição aberta, preserva
 rotas/PDF/evidências e acrescenta regressões de primeira dobra, zoom, toque e WCAG 2.1.
 O resultado dos gates e da revisão final fica em `ACTIVE_CONTEXT.md`; T055 permanece aberta.
+
+## Iniciativas futuras
+
+- **Adoção de ferramentas de avaliação de segurança (DAST e revisão manual)** —
+  planejada em 2026-10-31, com ZAP como ferramenta principal, OWASP WSTG como roteiro
+  e Nuclei como complemento opcional. Antes da implementação, formalizar a
+  especificação, o plano e as tarefas. Escopo, sequência e critérios propostos em
+  [PLANO_AVALIACAO_SEGURANCA.md](PLANO_AVALIACAO_SEGURANCA.md). Nenhuma integração ou
+  varredura foi executada por esta iniciativa; os gates vigentes permanecem os mesmos.
