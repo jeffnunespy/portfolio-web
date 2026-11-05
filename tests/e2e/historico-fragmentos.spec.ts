@@ -1,4 +1,4 @@
-import { test, expect, type Browser, type Page } from "@playwright/test";
+import { test, expect, type Browser, type Page, type Request } from "@playwright/test";
 
 // F1 (AUD03): depois de navegar por fragmento, Voltar/Avançar precisam manter
 // URL e conteúdo coerentes. Cada passo compara título, h1 e item atual da
@@ -186,6 +186,14 @@ async function observarA1(page: Page) {
   page.on("request", (requisicao) => {
     if (requisicao.headers()["rsc"]) requisicoesRsc.push(requisicao.url());
   });
+  // O router às vezes aborta a leitura do corpo da RSC já respondida: conta as
+  // requisições encerradas, com ou sem falha.
+  const rscEncerradas: string[] = [];
+  const encerrarRsc = (requisicao: Request) => {
+    if (requisicao.headers()["rsc"]) rscEncerradas.push(new URL(requisicao.url()).pathname);
+  };
+  page.on("requestfinished", encerrarRsc);
+  page.on("requestfailed", encerrarRsc);
   await page.exposeFunction("registrarHistoricoA1", (evento: unknown) => eventos.push(evento));
   await page.addInitScript(() => {
     const janela = window as unknown as Window & {
@@ -219,7 +227,8 @@ async function observarA1(page: Page) {
       contentType: "application/json",
     });
   };
-  return { documentos, documento, conferirEstabilidade, registrar };
+  const rscEncerradasDe = (rota: string) => rscEncerradas.filter((p) => p === rota).length;
+  return { documentos, documento, conferirEstabilidade, registrar, rscEncerradasDe };
 }
 
 for (const entrada of ["skip", "hash direto", "location.hash", "pré-hidratação"] as const) {
@@ -277,10 +286,19 @@ for (const entrada of ["skip", "hash direto", "location.hash", "pré-hidrataçã
       { tag: "MAIN", id: "main-content" },
       { tag: "BODY", id: "" },
     ]).toContainEqual(foco);
+    // Na 404 confirmada, o skip link também passa pelo F1: o popstate nulo faz o
+    // router pedir a RSC da própria rota, e o fallback do Next para a resposta
+    // 404 repete a navegação para o fragmento, que devolve o foco a `main`. O
+    // popstate dessa repetição pede a RSC mais uma vez e a cadeia para. Anterior
+    // ao A1, ela é assíncrona: o Tab só é verificável depois que termina.
+    const rscAntesDoSkip = observacao.rscEncerradasDe(rota);
     await pularParaConteudoFocado(page);
+    await expect.poll(() => observacao.rscEncerradasDe(rota) - rscAntesDoSkip).toBe(2);
     await page.keyboard.press("Tab");
-    await expect(page.getByRole("link", { name: "Voltar para a página inicial" })).toBeFocused();
+    const voltarParaInicio = page.getByRole("link", { name: "Voltar para a página inicial" });
+    await expect(voltarParaInicio).toBeFocused();
     await observacao.conferirEstabilidade();
+    await expect(voltarParaInicio).toBeFocused();
 
     await page.goForward();
     await expect(page).toHaveURL(/\/sobre$/);
