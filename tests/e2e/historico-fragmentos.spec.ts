@@ -1,4 +1,12 @@
 import { test, expect, type Browser, type Page, type Request } from "@playwright/test";
+import {
+  esperarHistoricoFragmentos,
+  observarHistoricoFragmentos,
+} from "./helpers/fragment-history";
+
+test.beforeEach(async ({ page }) => {
+  await observarHistoricoFragmentos(page);
+});
 
 // F1 (AUD03): depois de navegar por fragmento, Voltar/Avançar precisam manter
 // URL e conteúdo coerentes. Cada passo compara título, h1 e item atual da
@@ -56,6 +64,7 @@ async function hidratar(page: Page) {
       history.state !== null
     );
   });
+  await esperarHistoricoFragmentos(page);
 }
 
 async function abrir(page: Page, rota: string) {
@@ -251,10 +260,8 @@ for (const entrada of ["skip", "hash direto", "location.hash", "pré-hidrataçã
       }
     }
     await expect(page).toHaveURL((u) => u.pathname + u.hash === url);
-    // A guarda anterior não cobria hash direto/pré-hidratação, que já têm estado.
-    expect(await page.evaluate(() => history.state === null)).toBe(
-      entrada === "skip" || entrada === "location.hash",
-    );
+    // #45: o estado restaurado pelo Next pertence à 404 confirmada.
+    await expect.poll(() => page.evaluate(() => history.state !== null)).toBe(true);
     const inicial = await observacao.documento();
     const entradas = await page.evaluate(() => history.length);
     await observacao.conferirEstabilidade();
@@ -286,19 +293,15 @@ for (const entrada of ["skip", "hash direto", "location.hash", "pré-hidrataçã
       { tag: "MAIN", id: "main-content" },
       { tag: "BODY", id: "" },
     ]).toContainEqual(foco);
-    // Na 404 confirmada, o skip link também passa pelo F1: o popstate nulo faz o
-    // router pedir a RSC da própria rota, e o fallback do Next para a resposta
-    // 404 repete a navegação para o fragmento, que devolve o foco a `main`. O
-    // popstate dessa repetição pede a RSC mais uma vez e a cadeia para. Anterior
-    // ao A1, ela é assíncrona: o Tab só é verificável depois que termina.
+    // #45: restaurar a 404 confirmada não pede RSC nem repete o fragmento.
     const rscAntesDoSkip = observacao.rscEncerradasDe(rota);
     await pularParaConteudoFocado(page);
-    await expect.poll(() => observacao.rscEncerradasDe(rota) - rscAntesDoSkip).toBe(2);
     await page.keyboard.press("Tab");
     const voltarParaInicio = page.getByRole("link", { name: "Voltar para a página inicial" });
     await expect(voltarParaInicio).toBeFocused();
     await observacao.conferirEstabilidade();
     await expect(voltarParaInicio).toBeFocused();
+    expect(observacao.rscEncerradasDe(rota)).toBe(rscAntesDoSkip);
 
     await page.goForward();
     await expect(page).toHaveURL(/\/sobre$/);
@@ -312,6 +315,8 @@ for (const entrada of ["skip", "hash direto", "location.hash", "pré-hidrataçã
     await esperar404Generica(page, url);
     await navegar(page, "Projetos");
     await expect(page.locator("h1")).toHaveText("Projetos");
+    await expect(page).toHaveURL(/\/projetos$/);
+    await observacao.conferirEstabilidade();
     await page.goBack();
     await esperar404Generica(page, url);
     await observacao.conferirEstabilidade();
@@ -338,7 +343,7 @@ test("A1 - fragmentos na própria 404 são nativos e não recarregam", async ({ 
   await observacao.registrar();
 });
 
-// As entradas nativas da própria 404 permanecem nulas por contrato.
+// Verifica a UI sem depender do estado opaco que o Next grava ao restaurar.
 async function esperar404GenericaSemEstado(page: Page, url: string) {
   await expect(page).toHaveURL((u) => u.pathname + u.hash === url);
   await expect(page.locator("h1")).toHaveText("Página não encontrada");

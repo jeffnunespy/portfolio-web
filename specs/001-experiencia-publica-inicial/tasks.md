@@ -512,3 +512,5 @@ isolada (branch `fix/aud03-private-repository-links`, base `3704e4e`), com os re
 `docs/ACTIVE_CONTEXT.md`. A tarefa continua aberta até a revisão independente, o commit e a
 verificação em preview autorizados pelo proprietário. Não houve commit, push, PR ou deploy.
 T055 e AUD03-001 continuam abertos.
+
+- [ ] T113 [US1] Corrigir issue #45: preservar a progressão de foco após skip link na 404 hidratada sob latência RSC, mantendo cancelamento de navegação pendente (F1), recuperação A1 e HTML sem JS (PROD-001). Exigir controle negativo, testes de foco/histórico nos três motores e gates de risco 3; concluir somente após CI e homologação da candidata. Implementação local em investigação autorizada em 2026-11-05; evidências e próximos gates em `docs/ACTIVE_CONTEXT.md`.

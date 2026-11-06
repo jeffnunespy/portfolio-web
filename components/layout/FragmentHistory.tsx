@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { Suspense, useEffect, useLayoutEffect, useRef } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 /**
  * Mantém URL e conteúdo coerentes no Voltar/Avançar depois de navegar por
@@ -31,21 +31,32 @@ import { usePathname, useRouter } from "next/navigation";
  * o documento e o router fica suspenso. Só nesse retorno a uma 404 conhecida
  * exigimos uma recarga real, inclusive quando a entrada tem estado não nulo.
  */
-export default function FragmentHistory() {
+function GerenciarFragmentos() {
   const router = useRouter();
   const pathname = usePathname();
+  const parametros = useSearchParams();
   const rotas404 = useRef(new Set<string>());
-  const rotaConfirmada = useRef<{ pathname: string; generica404: boolean } | null>(null);
+  const rotaConfirmada = useRef<{
+    pathname: string;
+    search: string;
+    generica404: boolean;
+    estado: unknown;
+  } | null>(null);
 
   // Só classifica após o commit, não pela URL/árvore de uma transição pendente.
   // O marcador pertence à 404 genérica; a 404 de projeto não participa de A1.
   useLayoutEffect(() => {
     if (pathname === null) return;
     const generica404 = !!document.querySelector("main#main-content > [data-generic-not-found]");
-    rotaConfirmada.current = { pathname, generica404 };
+    rotaConfirmada.current = {
+      pathname,
+      search: window.location.search,
+      generica404,
+      estado: window.history.state,
+    };
     if (generica404) rotas404.current.add(pathname);
     else rotas404.current.delete(pathname);
-  }, [pathname]);
+  }, [pathname, parametros]);
 
   useEffect(() => {
     function aoNavegarNoHistorico(evento: PopStateEvent) {
@@ -67,6 +78,22 @@ export default function FragmentHistory() {
       // Na própria 404, mantém a F1: ela também cancela uma navegação pendente
       // se o visitante voltar entre fragmentos antes do commit de outra rota.
       if (evento.state !== null) return;
+      if (
+        atual?.pathname === destino &&
+        atual.search === window.location.search &&
+        atual.generica404 &&
+        atual.estado !== null
+      ) {
+        // Restaura a árvore da 404 já confirmada, inclusive para cancelar uma
+        // navegação pendente. Resolver a URL outra vez pede RSC 404 e o fallback
+        // MPA do Next repete o fragmento, roubando o foco após o Tab (#45).
+        // O estado é opaco e veio do commit, nunca da transição em andamento.
+        // Não reescreve a entrada nativa: o Next recebe apenas o evento de
+        // restauração que ignora quando o popstate original tem estado nulo.
+        evento.stopImmediatePropagation();
+        window.dispatchEvent(new PopStateEvent("popstate", { state: atual.estado }));
+        return;
+      }
       router.replace(window.location.href, { scroll: false });
     }
 
@@ -75,4 +102,12 @@ export default function FragmentHistory() {
   }, [router]);
 
   return null;
+}
+
+export default function FragmentHistory() {
+  return (
+    <Suspense fallback={null}>
+      <GerenciarFragmentos />
+    </Suspense>
+  );
 }
