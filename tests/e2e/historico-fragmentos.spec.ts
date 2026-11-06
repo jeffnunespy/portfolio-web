@@ -1,4 +1,12 @@
 import { test, expect, type Browser, type Page, type Request } from "@playwright/test";
+import {
+  esperarHistoricoFragmentos,
+  observarHistoricoFragmentos,
+} from "./helpers/fragment-history";
+
+test.beforeEach(async ({ page }) => {
+  await observarHistoricoFragmentos(page);
+});
 
 // F1 (AUD03): depois de navegar por fragmento, Voltar/Avançar precisam manter
 // URL e conteúdo coerentes. Cada passo compara título, h1 e item atual da
@@ -56,6 +64,7 @@ async function hidratar(page: Page) {
       history.state !== null
     );
   });
+  await esperarHistoricoFragmentos(page);
 }
 
 async function abrir(page: Page, rota: string) {
@@ -306,6 +315,8 @@ for (const entrada of ["skip", "hash direto", "location.hash", "pré-hidrataçã
     await esperar404Generica(page, url);
     await navegar(page, "Projetos");
     await expect(page.locator("h1")).toHaveText("Projetos");
+    await expect(page).toHaveURL(/\/projetos$/);
+    await observacao.conferirEstabilidade();
     await page.goBack();
     await esperar404Generica(page, url);
     await observacao.conferirEstabilidade();

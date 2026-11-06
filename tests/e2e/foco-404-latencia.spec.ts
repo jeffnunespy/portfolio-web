@@ -1,4 +1,12 @@
 import { test, expect } from "@playwright/test";
+import {
+  esperarHistoricoFragmentos,
+  observarHistoricoFragmentos,
+} from "./helpers/fragment-history";
+
+test.beforeEach(async ({ page }) => {
+  await observarHistoricoFragmentos(page);
+});
 
 for (const entrada of ["direta", "query direta", "query alterada"]) {
   test(`issue #45 - ${entrada}: Tab após skip da 404 preserva foco sob latência RSC`, async ({
@@ -24,6 +32,7 @@ for (const entrada of ["direta", "query direta", "query alterada"]) {
         Object.keys(marca).some((chave) => chave.startsWith("__reactFiber"))
       );
     });
+    await esperarHistoricoFragmentos(page);
     await page.waitForLoadState("networkidle");
     if (entrada === "query alterada") {
       await page.evaluate(() => history.pushState(null, "", "?q=2"));
@@ -92,6 +101,7 @@ test("issue #45 - skip da 404 cancela commit de Sobre suspenso", async ({ page }
     },
   );
   await page.goto("/rota-inexistente");
+  await esperarHistoricoFragmentos(page);
   await expect.poll(() => arvoreRecebida).toBe(true);
   await expect.poll(() => retidas).toBeGreaterThan(0);
   await page
@@ -115,6 +125,10 @@ test("issue #45 - skip da 404 cancela commit de Sobre suspenso", async ({ page }
   await page.goBack();
   await expect(page).toHaveURL(/\/rota-inexistente$/);
   await expect(page.locator("h1")).toHaveText("Página não encontrada");
+  // Voltar pode iniciar uma nova carga da 404 depois da navegação nativa.
+  // A fase seguinte verifica Avançar com o gerenciador novamente instalado.
+  await page.waitForLoadState("networkidle");
+  await esperarHistoricoFragmentos(page);
   await page.goForward();
   await expect(page).toHaveURL(/\/rota-inexistente#main-content$/);
   await expect(page.locator("h1")).toHaveText("Página não encontrada");
