@@ -25,5 +25,5 @@ Atualizado em 2026-11-03, sobre a `master` em `cafc77e`.
 | PROD-001    | Aberta. Definida nas evidências da Auditoria 03, ainda não versionadas                                                                                        |
 | F5          | Aberta: riscos residuais do fallback da F4 (fundo CSS sem lazy nativo, alto contraste, rasterização, impressão); alcance do aceite a confirmar                |
 | SECURITY.md | Aberta: `.github/SECURITY.md` aponta para os advisories de um repositório privado                                                                             |
-| R05         | Limitação funcional conhecida: `:target`, foco e rolagem por fragmento em Firefox/WebKit ([`PROCESSO.md`](PROCESSO.md), seção 8)                              |
+| R05         | Limitação funcional conhecida: `:target`, foco e rolagem por fragmento em Firefox/WebKit ([`PROCESSO.md`, §8](PROCESSO.md#8-limites-conhecidos-da-suíte))     |
 | Ruleset     | Verificar: a API de rulesets responde 403 com o repositório privado no plano gratuito; a proteção descrita no `CONTRIBUTING.md` pode não estar sendo aplicada |

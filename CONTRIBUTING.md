@@ -23,8 +23,9 @@ As demais branches não têm regras.
 1. Atualize a referência: `git fetch origin`.
 2. Crie a branch a partir dela: `git switch -c <tipo>/<descricao> origin/master`.
 3. Implemente a alteração.
-4. Rode as verificações do [README](README.md#verificações) relevantes ao que mudou; antes de
-   abrir o PR, o conjunto completo.
+4. Classifique o risco e execute as verificações locais pertinentes ao diff, conforme
+   [PROCESSO](docs/audits/PROCESSO.md). Reutilize evidências válidas; não duplique localmente
+   todo o CI por rotina. O `quality` completo continua obrigatório no novo head.
 5. Faça o commit.
 6. Envie a branch: `git push -u origin <branch>`.
 7. Abra o pull request para `master`.
@@ -34,11 +35,24 @@ As demais branches não têm regras.
    PR com conflito não recebe o check até o conflito ser resolvido.
 9. Confira o resultado do `quality` e, em caso de falha, os artefatos `e2e-funcional` e `e2e-a11y`.
 10. Revise o diff do PR.
-11. Faça o merge somente quando o GitHub indicar que as regras foram atendidas.
+11. Faça o merge somente com autorização específica para o PR e SHA final e quando o
+    GitHub indicar que as regras foram atendidas.
 
 Como a `master` pode avançar sem que o PR seja atualizado, o CI do evento `push` na `master`
 valida de novo o resultado combinado depois do merge. Nível de risco, revisão e evidências de
 cada PR seguem [`docs/audits/PROCESSO.md`](docs/audits/PROCESSO.md).
+
+O PR é o registro principal: vincule a tarefa, os resultados e as decisões, sem criar
+relatórios por rodada. Revisão independente é obrigatória nos níveis 2/3, adversarial no 3.
+A homologação cobre os fluxos afetados e suas integrações; amplie somente por impacto
+demonstrado, conforme o [processo](docs/audits/PROCESSO.md). Na dúvida, use o nível
+de risco superior e preserve a classificação até revisão fundamentada.
+
+É possível autorizar em conjunto commit, push e atualização do PR, vinculando a autorização
+à branch e ao conjunto exato de arquivos ou patch-id. Não repita pedidos dentro desse escopo.
+Alterações materiais fora dele exigem nova aprovação. Force-push, reescrita de histórico,
+marcar PR como pronto e auto-merge exigem autorização explícita própria. Merge requer sempre
+autorização específica para o PR e o SHA final. Deploy não é implícito.
 
 ## Falhas no CI
 
@@ -102,7 +116,8 @@ O repositório é **dirigido por especificação**. A ordem de precedência é
 > uma issue descrevendo a divergência antes de escrever código.
 
 Toda alteração parte de uma tarefa em `tasks.md`, marcada como concluída só depois de validada.
-Quando o estado da feature avançar, atualize [`docs/ACTIVE_CONTEXT.md`](docs/ACTIVE_CONTEXT.md).
+Quando mudar o estado relevante da feature/operação, atualize
+[`docs/ACTIVE_CONTEXT.md`](docs/ACTIVE_CONTEXT.md) com um resumo e link ao PR, sem copiar a auditoria.
 Ao participar, você concorda em seguir o [Código de conduta](.github/CODE_OF_CONDUCT.md).
 
 | Tipo                  | Como proceder                                                                    |
@@ -141,7 +156,7 @@ interfaces e propriedades seguem o vocabulário existente (`Projeto`, `PerfilPro
 
 ### Acessibilidade
 
-O alvo é **WCAG 2.1 AA**. Além do axe, confira manualmente a navegação completa por teclado com
+O alvo é **WCAG 2.1 AA**. Nos fluxos afetados, além do axe, confira manualmente a navegação por teclado com
 foco visível, a hierarquia de cabeçalhos, textos de link que façam sentido fora de contexto,
 alternativas textuais significativas, o modo de cores forçadas e a largura de 390 px sem rolagem
 horizontal.
@@ -172,8 +187,9 @@ docs: registrar evidências do preview
 chore(deps): atualizar dependências de teste
 ```
 
-A descrição do PR segue o [modelo](.github/pull_request_template.md): problema, escopo, risco,
-testes, evidências, ressalvas, parecer e gates de merge.
+Use o [modelo de PR](.github/pull_request_template.md) para registrar a mudança, o risco,
+as evidências, as ressalvas e a decisão. Vincule os resultados do CI e mantenha a decisão
+no PR até a validação pós-merge, conforme o [processo de auditoria](docs/audits/PROCESSO.md).
 
 ## Uso de inteligência artificial
 
