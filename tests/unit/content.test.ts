@@ -140,6 +140,46 @@ describe("lib/content", () => {
       mockedReaddirSync.mockReset();
     });
 
+    describe("AUD03-003: recursos públicos devem ser arquivos regulares", () => {
+      it.each(["imagemApresentacao", "linkCurriculo"] as const)(
+        "%s recusa diretório, ausência e escape; aceita arquivo regular",
+        async (field) => {
+          for (const [value, error] of [
+            ["/images/projects", /arquivo regular/],
+            ["/recurso-inexistente.pdf", /arquivo referenciado/],
+            ["/../package.json", /arquivo referenciado/],
+            [
+              field === "linkCurriculo"
+                ? "/curriculo.pdf"
+                : "/images/projects/plataforma-portfolio.svg",
+              null,
+            ],
+          ] as const) {
+            mockFileSystem(buildPerfil(field === "linkCurriculo" ? { linkCurriculo: value } : {}), {
+              "projeto.json": buildProjeto(
+                field === "imagemApresentacao" ? { imagemApresentacao: value } : {},
+              ),
+            });
+            vi.resetModules();
+            const { getPerfil, getProjetos } = await import("../../lib/content");
+            const read = field === "linkCurriculo" ? getPerfil : getProjetos;
+            if (error) expect(read).toThrow(error);
+            else expect(read).not.toThrow();
+          }
+        },
+      );
+
+      it("identifica campo e JSON quando o filesystem não permite verificar o arquivo", async () => {
+        mockFileSystem(buildPerfil(), { "projeto.json": buildProjeto() });
+        vi.spyOn(fs, "statSync").mockImplementation(() => {
+          throw Object.assign(new Error("sem acesso"), { code: "EACCES" });
+        });
+        vi.resetModules();
+        const { getProjetos } = await import("../../lib/content");
+        expect(getProjetos).toThrow(/não foi possível verificar.*imagemApresentacao.*projeto.json/);
+      });
+    });
+
     it("getProjetos lança erro quando um campo obrigatório está ausente", async () => {
       const perfil = buildPerfil();
       const projetoInvalido = buildProjeto();

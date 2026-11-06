@@ -1,5 +1,34 @@
 # Estado das auditorias
 
+## Reconciliação — 2026-11-06
+
+Este quadro supera os estados históricos abaixo; não representa nova auditoria.
+Roteiro: inventário original AUD03 de 30/10 e consolidação de 31/10
+(`portfolio-auditoria03-consolidacao-20261031T012051Z/relatorio-consolidado.md`).
+Consulta GitHub: master `96a810f6c8137d8254cef20cf1266bf97d208346`.
+
+| Frente            | Estado vigente / próxima ação                                                                                                                                                                                                                                                       |
+| ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| AUD03-001/F4      | [#36](https://github.com/jeffnunespy/portfolio-web/pull/36) integrado; não repetir correção ou validações concluídas.                                                                                                                                                               |
+| T112              | [#40](https://github.com/jeffnunespy/portfolio-web/pull/40) integrado; implementação entregue. Registro histórico em tasks.md ainda não comprova todos os gates hospedados para encerramento formal; reconciliar evidência existente, sem refazer testes.                           |
+| F1 / A1           | [#41](https://github.com/jeffnunespy/portfolio-web/pull/41) e [#44](https://github.com/jeffnunespy/portfolio-web/pull/44) integrados; ressalvas preservadas.                                                                                                                        |
+| PROD-001          | Encerrado tecnicamente: [#46](https://github.com/jeffnunespy/portfolio-web/pull/46), merge `0d69203`; CI 42122200149 e homologação Production nos três motores registrados no relatório 06 do pacote permanente `auditorias/portfolio-web/aud03/prod-001/relatorios/`. Não reabrir. |
+| #45/T113          | [#47](https://github.com/jeffnunespy/portfolio-web/pull/47) integrado; #45 encerrada após CI/smoke pós-merge.                                                                                                                                                                       |
+| AUD04             | [#50](https://github.com/jeffnunespy/portfolio-web/pull/50) concluído, CI e homologação pós-merge registrados. AUD05 não definida; não iniciar.                                                                                                                                     |
+| AUD03-003         | Próxima correção do roteiro: rejeitar diretório como imagem/PDF. Preparada em `fix/aud03-003-arquivos-regulares`; pendente de integração e gates do futuro head.                                                                                                                    |
+| AUD03-004         | Aberta: efetivar PDF obrigatório no tipo/gate/testes. Formalizar decisão antes de implementar, conforme consolidação original.                                                                                                                                                      |
+| AUD03-002 / 005   | Abertas: aviso de repositório ausente com demo / indicação completa de disponibilidade no cartão privado.                                                                                                                                                                           |
+| SECURITY.md       | Premissa histórica superada: API atual informa visibility=public. Confirmar relato privado habilitado e acessível antes de encerrar; não trocar canal sem essa confirmação.                                                                                                         |
+| F5                | Riscos residuais aceitos no alcance do #36; acompanhamento aberto, não correção pendente automática. Reavaliar alto contraste quando disponível e impressão/lazy/rasterização nos gatilhos registrados no PR.                                                                       |
+| T055              | Inspeções humanas restantes em acompanhamento, conforme aceites do #36; revisão até 04/12/2026 ou mudança relevante. Automação não encerra a tarefa.                                                                                                                                |
+| R05 / #49         | Acompanhamentos independentes. #49 aberta com responsável @jeffnunespy: A/C/B-skip/L e History API separado. Coleta B encerrada; reabrir somente por fato discriminante novo. R05 não abrange automaticamente Chromium hospedado.                                                   |
+| Conteúdo residual | “Auditável” no perfil/PRODUCT, fallback do Footer e texto de formato inválido seguem para disposição editorial separada.                                                                                                                                                            |
+
+AUD03 continua aberta pelos achados restantes, sem impedir preparação da correção
+independente AUD03-003. Nenhum aceite anterior equivale a autorização de novo merge.
+
+## Histórico (superado onde divergir do quadro acima)
+
 Registro único do estado de cada auditoria e pendência. O detalhe fica no relatório ou no PR
 indicado; aqui só entram estado, onde está a evidência e o que falta. Estados seguem
 [`PROCESSO.md`](PROCESSO.md); uma auditoria só é encerrada com evidência registrada.
