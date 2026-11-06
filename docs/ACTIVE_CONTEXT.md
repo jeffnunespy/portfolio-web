@@ -634,3 +634,38 @@ verificação registrada abaixo:
 
 1. Executar e registrar as inspeções humanas de T055, incluindo leitor de tela real.
 2. Validar esta versão em preview/canário e confirmar o CI no commit candidato antes da promoção.
+
+## Issue #45 / T113 — candidata local, 2026-11-05
+
+Checkout isolado `/tmp/portfolio-aud03-issue45`, branch `fix/aud03-issue45-foco-404`,
+base `0d69203e5553578c252714baed7d1e924ba685dd`; original preservado. Node 24.22.2,
+npm 11.19.1; build final `vWAfVpwA-JSTU70gsfHu5`, origem `https://portfolio.example`.
+Risco 3, conforme o PROCESSO atual consultado no checkout original.
+
+Reprodução confirmada em 4/4 tentativas: RSC 404 retida por 300–301 ms, Tab após
+150 ms; foco no link de retorno antes da resposta e em `main` depois. URL continuou
+`/rota-inexistente#main-content`, histórico passou de 2 para 3 entradas, H1/título
+permaneceram corretos. `popstate` nulo provoca `router.replace`; o fallback MPA do
+App Router repete o fragmento e desloca o foco. Controle negativo falhou 3/3 vezes.
+
+`FragmentHistory` agora entrega ao App Router um evento de restauração com o estado
+opaco do commit da própria 404, sem resolver novamente a URL. Mantém cancelamento de
+transições pendentes; acompanha também queries confirmadas com Suspense local.
+Teste novo cobre latência, queries e commit suspenso; A1 verifica ausência das RSC
+redundantes sem sincronizar o Tab com elas. Sem dependências novas.
+
+Validação: formatação, lint, tipos, 122 unitários, build, auditoria npm de produção
+(zero vulnerabilidades), 81 E2E dirigidos nos três motores e 233 E2E Chromium da
+configuração oficial aprovados, sem retries. Revisão adversarial independente
+`review_issue45`: cinco sondas aprovadas, sem bloqueadores técnicos demonstrados.
+F1, A1 e PROD-001 preservados nos cenários executados. Uma execução geral temporária
+na porta 3003 foi interrompida por incompatibilidade com helpers fixados em 3001;
+a execução oficial posterior passou integralmente.
+
+Evidências locais em `/tmp/issue45-evidence/` (identidade, comandos, logs e sondas),
+relatórios Playwright em `playwright-report/issue45-oficial/` e
+`playwright-report/issue45-final-motores/`. T113 continua aberta: CI do head candidato
+e homologação de Preview ainda pendentes. Revalidar a restauração ao atualizar Next;
+leitor de tela real/T055 não foram aprovados nesta sessão. Próxima ação: preparar
+o candidato para PR/CI e obter autorização específica antes de qualquer deploy ou
+merge. Nenhum commit, push, merge ou deploy executado.
