@@ -8,7 +8,7 @@ import BuildEvidence from "../components/home/BuildEvidence";
 export function generateMetadata(): Metadata {
   const perfil = getPerfil();
   return {
-    title: { absolute: perfil.tituloPosicionamento },
+    title: { absolute: `${perfil.nome} — ${perfil.tituloPosicionamento}` },
     description: perfil.descricaoPosicionamento,
     alternates: { canonical: "/" },
   };
