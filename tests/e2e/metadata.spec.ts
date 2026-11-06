@@ -6,7 +6,7 @@ import { SITE_URL } from "../../lib/site";
 
 const perfil = JSON.parse(
   readFileSync(path.join(process.cwd(), "content", "profile.json"), "utf8"),
-) as { tituloPosicionamento: string; descricaoPosicionamento: string };
+) as { nome: string; tituloPosicionamento: string; descricaoPosicionamento: string };
 
 // Escapa o texto do perfil para uso literal em expressão regular.
 const literal = (value: string) => new RegExp(value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
@@ -14,7 +14,7 @@ const literal = (value: string) => new RegExp(value.replace(/[.*+?^${}()|[\]\\]/
 const pages = [
   {
     route: "/",
-    title: literal(perfil.tituloPosicionamento),
+    title: literal(`${perfil.nome} — ${perfil.tituloPosicionamento}`),
     description: literal(perfil.descricaoPosicionamento),
   },
   {
@@ -78,8 +78,7 @@ const indexaveis = [
     route: `/projetos/${projeto.slug}`,
     ogImage: true,
   })),
-  // /roadmap ainda não tem imagem Open Graph própria; fica para a auditoria de SEO.
-  { route: "/roadmap", ogImage: false },
+  { route: "/roadmap", ogImage: true },
   { route: "/sobre", ogImage: true },
   { route: "/curriculo", ogImage: true },
 ];
@@ -93,6 +92,16 @@ for (const { route, ogImage } of indexaveis) {
     const ogUrl = await page.locator('meta[property="og:url"]').getAttribute("content");
     expect(ogUrl?.replace(/\/$/, "")).toBe(absoluta(route));
 
+    // Cada compartilhamento deve identificar a rota, sem herdar a chamada da home.
+    for (const campo of ["title", "description"]) {
+      const og = await page.locator(`meta[property="og:${campo}"]`).getAttribute("content");
+      await expect(page.locator(`meta[name="twitter:${campo}"]`)).toHaveAttribute("content", og!);
+    }
+    await expect(page.locator('meta[name="twitter:card"]')).toHaveAttribute(
+      "content",
+      "summary_large_image",
+    );
+
     if (ogImage) {
       const imagem = await page
         .locator('meta[property="og:image"]')
@@ -100,6 +109,14 @@ for (const { route, ogImage } of indexaveis) {
         .getAttribute("content");
       const url = new URL(imagem!);
       expect(url.origin).toBe(new URL(SITE_URL).origin);
+      await expect(page.locator('meta[name="twitter:image"]')).toHaveAttribute("content", imagem!);
+      if (route === "/roadmap") {
+        expect(url.pathname).toBe("/roadmap/opengraph-image");
+        await expect(page.locator('meta[property="og:image:alt"]')).toHaveAttribute(
+          "content",
+          /escopo planejado/,
+        );
+      }
       const resposta = await page.request.get(url.pathname + url.search);
       expect(resposta.ok()).toBe(true);
       expect(resposta.headers()["content-type"]).toContain("image/png");

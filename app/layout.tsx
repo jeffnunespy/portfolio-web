@@ -20,7 +20,7 @@ export function generateMetadata(): Metadata {
   return {
     metadataBase: new URL(SITE_URL),
     title: {
-      default: perfil.tituloPosicionamento,
+      default: `${perfil.nome} — ${perfil.tituloPosicionamento}`,
       template: `%s | ${SITE_NAME}`,
     },
     description: perfil.descricaoPosicionamento,
@@ -30,13 +30,12 @@ export function generateMetadata(): Metadata {
       locale: SITE_LOCALE,
       siteName: SITE_NAME,
       url: "/",
-      title: perfil.tituloPosicionamento,
+      title: `${perfil.nome} — ${perfil.tituloPosicionamento}`,
       description: perfil.descricaoPosicionamento,
     },
     twitter: {
       card: "summary_large_image",
-      title: perfil.tituloPosicionamento,
-      description: perfil.descricaoPosicionamento,
+      // Título e descrição vêm do Open Graph resolvido para cada rota.
     },
   };
 }
