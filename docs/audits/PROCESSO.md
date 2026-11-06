@@ -1,112 +1,187 @@
-# Processo de auditoria e integração
+# Processo de desenvolvimento, auditoria e integração
 
-Validação proporcional ao risco, com evidência reaproveitada quando continua válida. A
-constituição (`.specify/memory/constitution.md`) e a spec da feature prevalecem sobre este
-documento. O fluxo de branch, PR e CI está em [`CONTRIBUTING.md`](../../CONTRIBUTING.md); o
-estado das auditorias, em [`STATUS.md`](STATUS.md).
+## 1. Um registro e um fluxo
 
-## 1. Classificação de risco
+O PR é o registro principal da correção: problema/critério de aceite, escopo,
+risco, evidências, ressalvas e decisão. Use o [template](../../.github/pull_request_template.md)
+com uma linha por seção quando suficiente. Não criar relatório por rodada, parecer
+em vários arquivos ou cópias de logs já acessíveis. Auditoria transversal pode ter
+um registro próprio somente quando o PR não comportar seu escopo, com justificativa.
 
-O nível é dado pelo impacto potencial da alteração, não pelo tamanho do diff. Na dúvida, use o
-nível acima. O nível declarado no PR vale até que uma revisão o conteste; um PR que mistura
-alterações assume o nível da mais arriscada.
+1. Inspecionar estado do Git, spec/plano/tarefa e consumidores do trecho afetado.
+2. Classificar risco, definir critérios e selecionar verificações pertinentes.
+3. Implementar e validar o diff; reutilizar resultados válidos (§4).
+4. Registrar no PR resultados, revisão exigida e pendências. Uma atualização
+   substitui o estado vigente; histórico fica na conversa e no Git.
+5. Após autorização, commit/push; exigir CI do novo head e homologação pertinente.
+6. Autorizar merge separadamente; verificar o resultado integrado (§7).
 
-| Nível            | Alcance                                                                                                                                                                             | Exemplos neste repositório                                                                                                                                                                      |
-| ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **1 — baixo**    | Documentação, texto editorial e ajuste visual isolado, sem mudar estrutura, foco, semântica ou dados                                                                                | `docs/`, README, cópia em `content/` sem campo novo, cor ou espaçamento numa única regra CSS                                                                                                    |
-| **2 — moderado** | Componentes, funcionalidades, comportamento acessível, schema de conteúdo, dependências sem major                                                                                   | `components/`, rotas em `app/`, `lib/content.ts`, foco/teclado/ARIA, PRs de minor/patch do Dependabot                                                                                           |
-| **3 — alto**     | Segurança relevante, autenticação, concorrência, navegação crítica, arquitetura ou infraestrutura sensível. Inclui o que pode enfraquecer um gate ou mudar o que chega a Production | headers e CSP (`next.config.js`), histórico e fragmentos (`FragmentHistory`), workflows e permissões do Actions, configuração do Playwright, Node, majors de Next/React, configuração da Vercel |
+`STATUS.md` serve de índice, não de cópia do PR. `ACTIVE_CONTEXT.md` recebe apenas
+mudanças relevantes do estado da feature/operação e links. Tarefas só são encerradas
+quando seus critérios forem atendidos; uma aprovação parcial não encerra a feature.
 
-## 2. Gates por nível
+## 2. Risco e gates proporcionais
 
-| Gate                                               | Nível 1                  | Nível 2                         | Nível 3                                                                 |
-| -------------------------------------------------- | ------------------------ | ------------------------------- | ----------------------------------------------------------------------- |
-| Check `quality` verde no head do PR                | Obrigatório              | Obrigatório                     | Obrigatório                                                             |
-| Testes pertinentes locais (skill `verify-changed`) | Obrigatório              | Obrigatório                     | Obrigatório                                                             |
-| Teste novo ou ajustado que cubra a mudança         | Se houver comportamento  | Obrigatório                     | Obrigatório, com controle negativo: o teste falha sem a correção        |
-| Revisão independente                               | Opcional                 | Obrigatória                     | Obrigatória e adversarial                                               |
-| Preview                                            | Rota afetada, se visível | Homologação das rotas afetadas  | Homologação aprofundada dos fluxos de risco, com identidade do artefato |
-| Outros motores (Firefox/WebKit)                    | —                        | Quando o risco for de navegador | Obrigatório para navegação, foco e histórico                            |
-| Autorização expressa do proprietário               | Obrigatória              | Obrigatória                     | Obrigatória                                                             |
+Classificar pelo impacto potencial, não pela quantidade de linhas. Mudanças que
+possam enfraquecer gates, inclusive governança, são nível 3. PR misto assume
+o maior nível. Na dúvida, utilizar o nível superior. Preservar a classificação
+até revisão fundamentada, registrada no PR; um incremento só de testes/docs não
+rebaixa o risco dos demais trechos do PR.
 
-O CI cobre só Chromium; outros motores rodam localmente com configuração própria registrada
-nas evidências. Para mudanças de CI ou de configuração de testes, a homologação é observar os
-gatilhos e os checks no GitHub depois de abrir o PR: teste local não reproduz o Actions.
+| Gate                       | 1 — baixo                                                       | 2 — moderado                                                              | 3 — alto                                                                              |
+| -------------------------- | --------------------------------------------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| Exemplos                   | Docs editoriais, texto, visual isolado sem semântica/foco/dados | Componentes, schema, comportamento acessível, minor/patch de dependências | Segurança, concorrência, histórico, infraestrutura, CI/gates, Node, majors Next/React |
+| `quality` completo no head | Obrigatório                                                     | Obrigatório                                                               | Obrigatório                                                                           |
+| Verificação local          | Formato, links e diff; teste se houver comportamento            | Lint/tipos/testes dos caminhos afetados                                   | Verificações dos fluxos críticos e integrações afetadas                               |
+| Regressão automatizada     | Quando houver comportamento                                     | Obrigatória quando aplicável                                              | Obrigatória para comportamento; correção exige controle negativo pertinente           |
+| Revisão independente       | Opcional                                                        | Obrigatória                                                               | Obrigatória e adversarial                                                             |
+| Preview                    | Se houver efeito visível                                        | Rotas/fluxos afetados                                                     | Homologação aprofundada dos fluxos de risco afetados, com identidade                  |
+| Firefox/WebKit             | Se o impacto justificar                                         | Quando o risco depender do navegador                                      | Obrigatórios quando afetar navegação, foco ou histórico                               |
 
-## 3. Revisão independente
+Mudança puramente documental de governança não exige teste artificial nem controle
+negativo de aplicação: a revisão adversarial examina perda de controles e coerência.
+Não é necessário criar uma nova regressão para cada ajuste que já tenha cobertura
+adequada; referenciar o teste e justificar no PR.
 
-Feita por quem não produziu o patch: outra pessoa, ou um agente em sessão separada, que recebe o
-PR e o diff, não o raciocínio do autor. Revisão adversarial (nível 3) tenta quebrar a
-alteração: escreve controles negativos, explora concorrência, temporização e entradas fora do
-padrão, e mostra o caminho de falha de cada achado.
+O CI continua com auditoria de produção, formato, lint, tipos, unitários, build,
+E2E funcional e a11y; nenhum passo ou proteção da master é alterado por este processo.
+Localmente, rodar o que discrimina a mudança. Não repetir o pipeline inteiro antes
+e depois de cada commit. Falha conhecida relevante deve ser tratada, não ignorada.
 
-Severidade dos achados:
+Homologação é direcionada, inclusive no nível 3. Ampliar para toda a aplicação
+quando houver impacto global, incluindo, quando aplicável, CSP e headers HTTP,
+configuração da Vercel, workflows e CI/CD, runtime Node, atualizações major do
+Next.js ou React e navegação compartilhada. Avaliar o alcance real e justificar
+no PR; manter homologação direcionada quando o impacto for efetivamente localizado.
+Mudança de CI exige observar gatilhos/checks reais no GitHub, não simular aprovação localmente.
 
-- **P0** — quebra segurança, dados ou o site em Production;
-- **P1** — defeito confirmado num fluxo importante ou gate que deixa de proteger;
-- **P2** — defeito com contorno, cobertura insuficiente ou ressalva relevante;
-- **P3** — melhoria, clareza, documentação.
+Manter WCAG 2.1 AA: axe nas rotas afetadas e avaliação humana pertinente de teclado,
+foco, semântica, contraste, cores forçadas e responsividade. Quando o critério exigir
+leitor real, automação não o substitui. T055 mantém seus critérios gerais; não é
+reexecutada inteira a cada correção isolada nem encerrada por aprovação automatizada.
 
-O parecer vai para o PR (seção "Parecer" do template) com nível revisado, achados por
-severidade e o head avaliado.
+## 3. Revisão, defeitos e bloqueios
 
-## 4. Reutilização de evidências
+Revisor independente não produziu o patch: outra pessoa ou agente em sessão separada.
+O revisor deve receber PR, diff, requisitos e evidências acessíveis, sem depender
+da interpretação do autor. Identificar o head avaliado no parecer. Alteração
+posterior em código coberto exige revisão independente do delta afetado; preservar
+o parecer das partes equivalentes conforme §4. No nível 3, explorar
+controles negativos, concorrência e entradas pertinentes, sem repetir sondas concluídas.
+Registrar revisor, escopo/head, achados e parecer no PR; não encadear auditores por rotina.
 
-Uma evidência pode ser reaproveitada sem reexecução quando tudo abaixo continua igual:
+Severidades: P0 compromete segurança/dados/site em Production; P1 quebra fluxo
+importante ou gate; P2 é limitação relevante com contorno/cobertura insuficiente;
+P3 é melhoria. Separar severidade, causalidade e etapa bloqueada.
 
-- o código avaliado: mesmo commit, ou mesmo diff comprovado por `git patch-id --stable`;
-- o `package-lock.json` e a versão do Node (`.nvmrc`);
-- a origem `NEXT_PUBLIC_SITE_URL` usada no build e nos E2E;
-- o registro: execução do Actions, log ou relatório com data, SHA e `BUILD_ID`.
+Merge bloqueado por `quality` ausente/pendente/vermelho no head atual, teste removido,
+pulado ou afrouxado sem justificativa/validação, flaky novo na área de risco ou gate
+não cumprido/dispensado expressamente. `quality` e proteção da master não são dispensáveis.
+P0/P1 confirmado exige correção ou decisão formal do proprietário no PR com risco,
+justificativa e acompanhamento; o agente não concede aceite. Risco indeterminado
+com potencial impacto P0/P1 recebe o mesmo tratamento conservador, mantendo
+bloqueada a etapa potencialmente afetada até decisão expressa do proprietário.
 
-O resumo de cada execução do CI registra evento, commit, head e base do PR e `BUILD_ID`. Cite
-esse resumo em vez de copiar contagens.
+Preexistência exige evidência comparável e não implica aceite. Separar regressão,
+defeito preexistente e causa indeterminada. Um achado independente pode seguir em
+issue própria, mas qualquer gate afetado ainda requer resultado ou dispensa expressa.
+Aceite deve nomear impacto, incertezas, evidência, responsável/próxima ação e etapa
+que libera (atualização do PR, homologação ou merge). Não aceitar toda uma auditoria.
 
-Rebase ou merge da `master` sem conflito e com `patch-id` igual preserva a revisão
-independente; o CI roda de novo sozinho. Qualquer alteração em arquivo coberto, conflito
-resolvido à mão, atualização de dependência ou mudança de Next/React invalida a evidência
-afetada. Uma reexecução local só substitui o CI quando o CI não pode rodar, e o motivo fica
-registrado.
+## 4. Evidência mínima, reutilização e retenção
 
-## 5. Critérios de bloqueio
+No PR, vincular CI e registrar comando/cenário, resultado, data e versão avaliada.
+Para build/Preview, incluir SHA, BUILD_ID e origem; para dependência de navegador,
+versão/motor. Para inspeção humana, pessoa, ambiente e observações reais. Não inventar
+resultado nem apresentar repetição positiva como apagamento de falha anterior.
 
-O merge fica bloqueado enquanto houver:
+Reutilizar somente quando a equivalência técnica estiver demonstrada. Identificar
+no PR os arquivos efetivamente cobertos, incluindo código, configuração de testes
+e imports relevantes, além de dependências/runtime e ambiente. Comprovar equivalência
+por hashes desses arquivos ou comparação de patches com `git patch-id --stable`,
+considerando também lockfile e `.nvmrc`; comparar origem de build/E2E quando a
+evidência depender dela. Registrar a associação e sua justificativa de forma breve
+no PR. Não presumir que alterações em `content/` ou `public/` sejam puramente
+documentais: avaliar consumo, validações e efeitos no build e na aplicação. Mudança
+editorial sem efeito no comportamento não invalida teste funcional por si só; mudança
+em código coberto, imports, dependência, configuração de testes, origem relevante
+ou conflito resolvido manualmente invalida a parte afetada.
+Novo commit sempre exige CI próprio; evidência local não substitui `quality`.
 
-- P0 ou P1 confirmado sem correção. A alternativa é uma decisão formal do proprietário no PR,
-  com o risco aceito, a justificativa e a tarefa de acompanhamento;
-- check `quality` vermelho, pendente ou ausente no head atual;
-- teste removido, pulado ou afrouxado sem justificativa e validação no próprio PR;
-- teste instável novo na área de risco do PR (o CI o anota como _flaky_). Fora dessa área, ele
-  é registrado como ressalva;
-- gate do nível não cumprido nem dispensado expressamente pelo proprietário.
+Preferir links para Actions, Preview identificado e anexos acessíveis ao revisor.
+Versionar somente o que é necessário para reproduzir ou compreender a decisão;
+evitar árvores completas de resultados, caches, screenshots repetidos e ZIPs de cada rodada.
+Para material essencial externo: URL acessível ao revisor, SHA256 e prazo de retenção.
+Conferir acesso e expiração antes do merge; se expirar antes da revisão, preservar
+uma cópia mínima em local autorizado ou versionar o artefato indispensável. `/tmp`
+e links privados inacessíveis não são evidência compartilhada. Remover segredos antes
+de compartilhar; hash não torna um arquivo sensível seguro.
 
-## 6. Autorização de merge
+Preservar evidências históricas que sustentam decisões. Redução de pacote já preparado
+exige manifesto atualizado e preservação dos elementos que sustentam a decisão.
 
-O merge exige autorização expressa do proprietário para aquele PR e aquele head. A autorização
-não se transfere para outro PR nem sobrevive a um novo commit. Agentes não fazem merge, não
-marcam PR como pronto, não promovem para Production e não habilitam auto-merge sem esse pedido.
+## 5. Encerramento de investigação inconclusiva
 
-## 7. Validação de Production
+Definir pergunta, hipótese discriminante, cenários e limite de coleta antes de investigar.
+Na ausência de limite específico, fazer uma rodada dirigida e, se surgir hipótese nova,
+uma rodada de controle. Ampliação só com justificativa e próximo resultado discriminante.
+Não repetir execução idêntica apenas para obter verde ou tentar provar ausência de bug.
 
-Depois do merge:
+Encerrar a coleta como **inconclusiva** quando: (a) resultados e falhas estão preservados;
+(b) hipóteses testadas e limites foram registrados; (c) não existe nova hipótese testável
+com os dados/meios disponíveis; e (d) impacto possível e próximo responsável/ação estão
+indicados. Registrar tudo no PR, sem novo relatório. O limite de rodadas não autoriza
+encerrar se ainda houver uma hipótese discriminante viável; justificar a extensão.
 
-1. o CI do `push` na `master` precisa passar no commit de merge;
-2. o deploy de Production precisa apontar para esse commit (painel ou `vercel inspect`);
-3. a verificação acompanha o nível: rota afetada com HTTP 200 (nível 1); rotas e recursos
-   afetados, mais axe nelas (nível 2); smoke completo do nível 3 — rotas com 200, 404 esperados,
-   recursos estáticos, axe e ausência de overflow em 390/1280 px.
+Encerrar investigação não significa corrigir o incidente, aprovar gate ou aceitar risco.
+Defeito confirmado continua aberto; risco indeterminado exige decisão proporcional ao
+impacto; se houver potencial P0/P1, aplicar o tratamento conservador do §3 até
+decisão expressa. Reabrir por erro demonstrado na análise anterior ou fato novo:
+trace discriminante, reprodução nova, mudança no código/ambiente relevante ou falha
+em gate. Retomada de sessão não é fato novo.
 
-Falha nesse passo vira achado no `STATUS.md` e, se for P0/P1, pede reversão (`git revert` em PR
-próprio).
+## 6. Autorizações e decisões por etapa
+
+O proprietário pode autorizar um conjunto de operações como commit, push e
+atualização do PR, vinculado à branch e ao conjunto exato de arquivos ou ao patch-id
+do diff autorizado. Não solicitar confirmação a cada subetapa já autorizada.
+Alterações materiais fora desse escopo exigem nova aprovação antes de executá-las.
+Force-push, reescrita de histórico, marcar PR como pronto e auto-merge não estão
+incluídos em autorizações genéricas; exigem autorização explícita própria.
+Rejeição automática de aprovação deve ser comunicada com ação e motivo, sem contorno.
+
+Separar sempre: aptidão para commit/push, homologação e merge. Risco pendente de aceite
+para merge não impede atualizar o PR com ressalvas, desde que não exponha segredos nem
+represente resultado falso. Preview inacessível ou gate humano não executado permanece
+pendente até validação ou dispensa expressa, com cenário e verificação posterior definidos.
+
+Merge exige autorização específica para aquele PR e head final; novo commit invalida
+essa autorização. Nenhuma autorização de commit/push inclui merge, auto-merge, promoção
+ou deploy. Não alterar ruleset, fazer bypass ou push direto na master. Fluxo Git em
+[CONTRIBUTING](../../CONTRIBUTING.md).
+
+## 7. Verificação após merge autorizado
+
+Exigir `quality` do push na master e confirmar identidade do deployment integrado.
+Verificar rotas/recursos afetados, status esperados, axe e overflow em 390/1280 quando
+houver interface afetada; no nível 3, repetir smoke dos fluxos críticos tocados e das
+integrações pertinentes. Smoke completo da aplicação é exigido quando houver impacto
+global justificado, não apenas pelo rótulo de risco. Incorporar verificações prometidas
+em dispensas; se exigência aprovada específica for maior, ela prevalece.
+
+Registrar no próprio PR CI, deployment e resultado. Falha vira pendência vinculada;
+P0/P1 pede avaliação de reversão por `git revert` em PR próprio. Atualizar `STATUS.md`
+só quando mudar o estado da auditoria. Verificação posterior não dispensa gate anterior
+sem decisão expressa nem autoriza deploy por si só.
 
 ## 8. Limites conhecidos da suíte
 
-- Os E2E testam o build local servido na porta 3001, não o Preview. Na Vercel os chunks ficam em
-  `/_next/static/immutable/chunks/`; localmente, em `/_next/static/chunks/`. Testes que
-  interceptam chunks (`historico-fragmentos.spec.ts`) não casam com a Vercel e falham na guarda
-  explícita (`retidos > 0`), sem falso positivo. Ao homologar Preview com script próprio,
-  ajuste o padrão.
-- R05: a orientação por fragmento (`:target`, foco e rolagem) ao voltar de outra rota não é
-  garantida em Firefox e WebKit; o teste confere `:target` só no Chromium. É limitação funcional
-  conhecida (ver também a ressalva 3 do PR #41). Corrigir o teste ou o comportamento pede tarefa
-  própria, com evidências próprias.
+O CI cobre Chromium e build local na porta 3001. Na Vercel os chunks usam
+`/_next/static/immutable/chunks/`; interceptações locais podem não casar. Adaptar
+harness hospedado preservando guardas e asserções, sem declarar equivalência automática.
+
+R05: orientação por fragmento (:target, foco e rolagem) no retorno não garantida em
+Firefox/WebKit; asserção :target da suíte cobre Chromium. Limitações observadas
+em outros motores ou ambientes exigem evidência própria; não são automaticamente
+abrangidas por R05. Evidências históricas: [AUD03/F1 — PR #41](https://github.com/jeffnunespy/portfolio-web/pull/41)
+e [encerramento técnico dirigido AUD03](pr47-opcao-a-20261106/encerramento-tecnico.md).

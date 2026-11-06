@@ -31,7 +31,7 @@ npm run test:e2e -- -g "texto do teste"            # um teste
 
 `next lint` não existe mais no Next.js 16 — para lintar arquivos específicos use `npx eslint <arquivos>`.
 
-**Gates do CI** (`.github/workflows/ci.yml`, Node de `.nvmrc`): `npm ci` → `npm audit --omit=dev --audit-level=high` → `format:check` → `lint` → `typecheck` → `test -- --run` → `build` → `test:e2e:functional` → `test:e2e:a11y`. Rode o mesmo conjunto antes de considerar uma tarefa concluída.
+**Gates do CI** (`.github/workflows/ci.yml`, Node de `.nvmrc`): `npm ci` → `npm audit --omit=dev --audit-level=high` → `format:check` → `lint` → `typecheck` → `test -- --run` → `build` → `test:e2e:functional` → `test:e2e:a11y`. O CI completo continua obrigatório no head do PR. Localmente, execute somente as verificações pertinentes ao diff ou reutilize evidências válidas, conforme `docs/audits/PROCESSO.md`; não repita toda a sequência por rotina.
 
 ## Arquitetura
 
@@ -56,26 +56,6 @@ Consequência prática: adicionar uma competência ao perfil sem projeto que a c
 
 **Testes.** `tests/unit/` (Vitest + Testing Library, jsdom) cobre sobretudo a validação de conteúdo. `tests/e2e/` (Playwright, Chromium) cobre navegação, metadados (`metadata.spec.ts`), responsividade e acessibilidade — os arquivos `*.a11y.spec.ts` usam `@axe-core/playwright` contra WCAG 2.1 A/AA.
 
-## Publicação — sessão de 2026-10-29
-
-Registro inicial da sessão; a seção de verificação operacional posterior abaixo atualiza a configuração e as evidências.
-
-- Projeto Vercel criado e vinculado: `jeff-0a6e/portfolio-web`; o proprietário concluiu a conexão GitHub com `jeffnunespy/portfolio-web` no painel.
-- URL de produção: https://portfolio-web-three-zeta.vercel.app.
-- Deployment da sessão: https://portfolio-a6yvbpbxy-jeff-0a6e.vercel.app.
-- O log fornecido pelo proprietário registra build, TypeScript e geração de 18 páginas concluídos, com estado `Ready`. O proprietário confirmou abertura normal do site. O agente não conseguiu acessar a URL deste ambiente; rotas, recursos e acessibilidade hospedados não receberam validação completa nesta sessão.
-- T055 permanece pendente. A publicação não comprova inspeções humanas, preview aprovado ou CI do commit candidato. Os registros anteriores que indicam Vercel não configurada, incluindo `docs/CHECKLIST_PUBLICACAO.md`, foram superados por esta sessão.
-
-### Procedimento e aprendizados
-
-- Preservar Framework Preset Next.js, raiz `./` e saída padrão. O build detectado foi `next build`; não definir `public` ou `out` como diretório de saída.
-- Se a integração Git falhar por falta de Login Connection, conectar GitHub em configurações pessoais da Vercel → Authentication; depois usar projeto → Settings → Git. Reutilizar o projeto já criado.
-- A CLI 65.8.0 avisou que `--target` está obsoleto e indicou `--environment`. O comando `vercel deploy --target=preview` desta sessão terminou em produção e recebeu o alias público. A causa não foi determinada; não considerar esse comando uma garantia de preview.
-- Próximo comando de preview: `rtk proxy npx vercel deploy --environment=preview`. Conferir a ajuda da versão instalada e confirmar o ambiente no painel/log; o comando foi executado nesta sessão, gerando o preview `Ready` https://portfolio-bxwwi5lbi-jeff-0a6e.vercel.app, com ambiente confirmado por `vercel inspect` e HTML com HTTP 200 via CLI autenticada. Produção continua exigindo autorização explícita.
-- `.env.local`, criado pela CLI com `VERCEL_OIDC_TOKEN`, e `.vercel/` estão ignorados pelo Git. Nunca divulgar ou versionar credenciais.
-- O remoto compilou com Next.js 16.4.2. Avisos de peers do ESLint 10, `cache-dir` e script de instalação de `unrs-resolver` não impediram o build; lint, auditoria e demais gates do CI não foram comprovados por esse log.
-- Conferir `NEXT_PUBLIC_SITE_URL` com a URL pública escolhida antes da próxima publicação em produção; sua configuração não foi confirmada. `lib/site.ts` usa `VERCEL_URL` como fallback hospedado.
-
 ## Processo (spec-kit)
 
 Este repositório é dirigido por especificação. A ordem de precedência é: `.specify/memory/constitution.md` > `specs/<feature>/spec.md`, `plan.md`, `tasks.md` > sugestões do agente. Regras que importam na prática:
@@ -85,14 +65,32 @@ Este repositório é dirigido por especificação. A ordem de precedência é: `
 - Não adicione dependências sem justificativa; a constituição pede a solução mais simples que atenda ao requisito atual.
 - Não remova nem afrouxe testes para fazer a implementação passar.
 - Não invente métricas, resultados ou evidências em conteúdo de projeto (princípio X).
-- Atualize `docs/ACTIVE_CONTEXT.md` quando o estado da feature avançar.
+- Use o PR como registro principal. Atualize `docs/ACTIVE_CONTEXT.md` apenas quando mudar o estado relevante da feature/operação, com link ao PR, sem copiar a auditoria.
 
 Skills locais em `.claude/skills/` cobrem os fluxos recorrentes: `novo-projeto-conteudo` (criar/editar JSON de projeto no schema válido), `a11y-check` (rodar e corrigir violações axe), `seo-metadata` (metadados de rota), `verify-changed` (rodar só as verificações relevantes aos arquivos alterados). Prefira-as a reinventar o procedimento.
 
-## Verificação operacional posterior — 2026-10-29
+## Governança e operação
 
-- Projeto Vercel alinhado a Node 24.x e instalação `npm ci`; branch de produção confirmada como `master`.
-- `NEXT_PUBLIC_SITE_URL` definida em Production como `https://portfolio-web-three-zeta.vercel.app`; aguarda novo build de produção para substituir a URL específica nos metadados publicados.
-- Gates locais aprovados: formatação, lint, tipos, 53 unitários, build, 73 E2E funcionais e 27 E2E de acessibilidade; auditoria npm de produção sem vulnerabilidades.
-- Produção verificada automaticamente: sete rotas com 200, duas 404, PDF/imagem/ícone com 200, nove páginas sem violações axe e sem overflow em 390/1280px. Inspeções humanas de T055 continuam pendentes.
-- Registros detalhados e limites da validação em `docs/ACTIVE_CONTEXT.md` e `docs/CHECKLIST_PUBLICACAO.md`. Explorações visuais não rastreadas preservadas fora do commit operacional.
+Siga `AGENTS.md`, `CONTRIBUTING.md` e `docs/audits/PROCESSO.md`. Na dúvida, use
+o nível de risco superior e preserve a classificação até revisão fundamentada.
+Revisão independente é exigida pelos níveis 2/3, adversarial no 3. Skills e agentes
+especializados não são uma cadeia obrigatória: use apenas os pertinentes ao diff.
+
+Reabra investigação encerrada somente por fato novo discriminante ou erro
+demonstrado na análise anterior. Preexistência não
+significa aceite automático. Registre risco, evidência, impacto, acompanhamento e
+decisão do proprietário no PR; inconclusivo não significa corrigido nem risco aceito.
+Risco indeterminado com potencial P0/P1 recebe tratamento conservador até decisão expressa.
+
+Autorizações podem agrupar commit, push e atualização do PR, vinculadas à branch
+e aos arquivos exatos ou patch-id; alteração material fora do escopo exige nova
+aprovação. Force-push, reescrita de histórico, marcar PR como pronto e auto-merge
+exigem autorização própria. Merge exige autorização específica para PR/SHA final;
+deploy exige autorização própria. Nunca contorne CI, proteção da master ou requisitos
+de acessibilidade.
+
+Estado e histórico operacional: `docs/ACTIVE_CONTEXT.md` e
+`docs/CHECKLIST_PUBLICACAO.md`. Não duplicar registros de publicação neste arquivo.
+Preservar preset Next.js, raiz `./` e saída padrão da Vercel. Antes de deploy
+autorizado, confirmar ambiente e origem de build. Não versionar `.env.local` ou
+`.vercel/`. Inspeções humanas seguem os critérios aprovados; automação não as substitui.
