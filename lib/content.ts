@@ -149,6 +149,20 @@ function validatePublicAsset(value: unknown, field: string, fileName: string): v
       `arquivo referenciado por "${field}" não existe em ${fileName}: ${value}.`,
     );
   }
+
+  let assetStats: fs.Stats;
+  try {
+    assetStats = fs.statSync(assetPath);
+  } catch {
+    throw validationError(
+      `não foi possível verificar o arquivo referenciado por "${field}" em ${fileName}: ${value}.`,
+    );
+  }
+  if (!assetStats.isFile()) {
+    throw validationError(
+      `recurso referenciado por "${field}" deve ser um arquivo regular em ${fileName}: ${value}.`,
+    );
+  }
 }
 
 function validateProjeto(data: unknown, fileName: string): Projeto {

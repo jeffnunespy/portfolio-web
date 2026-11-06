@@ -513,4 +513,16 @@ isolada (branch `fix/aud03-private-repository-links`, base `3704e4e`), com os re
 verificação em preview autorizados pelo proprietário. Não houve commit, push, PR ou deploy.
 T055 e AUD03-001 continuam abertos.
 
-- [ ] T113 [US1] Corrigir issue #45: preservar a progressão de foco após skip link na 404 hidratada sob latência RSC, mantendo cancelamento de navegação pendente (F1), recuperação A1 e HTML sem JS (PROD-001). Exigir controle negativo, testes de foco/histórico nos três motores e gates de risco 3; concluir somente após CI e homologação da candidata. Implementação local em investigação autorizada em 2026-11-05; evidências e próximos gates em `docs/ACTIVE_CONTEXT.md`.
+- [X] T113 [US1] Corrigir issue #45: preservar a progressão de foco após skip link na 404 hidratada sob latência RSC, mantendo cancelamento de navegação pendente (F1), recuperação A1 e HTML sem JS (PROD-001). Exigir controle negativo, testes de foco/histórico nos três motores e gates de risco 3; concluir somente após CI e homologação da candidata. Implementação local em investigação autorizada em 2026-11-05; evidências e próximos gates em `docs/ACTIVE_CONTEXT.md`.
+
+**Reconciliação — 2026-11-06:** T112 foi integrada pelo PR #40; a anotação de
+candidata sem commit acima é histórica. Não repetir implementação/testes concluídos.
+O encerramento formal deve vincular a evidência hospedada já existente; o registro
+consultado ainda não a comprova integralmente. T113/#45 foi resolvida pelo PR #47,
+com CI e smoke pós-merge aprovados; riscos residuais seguem na #49. T055 permanece aberta.
+
+- [ ] T114 [US1] [US3] AUD03-003: exigir arquivo regular em `validatePublicAsset`,
+  preservando confinamento em public e diagnóstico por JSON/campo. Recusar diretório,
+  inexistência e escape para imagem e PDF; aceitar recursos regulares atuais e informar
+  falha de inspeção do filesystem. Preparada em `fix/aud03-003-arquivos-regulares`,
+  sem commit/push/merge; validar gates do futuro PR antes de encerrar.

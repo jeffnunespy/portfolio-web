@@ -1,5 +1,14 @@
 # Active Context
 
+## Reconciliação operacional — 2026-11-06
+
+PRs #36, #40, #41, #44, #46, #47 e #50 integrados; #45 encerrada.
+PROD-001 encerrado tecnicamente; AUD04 concluída. Os estados anteriores abaixo
+são históricos. Índice vigente em [STATUS](audits/STATUS.md#reconciliação--2026-11-06).
+AUD03-003 preparada isoladamente sobre master `96a810f`; sem commit/push/merge.
+AUD03-002/004/005 e SECURITY.md continuam abertos; T055/F5/R05/#49 em acompanhamento
+conforme decisões existentes. Não iniciar AUD05.
+
 ## Feature
 
 Experiência Pública Inicial do Portfólio (`001-experiencia-publica-inicial`).
