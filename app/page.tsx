@@ -106,11 +106,6 @@ export default function Home() {
       <section className="station" aria-labelledby="build-title">
         <div className="station__head">
           <h2 id="build-title">Da fonte à página.</h2>
-          {/*
-            O repositório desta plataforma é privado (FR-009a): os arquivos são
-            nomeados, não linkados — para um visitante anônimo, o GitHub responde
-            404. O acesso ao código segue pelo pedido do cartão e da ficha.
-          */}
           <p>
             Testes E2E com Playwright e verificações WCAG 2.1 A/AA com axe-core, executados
             separadamente na integração contínua.

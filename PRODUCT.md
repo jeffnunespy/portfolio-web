@@ -114,16 +114,19 @@ declarado pelo proprietário nesta sessão:
 
 **Real e funcional hoje:**
 
-- **GitHub** — `https://github.com/jeffnunespy`, perfil público e funcional, sem repositórios
-  públicos (conferido sem sessão em 2026-11-02). O perfil não serve como evidência de código.
+- **GitHub** — `https://github.com/jeffnunespy`, perfil público e funcional. O repositório
+  `jeffnunespy/portfolio-web` está público (conferido sem sessão em 2026-11-06).
+  O perfil é um destino institucional; o acesso ao código usa o link do repositório.
 - **LinkedIn** — `https://www.linkedin.com/in/jefferson-nunes-7bb309122/` (registrado em
   `profile.json` como link real).
 - **A própria plataforma** — este repositório: Next.js 16, validação de conteúdo em build, testes
   Vitest, E2E funcionais e de acessibilidade (axe-core, WCAG 2.1 A/AA), CI completo, Dependabot.
-  O repositório `jeffnunespy/portfolio-web` é **privado** (decisão do proprietário registrada na
-  Auditoria 03, 2026-11-02). A ficha `plataforma-portfolio` descreve **este** repositório; o site
-  declara o código como privado e oferece o pedido de acesso por e-mail (FR-009a), sem links para o
-  repositório. O que a ficha afirma pode ser conferido por quem receber acesso ao código.
+  O repositório `jeffnunespy/portfolio-web` é **público**. Em 2026-11-06, o proprietário
+  autorizou voltar a anunciar seu código, superando a premissa privada do PR #40.
+  A ficha `plataforma-portfolio` descreve **este** repositório; cartões e detalhe devem
+  oferecer `https://github.com/jeffnunespy/portfolio-web` como acesso ao código (FR-008).
+  Demonstração pública e código público são evidências distintas; a abertura deste
+  repositório não muda a condição privada do código de Nana Silva.
 - **Nana Silva** — projeto profissional desenvolvido integralmente pelo proprietário para uma
   necessidade real da artista, conforme confirmação em 2026-10-23. Catálogo estático com Astro,
   conteúdo no Notion e automação de publicação com Cloudflare Workers/KV. A ficha `nana-silva`
