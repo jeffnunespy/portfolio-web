@@ -14,11 +14,11 @@ const publicRoutes = [
 ];
 
 for (const route of publicRoutes) {
-  test(`@a11y ${route} não possui violações WCAG 2.1 A/AA`, async ({ page }) => {
+  test(`@a11y ${route} não possui violações automáticas WCAG 2.2 A/AA`, async ({ page }) => {
     await page.goto(route);
 
     const results = await new AxeBuilder({ page })
-      .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
+      .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22a", "wcag22aa"])
       .analyze();
     expect(results.violations).toEqual([]);
     expect(results.incomplete.filter((item) => item.id === "color-contrast")).toEqual([]);
@@ -108,7 +108,7 @@ for (const width of [320, 1280]) {
       .locator("details")
       .evaluateAll((elements) => elements.forEach((el) => el.setAttribute("open", "")));
     const results = await new AxeBuilder({ page })
-      .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
+      .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22a", "wcag22aa"])
       .analyze();
     expect(results.violations).toEqual([]);
     expect(results.incomplete.filter((item) => item.id === "color-contrast")).toEqual([]);

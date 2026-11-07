@@ -557,3 +557,38 @@ como histórico. Versão final `140b34ec2d7cbd4dd4f26053c88293f235e2faca`;
 [evidências e proposta de encerramento com ressalvas](../../docs/audits/STATUS.md#reconciliação--2026-11-06).
 T055/F5/R05/#49 permanecem independentes; A1 do #53 aceita, sem causa corrigida.
 Nenhum teste repetido ou inspeção humana adicional declarada nesta reconciliação.
+
+---
+
+## Phase 25: AUD05 — reforços autorizados de acessibilidade
+
+Escopo autorizado pelo proprietário em 07/11/2026 após o diagnóstico Impeccable:
+uma melhoria opcional de legibilidade e dois reforços de validação, sem nova barreira
+WCAG A/AA demonstrada. Preservar FR-020/021/022, PRODUCT.md, DESIGN.md e os aceites
+de T055/F5/R05/#49/A1. Não altera o requisito aprovado WCAG 2.1 AA nem certifica 2.2.
+
+- [X] T118 Incluir as tags WCAG 2.2 A/AA em todas as análises axe existentes,
+  preservando as regras 2.0/2.1 e as asserções de contraste inconclusivo. Confirmar
+  detecção de alvo inadequado por controle negativo e ausência de violações nas rotas.
+- [X] T119 Distinguir suporte nativo a `forced-color-adjust` da avaliação de cores
+  forçadas; registrar limitação sem pular o teste e preservar exigência de suporte no
+  Chromium, foco, bordas, cores e marcadores. Validar Chromium/Firefox/WebKit e
+  controles negativos de propriedade e apresentação, com revisão adversarial.
+- [X] T120 Aplicar `--reading-measure` aos parágrafos de problema/objetivo do Roadmap
+  e à nota da prévia ilustrativa, preservando ações e contêineres. Conferir conteúdo
+  renderizado em desktop/mobile e reflow com texto ampliado, sem redesenho.
+
+Risco 3 conservador: alteração na lógica de teste que protege o gate de acessibilidade.
+Execução restrita à implementação/validação local; CI e homologação hospedada dependem
+de autorização posterior. T055 e inspeções humanas continuam independentes.
+
+**Validação local — 07/11/2026:** base master `f384dad`; formato direcionado, lint dos
+testes alterados, tipos, build e 108 E2E selecionados aprovados nos três motores, sem
+skip/retry/flaky. Quatro casos WebKit registram a limitação de propriedade sem pular
+apresentação/foco. Controles negativos detectaram alvo inadequado, valor `auto`, ausência
+de suporte no Chromium e foco removido no WebKit; revisão adversarial sem achados.
+Inspeção renderizada em 390/1280px e detector Impeccable sem avisos nas superfícies
+ajustadas; máximos desktop de 76 caracteres no Roadmap e 68 na nota da prévia.
+T118–T120 encerram somente o escopo local autorizado. CI e homologação hospedada não
+executados; nenhuma inspeção humana, commit, push, PR, merge ou deploy realizado.
+T055/F5/R05/#49 e a ressalva A1 permanecem independentes, sem reabertura.
