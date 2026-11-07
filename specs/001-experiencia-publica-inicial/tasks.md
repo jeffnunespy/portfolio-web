@@ -592,3 +592,23 @@ ajustadas; máximos desktop de 76 caracteres no Roadmap e 68 na nota da prévia.
 T118–T120 encerram somente o escopo local autorizado. CI e homologação hospedada não
 executados; nenhuma inspeção humana, commit, push, PR, merge ou deploy realizado.
 T055/F5/R05/#49 e a ressalva A1 permanecem independentes, sem reabertura.
+
+---
+
+## Phase 26: AUD06 — tipo Open Graph
+
+- [X] T121 Corrigir AUD06-001, autorizado em 07/11/2026: declarar
+  `openGraph.type: "website"` em Projetos, Roadmap, Sobre e Currículo. Preservar
+  os demais metadados e exigir no teste existente um único `og:type` por rota,
+  com `article` nas fichas e `website` nas demais páginas indexáveis. Validar
+  controle negativo, metadados renderizados e revisão independente (risco 2).
+  Escopo local; PRODUCT/DESIGN, T055/F5/R05/#49/A1 preservados. Sem inclusão
+  dos refinamentos opcionais de locale/site_name, commit, push, PR ou deploy.
+
+**Validação local — 07/11/2026:** base master `396c9cd`. Formato e lint direcionados,
+tipos, build e 18/18 testes de metadados com JavaScript desativado aprovados, sem
+skip/retry/flaky. Controle negativo no artefato anterior: quatro falhas por ausência
+de `og:type` nas rotas afetadas e três controles aprovados. Revisão independente
+nível 2 GO LOCAL, sem achados. T121 concluída somente no escopo local; CI e
+homologação hospedada pendentes. Sem commit/push/PR/deploy; T055 e os demais
+acompanhamentos permanecem independentes.
