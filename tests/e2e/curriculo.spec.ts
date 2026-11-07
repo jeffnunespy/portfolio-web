@@ -19,11 +19,10 @@ const perfil = JSON.parse(
   linkLinkedin: string;
   tituloPosicionamento: string;
   trajetoria: { periodo: string; titulo: string; descricao: string }[];
-  linkCurriculo?: string;
+  linkCurriculo: string;
 };
 
 const emailConfigurado = perfil.contato.valor !== EMAIL_PLACEHOLDER;
-const temPdf = typeof perfil.linkCurriculo === "string" && perfil.linkCurriculo.length > 0;
 
 // Marcadores de template que já chegaram à produção dentro do PDF uma vez.
 // O teste anterior só verificava status e content-type, então um arquivo de
@@ -95,23 +94,10 @@ test("US3 - página de currículo é visualizável e oferece PDF para download",
 
   const downloadLink = page.getByRole("link", { name: "Baixar currículo em PDF" });
 
-  if (!temPdf) {
-    // Sem PDF definitivo o site não oferece download algum: a página em HTML
-    // é o currículo, e um arquivo divergente do conteúdo validado circularia
-    // fora do alcance da validação de build.
-    await expect(downloadLink).toHaveCount(0);
-    await expect(
-      page.getByText(
-        "PDF final ainda não disponível. O currículo completo pode ser consultado nesta página.",
-      ),
-    ).toBeVisible();
-    return;
-  }
-
-  await expect(downloadLink).toHaveAttribute("href", perfil.linkCurriculo!);
+  await expect(downloadLink).toHaveAttribute("href", perfil.linkCurriculo);
   await expect(downloadLink).toHaveAttribute("download");
 
-  const pdfResponse = await page.request.get(perfil.linkCurriculo!);
+  const pdfResponse = await page.request.get(perfil.linkCurriculo);
   expect(pdfResponse.ok()).toBe(true);
   expect(pdfResponse.headers()["content-type"]).toContain("application/pdf");
 
@@ -131,7 +117,7 @@ test("US3 - página de currículo é visualizável e oferece PDF para download",
   const downloadPath = await download.path();
   expect(downloadPath).not.toBeNull();
   const arquivoPublicado = readFileSync(
-    path.join(process.cwd(), "public", perfil.linkCurriculo!.slice(1)),
+    path.join(process.cwd(), "public", perfil.linkCurriculo.slice(1)),
   );
   expect(readFileSync(downloadPath!)).toEqual(arquivoPublicado);
 });

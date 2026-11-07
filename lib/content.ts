@@ -48,6 +48,7 @@ const REQUIRED_PERFIL_FIELDS = [
   "biografiaSobre",
   "formacao",
   "trajetoria",
+  "linkCurriculo",
   "linkGithub",
   "linkLinkedin",
   "contato",
@@ -136,7 +137,7 @@ function validateHttpsUrl(value: unknown, field: string, fileName: string): void
   }
 }
 
-function validatePublicAsset(value: unknown, field: string, fileName: string): void {
+function validatePublicAsset(value: unknown, field: string, fileName: string): string {
   if (!isNonEmptyString(value) || !value.startsWith("/")) {
     throw validationError(
       `campo "${field}" deve referenciar um caminho público absoluto em ${fileName}.`,
@@ -162,6 +163,28 @@ function validatePublicAsset(value: unknown, field: string, fileName: string): v
     throw validationError(
       `recurso referenciado por "${field}" deve ser um arquivo regular em ${fileName}: ${value}.`,
     );
+  }
+  return assetPath;
+}
+
+function validateCurriculoPdf(value: unknown, fileName: string): void {
+  const field = "linkCurriculo";
+  const assetPath = validatePublicAsset(value, field, fileName);
+  if (path.extname(assetPath).toLowerCase() !== ".pdf") {
+    throw validationError(`campo "${field}" deve referenciar um arquivo PDF em ${fileName}.`);
+  }
+
+  let pdf: Buffer;
+  try {
+    pdf = fs.readFileSync(assetPath);
+  } catch {
+    throw validationError(`não foi possível ler o PDF de "${field}" em ${fileName}: ${value}.`);
+  }
+  // Verificação de formato no build, sem tentar interpretar objetos ou renderizar o PDF.
+  const cabecalho = pdf.subarray(0, 9).toString("latin1");
+  const final = pdf.subarray(-1024).toString("latin1");
+  if (!/^%PDF-(?:1\.[0-7]|2\.0)[\r\n]/.test(cabecalho) || !/%%EOF\s*$/.test(final)) {
+    throw validationError(`PDF inválido ou incompleto em "${field}" de ${fileName}: ${value}.`);
   }
 }
 
@@ -265,14 +288,7 @@ function validatePerfil(data: unknown): PerfilProfissional {
   validateMarcosCurriculo(data, "formacao", fileName);
   validateMarcosCurriculo(data, "trajetoria", fileName);
 
-  /*
-    O PDF é opcional, mas quando declarado precisa existir de fato em public/:
-    um link de download quebrado é pior que a ausência do botão. A página
-    /curriculo degrada sozinha quando o campo não vem.
-  */
-  if (data.linkCurriculo !== undefined) {
-    validatePublicAsset(data.linkCurriculo, "linkCurriculo", fileName);
-  }
+  validateCurriculoPdf(data.linkCurriculo, fileName);
   validateHttpsUrl(data.linkGithub, "linkGithub", fileName);
   validateHttpsUrl(data.linkLinkedin, "linkLinkedin", fileName);
 

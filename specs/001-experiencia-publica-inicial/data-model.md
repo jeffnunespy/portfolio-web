@@ -142,11 +142,12 @@ Estado de `lib/content.ts` revisado na Auditoria 01 (2026-10-28) e cobertura alv
 
 (¹) Só projeto com `real: true` conta como evidência; escopo planejado não sustenta competência.
 
-(²) GitHub e LinkedIn exigem HTTPS; `contato.valor` exige formato de e-mail. `linkCurriculo`,
-quando declarado, precisa ser caminho absoluto de arquivo existente em `public/`, mas o schema o
-aceita ausente (`lib/types.ts`), enquanto a tabela de `PerfilProfissional` acima e FR-015 o tratam
-como obrigatório. Divergência registrada na Auditoria 01 e pendente de decisão do proprietário; o
-conteúdo atual declara `/curriculo.pdf` e cumpre o requisito.
+(²) GitHub e LinkedIn exigem HTTPS; `contato.valor` exige formato de e-mail.
+`linkCurriculo` é obrigatório (FR-015) e deve referenciar caminho absoluto de arquivo
+regular em `public/`, com extensão `.pdf`, assinatura PDF e marcador final `%%EOF`.
+A decisão do proprietário em 06/11/2026 mantém o contrato original; AUD03-004 alinha
+tipos, validação e testes. A checagem de formato não substitui a revisão do conteúdo
+do currículo. O arquivo atual `/curriculo.pdf` é preservado.
 
 (³) Conta somente projetos com `real: true` e `destaque: true`, porque a vitrine da home só exibe
 projeto implementado. Até a Auditoria 01 o código contava também o escopo planejado.
