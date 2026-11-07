@@ -518,6 +518,9 @@ button.button::after {
   align-items: center;
   min-height: 44px;
 }
+.project-image__caption > p {
+  max-width: var(--reading-measure);
+}
 summary {
   width: fit-content;
   max-width: 100%;
@@ -703,7 +706,7 @@ details[open] > summary {
 }
 .roadmap-entry__problem,
 .roadmap-entry__goal {
-  max-width: 62ch;
+  max-width: var(--reading-measure);
   color: var(--muted);
 }
 .roadmap-stack {

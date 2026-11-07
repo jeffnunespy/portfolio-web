@@ -1,13 +1,43 @@
-import { expect, test } from "@playwright/test";
+import { expect, test, type Page, type TestInfo } from "@playwright/test";
+
+async function verificarSuporteForcedColorAdjust(
+  page: Page,
+  browserName: string,
+  testInfo: TestInfo,
+) {
+  const suporta = await page.evaluate(() => CSS.supports("forced-color-adjust", "none"));
+
+  // O gate existente em Chromium continua exigindo suporte e a propriedade aplicada.
+  if (browserName === "chromium") {
+    expect(suporta, "Chromium deve suportar forced-color-adjust no gate existente").toBe(true);
+  }
+  if (!suporta) {
+    testInfo.annotations.push({
+      type: "limitação de cobertura",
+      description:
+        "Engine sem suporte a forced-color-adjust; foco, bordas, cores e marcadores continuam verificados. Não comprova alto contraste real.",
+    });
+  }
+  return suporta;
+}
 
 // O roadmap fica fora: registra intenção, não oferece ação primária. Sua
 // sobrevivência a forced-colors é coberta pelo caso de estrutura abaixo.
 const rotasComAcaoPrimaria = ["/", "/projetos/plataforma-portfolio", "/rota-inexistente"];
 
 for (const route of rotasComAcaoPrimaria) {
-  test(`@a11y ${route} preserva estrutura e foco em forced-colors`, async ({ page }) => {
+  test(`@a11y ${route} preserva estrutura e foco em forced-colors`, async ({
+    page,
+    browserName,
+  }, testInfo) => {
     await page.emulateMedia({ forcedColors: "active" });
     await page.goto(route);
+
+    const suportaForcedColorAdjust = await verificarSuporteForcedColorAdjust(
+      page,
+      browserName,
+      testInfo,
+    );
 
     expect(await page.evaluate(() => matchMedia("(forced-colors: active)").matches)).toBe(true);
     await expect(page.locator("body")).toHaveCSS("background-image", "none");
@@ -27,7 +57,7 @@ for (const route of rotasComAcaoPrimaria) {
       };
     });
 
-    expect(primaryStyles.forcedColorAdjust).toBe("none");
+    if (suportaForcedColorAdjust) expect(primaryStyles.forcedColorAdjust).toBe("none");
     expect(primaryStyles.borderStyle).not.toBe("none");
     expect(primaryStyles.borderWidth).toBeGreaterThanOrEqual(1);
     expect(primaryStyles.color).not.toBe(primaryStyles.backgroundColor);
@@ -89,9 +119,16 @@ test("@a11y /roadmap preserva estrutura e foco em forced-colors", async ({ page 
 
 test("@a11y navegação atual e estados continuam distinguíveis em forced-colors", async ({
   page,
-}) => {
+  browserName,
+}, testInfo) => {
   await page.emulateMedia({ forcedColors: "active" });
   await page.goto("/projetos");
+
+  const suportaForcedColorAdjust = await verificarSuporteForcedColorAdjust(
+    page,
+    browserName,
+    testInfo,
+  );
 
   const currentNavigationItem = page.locator('.site-nav a[aria-current="page"]');
   await expect(currentNavigationItem).toHaveCSS("text-decoration-line", /underline/);
@@ -143,5 +180,7 @@ test("@a11y navegação atual e estados continuam distinguíveis em forced-color
   // O glifo é sinal visual, não conteúdo: nenhum deles pode entrar no nome acessível.
   expect(statusCues.every(({ alternativeText }) => alternativeText === "")).toBe(true);
   expect(statusCues.every(({ borderStyle }) => borderStyle !== "none")).toBe(true);
-  expect(statusCues.every(({ forcedColorAdjust }) => forcedColorAdjust === "none")).toBe(true);
+  if (suportaForcedColorAdjust) {
+    expect(statusCues.every(({ forcedColorAdjust }) => forcedColorAdjust === "none")).toBe(true);
+  }
 });

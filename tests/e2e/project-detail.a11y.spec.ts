@@ -3,24 +3,24 @@ import AxeBuilder from "@axe-core/playwright";
 import { getProjetosImplementados } from "../../lib/content";
 
 for (const projeto of getProjetosImplementados()) {
-  test(`@a11y US2 - detalhe de ${projeto.slug} sem violações automáticas WCAG 2.1 A/AA`, async ({
+  test(`@a11y US2 - detalhe de ${projeto.slug} sem violações automáticas WCAG 2.2 A/AA`, async ({
     page,
   }) => {
     await page.goto(`/projetos/${projeto.slug}`);
 
     const results = await new AxeBuilder({ page })
-      .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
+      .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22a", "wcag22aa"])
       .analyze();
 
     expect(results.violations).toEqual([]);
   });
 }
 
-test("@a11y - roadmap sem violações automáticas WCAG 2.1 A/AA", async ({ page }) => {
+test("@a11y - roadmap sem violações automáticas WCAG 2.2 A/AA", async ({ page }) => {
   await page.goto("/roadmap");
 
   const results = await new AxeBuilder({ page })
-    .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
+    .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22a", "wcag22aa"])
     .analyze();
 
   expect(results.violations).toEqual([]);
