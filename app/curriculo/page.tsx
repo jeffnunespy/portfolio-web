@@ -12,6 +12,7 @@ export function generateMetadata(): Metadata {
     description: descricao,
     alternates: { canonical: "/curriculo" },
     openGraph: {
+      type: "website",
       title: `${perfil.nome} — Currículo`,
       description: descricao,
       url: "/curriculo",

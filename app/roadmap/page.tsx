@@ -55,6 +55,7 @@ export const metadata: Metadata = {
   description: descricao,
   alternates: { canonical: "/roadmap" },
   openGraph: {
+    type: "website",
     title: "Roadmap",
     description: descricao,
     url: "/roadmap",

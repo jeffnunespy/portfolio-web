@@ -12,6 +12,7 @@ export function generateMetadata(): Metadata {
     description: descricao,
     alternates: { canonical: "/sobre" },
     openGraph: {
+      type: "website",
       title: "Sobre",
       description: descricao,
       url: "/sobre",

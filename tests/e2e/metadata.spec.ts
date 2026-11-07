@@ -92,6 +92,11 @@ for (const { route, ogImage } of indexaveis) {
     const ogUrl = await page.locator('meta[property="og:url"]').getAttribute("content");
     expect(ogUrl?.replace(/\/$/, "")).toBe(absoluta(route));
 
+    const tipoEsperado = route.startsWith("/projetos/") ? "article" : "website";
+    const tipo = page.locator('meta[property="og:type"]');
+    await expect(tipo).toHaveCount(1);
+    await expect(tipo).toHaveAttribute("content", tipoEsperado);
+
     // Cada compartilhamento deve identificar a rota, sem herdar a chamada da home.
     for (const campo of ["title", "description"]) {
       const og = await page.locator(`meta[property="og:${campo}"]`).getAttribute("content");
