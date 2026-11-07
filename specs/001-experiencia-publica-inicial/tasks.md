@@ -532,3 +532,18 @@ com CI e smoke pós-merge aprovados; riscos residuais seguem na #49. T055 perman
   ausência/null/vazio/tipo/caminho inválido, diretório e PDF com formato inválido ou
   incompleto. Exigir download no E2E, preservando HTML e bytes do PDF existente.
   Preparar na branch `fix/aud03-004-curriculo-obrigatorio`; encerrar após gates e integração.
+
+- [ ] T116 [US1] AUD03-002: preservar a indicação de código não disponível
+  publicamente quando o repositório estiver ausente, inclusive com demonstração.
+  Cobrir público/privado/ausente × com/sem demonstração, preservando os destinos,
+  o pedido de acesso e a alternativa para contato não configurado (FR-008/009/009a).
+  Visibilidade pública de `jeffnunespy/portfolio-web` confirmada sem sessão;
+  divulgação do código autorizada pelo proprietário em 06/11/2026. Alinhar dados,
+  documentação e guardas do PR #40 sem mudar a condição privada de outros projetos.
+  Preparar em `fix/aud03-002-disponibilidade-codigo`; encerrar após gates e integração.
+
+- [ ] T117 [US1] AUD03-005: completar a indicação do cartão privado como
+  "Código privado — disponível mediante solicitação" (FR-009a), preservando
+  demonstração, CTA e contato. Cobrir estados público/privado/ausente, com/sem
+  demonstração, sem avisos indevidos, duplicação ou overflow em 320/390/1280 px.
+  Preparar na mesma branch de T116; encerrar após gates e integração.

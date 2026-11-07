@@ -90,7 +90,9 @@ export default function ProjectCard({
               </a>
             ) : repositorio === "privado" ? (
               <>
-                <span className="muted-label">Código privado</span>
+                <span className="muted-label">
+                  Código privado — disponível mediante solicitação
+                </span>
                 {contatoEmail && emailConfigurado(contatoEmail) ? (
                   <a
                     className="text-link"

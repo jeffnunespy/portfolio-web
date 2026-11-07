@@ -21,8 +21,6 @@ export default function EvidenceLink({
   // indisponibilidades seguidas antes de qualquer destino navegável, e uma
   // ficha que começa por aquilo que não tem lê como acervo vazio mesmo quando
   // há evidência real logo abaixo.
-  const temDestinoDireto = Boolean(linkDemonstracao) || repositorio === "publico";
-
   return (
     <div className="evidence-links">
       {linkDemonstracao ? (
@@ -88,7 +86,7 @@ export default function EvidenceLink({
             <span className="muted-label">Solicitações pelo LinkedIn, no rodapé desta página</span>
           )}
         </div>
-      ) : !temDestinoDireto ? (
+      ) : repositorio === "indisponivel" ? (
         <p className="availability-note">Código não disponível publicamente.</p>
       ) : null}
     </div>

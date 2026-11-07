@@ -4,9 +4,8 @@ import { getPerfil, getProjetosImplementados } from "../../lib/content";
 const perfil = getPerfil();
 const implementados = getProjetosImplementados();
 const destaques = implementados.filter((p) => p.destaque).slice(0, 6);
-// O repositório da plataforma é privado (FR-009a): a seção nomeia as fontes
-// em texto, e nenhuma delas pode voltar a ser link para um destino que o
-// visitante anônimo recebe como 404.
+// A seção de comprovação descreve as fontes em texto. O cartão da plataforma
+// oferece o repositório público confirmado; o perfil não substitui seu código.
 const fontesDescritas = [
   "Testes E2E com Playwright",
   "verificações WCAG 2.1 A/AA com axe-core",
@@ -127,8 +126,7 @@ test("US1 - comprovação nativa abre e fecha por Enter e Espaço", async ({ pag
   await expect(conteudo.getByText("content/profile.json")).toBeVisible();
   const total = new Set(perfil.competenciasPorArea.flatMap((area) => area.competencias)).size;
   await expect(conteudo.getByText(new RegExp(`As ${total} competências declaradas`))).toBeVisible();
-  // As fontes são texto, não destinos: o Tab seguinte ao resumo sai da seção
-  // em vez de parar em links para o repositório privado.
+  // As fontes permanecem em texto: o Tab seguinte ao resumo sai da seção.
   await page.keyboard.press("Tab");
   const foco = await page.evaluate(() => ({
     tag: document.activeElement?.tagName,
@@ -153,16 +151,17 @@ async function conferirFontesDescritas(page: Page) {
     await expect(codigo).toHaveText([arquivo]);
     await expect(codigo).toBeVisible();
   }
-  // Texto descritivo não se apresenta como destino: a seção não tem nenhum
-  // link, e a página inteira nenhum href para o repositório privado.
+  // Fontes descritas e acesso ao código continuam separados: o link do
+  // repositório público fica no cartão da plataforma.
   await expect(secao.getByRole("link")).toHaveCount(0);
-  await expect(page.locator('a[href*="github.com/jeffnunespy/portfolio-web"]')).toHaveCount(0);
+  await expect(page.getByRole("link", { name: "Ver código-fonte", exact: true })).toHaveAttribute(
+    "href",
+    "https://github.com/jeffnunespy/portfolio-web",
+  );
   return secao;
 }
 
-test("US1 - comprovações nomeiam as fontes sem link ao repositório privado nem execução ao vivo", async ({
-  page,
-}) => {
+test("US1 - comprovações nomeiam as fontes sem simular execução ao vivo", async ({ page }) => {
   await page.goto("/");
   await page.locator("#estrutura summary").click();
   const secao = await conferirFontesDescritas(page);
