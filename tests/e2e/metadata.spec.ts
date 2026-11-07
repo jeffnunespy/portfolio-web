@@ -85,7 +85,25 @@ const indexaveis = [
 
 for (const { route, ogImage } of indexaveis) {
   test(`canonical e Open Graph absolutos na origem configurada em ${route}`, async ({ page }) => {
-    await page.goto(route);
+    const respostaPagina = await page.goto(route);
+    expect(respostaPagina?.status()).toBe(200);
+    // Contrato do build local indexável do CI. O noindex do Preview Vercel é intencional.
+    expect(respostaPagina?.headers()["x-robots-tag"] ?? "").not.toMatch(/\b(noindex|none)\b/i);
+    const diretivas = await page
+      .locator('meta[name="robots" i], meta[name="googlebot" i]')
+      .evaluateAll((metas) => metas.map((meta) => meta.getAttribute("content") ?? ""));
+    for (const diretiva of diretivas) expect(diretiva).not.toMatch(/\b(noindex|none)\b/i);
+
+    const esperado = pages.find((pagina) => pagina.route === route);
+    if (!esperado) throw new Error(`Metadados esperados não definidos para ${route}`);
+    await expect(page.locator('meta[property="og:title"]')).toHaveAttribute(
+      "content",
+      esperado.title,
+    );
+    await expect(page.locator('meta[property="og:description"]')).toHaveAttribute(
+      "content",
+      esperado.description,
+    );
 
     const canonical = await page.locator('link[rel="canonical"]').getAttribute("href");
     expect(canonical?.replace(/\/$/, "")).toBe(absoluta(route));

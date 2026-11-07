@@ -612,3 +612,34 @@ de `og:type` nas rotas afetadas e três controles aprovados. Revisão independen
 nível 2 GO LOCAL, sem achados. T121 concluída somente no escopo local; CI e
 homologação hospedada pendentes. Sem commit/push/PR/deploy; T055 e os demais
 acompanhamentos permanecem independentes.
+
+---
+
+## Phase 27: AUD09 — proteção de seleção e metadados
+
+- [ ] T122 Cobrir AUD09-001 com fixtures de implementados/planejados destacados
+  e não destacados, resultados explícitos dos seletores e renderização da home
+  com implementados não destacados e sem destaques. Preservar FR-004/004a/004b
+  e o contrato de ProjetoImplementado; não passar planejados a ProjectCard.
+- [ ] T123 Cobrir AUD09-002 na matriz E2E existente: OG e Twitter correspondem ao
+  conteúdo esperado da rota; páginas indexáveis não enviam noindex/none por meta
+  robots/googlebot ou X-Robots-Tag. Preservar controles 404 e regras de Preview.
+
+Escopo local autorizado em 07/11/2026: somente testes e registro de tarefas.
+Risco 2: reforço aditivo de asserções, sem remover verificações ou alterar CI.
+Validar testes dirigidos e controles negativos em cópias temporárias isoladas;
+revisão independente conforme PROCESSO. Sem alteração de aplicação, dependências,
+PRODUCT/DESIGN, T055/F5/R05/#49/A1; sem commit/push/PR/deploy.
+
+**Estado local — 07/11/2026:** implementação de T122/T123 concluída na base
+`a5e8a3e`. 53 testes dirigidos Vitest e 18 E2E de metadados com JavaScript
+desativado aprovados; Home revalidada após ajuste de tipagem da fixture. Lint,
+tipos, formato e diff-check aprovados. Build existente reaproveitado: nenhuma
+fonte de aplicação mudou. Controles em cópias temporárias reprovaram filtro de
+destaque removido, seletores invertidos, OG/Twitter incorretos e noindex/none em
+meta robots/googlebot e cabeçalho. Falhas iniciais de conexão do harness foram
+descartadas; execução válida posterior falhou pelas asserções esperadas.
+Revisão independente estática sem achados; o revisor atingiu limite de uso antes
+do parecer final dos controles. Checkboxes permanecem abertas até esse parecer;
+CI e homologação hospedada também pendentes. Sem commit/push/PR/deploy, sem
+encerrar T055 ou reabrir F5/R05/#49/A1.

@@ -281,6 +281,24 @@ describe("lib/content", () => {
       expect(() => getProjetos()).toThrow(/slug duplicado/);
     });
 
+    it("separa implementados e planejados independentemente do destaque e ordena arquivos", async () => {
+      mockFileSystem(buildPerfil(), {
+        "d.json": buildProjeto({ slug: "planejado-sem-destaque", real: false, destaque: false }),
+        "b.json": buildProjeto({ slug: "real-sem-destaque", real: true, destaque: false }),
+        "c.json": buildProjeto({ slug: "planejado-destacado", real: false, destaque: true }),
+        "a.json": buildProjeto({ slug: "real-destacado", real: true, destaque: true }),
+      });
+      const { getProjetosImplementados, getRoadmap } = await import("../../lib/content");
+      expect(getProjetosImplementados().map((projeto) => projeto.slug)).toEqual([
+        "real-destacado",
+        "real-sem-destaque",
+      ]);
+      expect(getRoadmap().map((projeto) => projeto.slug)).toEqual([
+        "planejado-destacado",
+        "planejado-sem-destaque",
+      ]);
+    });
+
     describe("teto de 6 destaques conta só projetos reais", () => {
       // Monta `reais` projetos implementados e `planejados` de escopo planejado,
       // todos com destaque, mais um real sem destaque que sustenta a competência
