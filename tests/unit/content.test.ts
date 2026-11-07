@@ -16,6 +16,8 @@ vi.mock("fs", async () => {
   };
 });
 
+const curriculoPdf = fs.readFileSync(`${process.cwd()}/public/curriculo.pdf`);
+
 const mockedReadFileSync = vi.mocked(fs.readFileSync);
 const mockedReaddirSync = vi.mocked(fs.readdirSync);
 
@@ -32,6 +34,7 @@ function buildPerfil(overrides: Partial<PerfilProfissional> = {}): PerfilProfiss
     trajetoria: [
       { periodo: "2026 — presente", titulo: "Trajetória", descricao: "Descrição da trajetória." },
     ],
+    linkCurriculo: "/curriculo.pdf",
     linkGithub: "https://github.com",
     linkLinkedin: "https://linkedin.com",
     contato: { tipo: "email", valor: "contato@portfolio.local" },
@@ -68,7 +71,11 @@ function buildProjeto(overrides: Partial<Projeto> = {}): Projeto {
   };
 }
 
-function mockFileSystem(perfil: PerfilProfissional, projetos: Record<string, Partial<Projeto>>) {
+function mockFileSystem(
+  perfil: PerfilProfissional,
+  projetos: Record<string, Partial<Projeto>>,
+  pdf: Buffer = curriculoPdf,
+) {
   const fileNames = Object.keys(projetos);
 
   mockedReaddirSync.mockImplementation(((dirPath: fs.PathLike) => {
@@ -83,6 +90,7 @@ function mockFileSystem(perfil: PerfilProfissional, projetos: Record<string, Par
     if (filePathStr.endsWith("profile.json")) {
       return JSON.stringify(perfil);
     }
+    if (filePathStr.endsWith("/curriculo.pdf")) return pdf;
     const fileName = fileNames.find((name) => filePathStr.endsWith(name));
     if (fileName) {
       return JSON.stringify(projetos[fileName]);
@@ -348,11 +356,52 @@ describe("lib/content", () => {
       expect(() => getPerfil()).toThrow(/linkGithub/);
     });
 
-    it("aceita perfil sem linkCurriculo: o PDF é opcional", async () => {
-      mockFileSystem(buildPerfil(), { "valido.json": buildProjeto() });
-
+    it.each([
+      undefined,
+      null,
+      "",
+      "   ",
+      42,
+      false,
+      {},
+      [],
+      "curriculo.pdf",
+      "https://example.com/curriculo.pdf",
+    ])("AUD03-004 rejeita linkCurriculo inválido: %j", async (value) => {
+      const perfil = buildPerfil({ linkCurriculo: value as unknown as string });
+      if (value === undefined) delete (perfil as Partial<PerfilProfissional>).linkCurriculo;
+      mockFileSystem(perfil, { "valido.json": buildProjeto() });
       const { getPerfil } = await import("../../lib/content");
-      expect(getPerfil().linkCurriculo).toBeUndefined();
+      expect(getPerfil).toThrow(/linkCurriculo.*profile.json/);
+    });
+
+    it("AUD03-004 rejeita arquivo regular que não é PDF", async () => {
+      mockFileSystem(buildPerfil({ linkCurriculo: "/images/projects/plataforma-portfolio.svg" }), {
+        "valido.json": buildProjeto(),
+      });
+      const { getPerfil } = await import("../../lib/content");
+      expect(getPerfil).toThrow(/linkCurriculo.*PDF.*profile.json/);
+    });
+
+    it.each([
+      ["arquivo vazio", Buffer.alloc(0)],
+      ["outro formato com extensão PDF", Buffer.from("<svg></svg>\n%%EOF")],
+      ["PDF truncado", curriculoPdf.subarray(0, -6)],
+    ])("AUD03-004 rejeita %s", async (_name, pdf) => {
+      mockFileSystem(buildPerfil(), { "valido.json": buildProjeto() }, pdf);
+      const { getPerfil } = await import("../../lib/content");
+      expect(getPerfil).toThrow(/PDF inválido ou incompleto.*linkCurriculo.*profile.json/);
+    });
+
+    it("AUD03-004 identifica o PDF quando a leitura falha", async () => {
+      const perfil = buildPerfil();
+      mockFileSystem(perfil, { "valido.json": buildProjeto() });
+      mockedReadFileSync.mockImplementation(((filePath: fs.PathOrFileDescriptor) => {
+        if (filePath.toString().endsWith("profile.json")) return JSON.stringify(perfil);
+        throw new Error("sem acesso");
+      }) as typeof fs.readFileSync);
+      const { getPerfil } = await import("../../lib/content");
+      expect(getPerfil).toThrow(/não foi possível ler o PDF.*linkCurriculo.*profile.json/);
     });
 
     it.each([

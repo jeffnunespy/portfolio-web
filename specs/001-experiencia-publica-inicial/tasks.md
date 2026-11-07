@@ -526,3 +526,9 @@ com CI e smoke pós-merge aprovados; riscos residuais seguem na #49. T055 perman
   inexistência e escape para imagem e PDF; aceitar recursos regulares atuais e informar
   falha de inspeção do filesystem. Preparada em `fix/aud03-003-arquivos-regulares`,
   sem commit/push/merge; validar gates do futuro PR antes de encerrar.
+
+- [ ] T115 [US3] AUD03-004: manter PDF obrigatório conforme decisão do proprietário
+  de 06/11/2026 e FR-015. Alinhar `linkCurriculo` no tipo, gate e fixtures; rejeitar
+  ausência/null/vazio/tipo/caminho inválido, diretório e PDF com formato inválido ou
+  incompleto. Exigir download no E2E, preservando HTML e bytes do PDF existente.
+  Preparar na branch `fix/aud03-004-curriculo-obrigatorio`; encerrar após gates e integração.

@@ -68,10 +68,8 @@ export interface PerfilProfissional {
   biografiaSobre: string;
   formacao: MarcoCurriculo[];
   trajetoria: MarcoCurriculo[];
-  // Ausente enquanto não houver um PDF definitivo. A página /curriculo é
-  // autossuficiente em HTML; o download é conveniência, não conteúdo, e
-  // oferecer um arquivo desatualizado contradiz o conteúdo validado.
-  linkCurriculo?: string;
+  // FR-015: a página HTML deve oferecer download do currículo em PDF.
+  linkCurriculo: string;
   linkGithub: string;
   linkLinkedin: string;
   contato: ContatoPerfil;
