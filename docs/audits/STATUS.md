@@ -3,30 +3,33 @@
 ## Reconciliação — 2026-11-06
 
 Este quadro supera os estados históricos abaixo; não representa nova auditoria.
-Roteiro: inventário original AUD03 de 30/10 e consolidação de 31/10
-(`portfolio-auditoria03-consolidacao-20261031T012051Z/relatorio-consolidado.md`).
-Base da preparação atual: master `17753a097248f2c0482954c357ad111f38354c4a`.
+Roteiro original de 30/10 e consolidação de 31/10:
+`portfolio-auditoria03-consolidacao-20261031T012051Z/relatorio-consolidado.md`.
+Versão reconciliada: master `140b34ec2d7cbd4dd4f26053c88293f235e2faca`.
 
-| Frente            | Estado vigente / próxima ação                                                                                                                                                                                                                                                       |
-| ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| AUD03-001/F4      | [#36](https://github.com/jeffnunespy/portfolio-web/pull/36) integrado; não repetir correção ou validações concluídas.                                                                                                                                                               |
-| T112              | [#40](https://github.com/jeffnunespy/portfolio-web/pull/40) integrado; implementação entregue. Registro histórico em tasks.md ainda não comprova todos os gates hospedados para encerramento formal; reconciliar evidência existente, sem refazer testes.                           |
-| F1 / A1           | [#41](https://github.com/jeffnunespy/portfolio-web/pull/41) e [#44](https://github.com/jeffnunespy/portfolio-web/pull/44) integrados; ressalvas preservadas.                                                                                                                        |
-| PROD-001          | Encerrado tecnicamente: [#46](https://github.com/jeffnunespy/portfolio-web/pull/46), merge `0d69203`; CI 42122200149 e homologação Production nos três motores registrados no relatório 06 do pacote permanente `auditorias/portfolio-web/aud03/prod-001/relatorios/`. Não reabrir. |
-| #45/T113          | [#47](https://github.com/jeffnunespy/portfolio-web/pull/47) integrado; #45 encerrada após CI/smoke pós-merge.                                                                                                                                                                       |
-| AUD04             | [#50](https://github.com/jeffnunespy/portfolio-web/pull/50) concluído, CI e homologação pós-merge registrados. AUD05 não definida; não iniciar.                                                                                                                                     |
-| AUD03-003         | Concluída pelo [#51](https://github.com/jeffnunespy/portfolio-web/pull/51), merge `8f037a6`; CI pós-merge e validação dirigida Production aprovados, registrados no PR.                                                                                                             |
-| AUD03-004         | Concluída pelo [#52](https://github.com/jeffnunespy/portfolio-web/pull/52), merge `17753a0`; CI e validação dirigida Production aprovados, registrados no PR.                                                                                                                       |
-| AUD03-002 / 005   | T116/T117 preparadas em `fix/aud03-002-disponibilidade-codigo`: aviso com demo, cartão privado completo e divulgação pública da plataforma autorizada em 06/11. Pendentes de CI, Preview e integração.                                                                              |
-| SECURITY.md       | Premissa histórica superada: API atual informa visibility=public. Confirmar relato privado habilitado e acessível antes de encerrar; não trocar canal sem essa confirmação.                                                                                                         |
-| F5                | Riscos residuais aceitos no alcance do #36; acompanhamento aberto, não correção pendente automática. Reavaliar alto contraste quando disponível e impressão/lazy/rasterização nos gatilhos registrados no PR.                                                                       |
-| T055              | Inspeções humanas restantes em acompanhamento, conforme aceites do #36; revisão até 04/12/2026 ou mudança relevante. Automação não encerra a tarefa.                                                                                                                                |
-| R05 / #49         | Acompanhamentos independentes. #49 aberta com responsável @jeffnunespy: A/C/B-skip/L e History API separado. Coleta B encerrada; reabrir somente por fato discriminante novo. R05 não abrange automaticamente Chromium hospedado.                                                   |
-| Conteúdo residual | “Auditável” no perfil/PRODUCT, fallback do Footer e texto de formato inválido seguem para disposição editorial separada.                                                                                                                                                            |
+| Item | Classificação e evidência vigente |
+| --- | --- |
+| AUD03-001/F4 | Concluído — [#36](https://github.com/jeffnunespy/portfolio-web/pull/36) integrado; F5 e inspeções humanas mantidos separadamente conforme aceites. |
+| T112 | Concluído — implementação e revisão no [#40](https://github.com/jeffnunespy/portfolio-web/pull/40); controles de links com/sem JS, CI e homologação integrada no [#53](https://github.com/jeffnunespy/portfolio-web/pull/53). A decisão pública de 06/11 supera a premissa privada para a plataforma; não refazer o estado histórico privado. |
+| AUD03-003 / T114 | Concluído — [#51](https://github.com/jeffnunespy/portfolio-web/pull/51), merge `8f037a6`, CI pós-merge [42293555651](https://github.com/jeffnunespy/portfolio-web/actions/runs/42293555651) e validação dirigida Production registrados no PR. |
+| AUD03-004 / T115 | Concluído — PDF obrigatório confirmado pelo proprietário e implementado no [#52](https://github.com/jeffnunespy/portfolio-web/pull/52), merge `17753a0`; CI pós-merge [42319282832](https://github.com/jeffnunespy/portfolio-web/actions/runs/42319282832), download e bytes preservados em Production. |
+| AUD03-002 / 005; T116 / T117 | Concluído — [#53](https://github.com/jeffnunespy/portfolio-web/pull/53), merge `140b34e`; matriz de disponibilidade e indicação completa do cartão privado validadas. CI pós-merge [42323527710](https://github.com/jeffnunespy/portfolio-web/actions/runs/42323527710): 155 unitários, 210 funcionais, 27 a11y, sem retries. Production identificada e homologada; 16 cenários, quatro axe e A1 dirigido 1/1 sem retry registrados no PR. |
+| F1 / A1 | Concluído o escopo integrado nos [#41](https://github.com/jeffnunespy/portfolio-web/pull/41) e [#44](https://github.com/jeffnunespy/portfolio-web/pull/44). A ocorrência A1 do #53 permanece ressalva aceita, causa indeterminada, responsável @jeffnunespy e acompanhamento naquele PR; PASS posterior não comprova correção da causa. |
+| PROD-001 / T113 / #45 | Concluído — [#46](https://github.com/jeffnunespy/portfolio-web/pull/46) e [#47](https://github.com/jeffnunespy/portfolio-web/pull/47), com CI/homologação pós-merge registrados. #45 encerrada; riscos seguem na #49. |
+| SECURITY.md | Concluído — repositório público confirmado pela API. Consulta somente leitura a `GET /repos/jeffnunespy/portfolio-web/private-vulnerability-reporting` retornou `{"enabled":true}`; página pública Security retornou 200 e oferece “Report a vulnerability” para o destino documentado. Canal preservado, sem envio de relato ou mudança de configuração. |
+| Conteúdo residual | Concluído o exame editorial: “auditável” em perfil/PRODUCT tem sustentação no código público autorizado no #53. O fallback do Footer aponta ao perfil GitHub, que agora contém o código público; não há promessa inacessível demonstrada. “Link em formato inválido” descreve validação sintática, sem prometer disponibilidade HTTP. Nenhuma correção obrigatória; eventual preferência de redação não bloqueia encerramento. |
+| F5 | Em acompanhamento independente — riscos residuais aceitos no alcance do #36; alto contraste real quando disponível, impressão/lazy/rasterização nos gatilhos registrados. Não corrigido nem encerrado. |
+| T055 | Em acompanhamento independente — inspeções humanas restantes conforme aceites do #36; responsável proprietário, revisão até 04/12/2026 ou mudança relevante. Automação não encerra a tarefa. |
+| R05 / #49 | Em acompanhamento independente — [#49](https://github.com/jeffnunespy/portfolio-web/issues/49) aberta, @jeffnunespy responsável por A/C/B-skip/L; History API separado. Coleta B encerrada, reabrir somente por fato discriminante novo. R05 não abrange automaticamente Chromium hospedado. |
+| AUD04 | Concluído no [#50](https://github.com/jeffnunespy/portfolio-web/pull/50); não reaberto. AUD05 não iniciada. |
 
-AUD03 continua aberta pelos achados restantes. A premissa privada do [PR #40](https://github.com/jeffnunespy/portfolio-web/pull/40)
-foi superada para a plataforma; os avisos/CTAs de outros projetos privados permanecem.
-Nenhum aceite anterior equivale a autorização de novo merge.
+**Encerramento formal: AUD03 CONCLUÍDA COM RESSALVAS**, vinculado à versão
+acima e aos aceites existentes. Não é conformidade integral nem encerramento de T055,
+F5, R05, #49 ou da ressalva A1. Nenhuma correção objetiva ou decisão técnica indispensável
+restante identificada no roteiro; publicação documental autorizada em branch própria e PR; merge exige
+autorização específica para PR e SHA final.
+Os limites de cobertura permanecem nos PRs: não se promove dispensa a inspeção humana.
+Evidências reaproveitadas; nenhum teste repetido, nova auditoria ou alteração de aplicação.
 
 ## Histórico (superado onde divergir do quadro acima)
 
