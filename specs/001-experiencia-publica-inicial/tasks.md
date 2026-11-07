@@ -505,7 +505,7 @@ da aplicação mudou. Nenhum commit, push, dependência nova ou deploy foi execu
 
 ## Phase 24: Repositório privado (Auditoria 03)
 
-- [ ] T112 [US1] [US2] Retirar do site os links para o repositório privado `jeffnunespy/portfolio-web` (decisão do proprietário: manter privado). Cartões e ficha da Plataforma declaram o código privado e oferecem o pedido de acesso por `mailto:`, sem o perfil do GitHub como substituto do código em "Fonte e verificação". As sete referências da home continuam como texto, sem link, e o currículo não promete código no GitHub. Adicionar guarda de regressão para links de repositório, cobrindo `github.com`, `www.github.com`, URLs relativas ao protocolo, links profundos e hosts de arquivos/pacote do repositório. Validar com e sem JavaScript, com testes negativos, axe e os gates do CI em Chromium, e repetir os testes afetados em Firefox (configuração local, fora do CI), per FR-008, FR-009, FR-009a, contrato de conteúdo publicado e Constituição I/V/X. Supera o destino público de T106
+- [X] T112 [US1] [US2] Retirar do site os links para o repositório privado `jeffnunespy/portfolio-web` (decisão do proprietário: manter privado). Cartões e ficha da Plataforma declaram o código privado e oferecem o pedido de acesso por `mailto:`, sem o perfil do GitHub como substituto do código em "Fonte e verificação". As sete referências da home continuam como texto, sem link, e o currículo não promete código no GitHub. Adicionar guarda de regressão para links de repositório, cobrindo `github.com`, `www.github.com`, URLs relativas ao protocolo, links profundos e hosts de arquivos/pacote do repositório. Validar com e sem JavaScript, com testes negativos, axe e os gates do CI em Chromium, e repetir os testes afetados em Firefox (configuração local, fora do CI), per FR-008, FR-009, FR-009a, contrato de conteúdo publicado e Constituição I/V/X. Supera o destino público de T106
 
 **Registro parcial de T112 — 2026-11-02:** implementada e validada localmente numa candidata
 isolada (branch `fix/aud03-private-repository-links`, base `3704e4e`), com os resultados em
@@ -521,19 +521,19 @@ O encerramento formal deve vincular a evidência hospedada já existente; o regi
 consultado ainda não a comprova integralmente. T113/#45 foi resolvida pelo PR #47,
 com CI e smoke pós-merge aprovados; riscos residuais seguem na #49. T055 permanece aberta.
 
-- [ ] T114 [US1] [US3] AUD03-003: exigir arquivo regular em `validatePublicAsset`,
+- [X] T114 [US1] [US3] AUD03-003: exigir arquivo regular em `validatePublicAsset`,
   preservando confinamento em public e diagnóstico por JSON/campo. Recusar diretório,
   inexistência e escape para imagem e PDF; aceitar recursos regulares atuais e informar
   falha de inspeção do filesystem. Preparada em `fix/aud03-003-arquivos-regulares`,
   sem commit/push/merge; validar gates do futuro PR antes de encerrar.
 
-- [ ] T115 [US3] AUD03-004: manter PDF obrigatório conforme decisão do proprietário
+- [X] T115 [US3] AUD03-004: manter PDF obrigatório conforme decisão do proprietário
   de 06/11/2026 e FR-015. Alinhar `linkCurriculo` no tipo, gate e fixtures; rejeitar
   ausência/null/vazio/tipo/caminho inválido, diretório e PDF com formato inválido ou
   incompleto. Exigir download no E2E, preservando HTML e bytes do PDF existente.
   Preparar na branch `fix/aud03-004-curriculo-obrigatorio`; encerrar após gates e integração.
 
-- [ ] T116 [US1] AUD03-002: preservar a indicação de código não disponível
+- [X] T116 [US1] AUD03-002: preservar a indicação de código não disponível
   publicamente quando o repositório estiver ausente, inclusive com demonstração.
   Cobrir público/privado/ausente × com/sem demonstração, preservando os destinos,
   o pedido de acesso e a alternativa para contato não configurado (FR-008/009/009a).
@@ -542,8 +542,18 @@ com CI e smoke pós-merge aprovados; riscos residuais seguem na #49. T055 perman
   documentação e guardas do PR #40 sem mudar a condição privada de outros projetos.
   Preparar em `fix/aud03-002-disponibilidade-codigo`; encerrar após gates e integração.
 
-- [ ] T117 [US1] AUD03-005: completar a indicação do cartão privado como
+- [X] T117 [US1] AUD03-005: completar a indicação do cartão privado como
   "Código privado — disponível mediante solicitação" (FR-009a), preservando
   demonstração, CTA e contato. Cobrir estados público/privado/ausente, com/sem
   demonstração, sem avisos indevidos, duplicação ou overflow em 320/390/1280 px.
   Preparar na mesma branch de T116; encerrar após gates e integração.
+
+**Encerramento reconciliado — 2026-11-06:** T112 concluída pelo #40 e controles
+integrados/homologados no #53; sua premissa privada foi superada pela divulgação pública
+autorizada em 06/11. T114 concluída no #51, T115 no #52 e T116/T117 no #53,
+com CI e validação Production pós-merge registrados nos respectivos PRs.
+O estado vigente supera as notas de preparação e gates pendentes acima, preservadas
+como histórico. Versão final `140b34ec2d7cbd4dd4f26053c88293f235e2faca`;
+[evidências e proposta de encerramento com ressalvas](../../docs/audits/STATUS.md#reconciliação--2026-11-06).
+T055/F5/R05/#49 permanecem independentes; A1 do #53 aceita, sem causa corrigida.
+Nenhum teste repetido ou inspeção humana adicional declarada nesta reconciliação.

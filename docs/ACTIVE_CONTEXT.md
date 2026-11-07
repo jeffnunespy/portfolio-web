@@ -2,12 +2,20 @@
 
 ## Reconciliação operacional — 2026-11-06
 
-PRs #36, #40, #41, #44, #46, #47 e #50 integrados; #45 encerrada.
-PROD-001 encerrado tecnicamente; AUD04 concluída. Os estados anteriores abaixo
-são históricos. Índice vigente em [STATUS](audits/STATUS.md#reconciliação--2026-11-06).
-AUD03-003 preparada isoladamente sobre master `96a810f`; sem commit/push/merge.
-AUD03-002/004/005 e SECURITY.md continuam abertos; T055/F5/R05/#49 em acompanhamento
-conforme decisões existentes. Não iniciar AUD05.
+**Encerramento formal da AUD03: CONCLUÍDA COM RESSALVAS**, sobre master
+`140b34ec2d7cbd4dd4f26053c88293f235e2faca`.
+T112/T114/T115/T116/T117 tecnicamente concluídas; evidências e disposições no
+[STATUS](audits/STATUS.md#reconciliação--2026-11-06) e nos PRs #36/#40/#51/#52/[#53](https://github.com/jeffnunespy/portfolio-web/pull/53).
+CI pós-merge #53: 155 unitários, 210 funcionais, 27 a11y; Production e A1 dirigido
+validados no PR, sem repetir testes nesta reconciliação. A passagem não corrige a
+causa indeterminada da ressalva A1 aceita, acompanhada no #53.
+Relato privado habilitado e oferecido pela página Security pública; canal mantido.
+Pendências editoriais históricas examinadas, sem correção obrigatória na premissa pública.
+F5/T055/R05/#49 continuam independentes, nos limites e prazos aceitos; nenhuma
+inspeção humana pendente foi declarada aprovada. PROD-001/#45 encerrados; AUD04
+concluída. AUD05 não iniciada. Publicação documental autorizada em branch própria e PR;
+merge exige autorização específica para PR e SHA final.
+As seções anteriores abaixo são históricas onde divergirem deste estado.
 
 ## Feature
 
