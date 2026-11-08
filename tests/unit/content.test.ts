@@ -414,10 +414,10 @@ describe("lib/content", () => {
     it("AUD03-004 identifica o PDF quando a leitura falha", async () => {
       const perfil = buildPerfil();
       mockFileSystem(perfil, { "valido.json": buildProjeto() });
-      mockedReadFileSync.mockImplementation(((filePath: fs.PathOrFileDescriptor) => {
+      mockedReadFileSync.mockImplementation((filePath: fs.PathOrFileDescriptor) => {
         if (filePath.toString().endsWith("profile.json")) return JSON.stringify(perfil);
         throw new Error("sem acesso");
-      }) as typeof fs.readFileSync);
+      });
       const { getPerfil } = await import("../../lib/content");
       expect(getPerfil).toThrow(/não foi possível ler o PDF.*linkCurriculo.*profile.json/);
     });
