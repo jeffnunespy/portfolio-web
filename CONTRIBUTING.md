@@ -1,7 +1,8 @@
 # Fluxo de contribuição
 
 A branch `master` é protegida pelo ruleset `proteger-master` do GitHub. Toda alteração entra por
-pull request, e o merge só é liberado com o check `quality` (job do workflow `CI`) aprovado.
+pull request, e o merge só é liberado com a branch atualizada e o check `quality` (job do workflow
+`CI`) aprovado.
 Vulnerabilidades seguem outro caminho: veja [`.github/SECURITY.md`](.github/SECURITY.md).
 
 ## Regras em vigor na `master`
@@ -10,7 +11,7 @@ Vulnerabilidades seguem outro caminho: veja [`.github/SECURITY.md`](.github/SECU
 | ------------------------ | ------------------------------------------------------------------------ |
 | Pull request obrigatório | Push direto é recusado. Não há exigência de aprovação de revisor         |
 | Check `quality`          | O merge fica bloqueado até o job `quality` do GitHub Actions passar      |
-| Branch desatualizada     | Permitida: o PR não precisa estar atualizado com a `master` para o merge |
+| Branch atualizada        | Obrigatória: o PR deve conter a `master` vigente; atualizar gera novo CI |
 | Force push               | Recusado                                                                 |
 | Exclusão da branch       | Recusada                                                                 |
 | Métodos de merge         | Merge commit, squash ou rebase                                           |
@@ -38,9 +39,17 @@ As demais branches não têm regras.
 11. Faça o merge somente com autorização específica para o PR e SHA final e quando o
     GitHub indicar que as regras foram atendidas.
 
-Como a `master` pode avançar sem que o PR seja atualizado, o CI do evento `push` na `master`
-valida de novo o resultado combinado depois do merge. Nível de risco, revisão e evidências de
-cada PR seguem [`docs/audits/PROCESSO.md`](docs/audits/PROCESSO.md).
+Se a `master` avançar, o GitHub bloqueia o merge até a branch ser atualizada, pelo mesmo caminho
+de [Conflitos de merge](#conflitos-de-merge), de preferência com `git merge origin/master`: rebase
+da branch exige force-push, que depende de autorização própria. A atualização cria um commit novo,
+que exige outro `quality` aprovado; assim, o conteúdo integrado é o mesmo que o `quality` aprovado
+no head do PR validou.
+
+O CI do evento `push` na `master` continua obrigatório depois do merge: valida o commit final,
+inclusive etapas que podem mudar com o tempo, como a auditoria de dependências. A branch
+atualizada não faz a Vercel esperar esse resultado: o deploy automático da `master` pode publicar
+a produção antes de o `quality` do push terminar, independentemente do resultado dele. Nível de
+risco, revisão e evidências de cada PR seguem [`docs/audits/PROCESSO.md`](docs/audits/PROCESSO.md).
 
 O PR é o registro principal: vincule a tarefa, os resultados e as decisões, sem criar
 relatórios por rodada. Revisão independente é obrigatória nos níveis 2/3, adversarial no 3.
