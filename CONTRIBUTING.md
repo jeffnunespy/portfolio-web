@@ -42,6 +42,17 @@ Como a `master` pode avançar sem que o PR seja atualizado, o CI do evento `push
 valida de novo o resultado combinado depois do merge. Nível de risco, revisão e evidências de
 cada PR seguem [`docs/audits/PROCESSO.md`](docs/audits/PROCESSO.md).
 
+Na Vercel, o build de Production pode executar independentemente desse CI.
+A promoção automática ao domínio público deve aguardar o Deployment Check
+GitHub `quality`, bloqueante para Production e correspondente ao SHA integrado
+na `master`, com conclusão `success`. Check ausente, pendente, cancelado ou
+falho não libera a promoção. Enquanto a nova versão estiver bloqueada, o domínio
+público deve manter a versão anterior.
+
+`Force Promote` contorna esse controle: é exceção administrativa e exige
+autorização específica e registro, conforme o
+[PROCESSO](docs/audits/PROCESSO.md).
+
 O PR é o registro principal: vincule a tarefa, os resultados e as decisões, sem criar
 relatórios por rodada. Revisão independente é obrigatória nos níveis 2/3, adversarial no 3.
 A homologação cobre os fluxos afetados e suas integrações; amplie somente por impacto
