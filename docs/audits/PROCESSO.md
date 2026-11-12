@@ -176,9 +176,9 @@ em dispensas; se exigência aprovada específica for maior, ela prevalece.
 Registrar no próprio PR: head revisado, SHA integrado, URL/ID e tentativa da
 execução de CI da master, resultado do `quality`, ID/URL do deployment Vercel,
 ambiente, SHA associado, alias público e BUILD_ID efetivamente servido. O
-BUILD_ID servido identifica o build da Vercel; como CI e Vercel compilam de forma
-independente, os identificadores podem ser distintos, e sua comparação não
-comprova o vínculo, que se comprova pelo SHA.
+BUILD_ID servido identifica o build da Vercel. Builds independentes, como os do
+CI e da Vercel, podem produzir identificadores distintos; não se exige igualdade
+nem diferença entre eles, e o vínculo com o código se comprova pelo SHA.
 Registrar os horários de conclusão do check e de promoção quando observáveis;
 distinguir a associação ao SHA da comprovação temporal de espera.
 
