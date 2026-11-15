@@ -179,14 +179,18 @@ ambiente, SHA associado, alias público e BUILD_ID efetivamente servido. O
 BUILD_ID servido identifica o build da Vercel. Builds independentes, como os do
 CI e da Vercel, podem produzir identificadores distintos; não se exige igualdade
 nem diferença entre eles, e o vínculo com o código se comprova pelo SHA.
-Registrar os horários de conclusão do check e de promoção quando observáveis;
-distinguir a associação ao SHA da comprovação temporal de espera.
+Registrar os horários disponíveis de conclusão do build e do check e da promoção,
+com a ordem e a precisão que os registros permitem estabelecer. Distinguir a
+associação ao SHA da comprovação temporal de espera.
 
-Se o build terminar antes do CI, comprovar que o deployment aguarda aprovação
-e que o domínio ainda serve a versão anterior, registrando o BUILD_ID durante
-a espera e após a promoção. Se o CI terminar primeiro, registrar que a espera
-não foi observada. Havendo integrações concorrentes, conferir a ordem de
-promoção e se uma versão antiga substituiu indevidamente uma posterior.
+Na integração autorizada, registrar o estado efetivamente observado do deployment
+e as amostras coletadas no domínio público, com horário e BUILD_ID quando disponível.
+Se a espera for observável, registrar amostras durante a espera e após a promoção.
+Se a janela for curta ou a espera não for observada, registrar a limitação. Se
+não houver amostra durante a espera, registrar que a versão servida nesse período
+não foi verificada. Usar a integração prevista, sem criar deployments experimentais
+nem repetir a publicação para obter evidência. Havendo integrações concorrentes,
+conferir a ordem de promoção e se uma versão antiga substituiu indevidamente uma posterior.
 
 Em bloqueio, preservar a versão pública anterior, conferir SHA e resultado do
 check e distinguir falha do código, do CI ou da associação na Vercel. Propor a

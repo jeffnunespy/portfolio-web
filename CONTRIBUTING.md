@@ -46,8 +46,10 @@ Na Vercel, o build de Production pode executar independentemente desse CI.
 A promoção automática ao domínio público deve aguardar o Deployment Check
 GitHub `quality`, bloqueante para Production e correspondente ao SHA integrado
 na `master`, com conclusão `success`. Check ausente, pendente, cancelado ou
-falho não libera a promoção. Enquanto a nova versão estiver bloqueada, o domínio
-público deve manter a versão anterior.
+falho não libera a promoção. Enquanto o novo deployment estiver bloqueado,
+espera-se que o domínio público mantenha a versão anterior. A eficácia do
+bloqueio no alias público `portfolio-web-three-zeta.vercel.app` ainda precisa
+ser verificada na próxima integração autorizada.
 
 `Force Promote` contorna esse controle: é exceção administrativa e exige
 autorização específica e registro, conforme o
