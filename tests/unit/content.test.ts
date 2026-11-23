@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import fs from "fs";
+import { inspect } from "node:util";
 import type { Projeto, PerfilProfissional } from "../../lib/types";
 
 vi.mock("fs", async () => {
@@ -146,6 +147,29 @@ describe("lib/content", () => {
       vi.resetModules();
       mockedReadFileSync.mockReset();
       mockedReaddirSync.mockReset();
+    });
+
+    it.each([
+      ["content/profile.json", "getPerfil"],
+      ["content/projects/invalido.json", "getProjetos"],
+    ] as const)("identifica %s sem expor o JSON inválido", async (filePath, loader) => {
+      mockFileSystem(buildPerfil(), {
+        "invalido.json": buildProjeto(),
+        "valido.json": buildProjeto(),
+      });
+      const marcador = "SENTINELA";
+      mockedReadFileSync.mockReturnValueOnce(`{"x": ${marcador} }`);
+
+      const content = await import("../../lib/content");
+      expect.assertions(4);
+      try {
+        content[loader]();
+      } catch (error) {
+        expect(error).toBeInstanceOf(SyntaxError);
+        expect(error).toHaveProperty("message", `Sintaxe JSON inválida em ${filePath}.`);
+        expect.soft(error).not.toHaveProperty("cause");
+        expect(inspect(error, { depth: null, showHidden: true })).not.toContain(marcador);
+      }
     });
 
     describe("AUD03-003: recursos públicos devem ser arquivos regulares", () => {
