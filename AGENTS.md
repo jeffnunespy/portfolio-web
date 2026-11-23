@@ -29,6 +29,25 @@ Não adicionar dependências sem justificativa; não expor segredos; não afroux
 asserções para obter verde; não executar ações destrutivas, merge ou deploy sem
 autorização. CI e proteção da master não podem ser contornados.
 
+## Ciclo de vida das worktrees
+
+- Antes de criar, consulte `git worktree list` e prefira reutilizar o ambiente
+  apropriado para tarefas sequenciais.
+- Crie worktrees adicionais quando precisar de isolamento ou trabalhar em paralelo.
+  Mantenha preferencialmente até três worktrees de trabalho ativas; exceções
+  justificadas são permitidas.
+- Ao concluir uma tarefa ou encerrar um PR, reavalie a necessidade da worktree.
+  Cada agente deve remover as worktrees temporárias dispensáveis que criou.
+- Antes de remover, verifique commits não integrados, alterações locais, arquivos
+  não rastreados e ignorados relevantes. Preserve qualquer trabalho pendente.
+- Remova somente worktrees limpas e comprovadamente dispensáveis com
+  `git worktree remove`, sem `--force`. Preserve conteúdo local exclusivo.
+- Identifique branches locais obsoletas após integração e verifique trabalho
+  exclusivo antes de qualquer exclusão.
+- Nunca use `git clean -fdx`, `rm -rf` ou exclusões forçadas como rotina de encerramento.
+
+Ações seguras já autorizadas podem seguir sem nova confirmação.
+
 ## Ferramentas e revisões
 
 Skills e agentes locais são recursos especializados, não uma sequência obrigatória
