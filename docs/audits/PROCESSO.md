@@ -205,6 +205,40 @@ P0/P1 pede avaliação de reversão por `git revert` em PR próprio. Atualizar `
 só quando mudar o estado da auditoria. Verificação posterior não dispensa gate anterior
 sem decisão expressa nem autoriza deploy por si só.
 
+### Recuperação de Production
+
+1. Registrar o domínio público, o ID/URL do deployment associado, o SHA e o BUILD_ID da home,
+   com horário, falha observada e fluxos afetados. Conferir no painel qual deployment está
+   associado ao domínio. Consultar os metadados com
+   [`vercel inspect`](https://vercel.com/docs/cli/inspect) usando o ID ou a URL do deployment.
+   O BUILD_ID vem do HTML servido no domínio.
+2. Selecionar um deployment anterior com evidência de funcionamento nos fluxos afetados, SHA
+   conhecido e associação anterior a um domínio de Production. Confirmar a elegibilidade e
+   as permissões no painel. Consultar os registros da integração anterior e registrar o
+   BUILD_ID servido em Production para o mesmo ID de deployment e SHA, quando houver evidência
+   confiável.
+   O plano Hobby limita a seleção ao deployment imediatamente anterior. O estado `READY`
+   comprova apenas que o deployment está pronto.
+3. Com autorização específica do proprietário para o destino e os domínios, usar
+   [Instant Rollback](https://vercel.com/docs/instant-rollback). Antes de confirmar, conferir
+   os domínios e subdomínios listados no diálogo e prosseguir apenas se corresponderem ao
+   escopo autorizado. A Vercel restaura o artefato existente, sem rebuild e com a configuração
+   e as variáveis originais do deployment. A atribuição automática de domínios de Production
+   fica suspensa.
+4. Conferir a associação dos domínios e o SHA restaurado. Comparar o BUILD_ID servido com o
+   valor registrado para a candidata. Tratar divergência como falha de validação. Se não
+   houver BUILD_ID anterior confiável, registrar que a comparação ficou inconclusiva, anotar o
+   BUILD_ID observado e verificar a identidade pelo deployment e SHA. Verificar a home e
+   repetir o smoke dos fluxos afetados, com status e comportamento esperados. Registrar
+   horários, evidências antes e depois, versões e resultado no PR ou no registro do incidente.
+5. Para retomar a publicação normal, obter autorização específica para o novo destino.
+   Confirmar o deployment de Production da `master`, o `quality: success` do push para o
+   mesmo SHA e os demais gates aplicáveis. Usar **Manage** no painel de Production e confirmar
+   a promoção desse deployment para reativar a atribuição automática. Conferir a reativação,
+   a versão no domínio e o smoke. Manter o Deployment Check e a proteção da `master` em
+   vigor durante toda a recuperação. Se algum gate estiver pendente ou falhar, interromper
+   a retomada.
+
 ## 8. Limites conhecidos da suíte
 
 O CI cobre Chromium e build local na porta 3001. Na Vercel os chunks usam

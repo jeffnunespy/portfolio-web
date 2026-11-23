@@ -58,6 +58,15 @@ function validationError(message: string): Error {
   return new Error(`Falha de validação de conteúdo: ${message}`);
 }
 
+function parseContentJson(raw: string, relativePath: string): unknown {
+  try {
+    return JSON.parse(raw) as unknown;
+  } catch (error) {
+    if (!(error instanceof SyntaxError)) throw error;
+    throw new SyntaxError(`Sintaxe JSON inválida em ${relativePath}.`);
+  }
+}
+
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
@@ -374,7 +383,7 @@ export function getPerfil(): PerfilProfissional {
   }
 
   const raw = fs.readFileSync(path.join(CONTENT_DIR, "profile.json"), "utf-8");
-  perfilCache = validatePerfil(JSON.parse(raw) as unknown);
+  perfilCache = validatePerfil(parseContentJson(raw, "content/profile.json"));
   return perfilCache;
 }
 
@@ -390,7 +399,7 @@ export function getProjetos(): Projeto[] {
     .sort();
   const projetos = fileNames.map((fileName) => {
     const raw = fs.readFileSync(path.join(projectsDir, fileName), "utf-8");
-    return validateProjeto(JSON.parse(raw) as unknown, fileName);
+    return validateProjeto(parseContentJson(raw, `content/projects/${fileName}`), fileName);
   });
 
   validateProjetosCollection(projetos);

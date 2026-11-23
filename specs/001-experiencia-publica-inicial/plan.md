@@ -165,7 +165,7 @@ _GATE: Must pass before Phase 0 research. Re-check after Phase 1 design._
 | VI. Segurança e privacidade desde o início    | O plano elimina 1 vulnerabilidade crítica e 2 altas e adiciona manutenção contínua de dependências; publicação fica bloqueada enquanto o gate falhar                              | PASS (remediação) |
 | VII. Acessibilidade e experiência consistente | O contrato exige regressão zero em teclado, axe e responsividade, com verificação manual complementar registrada                                                                  | PASS              |
 | VIII. Documentação como parte da entrega      | Plano, pesquisa, contrato e quickstart registram versões, riscos e validação; `docs/ACTIVE_CONTEXT.md` volta a refletir o estado real antes de qualquer trabalho assistido por IA | PASS              |
-| IX. Operação responsável                      | Preview/canário e redeploy do artefato anterior compõem a estratégia de rollback; CI garante build reproduzível                                                                   | PASS              |
+| IX. Operação responsável                      | CI garante build reproduzível. Rollback segue o [§7 do processo](../../docs/audits/PROCESSO.md#recuperação-de-production).                                                          | PASS              |
 | X. Uso responsável de IA                      | Codemods e alterações geradas devem ter diff revisado e testes executados; documentação desatualizada é tratada como risco operacional                                            | PASS              |
 
 Nenhuma violação identificada. Complexity Tracking não se aplica.
@@ -515,8 +515,9 @@ decisão registrada — não como reflexo.
    metadados, responsividade, links, currículo, conteúdo e deploy.
 4. Publicar primeiro em preview/canário; validar o contrato de
    [contracts/next16-compatibility.md](./contracts/next16-compatibility.md).
-5. Promover o mesmo artefato aprovado. Em regressão, retirar o canário e redeployar o artefato
-   anterior; a reversão de código inclui manifest, lockfile, configuração ESLint e adaptações de API.
+5. Promover Production conforme o contrato. Em regressão após a promoção, seguir a
+   [recuperação de Production no §7 do processo](../../docs/audits/PROCESSO.md#recuperação-de-production).
+   A reversão de código inclui manifest, lockfile, configuração ESLint e adaptações de API.
 
 ## Estratégia de branches e PRs
 
