@@ -129,17 +129,18 @@ diretamente; recebem dados já validados e tipados.
 
 ## Rotas
 
-| Rota               | Descrição                                                                  |
-| ------------------ | -------------------------------------------------------------------------- |
-| `/`                | Home: posicionamento, projetos em destaque e evidências do build           |
-| `/projetos`        | Lista dos projetos implementados                                           |
-| `/projetos/[slug]` | Estudo de caso, com decisões relevantes, competências e links de evidência |
-| `/roadmap`         | Escopo planejado, mantido separado do que já foi entregue                  |
-| `/sobre`           | Biografia, formação, trajetória e competências por área                    |
-| `/curriculo`       | Currículo navegável, com download do PDF                                   |
+| Rota               | Descrição                                                                    |
+| ------------------ | ---------------------------------------------------------------------------- |
+| `/`                | Home: posicionamento, projetos em destaque e evidências do build             |
+| `/projetos`        | Lista dos projetos implementados                                             |
+| `/projetos/[slug]` | Estudo de caso, com decisões relevantes, competências e links de evidência   |
+| `/roadmap`         | Escopo planejado, mantido separado do que já foi entregue                    |
+| `/sobre`           | Biografia e método de trabalho                                               |
+| `/curriculo`       | Currículo com perfil, formação, trajetória, competências e PDF para download |
+| `/privacidade`     | Aviso de privacidade acessível pelo rodapé                                   |
 
 Também são gerados `sitemap.xml`, `robots.txt`, ícone, imagens Open Graph por rota e páginas
-de erro e 404.
+de erro e recuperação com HTTP 404 para rotas e slugs inexistentes.
 
 ## Conteúdo como fonte de dados
 
@@ -395,6 +396,8 @@ O site é publicado na **Vercel** a partir da branch `master`:
   `out`), Node 24.x e instalação com `npm ci`.
 - **URL pública:** `NEXT_PUBLIC_SITE_URL` define a origem de canonical, Open Graph, sitemap e
   robots, e é obrigatória em produção (ver [Build e segurança HTTP](#build-e-segurança-http)).
+- **Deployment Check:** a Vercel aguarda o job `quality` para promover o build ao domínio público.
+  A espera foi observada no [PR #63](https://github.com/jeffnunespy/portfolio-web/pull/63).
 - **Preview:** `npx vercel deploy --environment=preview`. Confirme o ambiente no painel ou com
   `vercel inspect` antes de tratar o deploy como preview.
 

@@ -32,9 +32,9 @@ que o proprietário conduz uma aplicação da especificação ao deploy.
 
 ## Positioning
 
-Desenvolvedor em formação com foco em backend Python/Django, apresentando profundidade em
-engenharia de software, Google Cloud Platform e práticas de DevOps como diferencial sobre o perfil
-júnior típico.
+Desenvolvedor web em formação, com interesse em backend e percurso de estudo em Python e
+Django. A plataforma demonstra práticas de versionamento, validação de conteúdo no build, testes
+automatizados e integração contínua.
 
 O posicionamento "em formação" é **uma escolha estratégica confirmada, a ser preservada**. Não é
 uma lacuna a corrigir nem timidez a ser reescrita: é honestidade sobre o estágio de carreira,
@@ -64,8 +64,14 @@ não altera requisitos aprovados sem registrar a divergência primeiro.
 
 **Stack e arquitetura.** Next.js 16 (App Router) + React 19 + TypeScript sobre Node.js 24. Site
 estático: sem backend, sem banco de dados, sem autenticação e sem área administrativa nesta fase.
-Sem coleta de dados de navegação. Deploy alvo: Vercel. Estilos em CSS puro (`app/globals.css`), sem
-framework de CSS.
+O site foi publicado na Vercel. Os estilos usam CSS puro (`app/globals.css`).
+
+**Privacidade.** Nesta versão, o portfólio não coleta dados de navegação do visitante.
+O [FR-027](specs/001-experiencia-publica-inicial/spec.md#functional-requirements) veda analytics próprios
+e cookies de rastreamento. A restrição também impede incorporar conteúdo de terceiros, como
+players de vídeo ou botões de compartilhamento, quando isso implica carregar cookies ou
+rastreamento de terceiros. A seção [Dados técnicos do acesso](https://portfolio-web-three-zeta.vercel.app/privacidade#privacy-access)
+do aviso de privacidade descreve o tratamento dos dados técnicos da conexão pela hospedagem.
 
 **Conteúdo como fonte de dados.** Não há CMS nem API. Todo o conteúdo vive em JSON versionado em
 `content/` — `profile.json` e `content/projects/*.json` (um estudo de caso por arquivo). `lib/content.ts`
@@ -75,12 +81,15 @@ lê esses arquivos em tempo de build e é o único ponto de acesso.
 campos obrigatórios não vazios, enums fechados (`status`, `natureza`, `categoria`), slugs em
 kebab-case sem duplicatas, URLs HTTPS válidas, arquivos referenciados existindo de fato em
 `public/`, no máximo 6 projetos em destaque, e — a regra central — **toda competência declarada no
-perfil precisa aparecer em `competenciasDemonstradas` de algum projeto**. Adicionar uma competência
-sem projeto que a comprove faz o build falhar. Isso é o princípio constitucional em forma de
+perfil precisa aparecer em `competenciasDemonstradas` de algum projeto implementado**. Adicionar
+uma competência sem projeto que a comprove faz o build falhar. Isso é o princípio constitucional em forma de
 código; não deve ser contornado afrouxando a validação.
 
-**Rotas públicas.** `/` (home), `/projetos` (lista), `/projetos/[slug]` (estudo de caso), `/sobre`,
-`/curriculo`, mais dois estados 404 (global e de projeto inexistente).
+**Rotas públicas.** `/` apresenta o perfil, os destaques e as evidências do build. `/projetos`
+lista o trabalho implementado e `/projetos/[slug]` exibe os estudos de caso. `/roadmap` reúne
+o escopo planejado. `/sobre` descreve a biografia e o método de trabalho. `/curriculo` reúne
+perfil, formação, trajetória, competências e download do PDF. `/privacidade` apresenta o aviso
+acessível pelo rodapé. Rotas e slugs inexistentes oferecem recuperação com HTTP 404.
 
 **Idioma.** Todo o domínio, tipos, campos JSON, mensagens de erro e documentação estão em
 português. Nomes de interfaces e propriedades seguem o vocabulário existente.
@@ -134,20 +143,16 @@ declarado pelo proprietário nesta sessão:
   de validação. O relatório técnico de 2026-10-22 fundamenta a arquitetura e as limitações; não é
   aprovação de lançamento comercial nem comprovação de todos os portões operacionais.
 
-**Não reais — as outras quatro fichas descrevem estrutura planejada:**
+**Escopo planejado no roadmap:**
 
-`hayyanu`, `sistema-helpdesk`, `gerenciamento-filas` e `transcricao-audio` descrevem **escopo
-planejado, não trabalho entregue**. Nenhum deles existe como código hoje. Os JSONs foram escritos
-para exercitar o schema e a validação, não como relatos de projetos concluídos.
+`hayyanu`, `sistema-helpdesk`, `gerenciamento-filas` e `transcricao-audio` registram escopos
+planejados. HAYYANU tem implementação parcial do backend em Django. O domínio de negócio e o
+site público seguem planejados. A publicação de novas evidências depende da aprovação do
+proprietário.
 
-Consequência vinculante: essas quatro fichas só podem ser publicadas **enquanto se apresentarem
-como planejamento**. O campo `real: false` governa isso no código — a ficha troca o estudo de caso
-por um aviso "Estrutura de conteúdo", o cartão ganha a marca correspondente, e os textos
-(`resumo`, `contexto`, `responsabilidadeProprietario`) estão redigidos em linguagem de intenção,
-não de execução. Apresentá-las como trabalho realizado violaria o princípio I da constituição e
-enganaria exatamente o leitor que o portfólio quer convencer. Trabalho futuro (design, copy, SEO,
-metadados) não deve tratar esses textos, tecnologias, decisões arquiteturais ou status como fatos
-sobre o proprietário.
+O campo `real: false` mantém essas quatro entradas exclusivamente em `/roadmap`, como
+escopo planejado. Elas ficam fora do catálogo, das fichas públicas e da comprovação de
+competências. Seus textos e tecnologias previstas descrevem intenções de projeto.
 
 **Conteúdo de publicação confirmado em 2026-10-23:**
 
@@ -160,10 +165,9 @@ sobre o proprietário.
 - Imagens em `public/images/projects/*.svg` são apresentação genérica, não capturas de aplicações
   reais.
 
-**Ausências que não podem ser preenchidas por invenção:** não há métricas de uso, número de
-usuários, resultados de negócio, depoimentos, clientes, prêmios, experiência profissional
-comprovada nem aplicações publicadas. Nada disso deve ser gerado, estimado ou sugerido em conteúdo,
-copy ou metadados.
+**Afirmações públicas exigem fonte.** Use somente os projetos e o trabalho descritos nas
+fichas. Métricas de uso, resultados de negócio, depoimentos, clientes, prêmios e outras
+experiências exigem evidência própria antes de entrar no conteúdo ou nos metadados.
 
 ## Product Principles
 
@@ -175,9 +179,9 @@ copy ou metadados.
 2. **Honestidade sobre o estágio é posicionamento, não fraqueza.** "Em formação" fica. O portfólio
    compete por precisão e profundidade de raciocínio, não por aparentar senioridade.
 
-3. **Nesta fase, a plataforma é a demonstração.** Enquanto os projetos não existem, o artefato
-   técnico real é o próprio site. Sua qualidade — validação, testes, acessibilidade, operação — é o
-   que há de verificável.
+3. **Os projetos implementados são a demonstração.** A plataforma tem código público e
+   demonstra validação, testes, acessibilidade e operação. Nana Silva tem um catálogo publicado
+   em ambiente de validação. O roadmap registra os demais projetos como escopo planejado.
 
 4. **Simplicidade proporcional.** A solução mais simples que atende ao requisito atual vence.
    Dependências, camadas e abstrações novas exigem justificativa. Sem framework de CSS, sem CMS, sem
@@ -188,8 +192,8 @@ copy ou metadados.
 
 ## Accessibility & Inclusion
 
-WCAG 2.1 níveis A e AA, verificado automaticamente com `@axe-core/playwright` em todas as rotas
-públicas (`npm run test:e2e:a11y`). As páginas devem ser responsivas, navegáveis por teclado, com
+WCAG 2.1 níveis A e AA orienta o requisito de acessibilidade. A suíte
+`npm run test:e2e:a11y` verifica critérios automatizáveis com `@axe-core/playwright`. As páginas devem ser responsivas, navegáveis por teclado, com
 estrutura semântica, contraste adequado, textos alternativos e estados claros.
 
 Verificações manuais ainda pendentes e registradas em `docs/ACTIVE_CONTEXT.md`: navegação completa

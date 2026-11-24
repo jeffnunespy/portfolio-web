@@ -122,8 +122,8 @@ linhas abertas deixam a evidência e seus limites conduzirem a leitura.
 A direção já está implementada no [protótipo de referência](docs/referencias-visuais/prototipo-minimalista-escuro.html),
 na versão final **sem prévia de Nana Silva**. Em 2026-10-24, a execução integrada de
 T102–T105 aplicou essa direção às rotas Next.js, com validação local concluída e registrada em
-`docs/ACTIVE_CONTEXT.md`. Não houve publicação. O frontmatter registra os valores extraídos
-do HTML; as adaptações ao conteúdo e aos requisitos da aplicação estão descritas abaixo.
+`docs/ACTIVE_CONTEXT.md`. A direção foi publicada em 2026-10-29. O frontmatter registra
+os valores extraídos do HTML. As adaptações à aplicação estão descritas abaixo.
 
 A [decisão oficial](docs/referencias-visuais/direcao-minimalista-escura.md) registra a autoridade
 da direção. O [sistema anterior](docs/referencias-visuais/design-levantamento-sondagem.md) foi
@@ -249,7 +249,7 @@ A abertura usa 2rem no topo e 3rem na base; abaixo de 1050px as duas partes se e
 As competências passam de duas colunas a quatro no intervalo de 761–1050px e voltam a duas
 até 760px, ou uma até 360px. O nome usa `clamp(2.5rem, 12vw, 3.6rem)` no celular para
 preservar o gesto e permitir ampliação sem recorte. Não há altura fixa na abertura.
-Os links do menu reservam pelo menos 44px também na largura, mesmo com rótulo compacto.
+Os links do menu reservam pelo menos 44px também na largura.
 A ação principal da abertura salta para o título focável dos projetos em destaque por
 âncora nativa, inclusive sem JavaScript. O currículo mantém acesso direto ao lado.
 
@@ -377,9 +377,9 @@ etapas. O diagrama é HTML/SVG, sem raster publicado na referência atual.
 ## Aplicação e comprovação
 
 `app/globals.css` aplica os sete tokens e os papéis tipográficos; Header, Footer e todas as
-rotas compartilham o mesmo contêiner, sem cabeçalho fixo. As páginas Sobre, currículo,
-roadmap e recuperação usam colunas com mínimo zero e quebra segura de texto; o currículo
-mantém seu PDF. O ícone repete o ponto de autoria. A imagem ilustrativa da plataforma
+rotas compartilham o mesmo contêiner, sem cabeçalho fixo. Sobre, currículo, privacidade,
+roadmap e recuperação usam colunas com mínimo zero e quebra segura de texto. O currículo
+mantém seu PDF, e o aviso de privacidade é acessível pelo rodapé. O ícone repete o ponto de autoria. A imagem ilustrativa da plataforma
 é um índice editorial em 5:3 com contexto, decisões e limitações, sem simular uma captura.
 O fluxo de conteúdo, validação e publicação fica concentrado no diagrama semântico.
 

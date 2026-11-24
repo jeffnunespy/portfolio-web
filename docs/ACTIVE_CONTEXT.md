@@ -1,5 +1,26 @@
 # Active Context
 
+## Publicação do aviso de privacidade — 2026-11-24
+
+O aviso `/privacidade` foi publicado automaticamente após o `quality` da
+`master` no merge `e3f0e5c925a60fbf06b45bf63b96b7c13fb39cf8`. O
+Deployment Check reteve a promoção até a aprovação do job. O domínio público
+serviu o BUILD_ID `3I5iA99CY-qQ1dW6kJEq0` e passou no smoke dirigido.
+T124 concluída com aceite formal e ressalvas jurídicas registradas.
+[Evidências do PR #69](https://github.com/jeffnunespy/portfolio-web/pull/69#issuecomment-7130557170).
+
+## Estado vigente da experiência pública
+
+- A `master` de referência é `e3f0e5c`. Production oferece home, catálogo, duas fichas,
+  roadmap, Sobre, currículo (HTML e PDF) e aviso de privacidade. Slugs fora do catálogo
+  e rotas inexistentes oferecem recuperação com HTTP 404, inclusive sem JavaScript.
+- O [índice das auditorias](audits/STATUS.md#índice-vigente--2026-11-24) registra AUD01–AUD13.
+  T122 e T123 foram integradas no [#59](https://github.com/jeffnunespy/portfolio-web/pull/59). O Deployment Check `quality` segue ativo,
+  com promoção observada nos PRs [#63](https://github.com/jeffnunespy/portfolio-web/pull/63) e [#69](https://github.com/jeffnunespy/portfolio-web/pull/69). A1/O1 permanece em rascunho no [#62](https://github.com/jeffnunespy/portfolio-web/pull/62).
+- T055 segue aberta, sob responsabilidade do proprietário, com revisão até 04/12/2026
+  ou mudança relevante. O [roteiro humano](CHECKLIST_PUBLICACAO.md#inspeção-humana-local--t055)
+  inclui `/privacidade`. F5, R05, #49 e a ressalva A1 do #53 seguem em acompanhamento.
+
 ## Reconciliação operacional — 2026-11-06
 
 **Encerramento formal da AUD03: CONCLUÍDA COM RESSALVAS**, sobre master
@@ -13,9 +34,9 @@ Relato privado habilitado e oferecido pela página Security pública; canal mant
 Pendências editoriais históricas examinadas, sem correção obrigatória na premissa pública.
 F5/T055/R05/#49 continuam independentes, nos limites e prazos aceitos; nenhuma
 inspeção humana pendente foi declarada aprovada. PROD-001/#45 encerrados; AUD04
-concluída. AUD05 não iniciada. Publicação documental autorizada em branch própria e PR;
+concluída. Publicação documental autorizada em branch própria e PR;
 merge exige autorização específica para PR e SHA final.
-As seções anteriores abaixo são históricas onde divergirem deste estado.
+Os registros abaixo descrevem versões e validações anteriores.
 
 ## Feature
 
@@ -67,7 +88,7 @@ na versão final **sem prévia de Nana Silva**. Em 2026-10-24, o proprietário a
 executar em conjunto as correções do audit; T102–T105 aplicaram a direção às rotas,
 com validação local concluída. `DESIGN.md` orienta o visual; a implementação anterior fica como histórico.
 Em 2026-10-23, o proprietário confirmou o perfil atual e o estudo de caso da plataforma e autorizou
-a geração do PDF. A publicação continua bloqueada pelas inspeções manuais/de preview.
+a geração do PDF. Naquele recorte, a publicação aguardava as inspeções manuais e de preview.
 
 ## Auditoria 03 — Links para o repositório privado (2026-11-02)
 
@@ -423,7 +444,7 @@ automatizados e revisão de código não foram registrados como inspeção human
 eventual resultado de leitor de tela foram solicitados ao proprietário. T055 continua aberta;
 nenhum deploy, commit, push ou promoção foi executado.
 
-## Entregues
+## Entregues — recorte de 2026-08-15
 
 - Runtime Node.js 24, Next.js 16.3.1, React 19, ESLint flat config e CI com Dependabot.
 - Rotas públicas estáticas de home, projetos, detalhe, Sobre, currículo e ambos os estados 404.

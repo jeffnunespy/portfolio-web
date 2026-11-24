@@ -169,7 +169,7 @@ Aplicação Next.js única: `app/`, `components/`, `content/`, `lib/`, `tests/`,
 - [X] T052 Revisar cada estudo de caso com contexto, decisões, limitações, próximos passos, links e evidências confirmadas em `content/projects/*.json`
 - [X] T053 Verificar a existência das imagens publicadas referenciadas pelo conteúdo em `public/images/projects/`
 - [X] T054 Executar formatação, lint, tipos, unitários, build Turbopack, E2E e auditoria de produção conforme `specs/001-experiencia-publica-inicial/quickstart.md`
-- [ ] T055 Registrar a inspeção manual de teclado, foco, headings, zoom, leitor de tela, links e preview/canário em `docs/ACTIVE_CONTEXT.md`
+- [ ] T055 Registrar a inspeção manual de teclado, foco, headings, zoom, leitor de tela, links e preview/canário em `docs/ACTIVE_CONTEXT.md`, incluindo `/privacidade` conforme o [roteiro humano](../../docs/CHECKLIST_PUBLICACAO.md#inspeção-humana-local--t055).
 
 **Checkpoint**: O commit candidato atende ao contrato de compatibilidade, não possui vulnerabilidades críticas/altas de produção e está pronto para validação em preview antes de promoção.
 
@@ -617,11 +617,11 @@ acompanhamentos permanecem independentes.
 
 ## Phase 27: AUD09 — proteção de seleção e metadados
 
-- [ ] T122 Cobrir AUD09-001 com fixtures de implementados/planejados destacados
+- [X] T122 Cobrir AUD09-001 com fixtures de implementados/planejados destacados
   e não destacados, resultados explícitos dos seletores e renderização da home
   com implementados não destacados e sem destaques. Preservar FR-004/004a/004b
   e o contrato de ProjetoImplementado; não passar planejados a ProjectCard.
-- [ ] T123 Cobrir AUD09-002 na matriz E2E existente: OG e Twitter correspondem ao
+- [X] T123 Cobrir AUD09-002 na matriz E2E existente: OG e Twitter correspondem ao
   conteúdo esperado da rota; páginas indexáveis não enviam noindex/none por meta
   robots/googlebot ou X-Robots-Tag. Preservar controles 404 e regras de Preview.
 
@@ -646,9 +646,15 @@ encerrar T055 ou reabrir F5/R05/#49/A1.
 
 ---
 
+**Encerramento da AUD09 — 08/11/2026:** o [#59](https://github.com/jeffnunespy/portfolio-web/pull/59) integrou T122 e T123 em
+`87c77e29d524916125360dc33b6153c7d536213d`. O PR registra o parecer independente,
+os controles negativos, o Preview e a validação em Production.
+[Quality pós-merge](https://github.com/jeffnunespy/portfolio-web/actions/runs/42430941523)
+aprovado na `master`.
+
 ## Phase 28: AUD13 — aviso de privacidade
 
-- [ ] T124 Atender FR-030 (AUD13-001) com aviso estático em `/privacidade`, link no
+- [X] T124 Atender FR-030 (AUD13-001) com aviso estático em `/privacidade`, link no
   rodapé e URL canônica no sitemap, após confirmação das práticas operacionais e
   validação do texto pelo responsável. Documentar controlador e contato, dados de
   hospedagem e de e-mail, finalidades, retenção de até 12 meses após a última
@@ -663,3 +669,11 @@ encerrar T055 ou reabrir F5/R05/#49/A1.
 **Estado local — 23/11/2026:** práticas operacionais confirmadas. Texto atualizado
 para aprovação do responsável. Revisão do candidato final, CI e homologação
 hospedada seguem pendentes. AUD13-002 integra o mesmo PR em commit próprio.
+
+**Encerramento — 24/11/2026:** texto e compromissos operacionais aceitos pelo
+proprietário. FR-030 validado em Production no merge
+`e3f0e5c925a60fbf06b45bf63b96b7c13fb39cf8`, com `quality` aprovado no push
+da `master`, Deployment Check aprovado e BUILD_ID servido
+`3I5iA99CY-qQ1dW6kJEq0`. Auditoria encerrada com ressalvas jurídicas e
+aceite da recuperabilidade dos caminhos locais no histórico.
+[Evidências e aceite no PR #69](https://github.com/jeffnunespy/portfolio-web/pull/69#issuecomment-7130557170).
