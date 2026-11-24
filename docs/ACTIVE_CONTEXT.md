@@ -11,12 +11,14 @@ T124 concluída com aceite formal e ressalvas jurídicas registradas.
 
 ## Estado vigente da experiência pública
 
-- A `master` de referência é `e3f0e5c`. Production oferece home, catálogo, duas fichas,
+- A `master` de referência é `59cbae9bb311bafe3d8c4edde1935c287699779d`. Production oferece home, catálogo, duas fichas,
   roadmap, Sobre, currículo (HTML e PDF) e aviso de privacidade. Slugs fora do catálogo
   e rotas inexistentes oferecem recuperação com HTTP 404, inclusive sem JavaScript.
-- O [índice das auditorias](audits/STATUS.md#índice-vigente--2026-11-24) registra AUD01–AUD13.
+- O [índice das auditorias](audits/STATUS.md#índice-vigente--2026-11-24) registra AUD01–AUD14.
   T122 e T123 foram integradas no [#59](https://github.com/jeffnunespy/portfolio-web/pull/59). O Deployment Check `quality` segue ativo,
   com promoção observada nos PRs [#63](https://github.com/jeffnunespy/portfolio-web/pull/63) e [#69](https://github.com/jeffnunespy/portfolio-web/pull/69). A1/O1 permanece em rascunho no [#62](https://github.com/jeffnunespy/portfolio-web/pull/62).
+- A AUD14 foi encerrada técnica e operacionalmente. Production serve o BUILD_ID
+  `VRjPxOjJj9-yUMuRK6X-E` após o Deployment Check do merge. [Evidências do PR #71](https://github.com/jeffnunespy/portfolio-web/pull/71#issuecomment-7145829772).
 - T055 segue aberta, sob responsabilidade do proprietário, com revisão até 04/12/2026
   ou mudança relevante. O [roteiro humano](CHECKLIST_PUBLICACAO.md#inspeção-humana-local--t055)
   inclui `/privacidade`. F5, R05, #49 e a ressalva A1 do #53 seguem em acompanhamento.
