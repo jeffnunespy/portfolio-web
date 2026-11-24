@@ -27,14 +27,19 @@ for (const route of publicRoutes) {
 }
 
 for (const width of [320, 1280]) {
-  test(`@a11y nomes da navegação contêm os rótulos visíveis em ${width}px`, async ({ page }) => {
+  test(`@a11y nomes da navegação correspondem aos rótulos visíveis em ${width}px`, async ({
+    page,
+  }) => {
     await page.setViewportSize({ width, height: 900 });
     await page.goto("/");
 
     const links = page.getByRole("navigation", { name: "Navegação principal" }).getByRole("link");
+    await expect(links).toHaveCount(5);
     for (const link of await links.all()) {
-      const rotuloVisivel = (await link.locator("span:visible").innerText()).trim();
-      await expect(link).toHaveAccessibleName(new RegExp(rotuloVisivel, "i"));
+      await expect(link).toBeVisible();
+      const rotuloVisivel = (await link.innerText()).trim();
+      expect(rotuloVisivel).not.toBe("");
+      await expect(link).toHaveAccessibleName(rotuloVisivel);
     }
   });
 }

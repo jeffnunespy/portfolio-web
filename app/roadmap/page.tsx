@@ -4,7 +4,7 @@ import { getRoadmap } from "../../lib/content";
 import { NATUREZA_LABEL } from "../../lib/labels";
 
 const descricao =
-  "Escopo planejado: projetos com problema e objetivo definidos, ainda sem software implementado.";
+  "Escopo planejado: problemas, objetivos e tecnologias previstas para cada projeto.";
 
 const PLATAFORMA_GCP = "Google Cloud Platform";
 
@@ -72,9 +72,8 @@ export default function RoadmapPage() {
         Escopo planejado · {planejados.length} {planejados.length === 1 ? "entrada" : "entradas"}
       </p>
       <p className="page-intro__lead">
-        Estas entradas registram intenção, não entrega. Nenhuma delas existe como software hoje, e
-        nenhuma sustenta competência declarada no currículo. Estão publicadas para tornar o
-        planejamento auditável — não para serem lidas como trabalho realizado.
+        Estas entradas descrevem escopos planejados. O currículo reúne competências sustentadas
+        pelas fichas de projetos implementados.
       </p>
 
       {planejados.length > 0 ? (
@@ -86,6 +85,9 @@ export default function RoadmapPage() {
                 <span className="muted-label">{projeto.categoria}</span>
               </div>
               <h2>{projeto.titulo}</h2>
+              {projeto.slug === "hayyanu" ? (
+                <p className="roadmap-entry__summary">{projeto.resumo}</p>
+              ) : null}
               <p className="roadmap-entry__problem">
                 <strong>Problema que pretende tratar:</strong> {projeto.problemaTratado}
               </p>

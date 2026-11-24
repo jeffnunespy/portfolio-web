@@ -353,10 +353,8 @@ function validateProjetosCollection(projetos: Projeto[]): void {
 }
 
 function validateCompetenciasComEvidencia(perfil: PerfilProfissional, projetos: Projeto[]): void {
-  // Só projeto implementado conta como evidência: uma ficha de escopo planejado
-  // descreve software que ainda não existe e não comprova competência alguma
-  // (FR-024/SC-007, princípio "evidências acima de afirmações"). Sem o filtro,
-  // o gate aceita conteúdo ficcional como prova e deixa de cumprir sua função.
+  // Só as fichas de projetos implementados entram na comprovação de competências
+  // (FR-024/SC-007). As tecnologias do roadmap descrevem o escopo previsto.
   const competenciasComEvidencia = new Set(
     projetos.filter((projeto) => projeto.real).flatMap((p) => p.competenciasDemonstradas),
   );

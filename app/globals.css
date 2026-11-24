@@ -208,9 +208,6 @@ code {
 .site-nav .nav-curriculo-destaque {
   color: var(--accent);
 }
-.site-nav__label--compact {
-  display: none;
-}
 
 /* A ação continua sendo texto; o SVG de seta não determina largura mínima do rótulo. */
 .button,
@@ -707,6 +704,7 @@ details[open] > summary {
   flex-wrap: wrap;
   gap: 0.25rem 1.5rem;
 }
+.roadmap-entry__summary,
 .roadmap-entry__problem,
 .roadmap-entry__goal {
   max-width: var(--reading-measure);
@@ -993,19 +991,9 @@ details[open] > summary {
   font-weight: 300;
 }
 .about-page > section > p,
-.resume-page > section > p {
-  color: var(--muted);
-}
-.about-principles article + article {
-  margin-top: 1.5rem;
-}
-.about-principles h3 {
-  font-size: 1.0625rem;
-  font-weight: 400;
-  margin-bottom: 0.5rem;
-  letter-spacing: normal;
-}
-.about-principles p {
+.resume-page > section > p,
+.resume-timeline p:not([class]) {
+  max-width: var(--reading-measure);
   color: var(--muted);
 }
 /* Aviso de privacidade: mesma grade de Sobre e currículo, com a coluna de
@@ -1068,9 +1056,6 @@ details[open] > summary {
   font-weight: 400;
   letter-spacing: normal;
   margin-bottom: 0.5rem;
-}
-.resume-timeline p:not([class]) {
-  color: var(--muted);
 }
 .resume-skills {
   display: grid;
@@ -1192,14 +1177,8 @@ details[open] > summary {
   .site-nav {
     width: 100%;
     justify-content: space-between;
-    gap: 0.25rem 0.5rem;
+    gap: 0.25rem;
     font-size: 0.8125rem;
-  }
-  .site-nav__label--full {
-    display: none;
-  }
-  .site-nav__label--compact {
-    display: inline;
   }
   .home-name {
     font-size: clamp(2.5rem, 12vw, 3.6rem);

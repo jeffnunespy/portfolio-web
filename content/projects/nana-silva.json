@@ -1,7 +1,7 @@
 {
   "slug": "nana-silva",
   "titulo": "Nana Silva",
-  "resumo": "Portfólio-catálogo de tatuagens com Astro, conteúdo editado no Notion e contato pelo WhatsApp, publicado na Cloudflare.",
+  "resumo": "Portfólio-catálogo de tatuagens com Astro, conteúdo editado no Notion e contato pelo WhatsApp, disponível em ambiente de validação na Cloudflare Pages.",
   "problemaTratado": "Reunir desenhos de tatuagem e sua disponibilidade em um catálogo que a artista possa atualizar pelo celular, sem editar código, encaminhando os interessados ao WhatsApp.",
   "status": "Em andamento",
   "categoria": "Web",

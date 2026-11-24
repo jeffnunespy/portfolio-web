@@ -88,7 +88,16 @@ test("US2 - abre um projeto pela home e exibe todas as seções obrigatórias", 
     await expect(page.getByRole("heading", { name: section })).toBeVisible();
   }
 
-  await expect(page.locator('[data-testid="decision-card"]')).toHaveCount(2);
+  const decisoes = page.getByTestId("decision-card");
+  await expect(decisoes).toHaveCount(4);
+  for (const heading of [
+    "Páginas pré-renderizadas e componentes reutilizáveis",
+    "Conteúdo versionado e validado no build",
+    "Testes unitários, de navegação e de acessibilidade",
+    "Integração contínua e promoção à produção",
+  ]) {
+    await expect(decisoes.getByRole("heading", { name: heading, exact: true })).toBeVisible();
+  }
   await expect(page.getByText("CSS puro", { exact: true })).toBeVisible();
   await expect(page.getByText("Tailwind CSS", { exact: true })).toHaveCount(0);
   await expect(page.getByText("Estrutura de conteúdo", { exact: true })).toHaveCount(0);
@@ -127,6 +136,12 @@ test("US2 - projeto planejado não resolve como ficha e vive no roadmap", async 
   const hayyanu = page
     .locator(".roadmap-entry")
     .filter({ has: page.getByRole("heading", { level: 2, name: "HAYYANU" }) });
+  await expect(
+    hayyanu.getByText(
+      "O backend em Django tem implementação parcial. O domínio de negócio e o site público seguem planejados.",
+      { exact: true },
+    ),
+  ).toBeVisible();
   const stackHayyanu = hayyanu.getByRole("region", { name: "Stack prevista" });
   await expect(stackHayyanu.locator(".roadmap-stack__group")).toHaveCount(2);
   await expect(stackHayyanu.getByText("Google Cloud Platform", { exact: true })).toBeVisible();

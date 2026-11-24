@@ -30,12 +30,14 @@ const pages = [
   {
     route: "/roadmap",
     title: /Roadmap/,
-    description: /escopo planejado/i,
+    description: literal(
+      "Escopo planejado: problemas, objetivos e tecnologias previstas para cada projeto.",
+    ),
   },
   {
     route: "/sobre",
     title: /Sobre/,
-    description: /trajetória/i,
+    description: literal(`Conheça a biografia e o método de trabalho de ${perfil.nome}.`),
   },
   {
     route: "/curriculo",

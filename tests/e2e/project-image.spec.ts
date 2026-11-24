@@ -47,7 +47,7 @@ async function neutral(page: Page) {
   await expect(surface(page)).toHaveAttribute("aria-hidden", "true");
   await expect(page.locator("figure.project-image img")).toHaveCount(0);
   await expect(page.getByText("Imagem indisponível", { exact: true })).toHaveCount(0);
-  await expect(caption(page)).toContainText("Se a prévia não aparecer");
+  await expect(caption(page)).toContainText("Índice ilustrativo da ficha");
   const link = caption(page).getByRole("link", {
     name: "Ler descrição de Plataforma de Portfólio",
   });
@@ -82,7 +82,7 @@ for (const width of [390, 1280]) {
           const html = await response!.text();
           await info.attach("resposta-ssr", { body: html, contentType: "text/html" });
           expect(html).toContain('class="project-image__surface"');
-          expect(html).toContain("Se a prévia não aparecer");
+          expect(html).toContain("Índice ilustrativo da ficha");
           expect(response!.headers()["content-security-policy"]).toContain("object-src 'none'");
           await surface(page).scrollIntoViewIfNeeded();
           await ready(page);
