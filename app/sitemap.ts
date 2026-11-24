@@ -3,7 +3,7 @@ import { getProjetosImplementados } from "../lib/content";
 import { SITE_URL } from "../lib/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const rotasEstaticas = ["/", "/projetos", "/roadmap", "/sobre", "/curriculo"];
+  const rotasEstaticas = ["/", "/projetos", "/roadmap", "/sobre", "/curriculo", "/privacidade"];
 
   return [
     ...rotasEstaticas.map((rota) => ({

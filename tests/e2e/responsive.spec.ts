@@ -8,6 +8,7 @@ const routes = [
   "/roadmap",
   "/sobre",
   "/curriculo",
+  "/privacidade",
   "/rota-inexistente",
   "/projetos/slug-inexistente",
 ];

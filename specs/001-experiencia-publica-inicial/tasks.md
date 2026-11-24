@@ -643,3 +643,23 @@ Revisão independente estática sem achados; o revisor atingiu limite de uso ant
 do parecer final dos controles. Checkboxes permanecem abertas até esse parecer;
 CI e homologação hospedada também pendentes. Sem commit/push/PR/deploy, sem
 encerrar T055 ou reabrir F5/R05/#49/A1.
+
+---
+
+## Phase 28: AUD13 — aviso de privacidade
+
+- [ ] T124 Atender FR-030 (AUD13-001) com aviso estático em `/privacidade`, link no
+  rodapé e URL canônica no sitemap, após confirmação das práticas operacionais e
+  validação do texto pelo responsável. Documentar controlador e contato, dados de
+  hospedagem e de e-mail, finalidades, retenção de até 12 meses após a última
+  interação para contatos sem continuidade, revisão semestral complementar e
+  exceções aprovadas. Identificar provedores, direitos, canal de solicitações,
+  links externos e data de atualização.
+  Validar teclado, navegação sem JavaScript, acessibilidade (FR-021/FR-022),
+  metadados (FR-029), links e ausência de cookies, armazenamento, service workers
+  e requisições de rastreamento nos fluxos amostrados. Preservar FR-017/FR-027.
+  A entrega não inclui banner de cookies.
+
+**Estado local — 23/11/2026:** práticas operacionais confirmadas. Texto atualizado
+para aprovação do responsável. Revisão do candidato final, CI e homologação
+hospedada seguem pendentes. AUD13-002 integra o mesmo PR em commit próprio.

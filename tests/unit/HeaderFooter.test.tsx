@@ -37,6 +37,10 @@ describe("Footer", () => {
       "href",
       "/curriculo",
     );
+    expect(within(navigation).getByRole("link", { name: "Privacidade" })).toHaveAttribute(
+      "href",
+      "/privacidade",
+    );
     const contact = screen.getByRole("region", { name: "Vamos conversar." });
     expect(within(contact).getByRole("link", { name: "Ver GitHub" })).toHaveAttribute(
       "href",

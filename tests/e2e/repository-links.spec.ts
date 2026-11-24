@@ -21,6 +21,7 @@ const rotas = [
   "/roadmap",
   "/sobre",
   "/curriculo",
+  "/privacidade",
   "/rota-inexistente",
 ];
 

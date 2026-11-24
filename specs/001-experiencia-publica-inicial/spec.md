@@ -228,6 +228,12 @@ Esta alteração não dispensa a validação do comportamento com JavaScript hab
 - **FR-028**: O conteúdo das páginas públicas DEVE ser entregue de forma estática/pré-carregada, sem espera perceptível ao visitante; estados de carregamento (loading) não são exigidos nesta primeira versão.
 - **FR-029**: Cada página pública DEVE possuir título de página e descrição meta próprios, derivados do seu conteúdo específico (ex.: título do projeto na página de projeto, "Sobre — [Nome]" na página Sobre), em vez de um título/descrição genéricos compartilhados por todas as páginas.
 
+**Aviso de privacidade (AUD13-001)**
+
+- **FR-030**: Após a confirmação das informações operacionais e a validação do conteúdo pelo responsável, o sistema DEVE publicar um aviso estático em `/privacidade`, acessível pelo rodapé e listado no sitemap. O aviso DEVE identificar o controlador e seu contato, descrever os dados técnicos tratados na hospedagem e os dados enviados voluntariamente por e-mail, informar finalidades e critérios de retenção confirmados, identificar os provedores sem atribuir papéis contratuais sem evidência, indicar os direitos dos titulares e o canal para solicitações, explicar o funcionamento dos links externos e trazer a data da última atualização.
+  - Até a validação, o aviso permanece como proposta local, sem rota pública, link no rodapé ou entrada no sitemap.
+  - O aceite exige navegação por teclado e sem JavaScript, acessibilidade conforme FR-021 e FR-022, metadados próprios conforme FR-029, link funcional no rodapé e URL canônica no sitemap. Nos fluxos normais testados, verificar ausência de cookies, armazenamento no navegador, service workers e requisições de rastreamento. Aplicam-se FR-017 e FR-027. A entrega não inclui banner de cookies.
+
 ### Key Entities *(include if feature involves data)*
 
 - **Projeto implementado**: Representa um estudo de caso entregue e apresentado no portfólio. Atributos: título, identificador de URL (estável, definido na publicação), marcador de implementação real, resumo, problema tratado, status (valores possíveis: "Em andamento", "Concluído", "Pausado", "Arquivado"), categoria, natureza (autoral, acadêmico, colaborativo, profissional), tecnologias/áreas técnicas, imagem de apresentação, competências demonstradas, contexto, objetivo, funcionalidades principais, responsabilidade do proprietário, decisões relevantes, stack informativa, limitações conhecidas, próximos passos, link de demonstração (opcional), link de repositório (opcional).

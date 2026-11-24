@@ -156,6 +156,7 @@ code {
 .project-detail,
 .about-page,
 .resume-page,
+.privacy-page,
 .message-page {
   width: min(100% - 2 * var(--gutter), var(--content-width));
   margin-inline: auto;
@@ -657,6 +658,7 @@ details[open] > summary {
 .project-detail,
 .about-page,
 .resume-page,
+.privacy-page,
 .message-page {
   padding-top: 3rem;
   padding-bottom: 2rem;
@@ -666,7 +668,8 @@ details[open] > summary {
 }
 .page-intro__lead,
 .project-detail__lead,
-.about-page__lead {
+.about-page__lead,
+.privacy-page__lead {
   max-width: 62ch;
   margin-top: 1.25rem;
   color: var(--muted);
@@ -820,7 +823,8 @@ details[open] > summary {
   color: var(--ink);
 }
 .project-detail__content ul:not(.chip-list),
-.resume-skills ul {
+.resume-skills ul,
+.privacy-rights {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: 0.5rem;
@@ -828,7 +832,8 @@ details[open] > summary {
   list-style: none;
 }
 .project-detail__content ul:not(.chip-list) li,
-.resume-skills li {
+.resume-skills li,
+.privacy-rights li {
   padding-left: 1rem;
   border-left: 1px solid var(--line);
   min-width: 0;
@@ -965,13 +970,15 @@ details[open] > summary {
   gap: 0.5rem 2rem;
 }
 .about-page,
-.resume-page {
+.resume-page,
+.privacy-page {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: var(--section-space);
 }
 .about-page > section,
-.resume-page > section {
+.resume-page > section,
+.privacy-page > section {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
   align-items: start;
@@ -980,7 +987,8 @@ details[open] > summary {
   padding-top: 1.5rem;
 }
 .about-page > section > h2,
-.resume-page > section > h2 {
+.resume-page > section > h2,
+.privacy-page > section > h2 {
   font-size: 1.5rem;
   font-weight: 300;
 }
@@ -999,6 +1007,27 @@ details[open] > summary {
 }
 .about-principles p {
   color: var(--muted);
+}
+/* Aviso de privacidade: mesma grade de Sobre e currículo, com a coluna de
+   leitura limitada à medida do sistema e destaques em marfim. */
+.privacy-page__body {
+  display: grid;
+  gap: 1rem;
+  max-width: var(--reading-measure);
+  min-width: 0;
+  color: var(--muted);
+}
+.privacy-page__body code {
+  color: var(--ink);
+}
+.privacy-providers {
+  display: grid;
+  gap: 1.25rem;
+}
+.privacy-providers dt {
+  margin-bottom: 0.25rem;
+  color: var(--ink);
+  font-weight: 400;
 }
 .resume-page__header {
   display: flex;
@@ -1191,6 +1220,7 @@ details[open] > summary {
   .message-page__layout,
   .about-page > section,
   .resume-page > section,
+  .privacy-page > section,
   .site-footer__inner {
     grid-template-columns: minmax(0, 1fr);
   }
@@ -1331,7 +1361,8 @@ details[open] > summary {
   }
   .resume-page,
   .project-detail,
-  .about-page {
+  .about-page,
+  .privacy-page {
     width: 100%;
     padding-top: 0;
   }

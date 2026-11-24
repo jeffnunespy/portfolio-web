@@ -9,6 +9,7 @@ const publicRoutes = [
   "/roadmap",
   "/sobre",
   "/curriculo",
+  "/privacidade",
   "/rota-inexistente",
   "/projetos/slug-inexistente",
 ];

@@ -6,7 +6,7 @@
 
 Em 2026-10-09, o proprietário indicou a **referência 01B — Planos suspensos** como a direção mais provável para o redesign. O aspecto preferido foi a **posição dos elementos**. Este registro expressa uma preferência para orientar a próxima etapa; não é aprovação definitiva de um layout nem autorização para implementar o frontend.
 
-Referência principal: [referencia-01b-planos-suspensos.png](../../referencia-01b-planos-suspensos.png), na raiz do repositório. Para ferramentas que exigem caminho absoluto neste workspace: `/home/jeff/projetos/portfolio/referencia-01b-planos-suspensos.png`.
+Referência principal: [referencia-01b-planos-suspensos.png](../../referencia-01b-planos-suspensos.png), na raiz do repositório. Para ferramentas que exigem caminho absoluto neste workspace: `<raiz-do-repositório>/referencia-01b-planos-suspensos.png`.
 
 ## Composição a desenvolver
 
