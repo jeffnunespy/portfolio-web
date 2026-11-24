@@ -43,6 +43,11 @@ const pages = [
     description: /competências/i,
   },
   {
+    route: "/privacidade",
+    title: /Privacidade/,
+    description: /LGPD/,
+  },
+  {
     route: "/rota-inexistente",
     title: /Página não encontrada/,
     description: /página solicitada não está disponível/i,
@@ -81,6 +86,7 @@ const indexaveis = [
   { route: "/roadmap", ogImage: true },
   { route: "/sobre", ogImage: true },
   { route: "/curriculo", ogImage: true },
+  { route: "/privacidade", ogImage: true },
 ];
 
 for (const { route, ogImage } of indexaveis) {
@@ -158,6 +164,7 @@ test("sitemap lista exatamente as rotas públicas na origem configurada", async 
     "/roadmap",
     "/sobre",
     "/curriculo",
+    "/privacidade",
     ...getProjetosImplementados().map((projeto) => `/projetos/${projeto.slug}`),
   ].map((rota) => new URL(rota, SITE_URL).toString());
   expect([...locs].sort()).toEqual([...esperadas].sort());

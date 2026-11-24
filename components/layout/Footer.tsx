@@ -42,6 +42,9 @@ export default function Footer({ nome, linkGithub, linkLinkedin, contatoEmail }:
           <Link href="/curriculo" prefetch={false}>
             Currículo
           </Link>
+          <Link href="/privacidade" prefetch={false}>
+            Privacidade
+          </Link>
         </nav>
         <section className="footer-contact" aria-labelledby="footer-contact-title">
           <h2 id="footer-contact-title">Vamos conversar.</h2>
