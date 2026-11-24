@@ -147,9 +147,11 @@ e as evidências de competência continuem válidos; não usar `npm audit fix --
 de codemods; preservar alterações existentes do usuário; sem novas dependências de runtime além das
 exigidas pelo framework; nenhuma tecnologia adicionada sem problema real que a justifique
 
-**Scale/Scope**: Um aplicativo Next.js, 5 rotas públicas navegáveis (`/`, `/projetos`, `/roadmap`,
-`/sobre`, `/curriculo`), uma página estática de projeto implementado e estados 404 genérico/de projeto;
-uma rota dinâmica (`/projetos/[slug]`) exige adaptação de `params`
+**Scale/Scope**: Um aplicativo Next.js com home (`/`), catálogo (`/projetos`), fichas
+pré-renderizadas dos projetos implementados (`/projetos/[slug]`), escopo planejado (`/roadmap`),
+biografia e método (`/sobre`), currículo navegável com PDF (`/curriculo`) e aviso de privacidade
+(`/privacidade`). Rotas e slugs inexistentes respondem com HTTP 404 e `noindex`. O segmento
+`/projetos/[slug]` usa `params` assíncrono e `dynamicParams = false`.
 
 ## Constitution Check
 

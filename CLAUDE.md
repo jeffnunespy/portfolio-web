@@ -52,7 +52,11 @@ Site Next.js 16 com pré-renderização (App Router, sem exportação estática 
 
 Consequência prática: adicionar uma competência ao perfil sem projeto que a comprove faz `npm run build` falhar. Não contorne removendo a validação — ajuste o conteúdo. Ao alterar o schema, atualize `lib/types.ts`, as listas `REQUIRED_*` em `lib/content.ts`, todos os JSONs existentes e `tests/unit/content.test.ts` juntos.
 
-**Rotas.** `app/page.tsx` (home), `app/projetos/` (lista e `[slug]` com `generateStaticParams` + `generateMetadata`), `app/sobre/`, `app/curriculo/`. Componentes de apresentação em `components/layout/` e `components/project/`. Estilos globais em `app/globals.css` (CSS puro, sem framework).
+**Rotas.** `app/page.tsx` (home), `app/projetos/` (catálogo e fichas pré-renderizadas com
+`generateStaticParams` e `generateMetadata`), `app/roadmap/` (escopo planejado), `app/sobre/`
+(biografia e método), `app/curriculo/` (currículo e PDF) e `app/privacidade/` (aviso no rodapé).
+Rotas e slugs inexistentes têm páginas de recuperação. Componentes de apresentação em
+`components/layout/` e `components/project/`. Estilos em `app/globals.css` (CSS puro).
 
 **Testes.** `tests/unit/` (Vitest + Testing Library, jsdom) cobre sobretudo a validação de conteúdo. `tests/e2e/` (Playwright, Chromium) cobre navegação, metadados (`metadata.spec.ts`), responsividade e acessibilidade — os arquivos `*.a11y.spec.ts` usam `@axe-core/playwright` contra WCAG 2.1 A/AA.
 
