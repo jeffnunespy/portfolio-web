@@ -1,7 +1,7 @@
 {
   "slug": "plataforma-portfolio",
   "titulo": "Plataforma de Portfólio",
-  "resumo": "Portfólio pessoal construído com Next.js para apresentar projetos e trajetória profissional de forma estruturada.",
+  "resumo": "Portfólio profissional publicado na Vercel, com fichas pré-renderizadas em Next.js, conteúdo versionado, testes automatizados e integração contínua.",
   "problemaTratado": "Falta de um canal único e versionado para apresentar projetos, competências e trajetória a recrutadores e clientes.",
   "status": "Em andamento",
   "categoria": "Web",
@@ -19,34 +19,56 @@
     "Versionamento com Git",
     "Testes automatizados",
     "Testes end-to-end",
-    "Acessibilidade WCAG 2.1 AA",
+    "Acessibilidade web com referência à WCAG 2.1 AA",
     "Node.js",
     "CI/CD"
   ],
-  "contexto": "Projeto pessoal criado para reunir a apresentação profissional e fichas de projeto em um site versionado, distinguindo trabalho implementado de estruturas de conteúdo planejadas.",
-  "objetivo": "Oferecer uma experiência pública clara, rápida e mantida via conteúdo versionado em arquivos JSON.",
+  "contexto": "A plataforma reúne currículo e estudos de caso, com evidências disponíveis no código público. O catálogo reúne projetos implementados. O roadmap registra o escopo planejado.",
+  "objetivo": "Permitir que recrutadores consultem minha trajetória, conheçam as decisões e limitações de cada projeto e encontrem as fontes que sustentam as competências do perfil.",
   "funcionalidadesPrincipais": [
-    "Listagem de projetos em destaque na página inicial",
-    "Página resumida individual por projeto",
-    "Página de currículo consultável em HTML"
+    "Catálogo de projetos implementados, com destaques na home e estudos de caso com decisões, limitações e links para as fontes.",
+    "Currículo em HTML e PDF para download.",
+    "Roadmap de projetos planejados, separado do catálogo e da comprovação de competências."
   ],
-  "responsabilidadeProprietario": "Responsável por toda a especificação, arquitetura, implementação e conteúdo do site.",
+  "responsabilidadeProprietario": "Mantenho os requisitos e o conteúdo do portfólio e acompanho sua publicação.",
   "decisoesRelevantes": [
     {
-      "titulo": "Conteúdo versionado em JSON",
-      "descricao": "Optou-se por armazenar projetos e perfil como arquivos JSON no repositório em vez de um CMS, simplificando a operação nesta fase inicial."
+      "titulo": "Páginas pré-renderizadas e componentes reutilizáveis",
+      "descricao": "A interface usa rotas do Next.js App Router e componentes React reutilizáveis, com TypeScript e CSS puro. Os papéis tipográficos, cores e espaçamentos documentados em DESIGN.md orientam as páginas e os componentes."
     },
     {
-      "titulo": "Uso do Next.js App Router",
-      "descricao": "Escolhido pela geração estática das páginas de projeto, favorecendo desempenho e simplicidade de deploy."
+      "titulo": "Conteúdo versionado e validado no build",
+      "descricao": "Perfil e projetos são mantidos em JSON no Git. lib/content.ts valida campos obrigatórios, slugs, links e arquivos locais referenciados. O build falha quando uma competência do perfil não aparece entre as competências demonstradas por algum projeto implementado."
+    },
+    {
+      "titulo": "Testes unitários, de navegação e de acessibilidade",
+      "descricao": "Vitest cobre a validação e os componentes. Playwright verifica fluxos públicos como navegação, currículo, fichas, metadados e recuperação de páginas inexistentes. Os testes com axe-core verificam critérios automatizáveis de acessibilidade com alvo WCAG 2.1 AA."
+    },
+    {
+      "titulo": "Integração contínua e promoção à produção",
+      "descricao": "No Node.js 24, o job quality do GitHub Actions verifica dependências de produção, formatação, lint, tipos, testes e build. O Deployment Check da Vercel aguarda o sucesso de quality na master para promover o build ao domínio público."
     }
   ],
-  "stack": ["Next.js", "TypeScript", "React", "CSS puro"],
+  "stack": [
+    "Next.js",
+    "React",
+    "TypeScript",
+    "CSS puro",
+    "Node.js",
+    "Git",
+    "Vitest",
+    "Playwright",
+    "axe-core",
+    "GitHub Actions",
+    "Vercel"
+  ],
   "limitacoesConhecidas": [
-    "Não há área administrativa; qualquer alteração de conteúdo exige editar arquivos e publicar novo deploy."
+    "O conteúdo é editado em arquivos no repositório. Atualizações exigem novo build e publicação.",
+    "A validação de links externos confere o formato. A disponibilidade desses destinos depende dos serviços de origem.",
+    "A cobertura automatizada tem alcance limitado. O roteiro humano de teclado, leitor de tela, zoom e aparelho físico segue pendente."
   ],
   "proximosPassos": [
-    "Executar e registrar as verificações manuais de acessibilidade e o preview antes da publicação"
+    "Executar e registrar as inspeções humanas de T055, incluindo teclado, leitor de tela real, zoom de 200% e celular físico."
   ],
   "linkRepositorio": "https://github.com/jeffnunespy/portfolio-web",
   "destaque": true,

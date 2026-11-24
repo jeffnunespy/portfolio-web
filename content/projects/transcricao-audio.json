@@ -2,7 +2,7 @@
   "slug": "transcricao-audio",
   "titulo": "Plataforma de Transcrição e Análise de Áudio",
   "resumo": "Estrutura planejada de uma plataforma para transcrição automática e análise de conteúdo de arquivos de áudio.",
-  "problemaTratado": "Processo manual e demorado de transcrição de reuniões e entrevistas para extração de insights.",
+  "problemaTratado": "Processo manual e demorado de transcrição de reuniões e entrevistas para identificar os pontos principais.",
   "status": "Pausado",
   "categoria": "Backend",
   "natureza": "autoral",

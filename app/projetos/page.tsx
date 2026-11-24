@@ -58,8 +58,7 @@ export default function ProjectsPage() {
 
       {planejados.length > 0 ? (
         <p className="page-intro__aside">
-          Há {planejados.length} projetos registrados como escopo planejado — intenção declarada,
-          ainda sem software.{" "}
+          Há {planejados.length} projetos registrados como escopo planejado.{" "}
           <Link className="text-link" href="/roadmap">
             Consultar o roadmap
           </Link>

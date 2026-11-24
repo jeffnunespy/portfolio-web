@@ -1,6 +1,7 @@
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import { test, expect } from "@playwright/test";
+import { getPerfil, getProjetosImplementados } from "../../lib/content";
 
 // FR-017 exige um meio de contato em toda página pública. O rodapé expõe o
 // mailto quando há um e-mail real em content/profile.json; enquanto o valor for
@@ -9,18 +10,7 @@ import { test, expect } from "@playwright/test";
 // declara o estado explicitamente e não oferece ação.
 const EMAIL_PLACEHOLDER = "SEU-EMAIL@exemplo.com";
 
-const perfil = JSON.parse(
-  readFileSync(path.join(process.cwd(), "content", "profile.json"), "utf8"),
-) as {
-  nome: string;
-  contato: { valor: string };
-  formacao: { periodo: string; titulo: string; descricao: string }[];
-  linkGithub: string;
-  linkLinkedin: string;
-  tituloPosicionamento: string;
-  trajetoria: { periodo: string; titulo: string; descricao: string }[];
-  linkCurriculo: string;
-};
+const perfil = getPerfil();
 
 const emailConfigurado = perfil.contato.valor !== EMAIL_PLACEHOLDER;
 
@@ -83,6 +73,15 @@ test("US3 - página de currículo é visualizável e oferece PDF para download",
 
   await expect(page.getByRole("heading", { level: 1, name: perfil.nome })).toBeVisible();
   await expect(page.getByText(perfil.tituloPosicionamento, { exact: true })).toBeVisible();
+  const resumo = page.getByRole("region", { name: "Perfil profissional" });
+  await expect(resumo.getByText(perfil.descricaoPosicionamento, { exact: true })).toBeVisible();
+  await expect(resumo.getByText(perfil.biografiaSobre, { exact: true })).toBeVisible();
+  const competencias = page.getByRole("region", { name: "Competências técnicas" });
+  for (const area of perfil.competenciasPorArea) {
+    for (const competencia of area.competencias) {
+      await expect(competencias.getByText(competencia, { exact: true })).toBeVisible();
+    }
+  }
   await expect(page.getByRole("heading", { level: 2, name: "Formação" })).toBeVisible();
   await expect(page.getByRole("heading", { level: 2, name: "Trajetória técnica" })).toBeVisible();
 
@@ -122,6 +121,36 @@ test("US3 - página de currículo é visualizável e oferece PDF para download",
   expect(readFileSync(downloadPath!)).toEqual(arquivoPublicado);
 });
 
+test("US3 - currículo aponta ao portfólio publicado e às fichas implementadas", async ({
+  page,
+}) => {
+  await page.goto("/curriculo");
+
+  const projetos = page.getByRole("region", { name: "Projetos" });
+  const fichas = [
+    { nome: "Nana Silva", slug: "nana-silva" },
+    { nome: "Plataforma de Portfólio", slug: "plataforma-portfolio" },
+  ];
+  await expect(projetos.getByRole("link")).toHaveCount(fichas.length);
+  for (const { resumo } of getProjetosImplementados()) {
+    await expect(projetos.getByText(resumo, { exact: true })).toBeVisible();
+  }
+  for (const { nome, slug } of fichas) {
+    const link = projetos.getByRole("link", { name: nome, exact: true });
+    await expect(link).toBeVisible();
+    await expect(link).toHaveAttribute("href", `/projetos/${slug}`);
+  }
+  await projetos.getByRole("link", { name: "Nana Silva", exact: true }).click();
+  await expect(page.getByRole("heading", { level: 1, name: "Nana Silva" })).toBeVisible();
+  await page.goBack();
+
+  const contato = page.getByRole("region", { name: "Contato e perfis" });
+  await expect(contato.getByRole("link", { name: "Portfólio publicado" })).toHaveAttribute(
+    "href",
+    "https://portfolio-web-three-zeta.vercel.app",
+  );
+});
+
 test("US3 - o meio de contato do currículo acompanha o estado do perfil", async ({ page }) => {
   await page.goto("/curriculo");
 
@@ -139,7 +168,7 @@ test("US3 - o meio de contato do currículo acompanha o estado do perfil", async
 
   // O GitHub é apresentado como perfil, sem prometer acesso a código.
   const secao = page.getByRole("region", { name: "Contato e perfis" });
-  await expect(secao.getByText(/perfil no GitHub\.$/)).toBeVisible();
+  await expect(secao.getByText(/No GitHub, você encontra meu perfil\.$/)).toBeVisible();
   await expect(secao.getByText(/código/i)).toHaveCount(0);
   await expect(secao.getByRole("link", { name: "Ver GitHub" })).toHaveAttribute(
     "href",

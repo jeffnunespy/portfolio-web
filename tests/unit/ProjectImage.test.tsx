@@ -17,9 +17,9 @@ describe("ProjectImage", () => {
       "href",
       "#contexto",
     );
-    expect(screen.getByText(/Se a prévia não aparecer/).closest("figcaption")).not.toHaveAttribute(
-      "aria-hidden",
-    );
+    expect(
+      screen.getByText("Índice ilustrativo da ficha.").closest("figcaption"),
+    ).not.toHaveAttribute("aria-hidden");
   });
 
   it.each(["", "/imagem-inexistente.svg"])(
@@ -27,7 +27,7 @@ describe("ProjectImage", () => {
     (src) => {
       const { container } = render(<ProjectImage src={src} {...description} />);
       expect(container.querySelector(".project-image__surface")).toBeInTheDocument();
-      expect(screen.getByText(/Se a prévia não aparecer/)).toBeInTheDocument();
+      expect(screen.getByText("Índice ilustrativo da ficha.")).toBeInTheDocument();
       expect(screen.getByRole("link")).toHaveAttribute("href", "#contexto");
       expect(screen.queryByText("Imagem indisponível")).toBeNull();
     },
@@ -49,7 +49,7 @@ describe("ProjectImage", () => {
   it("entrega orientação e link no HTML do servidor, sem depender de evento ou script", () => {
     const html = renderToStaticMarkup(<ProjectImage src="/imagem.svg" {...description} />);
     const doc = new DOMParser().parseFromString(html, "text/html");
-    expect(doc.querySelector("figcaption")?.textContent).toContain("Se a prévia não aparecer");
+    expect(doc.querySelector("figcaption")?.textContent).toContain("Índice ilustrativo da ficha");
     expect(doc.querySelector("a")?.getAttribute("href")).toBe("#contexto");
     expect(doc.querySelector("script")).toBeNull();
     expect(doc.querySelector("img")).toBeNull();

@@ -23,9 +23,7 @@ export default function ProjectImage({
         <a className="text-link" href={descriptionHref}>
           {descriptionLabel}
         </a>
-        <p>
-          Prévia ilustrativa. Se a prévia não aparecer, a descrição do projeto continua disponível.
-        </p>
+        <p>Índice ilustrativo da ficha.</p>
       </figcaption>
       <div
         className="project-image__surface"

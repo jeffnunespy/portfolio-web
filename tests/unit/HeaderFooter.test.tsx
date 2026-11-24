@@ -16,8 +16,8 @@ describe("Header", () => {
     expect(
       within(navigation)
         .getAllByRole("link")
-        .map((link) => link.getAttribute("aria-label")),
-    ).toEqual(["Início", "Projetos", "Roadmap (Plano)", "Sobre", "Currículo (CV)"]);
+        .map((link) => link.textContent),
+    ).toEqual(["Início", "Projetos", "Roadmap", "Sobre", "Currículo"]);
   });
 });
 

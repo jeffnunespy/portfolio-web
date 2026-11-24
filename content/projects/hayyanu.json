@@ -1,7 +1,7 @@
 {
   "slug": "hayyanu",
   "titulo": "HAYYANU",
-  "resumo": "Estrutura planejada de uma plataforma web para centralizar a gestão operacional, financeira e digital de estúdios de tatuagem.",
+  "resumo": "O backend em Django tem implementação parcial. O domínio de negócio e o site público seguem planejados.",
   "problemaTratado": "Processos administrativos, atendimento, agenda, clientes, financeiro, portfólio e presença digital dispersos em ferramentas diferentes.",
   "status": "Em andamento",
   "categoria": "Backend",
@@ -38,8 +38,8 @@
     "Cloud Scheduler",
     "Cloud Run Jobs"
   ],
-  "contexto": "Ficha planejada. Descreve uma aplicação de produção para digitalizar e centralizar a operação de estúdios de tatuagem, com base de código única e instalações isoladas por empresa — configurações, segredos, backups e domínio próprios. Nenhuma parte foi implementada.",
-  "objetivo": "Oferecer uma plataforma confiável para a operação diária dos estúdios, combinando gestão de negócio, atendimento, presença digital e infraestrutura preparada para evolução contínua.",
+  "contexto": "O backend em Django tem implementação parcial. O escopo planejado é uma aplicação para centralizar a operação de estúdios de tatuagem, com base de código única e instalações isoladas por empresa, cada qual com configuração, segredos, backups e domínio próprios.",
+  "objetivo": "Oferecer uma plataforma confiável para a operação diária dos estúdios de tatuagem, combinando gestão de negócio, atendimento, presença digital e infraestrutura preparada para evolução contínua.",
   "funcionalidadesPrincipais": [
     "Gestão de clientes, profissionais, unidades e serviços",
     "Agenda e fluxo operacional do estúdio",
@@ -47,7 +47,7 @@
     "Portfólio, conteúdo público e gerenciamento de mídia",
     "Autenticação, autorização, auditoria e controle de acesso"
   ],
-  "responsabilidadeProprietario": "Escopo planejado: levantamento de requisitos, decisões arquiteturais, desenvolvimento da aplicação, segurança, testes, infraestrutura, deploy e evolução do produto. Nenhuma dessas partes foi executada.",
+  "responsabilidadeProprietario": "Escopo previsto: desenvolvimento do domínio de negócio e do site público, segurança, testes, infraestrutura, publicação e evolução do produto.",
   "decisoesRelevantes": [
     {
       "titulo": "Monólito modular com instalações isoladas",
@@ -55,11 +55,11 @@
     },
     {
       "titulo": "Django para o núcleo operacional e Astro para o site público",
-      "descricao": "Django concentra regras de negócio e a interface operacional com Templates, HTMX e Alpine.js; Astro dá liberdade visual ao site público sem aumentar a complexidade do sistema interno."
+      "descricao": "O plano prevê Django para as regras de negócio e a interface operacional com Templates, HTMX e Alpine.js, e Astro para o site público."
     },
     {
       "titulo": "Operação planejada em Google Cloud Platform",
-      "descricao": "A infraestrutura usa Cloud Run, Cloud SQL, Cloud Storage e Secret Manager, com Cloud Logging, Cloud Monitoring e serviços de jobs para observabilidade e processamento assíncrono."
+      "descricao": "A infraestrutura prevista inclui Cloud Run, Cloud SQL, Cloud Storage e Secret Manager, com Cloud Logging, Cloud Monitoring e serviços de jobs para observabilidade e processamento assíncrono."
     }
   ],
   "stack": [
@@ -83,8 +83,10 @@
     "Cloud Scheduler",
     "Cloud Run Jobs"
   ],
-  "limitacoesConhecidas": ["Ficha planejada: não há implementação, deploy nem operação."],
-  "proximosPassos": ["Implementar a estrutura descrita ou retirar a ficha do portfólio."],
+  "limitacoesConhecidas": [
+    "Backend parcial. Domínio de negócio, site público e operação ainda previstos."
+  ],
+  "proximosPassos": ["Evoluir o backend e implementar o domínio de negócio e o site público."],
   "linkRepositorio": "privado",
   "destaque": true,
   "real": false
