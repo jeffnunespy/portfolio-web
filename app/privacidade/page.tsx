@@ -117,7 +117,8 @@ export default function PrivacyPage() {
           <p>
             Se você enviar, o endereço do remetente, o conteúdo e eventuais anexos chegam à caixa do
             Gmail usada como contato. Somente {perfil.nome} tem acesso direto a essa caixa, e as
-            mensagens são usadas exclusivamente para responder a contatos e propostas profissionais.
+            mensagens são usadas exclusivamente para responder a contatos e propostas profissionais
+            e para atender a solicitações relacionadas à privacidade.
           </p>
         </div>
       </section>
