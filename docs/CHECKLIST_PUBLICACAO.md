@@ -94,15 +94,16 @@ configurado em `package.json` e o runtime em `engines.node`/`.nvmrc`.
 | Repositório      | `jeffnunespy/portfolio-web`                                           |
 | Framework Preset | Next.js                                                               |
 | Root Directory   | Raiz do repositório (`./`)                                            |
-| Node.js Version  | 24.x (`engines.node` `^24.22.1`; `.nvmrc` fixa 24.22.2 para local/CI) |
+| Node.js Version  | 24.x (`engines.node` `^24.22.3`; `.nvmrc` fixa 24.22.3 para local/CI) |
 | Install Command  | `npm ci`                                                              |
 | Build Command    | `npm run build`                                                       |
 | Output Directory | Padrão do preset Next.js; sem override para `public` ou `out`         |
 
 A Vercel suporta Node.js 24.x e respeita a versão principal declarada no manifesto.
 [Referência de runtime](https://vercel.com/docs/functions/runtimes/node-js/node-js-versions).
-Conferir nos logs o patch efetivo de build/runtime e o npm: exigir Node 24.22.1 ou superior
-na linha 24 e npm >=11.16.0. A seleção 24.x no painel não comprova o patch de segurança.
+Conferir nos logs Node 24.22.3 ou superior na linha 24 e npm >=11.16.0 no build.
+Para funções Node.js, verificar o patch em execução separadamente. A Vercel gerencia o patch
+de ambos os ambientes dentro da linha 24.x. O `.nvmrc` fixa o patch no ambiente local e no CI.
 
 ### Criar o primeiro preview
 

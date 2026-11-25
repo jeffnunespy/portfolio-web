@@ -82,7 +82,7 @@ separar com clareza **o que já está implementado** do que ainda é **escopo pl
 
 | Camada           | Tecnologia                                                               |
 | ---------------- | ------------------------------------------------------------------------ |
-| Runtime          | Node.js `^24.22.1` (fixado em `24.22.2`, via `.nvmrc`) e npm `>=11.16.0` |
+| Runtime          | Node.js `^24.22.3` (fixado em `24.22.3`, via `.nvmrc`) e npm `>=11.16.0` |
 | Framework        | Next.js 16 (App Router, build com Turbopack) + React 19                  |
 | Linguagem        | TypeScript 5 (`strict`)                                                  |
 | Estilos          | CSS puro em `app/globals.css`; fonte Geologica via `next/font/google`    |
@@ -200,10 +200,10 @@ Para criar ou editar um projeto, siga o fluxo da skill local
 
 ## Requisitos
 
-- **Node.js `^24.22.1`** (`engines.node`), piso de segurança do AUD02-E5-001. A versão fixada
-  em `.nvmrc` é 24.22.2 e também é lida pelo CI; versões anteriores ao piso e Node 26 são
+- **Node.js `^24.22.3`** (`engines.node`), piso de segurança do boletim de novembro de 2026. A versão fixada
+  em `.nvmrc` é 24.22.3 e também é lida pelo CI; versões anteriores ao piso e Node 26 são
   recusadas por `engine-strict`.
-- **npm `>=11.16.0`**; o Node 24.22.2 inclui npm 11.19.1. `.npmrc` liga `engine-strict`, então
+- **npm `>=11.16.0`**; o Node 24.22.3 inclui npm 11.19.1. `.npmrc` liga `engine-strict`, então
   `npm ci` falha em Node/npm fora dos requisitos em vez de só avisar.
 - **Rede no primeiro build** para `fonts.googleapis.com` e `fonts.gstatic.com`: `next/font/google`
   baixa a Geologica em tempo de build e a serve pelo próprio site. Um build sem rede e sem
@@ -321,7 +321,7 @@ Se uma atualização trouxer um script novo, revise o pacote e registre a decis�
 scripts, inclusive os negados, com instalação bem-sucedida. Por isso `engines.npm` é
 `>=11.16.0` e, com `engine-strict=true`, um npm antigo recusa `npm ci`, `npm install` e
 `--package-lock-only` com `EBADENGINE` antes de criar `node_modules`. Atualizar somente o npm
-não torna um Node anterior a 24.22.1 suportado: use a versão de `.nvmrc` (24.22.2, com npm
+não torna um Node anterior a 24.22.3 suportado: use a versão de `.nvmrc` (24.22.3, com npm
 11.19.1). Confira `node -v` e `npm -v` antes da instalação.
 
 Limitações: `--engine-strict=false` na linha de comando desliga a recusa, e `npm rebuild` com npm
