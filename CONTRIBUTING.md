@@ -1,23 +1,25 @@
 # Fluxo de contribuição
 
 A branch `master` é protegida pelo ruleset `proteger-master` do GitHub. Toda alteração entra por
-pull request, e o merge só é liberado com a branch atualizada e o check `quality` (job do workflow
-`CI`) aprovado.
+pull request. A branch do PR precisa conter a ponta vigente da `master`, e o merge exige o
+check `quality` do workflow `CI` do GitHub Actions.
 Vulnerabilidades seguem outro caminho: veja [`.github/SECURITY.md`](.github/SECURITY.md).
 
 ## Regras em vigor na `master`
 
-| Regra                    | Efeito                                                                   |
-| ------------------------ | ------------------------------------------------------------------------ |
-| Pull request obrigatório | Push direto é recusado. Não há exigência de aprovação de revisor         |
-| Check `quality`          | O merge fica bloqueado até o job `quality` do GitHub Actions passar      |
-| Branch atualizada        | Obrigatória: o PR deve conter a `master` vigente; atualizar gera novo CI |
-| Force push               | Recusado                                                                 |
-| Exclusão da branch       | Recusada                                                                 |
-| Métodos de merge         | Merge commit, squash ou rebase                                           |
-| Exceções (bypass)        | Nenhuma, nem para administradores                                        |
+| Regra                    | Efeito                                                              |
+| ------------------------ | ------------------------------------------------------------------- |
+| Pull request obrigatório | Push direto é recusado. Não há exigência de aprovação de revisor    |
+| Check `quality`          | O merge fica bloqueado até o job `quality` do GitHub Actions passar |
+| Branch atualizada        | Obrigatória: o PR precisa conter a ponta vigente da `master`        |
+| Force push               | Recusado                                                            |
+| Exclusão da branch       | Recusada                                                            |
+| Métodos de merge         | Merge commit, squash ou rebase                                      |
+| Exceções (bypass)        | Nenhum ator configurado                                             |
 
-As demais branches não têm regras.
+O ruleset não tem atores com bypass configurado. Administradores com permissão de edição
+ainda podem modificar o ruleset. Essa mudança administrativa exige autorização e registro
+próprios. As demais branches não têm regras.
 
 ## Passo a passo
 
@@ -39,26 +41,30 @@ As demais branches não têm regras.
 11. Faça o merge somente com autorização específica para o PR e SHA final e quando o
     GitHub indicar que as regras foram atendidas.
 
-Se a `master` avançar, o GitHub bloqueia o merge até a branch ser atualizada, pelo mesmo caminho
-de [Conflitos de merge](#conflitos-de-merge), de preferência com `git merge origin/master`: rebase
-da branch exige force-push, que depende de autorização própria. A atualização cria um commit novo,
-que exige outro `quality` aprovado; assim, o conteúdo integrado é o mesmo que o `quality` aprovado
-no head do PR validou.
+Se a `master` avançar, atualize a branch do PR e confira o novo `quality` do evento
+`pull_request`. No resumo do CI, confira o head, a base e o commit sintético da combinação
+testada. Para autorizar o merge, exija o check do GitHub Actions com status `completed`
+e conclusão `success` (`completed/success`). Confira no run que todas as etapas obrigatórias
+do [workflow `CI`](.github/workflows/ci.yml) foram executadas e concluíram com sucesso. O GitHub
+pode aceitar resultados `skipped` ou `neutral` como checks obrigatórios satisfeitos. Esses
+resultados não comprovam a execução exigida para autorizar o merge. Mudança no head exige
+novo CI e nova autorização de merge.
 
-O CI do evento `push` na `master` continua obrigatório depois do merge: valida o commit final,
-inclusive etapas que podem mudar com o tempo, como a auditoria de dependências. A branch
-atualizada não faz a Vercel esperar esse resultado: o deploy automático da `master` pode publicar
-a produção antes de o `quality` do push terminar, independentemente do resultado dele. Nível de
-risco, revisão e evidências de cada PR seguem [`docs/audits/PROCESSO.md`](docs/audits/PROCESSO.md).
+O ruleset fixa a origem de `quality` no GitHub Actions. A definição do workflow, os scripts
+e os testes ainda podem mudar no próprio PR. Mudanças capazes de enfraquecer o gate exigem
+revisão independente adversarial de nível 3, incluindo a execução das etapas obrigatórias.
+
+O evento `push` na `master` continua revalidando o SHA integrado. Nível de risco, revisão e
+evidências de cada PR seguem [`docs/audits/PROCESSO.md`](docs/audits/PROCESSO.md).
 
 Na Vercel, o build de Production pode executar independentemente desse CI.
 A promoção automática ao domínio público deve aguardar o Deployment Check
 GitHub `quality`, bloqueante para Production e correspondente ao SHA integrado
-na `master`, com conclusão `success`. Check ausente, pendente, cancelado ou
-falho não libera a promoção. Enquanto o novo deployment estiver bloqueado,
-espera-se que o domínio público mantenha a versão anterior. A eficácia do
-bloqueio no alias público `portfolio-web-three-zeta.vercel.app` ainda precisa
-ser verificada na próxima integração autorizada.
+na `master`, com conclusão `success`. Já foi observado que o alias público
+manteve a versão anterior enquanto o check estava pendente e mudou após o
+sucesso. Check ausente, cancelado, falho, pulado ou neutro, execuções homônimas
+e concorrência entre deployments ainda requerem validação em ambiente isolado.
+[Evidência do PR #56](https://github.com/jeffnunespy/portfolio-web/pull/56#issuecomment-7150791750)
 
 `Force Promote` contorna esse controle: é exceção administrativa e exige
 autorização específica e registro, conforme o
