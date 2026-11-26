@@ -57,7 +57,12 @@ test("US1 - nome, posicionamento e todas as competências estão na primeira dob
       `${implementados.length} projetos implementados, com suas decisões e limitações.`,
     ),
   ).toBeVisible();
-  await expect(page.getByRole("link", { name: "roadmap de estudos" })).toHaveAttribute(
+  await expect(
+    page.getByText("O roadmap registra o escopo previsto para backend com Python e Django.", {
+      exact: true,
+    }),
+  ).toBeVisible();
+  await expect(page.getByRole("link", { name: "roadmap", exact: true })).toHaveAttribute(
     "href",
     "/roadmap",
   );
@@ -98,9 +103,9 @@ test("US1 - navegação por tabulação sem tabindex positivo", async ({ page })
     `${perfil.nome} — Início`,
     "Início",
     "Projetos",
-    "Roadmap (Plano)",
+    "Roadmap",
     "Sobre",
-    "Currículo (CV)",
+    "Currículo",
   ]) {
     await page.keyboard.press("Tab");
     expect(

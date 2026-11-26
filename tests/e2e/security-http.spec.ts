@@ -44,6 +44,7 @@ test("headers de produção cobrem páginas, erros e arquivos públicos em GET/H
     "/curriculo",
     "/sobre",
     "/roadmap",
+    "/privacidade",
     "/rota-inexistente",
     "/projetos/slug-inexistente",
     "/curriculo.pdf",

@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
-import { getPerfil } from "../../lib/content";
+import Link from "next/link";
+import { getPerfil, getProjetosImplementados } from "../../lib/content";
 import { curriculoConfigurado, emailConfigurado } from "../../lib/labels";
+
+// O currículo aponta ao endereço público estável também em builds de Preview.
+const PORTFOLIO_PUBLICADO = "https://portfolio-web-three-zeta.vercel.app";
 
 export function generateMetadata(): Metadata {
   const perfil = getPerfil();
@@ -22,6 +26,7 @@ export function generateMetadata(): Metadata {
 
 export default function ResumePage() {
   const perfil = getPerfil();
+  const projetos = getProjetosImplementados();
   const podeContatar = emailConfigurado(perfil.contato.valor);
   const temPdf = curriculoConfigurado(perfil.linkCurriculo);
 
@@ -52,6 +57,24 @@ export default function ResumePage() {
         <h2 id="resume-summary">Perfil profissional</h2>
         <p>{perfil.descricaoPosicionamento}</p>
         <p>{perfil.biografiaSobre}</p>
+      </section>
+
+      <section aria-labelledby="resume-projects">
+        <h2 id="resume-projects">Projetos</h2>
+        <ul className="resume-timeline" role="list">
+          {projetos.map((projeto) => (
+            <li key={projeto.slug}>
+              <div>
+                <h3>
+                  <Link className="text-link" href={`/projetos/${projeto.slug}`}>
+                    {projeto.titulo}
+                  </Link>
+                </h3>
+                <p>{projeto.resumo}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
       </section>
 
       <section aria-labelledby="resume-education">
@@ -104,8 +127,8 @@ export default function ResumePage() {
         <h2 id="resume-links">Contato e perfis</h2>
         <p>
           {podeContatar
-            ? "Contato por e-mail ou LinkedIn; perfil no GitHub."
-            : "Contato pelo LinkedIn; perfil no GitHub."}
+            ? "Contato por e-mail ou pelo LinkedIn. No GitHub, você encontra meu perfil."
+            : "Contato pelo LinkedIn. No GitHub, você encontra meu perfil."}
         </p>
         {/*
           Os destinos que existem vêm primeiro; a ausência de e-mail fecha a
@@ -120,13 +143,18 @@ export default function ResumePage() {
             </li>
           ) : null}
           <li>
+            <a href={perfil.linkLinkedin} target="_blank" rel="noopener noreferrer">
+              Falar pelo LinkedIn
+            </a>
+          </li>
+          <li>
             <a href={perfil.linkGithub} target="_blank" rel="noopener noreferrer">
               Ver GitHub
             </a>
           </li>
           <li>
-            <a href={perfil.linkLinkedin} target="_blank" rel="noopener noreferrer">
-              Falar pelo LinkedIn
+            <a href={PORTFOLIO_PUBLICADO} target="_blank" rel="noopener noreferrer">
+              Portfólio publicado
             </a>
           </li>
           {podeContatar ? null : (

@@ -82,7 +82,7 @@ separar com clareza **o que já está implementado** do que ainda é **escopo pl
 
 | Camada           | Tecnologia                                                               |
 | ---------------- | ------------------------------------------------------------------------ |
-| Runtime          | Node.js `^24.22.1` (fixado em `24.22.2`, via `.nvmrc`) e npm `>=11.16.0` |
+| Runtime          | Node.js `^24.22.3` (fixado em `24.22.3`, via `.nvmrc`) e npm `>=11.16.0` |
 | Framework        | Next.js 16 (App Router, build com Turbopack) + React 19                  |
 | Linguagem        | TypeScript 5 (`strict`)                                                  |
 | Estilos          | CSS puro em `app/globals.css`; fonte Geologica via `next/font/google`    |
@@ -129,17 +129,18 @@ diretamente; recebem dados já validados e tipados.
 
 ## Rotas
 
-| Rota               | Descrição                                                                  |
-| ------------------ | -------------------------------------------------------------------------- |
-| `/`                | Home: posicionamento, projetos em destaque e evidências do build           |
-| `/projetos`        | Lista dos projetos implementados                                           |
-| `/projetos/[slug]` | Estudo de caso, com decisões relevantes, competências e links de evidência |
-| `/roadmap`         | Escopo planejado, mantido separado do que já foi entregue                  |
-| `/sobre`           | Biografia, formação, trajetória e competências por área                    |
-| `/curriculo`       | Currículo navegável, com download do PDF                                   |
+| Rota               | Descrição                                                                    |
+| ------------------ | ---------------------------------------------------------------------------- |
+| `/`                | Home: posicionamento, projetos em destaque e evidências do build             |
+| `/projetos`        | Lista dos projetos implementados                                             |
+| `/projetos/[slug]` | Estudo de caso, com decisões relevantes, competências e links de evidência   |
+| `/roadmap`         | Escopo planejado, mantido separado do que já foi entregue                    |
+| `/sobre`           | Biografia e método de trabalho                                               |
+| `/curriculo`       | Currículo com perfil, formação, trajetória, competências e PDF para download |
+| `/privacidade`     | Aviso de privacidade acessível pelo rodapé                                   |
 
 Também são gerados `sitemap.xml`, `robots.txt`, ícone, imagens Open Graph por rota e páginas
-de erro e 404.
+de erro e recuperação com HTTP 404 para rotas e slugs inexistentes.
 
 ## Conteúdo como fonte de dados
 
@@ -199,10 +200,10 @@ Para criar ou editar um projeto, siga o fluxo da skill local
 
 ## Requisitos
 
-- **Node.js `^24.22.1`** (`engines.node`), piso de segurança do AUD02-E5-001. A versão fixada
-  em `.nvmrc` é 24.22.2 e também é lida pelo CI; versões anteriores ao piso e Node 26 são
+- **Node.js `^24.22.3`** (`engines.node`), piso de segurança do boletim de novembro de 2026. A versão fixada
+  em `.nvmrc` é 24.22.3 e também é lida pelo CI; versões anteriores ao piso e Node 26 são
   recusadas por `engine-strict`.
-- **npm `>=11.16.0`**; o Node 24.22.2 inclui npm 11.19.1. `.npmrc` liga `engine-strict`, então
+- **npm `>=11.16.0`**; o Node 24.22.3 inclui npm 11.19.1. `.npmrc` liga `engine-strict`, então
   `npm ci` falha em Node/npm fora dos requisitos em vez de só avisar.
 - **Rede no primeiro build** para `fonts.googleapis.com` e `fonts.gstatic.com`: `next/font/google`
   baixa a Geologica em tempo de build e a serve pelo próprio site. Um build sem rede e sem
@@ -320,7 +321,7 @@ Se uma atualização trouxer um script novo, revise o pacote e registre a decis�
 scripts, inclusive os negados, com instalação bem-sucedida. Por isso `engines.npm` é
 `>=11.16.0` e, com `engine-strict=true`, um npm antigo recusa `npm ci`, `npm install` e
 `--package-lock-only` com `EBADENGINE` antes de criar `node_modules`. Atualizar somente o npm
-não torna um Node anterior a 24.22.1 suportado: use a versão de `.nvmrc` (24.22.2, com npm
+não torna um Node anterior a 24.22.3 suportado: use a versão de `.nvmrc` (24.22.3, com npm
 11.19.1). Confira `node -v` e `npm -v` antes da instalação.
 
 Limitações: `--engine-strict=false` na linha de comando desliga a recusa, e `npm rebuild` com npm
@@ -395,6 +396,8 @@ O site é publicado na **Vercel** a partir da branch `master`:
   `out`), Node 24.x e instalação com `npm ci`.
 - **URL pública:** `NEXT_PUBLIC_SITE_URL` define a origem de canonical, Open Graph, sitemap e
   robots, e é obrigatória em produção (ver [Build e segurança HTTP](#build-e-segurança-http)).
+- **Deployment Check:** a Vercel aguarda o job `quality` para promover o build ao domínio público.
+  A espera foi observada no [PR #63](https://github.com/jeffnunespy/portfolio-web/pull/63).
 - **Preview:** `npx vercel deploy --environment=preview`. Confirme o ambiente no painel ou com
   `vercel inspect` antes de tratar o deploy como preview.
 

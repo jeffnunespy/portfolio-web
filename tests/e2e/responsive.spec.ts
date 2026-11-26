@@ -8,6 +8,7 @@ const routes = [
   "/roadmap",
   "/sobre",
   "/curriculo",
+  "/privacidade",
   "/rota-inexistente",
   "/projetos/slug-inexistente",
 ];
@@ -52,7 +53,15 @@ for (const width of [320, 390, 768, 1280]) {
       await expect(assinatura).toBeVisible();
       const box = await assinatura.boundingBox();
       expect(box!.y + box!.height).toBeLessThanOrEqual(900);
-      const targets = await page.locator(".site-nav a").evaluateAll((elements) =>
+      const nav = page.getByRole("navigation", { name: "Navegação principal" });
+      await expect(nav.getByRole("link")).toHaveText([
+        "Início",
+        "Projetos",
+        "Roadmap",
+        "Sobre",
+        "Currículo",
+      ]);
+      const targets = await nav.getByRole("link").evaluateAll((elements) =>
         elements.map((el) => {
           const r = el.getBoundingClientRect();
           const hit = document
@@ -155,7 +164,7 @@ test("títulos e stack longa não rompem as entradas do roadmap em 320px", async
   await expectReflow(page, "/roadmap (conteúdo extremo)");
 });
 
-test("navegação preserva prioridade e rótulos compactos em 320px", async ({ page }) => {
+test("navegação preserva prioridade em uma linha em 320px", async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 900 });
   await page.goto("/");
   const nav = page.getByRole("navigation", { name: "Navegação principal" });

@@ -58,6 +58,15 @@ function validationError(message: string): Error {
   return new Error(`Falha de validação de conteúdo: ${message}`);
 }
 
+function parseContentJson(raw: string, relativePath: string): unknown {
+  try {
+    return JSON.parse(raw) as unknown;
+  } catch (error) {
+    if (!(error instanceof SyntaxError)) throw error;
+    throw new SyntaxError(`Sintaxe JSON inválida em ${relativePath}.`);
+  }
+}
+
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
@@ -344,10 +353,8 @@ function validateProjetosCollection(projetos: Projeto[]): void {
 }
 
 function validateCompetenciasComEvidencia(perfil: PerfilProfissional, projetos: Projeto[]): void {
-  // Só projeto implementado conta como evidência: uma ficha de escopo planejado
-  // descreve software que ainda não existe e não comprova competência alguma
-  // (FR-024/SC-007, princípio "evidências acima de afirmações"). Sem o filtro,
-  // o gate aceita conteúdo ficcional como prova e deixa de cumprir sua função.
+  // Só as fichas de projetos implementados entram na comprovação de competências
+  // (FR-024/SC-007). As tecnologias do roadmap descrevem o escopo previsto.
   const competenciasComEvidencia = new Set(
     projetos.filter((projeto) => projeto.real).flatMap((p) => p.competenciasDemonstradas),
   );
@@ -374,7 +381,7 @@ export function getPerfil(): PerfilProfissional {
   }
 
   const raw = fs.readFileSync(path.join(CONTENT_DIR, "profile.json"), "utf-8");
-  perfilCache = validatePerfil(JSON.parse(raw) as unknown);
+  perfilCache = validatePerfil(parseContentJson(raw, "content/profile.json"));
   return perfilCache;
 }
 
@@ -390,7 +397,7 @@ export function getProjetos(): Projeto[] {
     .sort();
   const projetos = fileNames.map((fileName) => {
     const raw = fs.readFileSync(path.join(projectsDir, fileName), "utf-8");
-    return validateProjeto(JSON.parse(raw) as unknown, fileName);
+    return validateProjeto(parseContentJson(raw, `content/projects/${fileName}`), fileName);
   });
 
   validateProjetosCollection(projetos);

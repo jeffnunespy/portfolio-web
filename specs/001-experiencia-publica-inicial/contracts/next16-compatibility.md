@@ -21,8 +21,8 @@ tabulação, breakpoints de 320/768/1280px e requisitos WCAG 2.1 AA permanecem v
 
 ## Contrato de build e runtime
 
-- Runtime padronizado: Node.js 24 LTS; piso de segurança 24.22.1 (`engines.node` `^24.22.1`),
-  sucedido pelo patch fixado 24.22.2 em `.nvmrc` para desenvolvimento/CI (AUD02-E5-001).
+- Runtime padronizado: Node.js 24 LTS; piso de segurança 24.22.3 (`engines.node` `^24.22.3`).
+  O `.nvmrc` fixa esse patch para desenvolvimento e CI.
   O antigo piso técnico 24.15.0 de `jsdom@30` não satisfaz o piso de segurança atual.
   npm >=11.16.0, `engine-strict` e a política estrita de scripts permanecem obrigatórios.
   A mesma versão principal DEVE valer para ambiente local, manifesto, CI, Vercel e documentação;
@@ -110,8 +110,12 @@ Todos os itens abaixo são cumulativos:
 
 ## Rollback
 
-O deploy deve promover o mesmo artefato aprovado em preview. Se qualquer gate observável falhar no
-canário ou após a promoção, retirar o tráfego da nova versão e redeployar o artefato anterior. A
-reversão de código deve ser atômica para `package.json`, `package-lock.json`, configuração ESLint,
-rota dinâmica e ajustes de tipos; não se deve manter uma combinação parcial de Next.js 14 e React
-19/ESLint 10.
+Preview serve à homologação. O CI e o deployment de Production geram builds independentes. O SHA
+integrado vincula o `quality` do push na `master` ao deployment de Production. O Deployment Check
+bloqueia a promoção automática ao domínio público até o sucesso do `quality` desse SHA.
+
+Se um gate falhar antes da promoção, manter a versão pública anterior. Para recuperar Production
+após uma promoção, seguir o [procedimento de Instant Rollback e retomada](../../../docs/audits/PROCESSO.md#recuperação-de-production).
+A autorização e a verificação do artefato restaurado fazem parte do procedimento. A reversão da
+migração no código deve ser atômica e abranger `package.json`, `package-lock.json`, configuração
+ESLint, rota dinâmica e ajustes de tipos para evitar uma combinação parcial de versões.

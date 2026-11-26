@@ -35,7 +35,7 @@ npm run test:e2e -- -g "texto do teste"            # um teste
 
 ## Arquitetura
 
-Site Next.js 16 com pré-renderização (App Router, sem exportação estática para `out`) + React 19 + TypeScript, sobre Node.js `^24.22.1` (`engines.node`, piso de segurança com `engine-strict` em `.npmrc`; `.nvmrc` fixa 24.22.2), sem backend, sem banco e sem autenticação nesta fase. Publicado na Vercel; detalhes abaixo.
+Site Next.js 16 com pré-renderização (App Router, sem exportação estática para `out`) + React 19 + TypeScript, sobre Node.js `^24.22.3` (`engines.node`, piso de segurança com `engine-strict` em `.npmrc`; `.nvmrc` fixa 24.22.3), sem backend, sem banco e sem autenticação nesta fase. Publicado na Vercel; detalhes abaixo.
 
 **Conteúdo como fonte de dados.** Não há CMS nem API: todo o conteúdo vive em JSON versionado em `content/` — `profile.json` (perfil) e `content/projects/*.json` (um estudo de caso por arquivo). `lib/content.ts` lê esses arquivos com `fs` em tempo de build e é o único ponto de acesso ao conteúdo; `lib/types.ts` define os tipos correspondentes.
 
@@ -52,7 +52,11 @@ Site Next.js 16 com pré-renderização (App Router, sem exportação estática 
 
 Consequência prática: adicionar uma competência ao perfil sem projeto que a comprove faz `npm run build` falhar. Não contorne removendo a validação — ajuste o conteúdo. Ao alterar o schema, atualize `lib/types.ts`, as listas `REQUIRED_*` em `lib/content.ts`, todos os JSONs existentes e `tests/unit/content.test.ts` juntos.
 
-**Rotas.** `app/page.tsx` (home), `app/projetos/` (lista e `[slug]` com `generateStaticParams` + `generateMetadata`), `app/sobre/`, `app/curriculo/`. Componentes de apresentação em `components/layout/` e `components/project/`. Estilos globais em `app/globals.css` (CSS puro, sem framework).
+**Rotas.** `app/page.tsx` (home), `app/projetos/` (catálogo e fichas pré-renderizadas com
+`generateStaticParams` e `generateMetadata`), `app/roadmap/` (escopo planejado), `app/sobre/`
+(biografia e método), `app/curriculo/` (currículo e PDF) e `app/privacidade/` (aviso no rodapé).
+Rotas e slugs inexistentes têm páginas de recuperação. Componentes de apresentação em
+`components/layout/` e `components/project/`. Estilos em `app/globals.css` (CSS puro).
 
 **Testes.** `tests/unit/` (Vitest + Testing Library, jsdom) cobre sobretudo a validação de conteúdo. `tests/e2e/` (Playwright, Chromium) cobre navegação, metadados (`metadata.spec.ts`), responsividade e acessibilidade — os arquivos `*.a11y.spec.ts` usam `@axe-core/playwright` contra WCAG 2.1 A/AA.
 

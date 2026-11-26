@@ -147,9 +147,11 @@ e as evidências de competência continuem válidos; não usar `npm audit fix --
 de codemods; preservar alterações existentes do usuário; sem novas dependências de runtime além das
 exigidas pelo framework; nenhuma tecnologia adicionada sem problema real que a justifique
 
-**Scale/Scope**: Um aplicativo Next.js, 5 rotas públicas navegáveis (`/`, `/projetos`, `/roadmap`,
-`/sobre`, `/curriculo`), uma página estática de projeto implementado e estados 404 genérico/de projeto;
-uma rota dinâmica (`/projetos/[slug]`) exige adaptação de `params`
+**Scale/Scope**: Um aplicativo Next.js com home (`/`), catálogo (`/projetos`), fichas
+pré-renderizadas dos projetos implementados (`/projetos/[slug]`), escopo planejado (`/roadmap`),
+biografia e método (`/sobre`), currículo navegável com PDF (`/curriculo`) e aviso de privacidade
+(`/privacidade`). Rotas e slugs inexistentes respondem com HTTP 404 e `noindex`. O segmento
+`/projetos/[slug]` usa `params` assíncrono e `dynamicParams = false`.
 
 ## Constitution Check
 
@@ -165,7 +167,7 @@ _GATE: Must pass before Phase 0 research. Re-check after Phase 1 design._
 | VI. Segurança e privacidade desde o início    | O plano elimina 1 vulnerabilidade crítica e 2 altas e adiciona manutenção contínua de dependências; publicação fica bloqueada enquanto o gate falhar                              | PASS (remediação) |
 | VII. Acessibilidade e experiência consistente | O contrato exige regressão zero em teclado, axe e responsividade, com verificação manual complementar registrada                                                                  | PASS              |
 | VIII. Documentação como parte da entrega      | Plano, pesquisa, contrato e quickstart registram versões, riscos e validação; `docs/ACTIVE_CONTEXT.md` volta a refletir o estado real antes de qualquer trabalho assistido por IA | PASS              |
-| IX. Operação responsável                      | Preview/canário e redeploy do artefato anterior compõem a estratégia de rollback; CI garante build reproduzível                                                                   | PASS              |
+| IX. Operação responsável                      | CI garante build reproduzível. Rollback segue o [§7 do processo](../../docs/audits/PROCESSO.md#recuperação-de-production).                                                          | PASS              |
 | X. Uso responsável de IA                      | Codemods e alterações geradas devem ter diff revisado e testes executados; documentação desatualizada é tratada como risco operacional                                            | PASS              |
 
 Nenhuma violação identificada. Complexity Tracking não se aplica.
@@ -515,8 +517,9 @@ decisão registrada — não como reflexo.
    metadados, responsividade, links, currículo, conteúdo e deploy.
 4. Publicar primeiro em preview/canário; validar o contrato de
    [contracts/next16-compatibility.md](./contracts/next16-compatibility.md).
-5. Promover o mesmo artefato aprovado. Em regressão, retirar o canário e redeployar o artefato
-   anterior; a reversão de código inclui manifest, lockfile, configuração ESLint e adaptações de API.
+5. Promover Production conforme o contrato. Em regressão após a promoção, seguir a
+   [recuperação de Production no §7 do processo](../../docs/audits/PROCESSO.md#recuperação-de-production).
+   A reversão de código inclui manifest, lockfile, configuração ESLint e adaptações de API.
 
 ## Estratégia de branches e PRs
 

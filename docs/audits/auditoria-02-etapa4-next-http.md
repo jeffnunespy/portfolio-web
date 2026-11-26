@@ -4,7 +4,7 @@ Data: 2026-10-28. Trabalho em clone isolado, sem commit, push, PR ou deploy.
 
 ## Referência e escopo autorizado
 
-- Original: `/home/jeff/projetos/portfolio`, branch
+- Original: `<checkout-principal>`, branch
   `docs/visual-oficial-minimalismo-escuro`, HEAD
   `8b3377a295e7325ff18709c1f52c4eb7eaef104c`, sem alterações rastreadas e com
   24 arquivos não rastreados. Hashes registrados fora do repositório para conferência final.
@@ -238,7 +238,7 @@ de validação passou. Não se alteraram variáveis remotas. Ajustes de conteúd
   `055b402c4f785c9da78b6739b71ec122cbc6c55a63d23fc304b3671c00439103`.
 - Sem `.map` em `.next/static`, sem `sourceMappingURL` nos JS/CSS públicos. `productionBrowserSourceMaps`
   não foi habilitado. Caminho de map de um chunk real também retorna 404.
-- Busca nos bundles enviados ao navegador não encontrou caminhos `/home/jeff`, caminho do
+- Busca nos bundles enviados ao navegador não encontrou caminhos `<diretório-pessoal-local>`, caminho do
   clone, nomes das variáveis Vercel ou acessos `process.env`. Não se conclui ausência absoluta
   de segredos por simples busca textual; nenhuma fonte de segredo foi adicionada ao build.
 - `.env`, `.env.local`, `.git/config`, configurações npm/Next, código de biblioteca/teste,
@@ -416,7 +416,7 @@ ou publicação; nenhuma dessas ações foi executada.
   evidências anteriores de 93 unitários, build, TypeScript, lint, formato e npm audit.
 - Snapshot SHA-256 dos oito arquivos da candidata registrado antes da revisão para conferir
   que somente este documento recebeu alterações. Nenhuma dependência/conteúdo visual mudou.
-- Original em `/home/jeff/projetos/portfolio`: branch
+- Original em `<checkout-principal>`: branch
   `docs/visual-oficial-minimalismo-escuro`, HEAD `8b3377a295e7325ff18709c1f52c4eb7eaef104c`;
   alterações rastreadas vazias e os 24 arquivos não rastreados preservados por hash.
 

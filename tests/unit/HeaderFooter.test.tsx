@@ -16,8 +16,8 @@ describe("Header", () => {
     expect(
       within(navigation)
         .getAllByRole("link")
-        .map((link) => link.getAttribute("aria-label")),
-    ).toEqual(["Início", "Projetos", "Roadmap (Plano)", "Sobre", "Currículo (CV)"]);
+        .map((link) => link.textContent),
+    ).toEqual(["Início", "Projetos", "Roadmap", "Sobre", "Currículo"]);
   });
 });
 
@@ -36,6 +36,10 @@ describe("Footer", () => {
     expect(within(navigation).getByRole("link", { name: "Currículo" })).toHaveAttribute(
       "href",
       "/curriculo",
+    );
+    expect(within(navigation).getByRole("link", { name: "Privacidade" })).toHaveAttribute(
+      "href",
+      "/privacidade",
     );
     const contact = screen.getByRole("region", { name: "Vamos conversar." });
     expect(within(contact).getByRole("link", { name: "Ver GitHub" })).toHaveAttribute(

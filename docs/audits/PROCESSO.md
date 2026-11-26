@@ -162,17 +162,82 @@ ou deploy. Não alterar ruleset, fazer bypass ou push direto na master. Fluxo Gi
 
 ## 7. Verificação após merge autorizado
 
-Exigir `quality` do push na master e confirmar identidade do deployment integrado.
+Exigir `quality: success` na execução de evento `push` da `master` para o SHA
+integrado. Confirmar que o deployment de Production corresponde ao mesmo SHA
+antes da promoção automática ao domínio público. Conferir o evento `push` é regra
+deste processo, não garantia configurada na Vercel, cujo Deployment Check avalia
+o check `quality` associado ao commit.
 Verificar rotas/recursos afetados, status esperados, axe e overflow em 390/1280 quando
 houver interface afetada; no nível 3, repetir smoke dos fluxos críticos tocados e das
 integrações pertinentes. Smoke completo da aplicação é exigido quando houver impacto
 global justificado, não apenas pelo rótulo de risco. Incorporar verificações prometidas
 em dispensas; se exigência aprovada específica for maior, ela prevalece.
 
-Registrar no próprio PR CI, deployment e resultado. Falha vira pendência vinculada;
+Registrar no próprio PR: head revisado, SHA integrado, URL/ID e tentativa da
+execução de CI da master, resultado do `quality`, ID/URL do deployment Vercel,
+ambiente, SHA associado, alias público e BUILD_ID efetivamente servido. O
+BUILD_ID servido identifica o build da Vercel. Builds independentes, como os do
+CI e da Vercel, podem produzir identificadores distintos; não se exige igualdade
+nem diferença entre eles, e o vínculo com o código se comprova pelo SHA.
+Registrar os horários disponíveis de conclusão do build e do check e da promoção,
+com a ordem e a precisão que os registros permitem estabelecer. Distinguir a
+associação ao SHA da comprovação temporal de espera.
+
+Na integração autorizada, registrar o estado efetivamente observado do deployment
+e as amostras coletadas no domínio público, com horário e BUILD_ID quando disponível.
+Se a espera for observável, registrar amostras durante a espera e após a promoção.
+Se a janela for curta ou a espera não for observada, registrar a limitação. Se
+não houver amostra durante a espera, registrar que a versão servida nesse período
+não foi verificada. Usar a integração prevista, sem criar deployments experimentais
+nem repetir a publicação para obter evidência. Havendo integrações concorrentes,
+conferir a ordem de promoção e se uma versão antiga substituiu indevidamente uma posterior.
+
+Em bloqueio, preservar a versão pública anterior, conferir SHA e resultado do
+check e distinguir falha do código, do CI ou da associação na Vercel. Propor a
+menor intervenção necessária, respeitando as autorizações vigentes. Não remover
+o Deployment Check nem desativar a proteção da master para liberar a publicação.
+`Force Promote` é exceção administrativa com autorização específica e registro,
+não um procedimento automático de recuperação. Nova publicação ou rollback
+exige autorização própria e identificação da versão de destino.
+
+Falha vira pendência vinculada;
 P0/P1 pede avaliação de reversão por `git revert` em PR próprio. Atualizar `STATUS.md`
 só quando mudar o estado da auditoria. Verificação posterior não dispensa gate anterior
 sem decisão expressa nem autoriza deploy por si só.
+
+### Recuperação de Production
+
+1. Registrar o domínio público, o ID/URL do deployment associado, o SHA e o BUILD_ID da home,
+   com horário, falha observada e fluxos afetados. Conferir no painel qual deployment está
+   associado ao domínio. Consultar os metadados com
+   [`vercel inspect`](https://vercel.com/docs/cli/inspect) usando o ID ou a URL do deployment.
+   O BUILD_ID vem do HTML servido no domínio.
+2. Selecionar um deployment anterior com evidência de funcionamento nos fluxos afetados, SHA
+   conhecido e associação anterior a um domínio de Production. Confirmar a elegibilidade e
+   as permissões no painel. Consultar os registros da integração anterior e registrar o
+   BUILD_ID servido em Production para o mesmo ID de deployment e SHA, quando houver evidência
+   confiável.
+   O plano Hobby limita a seleção ao deployment imediatamente anterior. O estado `READY`
+   comprova apenas que o deployment está pronto.
+3. Com autorização específica do proprietário para o destino e os domínios, usar
+   [Instant Rollback](https://vercel.com/docs/instant-rollback). Antes de confirmar, conferir
+   os domínios e subdomínios listados no diálogo e prosseguir apenas se corresponderem ao
+   escopo autorizado. A Vercel restaura o artefato existente, sem rebuild e com a configuração
+   e as variáveis originais do deployment. A atribuição automática de domínios de Production
+   fica suspensa.
+4. Conferir a associação dos domínios e o SHA restaurado. Comparar o BUILD_ID servido com o
+   valor registrado para a candidata. Tratar divergência como falha de validação. Se não
+   houver BUILD_ID anterior confiável, registrar que a comparação ficou inconclusiva, anotar o
+   BUILD_ID observado e verificar a identidade pelo deployment e SHA. Verificar a home e
+   repetir o smoke dos fluxos afetados, com status e comportamento esperados. Registrar
+   horários, evidências antes e depois, versões e resultado no PR ou no registro do incidente.
+5. Para retomar a publicação normal, obter autorização específica para o novo destino.
+   Confirmar o deployment de Production da `master`, o `quality: success` do push para o
+   mesmo SHA e os demais gates aplicáveis. Usar **Manage** no painel de Production e confirmar
+   a promoção desse deployment para reativar a atribuição automática. Conferir a reativação,
+   a versão no domínio e o smoke. Manter o Deployment Check e a proteção da `master` em
+   vigor durante toda a recuperação. Se algum gate estiver pendente ou falhar, interromper
+   a retomada.
 
 ## 8. Limites conhecidos da suíte
 

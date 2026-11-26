@@ -7,17 +7,19 @@ do agente são evidências complementares.
 
 ## Versão a validar
 
-### Atualização operacional — 2026-10-29
+Registrar o SHA, o preview e a execução de CI correspondentes ao candidato em validação.
 
-O site já está publicado em https://portfolio-web-three-zeta.vercel.app e o proprietário
-confirmou abertura normal. A tabela de 2026-10-27 abaixo é histórica. Projeto Vercel
+### Registro histórico — atualização operacional de 2026-10-29
+
+O proprietário confirmou a abertura da publicação em https://portfolio-web-three-zeta.vercel.app.
+Este registro e a tabela de 2026-10-27 descrevem o estado e as verificações daquela data. Projeto Vercel
 `jeff-0a6e/portfolio-web` conectado ao GitHub, branch de produção `master`, Node 24.x e
 instalação `npm ci`. `NEXT_PUBLIC_SITE_URL` foi definida em Production com essa URL;
-precisa de um novo build de produção para atualizar canonical/OG/sitemap já publicados.
+naquela data, ainda faltava um novo build de produção para atualizar canonical, Open Graph e sitemap.
 
 Preview confirmado como `Ready` no ambiente `preview`:
 https://portfolio-bxwwi5lbi-jeff-0a6e.vercel.app. HTML com 200 via CLI autenticada,
-mantendo a proteção de acesso. O comando validado nesta sessão é:
+mantendo a proteção de acesso. O comando validado em 29/10 foi:
 
 ```sh
 rtk proxy npx vercel deploy --environment=preview
@@ -66,16 +68,17 @@ Os resultados e as pendências atualizados ficam em [ACTIVE_CONTEXT.md](ACTIVE_C
 
 Usar o build de produção local e registrar pessoa, data, navegador, sistema e resultado.
 
-| Estado   | Inspeção              | Procedimento e critério de aceite                                                                                                                                                                    |
-| -------- | --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Pendente | Teclado e foco        | Percorrer home, catálogo, ambas as fichas, roadmap, Sobre, currículo e 404 usando Tab, Shift+Tab e Enter. Primeiro Tab revela o salto ao conteúdo; foco visível, ordem coerente e nenhuma armadilha. |
-| Pendente | Percurso aos projetos | Ativar “Ver projetos em destaque”: o título recebe foco. Seguir até uma ficha e voltar. Todos os links e expansões devem continuar alcançáveis.                                                      |
-| Pendente | Expansões             | Abrir e fechar escolhas/limites e “Ver comprovação” com Enter/Espaço; foco permanece compreensível e o conteúdo é legível.                                                                           |
-| Pendente | Zoom real             | Ampliar para 200% no navegador. Conferir nome, menu, cartões, detalhes abertos e rodapé, sem perda de texto ou controles.                                                                            |
-| Pendente | Celular físico        | Conferir leitura, rolagem, orientação e toque em aparelho real. Registrar modelo, sistema e navegador; incluir Android/Chrome e iOS/Safari quando disponíveis.                                       |
-| Pendente | Leitor de tela real   | Usar NVDA ou VoiceOver. Conferir landmarks, nome completo, um h1 por rota, sequência de headings, nomes dos links e anúncio das expansões. Registrar a combinação leitor/navegador.                  |
-| Pendente | Conteúdo no leitor    | Nana é anunciada como em validação, com código privado e contato; o roadmap permanece planejamento. O diagrama anuncia três etapas em lista; pontos e imagens decorativos não repetem informação.    |
-| Pendente | Currículo e links     | Abrir o PDF, conferir uma página e consistência com o perfil. Seguir GitHub, LinkedIn e demonstração de Nana; conferir o destino do e-mail e identificar eventual bloqueio de acesso.                |
+| Estado   | Inspeção              | Procedimento e critério de aceite                                                                                                                                                                      |
+| -------- | --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Pendente | Teclado e foco        | Percorrer home, catálogo, 2 fichas, roadmap, Sobre, currículo, privacidade e 404 com Tab, Shift+Tab e Enter. Primeiro Tab revela o salto ao conteúdo; foco visível, ordem correta e nenhuma armadilha. |
+| Pendente | Percurso aos projetos | Ativar “Ver projetos em destaque”: o título recebe foco. Seguir até uma ficha e voltar. Todos os links e expansões devem continuar alcançáveis.                                                        |
+| Pendente | Expansões             | Abrir e fechar escolhas/limites e “Ver comprovação” com Enter/Espaço; foco permanece compreensível e o conteúdo é legível.                                                                             |
+| Pendente | Zoom real             | Ampliar para 200% no navegador. Conferir nome, menu, cartões, detalhes abertos e rodapé, sem perda de texto ou controles.                                                                              |
+| Pendente | Celular físico        | Conferir leitura, rolagem, orientação e toque em aparelho real. Registrar modelo, sistema e navegador; incluir Android/Chrome e iOS/Safari quando disponíveis.                                         |
+| Pendente | Leitor de tela real   | Usar NVDA ou VoiceOver. Conferir landmarks, nome completo, um h1 por rota, sequência de headings, nomes dos links e anúncio das expansões. Registrar a combinação leitor/navegador.                    |
+| Pendente | Conteúdo no leitor    | Nana é anunciada como em validação, com código privado e contato; o roadmap permanece planejamento. O diagrama anuncia três etapas em lista; pontos e imagens decorativos não repetem informação.      |
+| Pendente | Aviso de privacidade  | Abrir `/privacidade` pelo rodapé, conferir foco e ordem de leitura, títulos e links de contato com leitor de tela. Conferir zoom real de 200% e leitura em celular.                                    |
+| Pendente | Currículo e links     | Abrir o PDF, conferir uma página e consistência com o perfil. Seguir GitHub, LinkedIn e demonstração de Nana; conferir o destino do e-mail e identificar eventual bloqueio de acesso.                  |
 
 Modelo de registro: `data · pessoa · dispositivo/SO · navegador/leitor · cenário · resultado · evidência ou problema`.
 
@@ -91,15 +94,16 @@ configurado em `package.json` e o runtime em `engines.node`/`.nvmrc`.
 | Repositório      | `jeffnunespy/portfolio-web`                                           |
 | Framework Preset | Next.js                                                               |
 | Root Directory   | Raiz do repositório (`./`)                                            |
-| Node.js Version  | 24.x (`engines.node` `^24.22.1`; `.nvmrc` fixa 24.22.2 para local/CI) |
+| Node.js Version  | 24.x (`engines.node` `^24.22.3`; `.nvmrc` fixa 24.22.3 para local/CI) |
 | Install Command  | `npm ci`                                                              |
 | Build Command    | `npm run build`                                                       |
 | Output Directory | Padrão do preset Next.js; sem override para `public` ou `out`         |
 
 A Vercel suporta Node.js 24.x e respeita a versão principal declarada no manifesto.
 [Referência de runtime](https://vercel.com/docs/functions/runtimes/node-js/node-js-versions).
-Conferir nos logs o patch efetivo de build/runtime e o npm: exigir Node 24.22.1 ou superior
-na linha 24 e npm >=11.16.0. A seleção 24.x no painel não comprova o patch de segurança.
+Conferir nos logs Node 24.22.3 ou superior na linha 24 e npm >=11.16.0 no build.
+Para funções Node.js, verificar o patch em execução separadamente. A Vercel gerencia o patch
+de ambos os ambientes dentro da linha 24.x. O `.nvmrc` fixa o patch no ambiente local e no CI.
 
 ### Criar o primeiro preview
 
@@ -149,20 +153,20 @@ configuração. O preview criado e a validação autenticada estão registrados 
 
 ## Validação do preview e do CI
 
-| Estado   | Verificação              | Critério                                                                                                                                                              |
-| -------- | ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Pendente | Identidade da versão     | URL do deployment e SHA/revisão candidata registrados; o site corresponde aos arquivos revisados.                                                                     |
-| Pendente | Rotas                    | Abrir diretamente `/`, `/projetos`, `/projetos/nana-silva`, `/projetos/plataforma-portfolio`, `/roadmap`, `/sobre` e `/curriculo`; navegação cliente também funciona. |
-| Pendente | Recuperação              | Abrir rota inexistente e slug inexistente: 404 amigável com retorno válido.                                                                                           |
-| Pendente | Recursos                 | Fonte, imagem da plataforma, ícone e PDF carregam; Nana continua textual.                                                                                             |
-| Pendente | Metadados                | Títulos próprios, canonical/OG com host correto, sem `localhost` em deployment hospedado.                                                                             |
-| Pendente | Acessibilidade hospedada | Repetir os percursos de teclado, leitor e zoom; conferir celular físico.                                                                                              |
-| Pendente | Console e rede           | Ausência de erro de hidratação, recursos quebrados ou falhas inesperadas.                                                                                             |
-| Pendente | CI do candidato          | Workflow CI aprovado no SHA com todas as alterações, sem gates ignorados.                                                                                             |
+| Estado   | Verificação              | Critério                                                                                                                                                                |
+| -------- | ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Pendente | Identidade da versão     | URL do deployment e SHA/revisão candidata registrados; o site corresponde aos arquivos revisados.                                                                       |
+| Pendente | Rotas                    | Acessar `/`, `/projetos`, `/projetos/nana-silva`, `/projetos/plataforma-portfolio`, `/roadmap`, `/sobre`, `/curriculo` e `/privacidade` por URL e na navegação interna. |
+| Pendente | Recuperação              | Abrir rota inexistente e slug inexistente: 404 amigável com retorno válido.                                                                                             |
+| Pendente | Recursos                 | Fonte, imagem da plataforma, ícone e PDF carregam; Nana continua textual.                                                                                               |
+| Pendente | Metadados                | Títulos próprios, canonical/OG com host correto, sem `localhost` em deployment hospedado.                                                                               |
+| Pendente | Acessibilidade hospedada | Repetir os percursos de teclado, leitor e zoom; conferir celular físico.                                                                                                |
+| Pendente | Console e rede           | Ausência de erro de hidratação, recursos quebrados ou falhas inesperadas.                                                                                               |
+| Pendente | CI do candidato          | Workflow CI aprovado no SHA com todas as alterações, sem gates ignorados.                                                                                               |
 
-O workflow atual dispara por push e pull request. Commit e push precisam abranger o diff revisado
-e estar autorizados; nesta sessão o proprietário autorizou sua execução. A aprovação de build da Vercel é distinta
-do workflow de qualidade do GitHub.
+O workflow atual dispara por push e pull request. Commit e push exigem autorização
+para o diff revisado do candidato. A aprovação do build da Vercel e o workflow de
+qualidade do GitHub são verificações distintas.
 
 ## Encerramento
 

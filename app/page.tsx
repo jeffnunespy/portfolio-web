@@ -64,9 +64,8 @@ export default function Home() {
             ))}
           </div>
           <p className="competency-roadmap-note">
-            Tecnologias de backend e cloud, como Python, Django, Docker e Google Cloud Platform,
-            aparecem apenas como estudo no <Link href="/roadmap">roadmap de estudos</Link>
-            {"; não são competências declaradas nesta ficha."}
+            O <Link href="/roadmap">roadmap</Link> registra o escopo previsto para backend com
+            Python e Django.
           </p>
         </section>
       </section>
@@ -156,10 +155,7 @@ export default function Home() {
         <section className="station" aria-labelledby="planned-title">
           <div className="station__head">
             <h2 id="planned-title">Caminho em construção.</h2>
-            <p>
-              Escopo planejado de estudo. Nada aqui existe como código; por isso fica separado dos
-              projetos implementados.
-            </p>
+            <p>Problemas, objetivos e tecnologias previstas para os projetos do roadmap.</p>
           </div>
           <div className="planned-summary">
             <p>

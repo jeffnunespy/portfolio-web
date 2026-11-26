@@ -1,7 +1,7 @@
 {
   "nome": "Jefferson Nunes",
   "tituloPosicionamento": "Desenvolvedor Web em Formação",
-  "descricaoPosicionamento": "Em formação, com interesse em desenvolvimento backend. O que apresento como trabalho implementado inclui esta plataforma: conteúdo validado em tempo de build, testes automatizados, acessibilidade verificada e integração contínua. O caminho para backend com Python e Django está registrado como escopo planejado, não como entrega.",
+  "descricaoPosicionamento": "Sou desenvolvedor web em formação, com interesse em backend. Nesta plataforma, trabalho com conteúdo versionado e validado durante o build, testes automatizados, verificações de acessibilidade e integração contínua. Meu percurso de estudo em backend inclui Python e Django.",
   "competenciasPorArea": [
     {
       "area": "Front-end",
@@ -18,14 +18,18 @@
     },
     {
       "area": "Qualidade",
-      "competencias": ["Testes automatizados", "Testes end-to-end", "Acessibilidade WCAG 2.1 AA"]
+      "competencias": [
+        "Testes automatizados",
+        "Testes end-to-end",
+        "Acessibilidade web com referência à WCAG 2.1 AA"
+      ]
     },
     {
       "area": "Operação",
       "competencias": ["Node.js", "CI/CD"]
     }
   ],
-  "biografiaSobre": "Trabalho da especificação ao deploy: cada requisito vira tarefa registrada, cada entrega passa por testes automatizados, verificação de acessibilidade e integração contínua antes de ser publicada. Esta plataforma é o exemplo auditável desse método — o conteúdo é validado em tempo de build e o que ainda é intenção fica separado do que já está implementado.",
+  "biografiaSobre": "Nesta plataforma, documento requisitos e tarefas. O fluxo de publicação inclui testes automatizados, verificações de acessibilidade e integração contínua.",
   "formacao": [
     {
       "periodo": "Ago. 2026 — presente",
@@ -42,7 +46,7 @@
     {
       "periodo": "Set. 2026 — presente",
       "titulo": "Qualidade e evidência verificável",
-      "descricao": "Evolução da plataforma com validação de conteúdo em tempo de build, testes end-to-end, acessibilidade WCAG 2.1 AA e integração contínua."
+      "descricao": "Evolução da plataforma com validação de conteúdo em tempo de build, testes end-to-end, verificações automatizadas de acessibilidade com referência à WCAG 2.1 AA e integração contínua."
     }
   ],
   "linkCurriculo": "/curriculo.pdf",

@@ -51,6 +51,19 @@ atualizada não faz a Vercel esperar esse resultado: o deploy automático da `ma
 a produção antes de o `quality` do push terminar, independentemente do resultado dele. Nível de
 risco, revisão e evidências de cada PR seguem [`docs/audits/PROCESSO.md`](docs/audits/PROCESSO.md).
 
+Na Vercel, o build de Production pode executar independentemente desse CI.
+A promoção automática ao domínio público deve aguardar o Deployment Check
+GitHub `quality`, bloqueante para Production e correspondente ao SHA integrado
+na `master`, com conclusão `success`. Check ausente, pendente, cancelado ou
+falho não libera a promoção. Enquanto o novo deployment estiver bloqueado,
+espera-se que o domínio público mantenha a versão anterior. A eficácia do
+bloqueio no alias público `portfolio-web-three-zeta.vercel.app` ainda precisa
+ser verificada na próxima integração autorizada.
+
+`Force Promote` contorna esse controle: é exceção administrativa e exige
+autorização específica e registro, conforme o
+[PROCESSO](docs/audits/PROCESSO.md).
+
 O PR é o registro principal: vincule a tarefa, os resultados e as decisões, sem criar
 relatórios por rodada. Revisão independente é obrigatória nos níveis 2/3, adversarial no 3.
 A homologação cobre os fluxos afetados e suas integrações; amplie somente por impacto
@@ -85,8 +98,8 @@ ou de ser fechado.
   próprio PR (ver "Scripts de instalação" no README).
 - `EBADENGINE` com `"npm":">=11.16.0"` indica npm antigo, que ignoraria `allowScripts`.
   Atualize o npm; não contorne com `--engine-strict=false`.
-- `EBADENGINE` com `"node":"^24.22.1"` indica runtime fora da linha/piso corrigido.
-  Use `nvm use` antes de instalar: `.nvmrc` fixa Node 24.22.2 com npm 11.19.1, também lido pelo CI.
+- `EBADENGINE` com `"node":"^24.22.3"` indica runtime fora da linha/piso corrigido.
+  Use `nvm use` antes de instalar: `.nvmrc` fixa Node 24.22.3 com npm 11.19.1, também lido pelo CI.
 
 ## Conflitos de merge
 
